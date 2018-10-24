@@ -96,7 +96,7 @@ class HomeState extends HomeInter<HomePage> {
                 }),
 
             // 分割线
-            Divider(),
+            Divider(color: AppColor.colorLine),
 
             // 设置
             _buildDrawerItem(

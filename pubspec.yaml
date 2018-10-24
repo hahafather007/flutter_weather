@@ -103,6 +103,14 @@ flutter:
     - images/900.png
     - images/901.png
     - images/999.png
+    - images/air_soft_1.png
+    - images/air_soft_2.png
+    - images/air_soft_3.png
+    - images/air_soft_4.png
+    - images/air_soft_5.png
+    - images/air_soft_6.png
+    - images/air_soft_7.png
+    - images/air_soft_8.png
 
     # json文件
     - jsons/weather_map.json

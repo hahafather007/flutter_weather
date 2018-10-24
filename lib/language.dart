@@ -26,6 +26,7 @@ class AppText {
       // 天气
       "share": "分享",
       "cityControl": "城市管理",
+      "dataSource": "数据来源：和风天气",
 
       // 福利
 
@@ -56,6 +57,8 @@ class AppText {
 
   String get cityControl =>
       _localizedValues[locale.languageCode]["cityControl"];
+
+  String get dataSource => _localizedValues[locale.languageCode]["dataSource"];
 
   /// 福利
   /// 闲读

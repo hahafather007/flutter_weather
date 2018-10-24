@@ -30,7 +30,7 @@ class NetImage extends StatelessWidget {
       placeholder: Container(
         height: height,
         width: width,
-        color: AppColor.colorShadow,
+        color: AppColor.colorHolder,
       ),
     );
 
