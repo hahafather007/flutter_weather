@@ -38,17 +38,10 @@ void pop(BuildContext context, {int count = 1, dynamic extraData}) {
 /// [nowStyle] 当前界面主题（默认黑色，只针对IOS设置）
 /// [jumpStyle] 跳转界面的主题（同上）
 Future push<T extends StatefulWidget>(BuildContext context,
-    {@required T page,
-    bool replace = false,
-    SystemUiOverlayStyle nowStyle = SystemUiOverlayStyle.dark,
-    SystemUiOverlayStyle jumpStyle = SystemUiOverlayStyle.dark}) {
+    {@required T page, bool replace = false}) {
   final route = MaterialPageRoute(builder: (_) => page);
 
   Future future;
-
-  if (isIOS) {
-    SystemChrome.setSystemUIOverlayStyle(jumpStyle);
-  }
 
   if (replace) {
     future = Navigator.of(context).pushReplacement(route);
@@ -56,13 +49,7 @@ Future push<T extends StatefulWidget>(BuildContext context,
     future = Navigator.of(context).push(route);
   }
 
-  return future.then((v) {
-    if (isIOS) {
-      SystemChrome.setSystemUIOverlayStyle(nowStyle);
-    }
-
-    return v;
-  });
+  return future;
 }
 
 /// 退出应用

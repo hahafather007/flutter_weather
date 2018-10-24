@@ -55,7 +55,7 @@ class HomeState extends HomeInter<HomePage> {
             Padding(padding: const EdgeInsets.only(top: 8)),
             // 天气
             _buildDrawerItem(
-                icon: Icons.cloud,
+                icon: Icons.wb_sunny,
                 title: AppText.of(context).weather,
                 isTarget: _pageType == PageType.WEATHER,
                 onTap: () {
@@ -83,7 +83,7 @@ class HomeState extends HomeInter<HomePage> {
 
             // 闲读
             _buildDrawerItem(
-                icon: Icons.library_books,
+                icon: Icons.local_cafe,
                 title: AppText.of(context).read,
                 isTarget: _pageType == PageType.READ,
                 onTap: () {
