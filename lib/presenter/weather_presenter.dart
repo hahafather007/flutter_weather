@@ -13,7 +13,12 @@ class WeatherPresenter extends Presenter {
     refresh();
   }
 
-  Future<Null> refresh() async {}
+  Future<Null> refresh() async {
+    city = await getLocation();
+    SharedDepository().setLastCity(city);
+
+    inter.stateChange();
+  }
 
   @override
   void dispose() {

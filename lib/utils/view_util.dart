@@ -5,16 +5,6 @@ import 'package:flutter/cupertino.dart';
 void cleanFocus(BuildContext context) =>
     FocusScope.of(context).requestFocus(FocusNode());
 
-/// 显示toast
-void showToast(String msg) {
-  Fluttertoast.showToast(
-      msg: msg,
-      toastLength: Toast.LENGTH_SHORT,
-      timeInSecForIos: 2,
-      bgcolor: "#cc333333",
-      textcolor: '#ffffff');
-}
-
 /// 根据Android或IOS显示不同风格dialog
 void showDiffDialog(
     BuildContext context, String title, String content, Function pressed) {

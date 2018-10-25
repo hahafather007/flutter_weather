@@ -8,7 +8,6 @@ export 'package:intl/intl_standalone.dart';
 export 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 export 'package:url_launcher/url_launcher.dart';
 export 'package:cached_network_image/cached_network_image.dart';
-export 'package:fluttertoast/fluttertoast.dart';
 export 'package:pull_to_refresh/pull_to_refresh.dart';
 export 'package:image_picker/image_picker.dart';
 export 'package:connectivity/connectivity.dart';
@@ -33,6 +32,7 @@ export 'presenter/gift_mzi_presenter.dart';
 export 'utils/system_util.dart';
 export 'utils/view_util.dart';
 export 'utils/rx_util.dart';
+export 'utils/channel_util.dart';
 
 export 'view/interface/inter.dart';
 export 'view/interface/home_inter.dart';

@@ -50,7 +50,7 @@ class HomeState extends HomeInter<HomePage> {
             NetImage(
                 url:
                     "http://t2.hddhhn.com/uploads/tu/201610/198/scx30045vxd.jpg",
-                height: 180,
+                height: 200,
                 width: double.infinity),
             Padding(padding: const EdgeInsets.only(top: 8)),
             // 天气
@@ -178,12 +178,12 @@ class HomeState extends HomeInter<HomePage> {
                 color: isTarget ? AppColor.colorMain : AppColor.colorText1,
               ),
               Container(
-                margin: const EdgeInsets.only(left: 26),
+                margin: const EdgeInsets.only(left: 30),
                 child: Text(
                   title,
                   style: TextStyle(
-                    fontSize: 16,
-                    color: isTarget ? AppColor.colorMain : AppColor.colorText1,
+                    fontSize: 14,
+                    color: isTarget ? AppColor.colorMain : Colors.black,
                   ),
                 ),
               ),

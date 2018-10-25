@@ -29,7 +29,6 @@ dependencies:
   flutter_staggered_grid_view: any
   url_launcher: any
   cached_network_image: any
-  fluttertoast: 2.0.8
   pull_to_refresh: any
   image_picker: any
   connectivity: any

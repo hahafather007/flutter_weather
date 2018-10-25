@@ -24,7 +24,7 @@ class WeatherState extends WeatherInter<WeatherPage> {
 
     debugPrint("init========>WeatherState");
 
-    _presenter = WeatherPresenter(this);
+    _presenter = WeatherPresenter(this)..loadData();
     DefaultAssetBundle.of(context)
         .loadString("jsons/weather_map.json")
         .then(debugPrint);
@@ -39,6 +39,12 @@ class WeatherState extends WeatherInter<WeatherPage> {
 
   @override
   Widget build(BuildContext context) {
+    // 天气详情的高度
+    final contentHeight = getScreenHeight(context) -
+        getSysStatsHeight(context) -
+        AppBar().preferredSize.height -
+        110;
+
     return Scaffold(
       appBar: CustomAppBar(
         title: _presenter.city,
@@ -73,13 +79,16 @@ class WeatherState extends WeatherInter<WeatherPage> {
               children: <Widget>[
                 // 上半部分天气详情
                 Container(
-                  height: 460,
+                  height: contentHeight,
+                  alignment: Alignment.topCenter,
+                  padding: const EdgeInsets.only(top: 56),
                   color: Colors.lightBlueAccent,
+                  child: _buildContent(),
                 ),
 
                 // 横向滚动显示每小时天气
                 Container(
-                  height: 120,
+                  height: 110,
                   alignment: Alignment.centerLeft,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -114,7 +123,7 @@ class WeatherState extends WeatherInter<WeatherPage> {
 
                 // 中间显示pm2.5等情况的区域
                 Container(
-                  height: 200,
+                  height: 166,
                   child: Row(
                     children: <Widget>[
                       Expanded(
@@ -177,7 +186,7 @@ class WeatherState extends WeatherInter<WeatherPage> {
                 // 最下面两排空气舒适度
                 // 第一排
                 Container(
-                  height: 110,
+                  height: 100,
                   alignment: Alignment.center,
                   child: Row(
                     children: <Widget>[
@@ -207,7 +216,7 @@ class WeatherState extends WeatherInter<WeatherPage> {
                 // 第二排
                 Container(
                   margin: const EdgeInsets.only(bottom: 6),
-                  height: 110,
+                  height: 100,
                   alignment: Alignment.center,
                   child: Row(
                     children: <Widget>[
@@ -243,8 +252,8 @@ class WeatherState extends WeatherInter<WeatherPage> {
                   child: Text(
                     AppText.of(context).dataSource,
                     style: TextStyle(
-                      fontSize: 14,
-                      color: AppColor.colorText2,
+                      fontSize: 12,
+                      color: AppColor.colorText1,
                     ),
                   ),
                 ),
@@ -257,6 +266,108 @@ class WeatherState extends WeatherInter<WeatherPage> {
     );
   }
 
+  /// 最上面的天气详情
+  Widget _buildContent() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        // 上半部分
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              "23°",
+              style: TextStyle(fontSize: 70, color: Colors.white),
+            ),
+            Padding(padding: const EdgeInsets.only(left: 10)),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "多云",
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 6, bottom: 2),
+                  child: Text(
+                    "↑21℃",
+                    style: TextStyle(fontSize: 10, color: Colors.white),
+                  ),
+                ),
+                Text(
+                  "↓13℃",
+                  style: TextStyle(fontSize: 10, color: Colors.white),
+                )
+              ],
+            ),
+          ],
+        ),
+
+        Padding(padding: const EdgeInsets.only(top: 6)),
+
+        // 下半部分
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "48％",
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
+                Text(
+                  "湿度",
+                  style: TextStyle(fontSize: 10, color: Colors.white),
+                ),
+              ],
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 25, right: 25),
+              width: 1,
+              height: 25,
+              color: Colors.white,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "1019",
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
+                Text(
+                  "气压",
+                  style: TextStyle(fontSize: 10, color: Colors.white),
+                ),
+              ],
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 25, right: 25),
+              width: 1,
+              height: 25,
+              color: Colors.white,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "1级",
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
+                Text(
+                  "东风",
+                  style: TextStyle(fontSize: 10, color: Colors.white),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   /// 每小时天气的Item
   Widget _buildHourItem() {
     return Column(
@@ -266,16 +377,16 @@ class WeatherState extends WeatherInter<WeatherPage> {
         Text(
           "17°",
           style: TextStyle(
-              fontSize: 15,
-              color: AppColor.colorText2,
+              fontSize: 14,
+              color: AppColor.colorText1,
               fontWeight: FontWeight.bold),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+          padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
           child: Image.asset(
             "images/102.png",
-            height: 35,
-            width: 35,
+            height: 30,
+            width: 30,
           ),
         ),
         Text(
@@ -292,7 +403,7 @@ class WeatherState extends WeatherInter<WeatherPage> {
   /// 每天天气的Item
   Widget _buildDailyItem() {
     final style = TextStyle(
-      color: AppColor.colorText1,
+      color: Colors.black,
       fontSize: 10,
     );
 
@@ -308,8 +419,8 @@ class WeatherState extends WeatherInter<WeatherPage> {
             padding: const EdgeInsets.only(top: 8, bottom: 8),
             child: Image.asset(
               "images/303.png",
-              height: 35,
-              width: 35,
+              height: 30,
+              width: 30,
             ),
           ),
           Text(
@@ -334,16 +445,16 @@ class WeatherState extends WeatherInter<WeatherPage> {
         children: <Widget>[
           Image.asset(
             url,
-            height: 45,
-            width: 45,
+            height: 40,
+            width: 40,
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 4, bottom: 3),
+            padding: const EdgeInsets.only(top: 5, bottom: 1),
             child: Text(
               content,
               style: TextStyle(
-                fontSize: 14,
-                color: AppColor.colorText1,
+                fontSize: 12,
+                color: Colors.black
               ),
             ),
           ),
@@ -351,7 +462,7 @@ class WeatherState extends WeatherInter<WeatherPage> {
             type,
             style: TextStyle(
               fontSize: 10,
-              color: AppColor.colorText2,
+              color: AppColor.colorText1,
             ),
           ),
         ],
@@ -365,7 +476,7 @@ class WeatherState extends WeatherInter<WeatherPage> {
   /// [num] 数值
   Widget _buildPm25Item(
       {@required String eName, @required name, @required double num}) {
-    final style = TextStyle(fontSize: 12, color: AppColor.colorText2);
+    final style = TextStyle(fontSize: 10, color: AppColor.colorText1);
 
     return Container(
       margin: const EdgeInsets.only(right: 20),
@@ -385,7 +496,7 @@ class WeatherState extends WeatherInter<WeatherPage> {
               Container(
                 margin: const EdgeInsets.only(top: 3),
                 height: 2,
-                color: Colors.green,
+                color: Colors.lightGreen,
               )
             ],
           ),
@@ -395,7 +506,7 @@ class WeatherState extends WeatherInter<WeatherPage> {
             child: Text(
               "${num < 1 ? num : num.toInt()}",
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 16,
                 color: AppColor.colorText1,
               ),
             ),
