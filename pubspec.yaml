@@ -33,6 +33,7 @@ dependencies:
   pull_to_refresh: any
   image_picker: any
   connectivity: any
+  xml2json: any
 
 dev_dependencies:
   flutter_test:

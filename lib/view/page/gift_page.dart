@@ -15,7 +15,7 @@ class GiftPage extends StatefulWidget {
   }
 }
 
-class GiftState extends GirlInter<GiftPage> {
+class GiftState extends GiftInter<GiftPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +30,7 @@ class GiftState extends GirlInter<GiftPage> {
           onPressed: openDrawer,
         ),
       ),
-      body: Text("福利"),
+      body: GiftMziPage(),
     );
   }
 }
