@@ -11,11 +11,11 @@ class GiftMziService extends Service {
     final response = await dio.get("$url/$page");
 
     debugPrint("===========Before===========");
-    debugPrint(response.data);
+    debugPrint(response.toString());
 
     xml2Json.parse(response.data);
 
     debugPrint("===========After===========");
-    debugPrint(response.data);
+    debugPrint(response.toString());
   }
 }

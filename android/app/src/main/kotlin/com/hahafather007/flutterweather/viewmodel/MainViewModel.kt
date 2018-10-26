@@ -16,8 +16,15 @@ class MainViewModel : RxController {
         locationHolder.loaction
                 .disposable(this)
                 .doOnNext {
-                    locationResult?.success(it)
+                    if (it.isEmpty()) {
+                        locationResult?.error("定位失败", null, null)
+                    } else {
+                        locationResult?.success(it)
+                    }
                 }
+//                .doOnError {
+//                    locationResult?.error(it.message, null, null)
+//                }
                 .subscribe()
     }
 

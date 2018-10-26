@@ -1,13 +1,14 @@
 import 'package:flutter_weather/commom_import.dart';
 
 class GiftMziPresenter extends Presenter {
-  final service = GiftMziService();
+  final _service = GiftMziService();
 
-  GiftMziInter inter;
+  GiftMziInter _inter;
+
   bool isLoading = false;
   int page = 1;
 
-  GiftMziPresenter(this.inter);
+  GiftMziPresenter(this._inter);
 
   void loadData() {
     refresh();
@@ -16,14 +17,16 @@ class GiftMziPresenter extends Presenter {
   Future<Null> refresh() async {
     if (isLoading) return;
 
-    try {
-      isLoading = true;
+    isLoading = true;
+    _inter.stateChange();
 
-      await service.getData(url: "/mm", page: 1);
+    try {
+      await _service.getData(url: "/mm", page: 1);
     } on DioError catch (e) {
       doError(e);
     } finally {
       isLoading = false;
+      _inter.stateChange();
     }
   }
 
@@ -31,6 +34,7 @@ class GiftMziPresenter extends Presenter {
   void dispose() {
     super.dispose();
 
-    inter = null;
+    _inter = null;
+    _service.dispose();
   }
 }

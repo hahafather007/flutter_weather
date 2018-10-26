@@ -20,10 +20,12 @@ export 'common/colors.dart';
 export 'model/holder/shared_depository.dart';
 
 export 'model/data/egg_data.dart';
+export 'model/data/weather_data.dart';
 
 export 'model/service/service.dart';
 export 'model/service/gift_egg_service.dart';
 export 'model/service/gift_mzi_service.dart';
+export 'model/service/weather_service.dart';
 
 export 'presenter/presenter.dart';
 export 'presenter/weather_presenter.dart';

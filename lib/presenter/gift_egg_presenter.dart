@@ -1,7 +1,7 @@
 import 'package:flutter_weather/commom_import.dart';
 
 class GiftEggPresenter extends Presenter {
-  final service = GiftEggService();
+  final _service = GiftEggService();
 
   EggData eggData;
   bool isLoading = false;
@@ -14,14 +14,22 @@ class GiftEggPresenter extends Presenter {
   Future<Null> refresh() async {
     if (isLoading) return;
 
-    try {
-      isLoading = true;
+    isLoading = true;
 
-      eggData = await service.getData(page: page);
+    try {
+
+      eggData = await _service.getData(page: page);
     } on DioError catch (e) {
       doError(e);
     } finally {
       isLoading = false;
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _service.dispose();
   }
 }

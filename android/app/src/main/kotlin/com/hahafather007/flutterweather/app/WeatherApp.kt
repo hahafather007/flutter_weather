@@ -10,6 +10,12 @@ class WeatherApp : FlutterApplication() {
         appContext = this
     }
 
+    override fun onTerminate() {
+        super.onTerminate()
+
+        appContext = null
+    }
+
     companion object {
         var appContext: Context? = null
     }

@@ -23,18 +23,20 @@ class LocationHolder {
 
         client.setLocationListener {
             if (it != null) {
-                //0表示定位成功
+                // 0表示定位成功
                 if (it.errorCode == 0) {
                     loaction.onNext(it.district)
 
                     "定位信息：$it".logInfo()
                 } else {
                     "定位出错：${it.adCode}-->\n${it.errorInfo}".logError()
+
+                    loaction.onNext("")
                 }
             }
         }
 
-        //设置高精度模式
+        // 设置高精度模式
         option.locationMode = Hight_Accuracy
         option.isOnceLocation = true
 

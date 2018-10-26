@@ -27,6 +27,13 @@ class SharedDepository {
   Future<bool> setLastCity(String value) async =>
       await _prefs.setString("lastCity", value);
 
+  /// 获取天气情况的api需要的key
+  String get weatherKey => _getString("weatherKey",
+      defaultValue: "8c1c2b0cae5b422a8938a75c669976cc");
+
+  Future<bool> setWeatherKey(String value) async =>
+      await _prefs.setString("weatherKey", value);
+
   /// 用带有默认值的形式获取prefs的数据
   String _getString(String key, {String defaultValue}) {
     final value = _prefs.getString(key);

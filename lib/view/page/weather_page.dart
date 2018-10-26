@@ -25,9 +25,9 @@ class WeatherState extends WeatherInter<WeatherPage> {
     debugPrint("init========>WeatherState");
 
     _presenter = WeatherPresenter(this)..loadData();
-    DefaultAssetBundle.of(context)
-        .loadString("jsons/weather_map.json")
-        .then(debugPrint);
+//    DefaultAssetBundle.of(context)
+//        .loadString("jsons/weather_map.json")
+//        .then(debugPrint);
   }
 
   @override
