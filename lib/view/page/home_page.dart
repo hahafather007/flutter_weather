@@ -47,11 +47,7 @@ class HomeState extends HomeInter<HomePage> {
           physics: ClampingScrollPhysics(),
           padding: const EdgeInsets.only(),
           children: <Widget>[
-            NetImage(
-                url:
-                    "http://t2.hddhhn.com/uploads/tu/201610/198/scx30045vxd.jpg",
-                height: 200,
-                width: double.infinity),
+            Image.asset("images/drawer_bg.png"),
             Padding(padding: const EdgeInsets.only(top: 8)),
             // 天气
             _buildDrawerItem(

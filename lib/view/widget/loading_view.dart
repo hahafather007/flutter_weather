@@ -16,7 +16,12 @@ class LoadingView extends StatelessWidget {
         child,
         Offstage(
           offstage: !loading,
-          child: Center(child: CircularProgressIndicator()),
+          child: Center(
+            child: Theme(
+              data: Theme.of(context).copyWith(accentColor: AppColor.colorMain),
+              child: CircularProgressIndicator(),
+            ),
+          ),
         ),
       ],
     );

@@ -34,6 +34,25 @@ class SharedDepository {
   Future<bool> setWeatherKey(String value) async =>
       await _prefs.setString("weatherKey", value);
 
+  /// 上次获取天气数据的时间
+  String get weatherUpdateTime => _getString("weatherUpdateTime",
+      defaultValue: DateTime.now().subtract(Duration(days: 1)).toString());
+
+  Future<bool> setWeatherUpdateTime(String value) async =>
+      await _prefs.setString("weatherUpdateTime", value);
+
+  /// 上次天气情况数据
+  String get lastWeatherData => _getString("lastWeatherData");
+
+  Future<bool> setLastWeatherData(String value) async =>
+      await _prefs.setString("lastWeatherData", value);
+
+  /// 上次空气质量情况
+  String get lastAirData => _getString("lastAirData");
+
+  Future<bool> setLastAirData(String value) async =>
+      await _prefs.setString("lastAirData", value);
+
   /// 用带有默认值的形式获取prefs的数据
   String _getString(String key, {String defaultValue}) {
     final value = _prefs.getString(key);

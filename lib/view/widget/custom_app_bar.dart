@@ -36,7 +36,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 // 左边的按钮
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.only(left: 7.5, bottom: 3),
+                    padding: const EdgeInsets.only(left: 2.5, bottom: 3),
                     alignment: Alignment.bottomLeft,
                     child: Material(
                       shape: CircleBorder(),
@@ -63,7 +63,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 // 右边的按钮(可能会有多个按钮)
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.only(right: 7.5, bottom: 3),
+                    padding: const EdgeInsets.only(right: 2.5, bottom: 3),
                     child: Stack(
                       alignment: Alignment.bottomRight,
                       children: rightBtns

@@ -11,12 +11,19 @@ class WeatherService extends Service {
 
     debugPrint(response.toString());
 
+    await SharedDepository().setLastWeatherData(response.data.toString());
+
     return WeatherData.fromJson(response.data);
   }
 
-  Future<Null> getAir({@required String city}) async {
-    final response = await dio.get("s6/air/now?key=weather_key&location=$city");
+  Future<WeatherAirData> getAir({@required String city}) async {
+    final response = await dio
+        .get("/s6/air/now?key=${SharedDepository().weatherKey}&location=$city");
 
     debugPrint(response.toString());
+
+    await SharedDepository().setLastAirData(response.data.toString());
+
+    return WeatherAirData.fromJson(response.data);
   }
 }

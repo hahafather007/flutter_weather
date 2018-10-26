@@ -5,18 +5,18 @@ class AppColor {
   static Color colorGround = Colors.white;
 
   /// 阴影
-  static Color colorShadow = Color.fromARGB(0xff, 0xed, 0xee, 0xf0);
+  static Color colorShadow = Color(0xffedeef0);
 
   /// app主题色
   static Color colorMain = Colors.lightGreen;
 
   /// 字体颜色
-  static Color colorText1 = Color.fromARGB(0xff, 0x66, 0x66, 0x66);
-  static Color colorText2 = Color.fromARGB(0xff, 0x88, 0x88, 0x88);
+  static Color colorText1 = Color(0xff666666);
+  static Color colorText2 = Color(0xff888888);
 
   /// 分割线
-  static Color colorLine = Color.fromARGB(0xff, 0xbb, 0xbb, 0xbb);
+  static Color colorLine = Color(0xffbbbbbb);
 
   /// placeholder颜色
-  static Color colorHolder = Color.fromARGB(0xff, 0xcc, 0xcc, 0xcc);
+  static Color colorHolder = Color(0xffcccccc);
 }
