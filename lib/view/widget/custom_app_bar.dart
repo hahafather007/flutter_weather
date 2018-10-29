@@ -26,18 +26,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: Column(
         children: <Widget>[
           Container(
-            alignment: Alignment.bottomCenter,
-            height: preferredSize.height +
-                getSysStatsHeight(context) -
-                (showShadow ? 1 : 0),
+            padding: EdgeInsets.only(top: getSysStatsHeight(context)),
+            height: preferredSize.height + getSysStatsHeight(context) - 1,
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 // 左边的按钮
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.only(left: 2.5, bottom: 3),
-                    alignment: Alignment.bottomLeft,
+                    padding: const EdgeInsets.only(left: 2.5),
+                    alignment: Alignment.centerLeft,
                     child: Material(
                       shape: CircleBorder(),
                       clipBehavior: Clip.hardEdge,
@@ -48,24 +45,21 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
 
                 // 标题
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 15),
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17,
-                    ),
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17,
                   ),
                 ),
 
                 // 右边的按钮(可能会有多个按钮)
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.only(right: 2.5, bottom: 3),
+                    padding: const EdgeInsets.only(right: 2.5),
                     child: Stack(
-                      alignment: Alignment.bottomRight,
+                      alignment: Alignment.centerRight,
                       children: rightBtns
                           .map((btn) => Padding(
                                 padding:
@@ -85,8 +79,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           // 下面的阴影线
           Container(
-            color: AppColor.colorShadow,
-            height: showShadow ? 1 : 0,
+            color: showShadow ? AppColor.colorShadow : color,
+            height: 1,
           ),
         ],
       ),

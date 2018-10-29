@@ -15,29 +15,25 @@ class WeatherPresenter extends Presenter {
     city = SharedDepository().lastCity;
   }
 
-  Future<Null> loadData() async {
+  void loadData() {
+    weather =
+        WeatherData.fromJson(json.decode(SharedDepository().lastWeatherData))
+            .weathers
+            .first;
+    air = WeatherAirData.fromJson(json.decode(SharedDepository().lastAirData))
+        .weatherAir
+        .first;
+
+//    _inter.stateChange();
+
     final minutes = (DateTime.now().millisecondsSinceEpoch -
             DateTime.parse(SharedDepository().weatherUpdateTime)
-                .millisecondsSinceEpoch) /
-        (1000 * 60);
-    debugPrint("-========$minutes");
-
-    // 两次请求时间间隔需要大于5分钟
-    // 如果小于5分钟，就返回保存的数据
-    if (minutes >= 5) {
-      await refresh(refresh: false);
-    } else {
-      final json = JsonCodec();
-
-      weather =
-          WeatherData.fromJson(json.decode(SharedDepository().lastWeatherData))
-              .weathers
-              .first;
-      air = WeatherAirData.fromJson(json.decode(SharedDepository().lastAirData))
-          .weatherAir
-          .first;
-
-      _inter.stateChange();
+                .millisecondsSinceEpoch) ~/
+        1000;
+    debugPrint("时间========$minutes秒");
+    // 两次请求时间间隔需要大于5分钟（300秒）
+    if (minutes >= 300) {
+      refresh(refresh: false);
     }
   }
 
@@ -61,7 +57,10 @@ class WeatherPresenter extends Presenter {
 
       final weatherData = await _service.getWeather(city: city);
       final airData = await _service.getAir(city: city);
+      // 储存本次天气结果
       await SharedDepository().setWeatherUpdateTime(DateTime.now().toString());
+      await SharedDepository().setLastWeatherData(json.encode(weatherData));
+      await SharedDepository().setLastAirData(json.encode(airData));
 
       weather = weatherData.weathers.first;
       air = airData.weatherAir.first;
