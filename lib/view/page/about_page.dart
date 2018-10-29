@@ -5,7 +5,7 @@ class AboutPage extends StatefulWidget {
   State createState() => AboutState();
 }
 
-class AboutState extends AboutInter<AboutPage> {
+class AboutState extends PageState<AboutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

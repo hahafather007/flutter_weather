@@ -15,12 +15,21 @@ class ReadPage extends StatefulWidget {
   }
 }
 
-class ReadState extends ReadInter<ReadPage> {
+class ReadState extends PageState<ReadPage> {
+  Function openDrawer;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: AppText.of(context).read,
+        title: Text(
+          AppText.of(context).read,
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 17,
+          ),
+        ),
         color: AppColor.colorMain,
         leftBtn: IconButton(
           icon: Icon(
@@ -32,5 +41,9 @@ class ReadState extends ReadInter<ReadPage> {
       ),
       body: Text("闲读"),
     );
+  }
+
+  void setDrawerOpenFunc({@required Function openDrawer}) {
+    this.openDrawer = openDrawer;
   }
 }

@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       home: SplashPage(),
+      theme: ThemeData(accentColor: AppColor.colorMain),
 
       // 设置地区信息
       localizationsDelegates: [

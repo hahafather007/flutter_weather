@@ -5,11 +5,10 @@ class HomePage extends StatefulWidget {
   State createState() => HomeState();
 }
 
-class HomeState extends HomeInter<HomePage> {
+class HomeState extends PageState<HomePage> {
   final _weatherPage = WeatherPage();
   final _girlPage = GiftPage();
   final _readPage = ReadPage();
-  final _scafKey = GlobalObjectKey<ScaffoldState>("scafKey");
 
   /// 标识有效页面
   final _pageTypeMap = Map<PageType, bool>();
@@ -23,13 +22,13 @@ class HomeState extends HomeInter<HomePage> {
 
     // 设置打开抽屉的回调，使子页面可以打开抽屉
     _weatherPage.setDrawerOpenFunc(openDrawer: () {
-      _scafKey.currentState.openDrawer();
+      scafKey.currentState.openDrawer();
     });
     _girlPage.setDrawerOpenFunc(openDrawer: () {
-      _scafKey.currentState.openDrawer();
+      scafKey.currentState.openDrawer();
     });
     _readPage.setDrawerOpenFunc(openDrawer: () {
-      _scafKey.currentState.openDrawer();
+      scafKey.currentState.openDrawer();
     });
 
     // 让第一个页面生效
@@ -41,7 +40,7 @@ class HomeState extends HomeInter<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scafKey,
+      key: scafKey,
       drawer: Drawer(
         child: ListView(
           physics: ClampingScrollPhysics(),

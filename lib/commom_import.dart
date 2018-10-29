@@ -28,24 +28,16 @@ export 'model/service/gift_egg_service.dart';
 export 'model/service/gift_mzi_service.dart';
 export 'model/service/weather_service.dart';
 
-export 'presenter/presenter.dart';
-export 'presenter/weather_presenter.dart';
-export 'presenter/gift_mzi_presenter.dart';
+export 'viewmodel/viewmodel.dart';
+export 'viewmodel/weather_viewmodel.dart';
+export 'viewmodel/gift_mzi_viewmodel.dart';
 
 export 'utils/system_util.dart';
 export 'utils/view_util.dart';
 export 'utils/rx_util.dart';
 export 'utils/channel_util.dart';
 
-export 'view/interface/inter.dart';
-export 'view/interface/home_inter.dart';
-export 'view/interface/weather_inter.dart';
-export 'view/interface/read_inter.dart';
-export 'view/interface/gift_inter.dart';
-export 'view/interface/about_inter.dart';
-export 'view/interface/setting_inter.dart';
-export 'view/interface/gift_mzi_inter.dart';
-
+export 'view/page/page_state.dart';
 export 'view/page/home_page.dart';
 export 'view/page/splash_page.dart';
 export 'view/page/weather_page.dart';
@@ -57,7 +49,7 @@ export 'view/page/gift_mzi_page.dart';
 
 export 'view/widget/net_image.dart';
 export 'view/widget/custom_app_bar.dart';
-export 'view/widget/loading_view.dart';
+export 'view/widget/Refresh_view.dart';
 
 export 'dart:async';
 export 'dart:io';

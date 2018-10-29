@@ -5,14 +5,14 @@ class GiftMziPage extends StatefulWidget {
   State createState() => GiftMziState();
 }
 
-class GiftMziState extends GiftMziInter<GiftMziPage> {
-  GiftMziPresenter presenter;
+class GiftMziState extends PageState<GiftMziPage> {
+  GiftMziViewModel presenter;
 
   @override
   void initState() {
     super.initState();
 
-    presenter = GiftMziPresenter(this)..loadData();
+    presenter = GiftMziViewModel()..loadData();
   }
 
   @override

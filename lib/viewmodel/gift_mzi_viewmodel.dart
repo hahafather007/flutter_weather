@@ -1,9 +1,8 @@
 import 'package:flutter_weather/commom_import.dart';
 
-class GiftEggPresenter extends Presenter {
-  final _service = GiftEggService();
+class GiftMziViewModel extends ViewModel {
+  final _service = GiftMziService();
 
-  EggData eggData;
   bool isLoading = false;
   int page = 1;
 
@@ -17,8 +16,7 @@ class GiftEggPresenter extends Presenter {
     isLoading = true;
 
     try {
-
-      eggData = await _service.getData(page: page);
+      await _service.getData(url: "/mm", page: 1);
     } on DioError catch (e) {
       doError(e);
     } finally {

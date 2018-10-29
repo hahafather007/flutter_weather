@@ -5,7 +5,7 @@ class SettingPage extends StatefulWidget {
   State createState() => SettingState();
 }
 
-class SettingState extends SettingInter<SettingPage> {
+class SettingState extends PageState<SettingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

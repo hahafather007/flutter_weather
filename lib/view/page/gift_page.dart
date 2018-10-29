@@ -15,12 +15,21 @@ class GiftPage extends StatefulWidget {
   }
 }
 
-class GiftState extends GiftInter<GiftPage> {
+class GiftState extends PageState<GiftPage> {
+  Function openDrawer;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: AppText.of(context).gift,
+        title: Text(
+          AppText.of(context).gift,
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 17,
+          ),
+        ),
         color: AppColor.colorMain,
         leftBtn: IconButton(
           icon: Icon(
@@ -32,5 +41,9 @@ class GiftState extends GiftInter<GiftPage> {
       ),
       body: GiftMziPage(),
     );
+  }
+
+  void setDrawerOpenFunc({@required Function openDrawer}) {
+    this.openDrawer = openDrawer;
   }
 }

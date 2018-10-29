@@ -1,6 +1,6 @@
 import 'package:flutter_weather/commom_import.dart';
 
-abstract class Presenter {
+abstract class ViewModel {
   final rxHolder = RxHolder();
 
   /// 调用该方法释放内存

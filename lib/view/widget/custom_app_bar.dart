@@ -1,7 +1,7 @@
 import 'package:flutter_weather/commom_import.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String title;
+  final Widget title;
   final IconButton leftBtn;
   final List<IconButton> rightBtns;
   final Color color;
@@ -45,14 +45,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
 
                 // 标题
-                Text(
-                  title,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 17,
-                  ),
-                ),
+                title,
 
                 // 右边的按钮(可能会有多个按钮)
                 Expanded(
