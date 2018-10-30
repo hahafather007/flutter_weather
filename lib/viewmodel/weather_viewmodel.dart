@@ -57,6 +57,7 @@ class WeatherViewModel extends ViewModel {
       }
       city.add(mCity);
 
+      await ReadService().getClassification();
       final weatherData = await _service.getWeather(city: mCity);
       final airData = await _service.getAir(city: mCity);
       // 储存本次天气结果

@@ -29,6 +29,7 @@ export 'model/service/service.dart';
 export 'model/service/gift_egg_service.dart';
 export 'model/service/gift_mzi_service.dart';
 export 'model/service/weather_service.dart';
+export 'model/service/read_service.dart';
 
 export 'viewmodel/viewmodel.dart';
 export 'viewmodel/weather_viewmodel.dart';
