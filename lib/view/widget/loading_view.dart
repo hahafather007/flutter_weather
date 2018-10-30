@@ -1,24 +1,24 @@
 import 'package:flutter_weather/commom_import.dart';
 
-class RefreshView extends StatefulWidget {
+class LoadingView extends StatefulWidget {
   final Widget child;
 
-  RefreshView({Key key, @required this.child})
+  LoadingView({Key key, @required this.child})
       : assert(child != null),
         super(key: key);
 
   @override
-  State createState() => RefreshState(child: child);
+  State createState() => LoadingState(child: child);
 }
 
 /// 带有圆形加载进度条的Stack
-class RefreshState extends State<RefreshView> with TickerProviderStateMixin {
+class LoadingState extends State<LoadingView> with TickerProviderStateMixin {
   final Widget child;
 
   AnimationController _controller;
   Animation<Size> _animation;
 
-  RefreshState({@required this.child});
+  LoadingState({@required this.child});
 
   @override
   void initState() {

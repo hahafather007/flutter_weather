@@ -50,7 +50,7 @@ export 'view/page/gift_mzi_page.dart';
 
 export 'view/widget/net_image.dart';
 export 'view/widget/custom_app_bar.dart';
-export 'view/widget/refresh_view.dart';
+export 'view/widget/loading_view.dart';
 
 export 'dart:async';
 export 'dart:io';

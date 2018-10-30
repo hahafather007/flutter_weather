@@ -31,9 +31,9 @@ class WeatherState extends PageState<WeatherPage> {
     _viewModel.error.stream.listen((_) => networkError());
     _viewModel.isLoading.stream.listen((loading) {
       if (loading) {
-        refreshKey.currentState.show();
+        loadingKey.currentState.show();
       } else {
-        refreshKey.currentState.dismiss();
+        loadingKey.currentState.dismiss();
       }
     });
 
@@ -107,8 +107,8 @@ class WeatherState extends PageState<WeatherPage> {
           ),
         ],
       ),
-      body: RefreshView(
-        key: refreshKey,
+      body: LoadingView(
+        key: loadingKey,
         child: StreamBuilder(
           stream: _viewModel.weather.stream,
           builder: (context, snapshot) {
