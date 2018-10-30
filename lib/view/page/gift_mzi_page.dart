@@ -12,7 +12,7 @@ class GiftMziState extends PageState<GiftMziPage> {
   void initState() {
     super.initState();
 
-    presenter = GiftMziViewModel()..loadData();
+    presenter = GiftMziViewModel()..init();
   }
 
   @override

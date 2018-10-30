@@ -13,8 +13,8 @@ export 'package:image_picker/image_picker.dart';
 export 'package:connectivity/connectivity.dart';
 export 'package:flutter/services.dart';
 export 'package:flutter_weather/language.dart';
-export 'package:xml2json/xml2json.dart';
 export 'package:simple_permissions/simple_permissions.dart';
+export 'package:html/parser.dart';
 
 export 'common/colors.dart';
 
@@ -23,6 +23,7 @@ export 'model/holder/shared_depository.dart';
 export 'model/data/egg_data.dart';
 export 'model/data/weather_data.dart';
 export 'model/data/weather_air_data.dart';
+export 'model/data/mzi_data.dart';
 
 export 'model/service/service.dart';
 export 'model/service/gift_egg_service.dart';

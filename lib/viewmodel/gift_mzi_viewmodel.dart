@@ -3,24 +3,33 @@ import 'package:flutter_weather/commom_import.dart';
 class GiftMziViewModel extends ViewModel {
   final _service = GiftMziService();
 
-  bool isLoading = false;
-  int page = 1;
+  final datas = StreamController<List<MziData>>();
 
-  void loadData() {
-    refresh();
+  bool _loading = false;
+  int _page = 1;
+
+  void init() {
+    loadData();
   }
 
-  Future<Null> refresh() async {
-    if (isLoading) return;
+  Future<Null> loadData({bool isRefresh = true}) async {
+    if (_loading) return;
+    _loading = true;
 
-    isLoading = true;
+    if (!isRefresh) {
+      isLoading.add(true);
+    }
 
     try {
-      await _service.getData(url: "/mm", page: 1);
+      await _service.getData(url: "/mm", page: _page);
     } on DioError catch (e) {
       doError(e);
     } finally {
-      isLoading = false;
+      _loading = true;
+
+      if (!isRefresh) {
+        isLoading.add(false);
+      }
     }
   }
 
@@ -29,5 +38,7 @@ class GiftMziViewModel extends ViewModel {
     super.dispose();
 
     _service.dispose();
+
+    datas.close();
   }
 }

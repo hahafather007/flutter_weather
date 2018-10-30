@@ -2,18 +2,15 @@ import 'package:flutter_weather/commom_import.dart';
 
 class GiftEggViewModel extends ViewModel {
   final _service = GiftEggService();
-  final _loadingController = StreamController<bool>();
-
-  Stream<bool> get isLoading =>_loadingController.stream;
 
   EggData eggData;
   int page = 1;
 
-  void loadData() {
-    refresh();
+  void init() {
+    loadData();
   }
 
-  Future<Null> refresh() async {
+  Future<Null> loadData({bool isRefresh = true}) async {
 //    if (await isLoading.stream.last) return;
 //    isLoading.add(true);
 
@@ -31,6 +28,5 @@ class GiftEggViewModel extends ViewModel {
     super.dispose();
 
     _service.dispose();
-    _loadingController.close();
   }
 }

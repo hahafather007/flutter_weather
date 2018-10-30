@@ -3,8 +3,6 @@ import 'package:flutter_weather/commom_import.dart';
 class WeatherViewModel extends ViewModel {
   final _service = WeatherService();
 
-  final isLoading = StreamController<bool>();
-  final error = StreamController<bool>();
   final city = StreamController<String>();
   final weather = StreamController<Weather>();
   final air = StreamController<WeatherAir>();
@@ -80,20 +78,11 @@ class WeatherViewModel extends ViewModel {
   }
 
   @override
-  void doError(DioError e) {
-    super.doError(e);
-
-    error.add(true);
-  }
-
-  @override
   void dispose() {
     super.dispose();
 
     _service.dispose();
 
-    error.close();
-    isLoading.close();
     city.close();
     weather.close();
     air.close();
