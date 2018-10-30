@@ -14,6 +14,7 @@ export 'package:connectivity/connectivity.dart';
 export 'package:flutter/services.dart';
 export 'package:flutter_weather/language.dart';
 export 'package:xml2json/xml2json.dart';
+export 'package:simple_permissions/simple_permissions.dart';
 
 export 'common/colors.dart';
 
@@ -49,7 +50,7 @@ export 'view/page/gift_mzi_page.dart';
 
 export 'view/widget/net_image.dart';
 export 'view/widget/custom_app_bar.dart';
-export 'view/widget/Refresh_view.dart';
+export 'view/widget/refresh_view.dart';
 
 export 'dart:async';
 export 'dart:io';

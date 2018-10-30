@@ -1,14 +1,10 @@
 package com.hahafather007.flutterweather.view.activity
 
-import android.Manifest.permission.*
 import android.os.Bundle
 import com.hahafather007.flutterweather.utils.RxController
-import com.hahafather007.flutterweather.utils.disposable
 import com.hahafather007.flutterweather.view.activity.ChannelTag.CHANNEL_NAME
 import com.hahafather007.flutterweather.view.activity.ChannelTag.START_LOCATION
 import com.hahafather007.flutterweather.viewmodel.MainViewModel
-import com.tbruyelle.rxpermissions2.RxPermissions
-
 import io.flutter.app.FlutterActivity
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
@@ -44,13 +40,7 @@ class MainActivity : FlutterActivity(), RxController {
     }
 
     private fun getLocation(result: MethodChannel.Result) {
-        RxPermissions(this)
-                .request(ACCESS_FINE_LOCATION)
-                .disposable(this)
-                .doOnNext {
-                    viewModel.getLocation(result)
-                }
-                .subscribe()
+        viewModel.getLocation(result)
     }
 }
 

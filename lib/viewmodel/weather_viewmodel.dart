@@ -9,7 +9,10 @@ class WeatherViewModel extends ViewModel {
   final weather = StreamController<Weather>();
   final air = StreamController<WeatherAir>();
 
-  void loadData() {
+  /// 内部判断是否加载数据的标识
+  bool _loading = false;
+
+  void init() {
     city.add(SharedDepository().lastCity);
 
     // 首先将缓存的数据作为第一数据显示，再判断请求逻辑
@@ -32,12 +35,20 @@ class WeatherViewModel extends ViewModel {
     debugPrint("时间========$minutes秒");
     // 两次请求时间间隔需要大于5分钟（300秒）
     if (minutes >= 300) {
-      refresh();
+      loadData(isRefresh: false);
     }
   }
 
-  Future<Null> refresh() async {
-    isLoading.add(true);
+  Future<Null> loadData({bool isRefresh = true}) async {
+    if (_loading) return;
+    _loading = true;
+
+    if (!isRefresh) {
+      isLoading.add(true);
+    }
+
+    // 请求定位权限
+    await SimplePermissions.requestPermission(Permission.AccessFineLocation);
 
     try {
       var mCity = await getLocation();
@@ -60,7 +71,11 @@ class WeatherViewModel extends ViewModel {
     } on DioError catch (e) {
       doError(e);
     } finally {
-      isLoading.add(false);
+      _loading = false;
+
+      if (!isRefresh) {
+        isLoading.add(false);
+      }
     }
   }
 

@@ -33,6 +33,7 @@ dependencies:
   image_picker: any
   connectivity: any
   xml2json: any
+  simple_permissions: any
 
 dev_dependencies:
   flutter_test:
