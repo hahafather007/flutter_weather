@@ -15,16 +15,24 @@ class GiftMziService extends Service {
     final items = total.querySelectorAll("li");
 
     final datas = items.map((item) {
-      final imgUrl = item.querySelector("img").attributes["data-original"];
+      final img = item.querySelector("img");
+      final imgUrl = img.attributes["data-original"];
+      final imgHeight = int.parse(img.attributes["height"]);
+      final imgWidth = int.parse(img.attributes["width"]);
       final link = item.querySelector("a[href]").attributes["href"];
-      final refer = "$url/";
+      final refer = "${dio.options.baseUrl}/$url/";
 
       debugPrint("=======>$imgUrl");
       debugPrint("=======>$link");
       debugPrint("=======>$refer");
       debugPrint("-------------------");
 
-      return MziData(url: imgUrl, link: link, refer: refer);
+      return MziData(
+          url: imgUrl,
+          link: link,
+          refer: refer,
+          height: imgHeight,
+          width: imgWidth);
     }).toList();
 
     return datas;

@@ -11,18 +11,21 @@ class NetImage extends StatelessWidget {
 
   /// 是否为圆形图片
   final bool isCircle;
+  final Map<String, String> headers;
 
   NetImage(
       {Key key,
       @required this.url,
       @required this.height,
       @required this.width,
-      this.isCircle = false})
+      this.isCircle = false,
+      this.headers})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final img = CachedNetworkImage(
+      httpHeaders: headers,
       imageUrl: url,
       height: height,
       width: width,

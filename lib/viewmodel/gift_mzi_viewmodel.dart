@@ -5,6 +5,7 @@ class GiftMziViewModel extends ViewModel {
 
   final datas = StreamController<List<MziData>>();
 
+  List<MziData> _totalDatas = List();
   bool _loading = false;
   int _page = 1;
 
@@ -21,7 +22,10 @@ class GiftMziViewModel extends ViewModel {
     }
 
     try {
-      await _service.getData(url: "/mm", page: _page);
+      final data = await _service.getData(url: "/mm", page: _page);
+      _totalDatas.addAll(data);
+
+      datas.add(_totalDatas);
     } on DioError catch (e) {
       doError(e);
     } finally {
@@ -38,6 +42,7 @@ class GiftMziViewModel extends ViewModel {
     super.dispose();
 
     _service.dispose();
+    _totalDatas.clear();
 
     datas.close();
   }
