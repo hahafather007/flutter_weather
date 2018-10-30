@@ -29,7 +29,7 @@ class GiftMziViewModel extends ViewModel {
     } on DioError catch (e) {
       doError(e);
     } finally {
-      _loading = true;
+      _loading = false;
 
       if (!isRefresh) {
         isLoading.add(false);

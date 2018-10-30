@@ -38,20 +38,29 @@ class GiftMziState extends PageState<GiftMziPage> {
                 enablePullUp: false,
                 enableOverScroll: false,
                 enablePullDown: false,
-                child: ListView.builder(
+                child: StaggeredGridView.countBuilder(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 4,
+                  crossAxisSpacing: 4,
                   physics: AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.only(),
+                  padding: const EdgeInsets.fromLTRB(2, 4, 2, 0),
                   itemCount: datas.length,
+                  staggeredTileBuilder: (index) => StaggeredTile.fit(1),
                   itemBuilder: (context, index) {
                     final data = datas[index];
                     final headers = Map<String, String>();
                     headers["Referer"] = data.refer;
 
-                    return NetImage(
-                      headers: headers,
-                      url: "",
-                      height: null,
-                      width: null,
+                    return AspectRatio(
+                      aspectRatio: data.width / data.height,
+                      child: NetImage(
+                        headers: headers,
+                        url: data.url,
+//                        url:
+//                            "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
+                        height: null,
+                        width: null,
+                      ),
                     );
                   },
                 ),
