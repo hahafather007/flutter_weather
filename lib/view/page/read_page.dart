@@ -16,12 +16,34 @@ class ReadPage extends StatefulWidget {
 }
 
 class ReadState extends PageState<ReadPage> {
+  List<Tab> _tabItems;
+
   Function openDrawer;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_tabItems == null) {
+      _tabItems = [
+        Tab(text: AppText.of(context).xiandu),
+        Tab(text: AppText.of(context).xianduApps),
+        Tab(text: AppText.of(context).xianduImrich),
+        Tab(text: AppText.of(context).xianduFunny),
+        Tab(text: AppText.of(context).xianduAndroid),
+        Tab(text: AppText.of(context).xianduDie),
+        Tab(text: AppText.of(context).xianduThink),
+        Tab(text: AppText.of(context).xianduIos),
+        Tab(text: AppText.of(context).xianduBlog),
+      ];
+    }
+
     return Scaffold(
       appBar: CustomAppBar(
+        showShadow: false,
         title: Text(
           AppText.of(context).read,
           style: TextStyle(
@@ -39,7 +61,35 @@ class ReadState extends PageState<ReadPage> {
           onPressed: openDrawer,
         ),
       ),
-      body: Text("闲读"),
+      body: DefaultTabController(
+        length: _tabItems.length ?? 0,
+        child: Container(
+          color: AppColor.colorMain,
+          child: Column(
+            children: <Widget>[
+              TabBar(
+                labelColor: Colors.white,
+                indicatorColor: Colors.white,
+                isScrollable: true,
+                tabs: _tabItems,
+              ),
+              Container(height: 1, color: AppColor.colorShadow),
+              Expanded(
+                child: Container(
+                  color: AppColor.colorGround,
+                  child: TabBarView(
+                    children: _tabItems.map((tab) {
+                      return Center(
+                        child: Text(tab.text),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 

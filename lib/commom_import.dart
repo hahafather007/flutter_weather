@@ -34,6 +34,7 @@ export 'model/service/read_service.dart';
 export 'viewmodel/viewmodel.dart';
 export 'viewmodel/weather_viewmodel.dart';
 export 'viewmodel/gift_mzi_viewmodel.dart';
+export 'viewmodel/read_viewmodel.dart';
 
 export 'utils/system_util.dart';
 export 'utils/view_util.dart';

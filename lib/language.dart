@@ -55,6 +55,15 @@ class AppText {
       // 福利
 
       // 闲读
+      "xiandu": "科技资讯",
+      "xianduApps": "趣味软件/游戏",
+      "xianduImrich": "装备党",
+      "xianduFunny": "草根新闻",
+      "xianduAndroid": "Android",
+      "xianduDie": "创业新闻",
+      "xianduThink": "独立思想",
+      "xianduIos": "iOS",
+      "xianduBlog": "团队博客",
     },
   };
 
@@ -133,7 +142,29 @@ class AppText {
   String get windSc => _localizedValues[locale.languageCode]["windSc"];
 
   /// 福利
+
   /// 闲读
+  String get xiandu => _localizedValues[locale.languageCode]["xiandu"];
+
+  String get xianduApps => _localizedValues[locale.languageCode]["xianduApps"];
+
+  String get xianduImrich =>
+      _localizedValues[locale.languageCode]["xianduImrich"];
+
+  String get xianduFunny =>
+      _localizedValues[locale.languageCode]["xianduFunny"];
+
+  String get xianduAndroid =>
+      _localizedValues[locale.languageCode]["xianduAndroid"];
+
+  String get xianduDie => _localizedValues[locale.languageCode]["xianduDie"];
+
+  String get xianduThink =>
+      _localizedValues[locale.languageCode]["xianduThink"];
+
+  String get xianduIos => _localizedValues[locale.languageCode]["xianduIos"];
+
+  String get xianduBlog => _localizedValues[locale.languageCode]["xianduBlog"];
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppText> {
