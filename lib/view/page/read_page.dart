@@ -78,11 +78,17 @@ class ReadState extends PageState<ReadPage> {
                 child: Container(
                   color: AppColor.colorGround,
                   child: TabBarView(
-                    children: _tabItems.map((tab) {
-                      return Center(
-                        child: Text(tab.text),
-                      );
-                    }).toList(),
+                    children: [
+                      ReadContentPage(),
+                      ReadContentPage(),
+                      ReadContentPage(),
+                      ReadContentPage(),
+                      ReadContentPage(),
+                      ReadContentPage(),
+                      ReadContentPage(),
+                      ReadContentPage(),
+                      ReadContentPage(),
+                    ],
                   ),
                 ),
               ),

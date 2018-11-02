@@ -5,20 +5,35 @@ class ReadService extends Service {
     dio.options.baseUrl = "http://gank.io";
   }
 
-  Future<Null> getClassification() async {
-    final response = await dio.get("/xiandu");
+  Future<List<ReadData>> getReadDatas(
+      {@required String lastUrl, @required int page}) async {
+    final response = await dio.get("/xiandu/$lastUrl/page/$page");
 
     // 解析xml
     final document = parse(response.data);
-    final cate = document.getElementById("xiandu_cat");
-    final links = cate.querySelectorAll("a[href]");
+    final total = document.getElementsByClassName("xiandu_items").first;
+    final items = total.getElementsByClassName("xiandu_item");
 
-    links.forEach((link) {
-      final name = link.text;
-      final url = link.attributes["href"];
+    final datas = items.map((item) {
+      final left = item.getElementsByClassName("xiandu_left").first;
+      final right = item.getElementsByClassName("xiandu_right").first;
 
-      debugPrint("name=======>$name");
-      debugPrint("url=======>$url");
-    });
+      final data = ReadData();
+      data.name = left.querySelector("a[href]").text;
+      data.from = right.querySelector("a").attributes["title"];
+      data.updateTime = left
+          .querySelector("small")
+          .text
+          .replaceAll(" ", "")
+          .replaceAll("\n", "");
+      data.url = left.querySelector("a[href]").attributes["href"];
+      data.icon = right.querySelector("img").attributes["src"];
+
+      return data;
+    }).toList();
+
+    debugPrint("========>${datas.length}");
+
+    return datas;
   }
 }

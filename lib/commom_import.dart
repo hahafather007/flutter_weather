@@ -24,6 +24,7 @@ export 'model/data/egg_data.dart';
 export 'model/data/weather_data.dart';
 export 'model/data/weather_air_data.dart';
 export 'model/data/mzi_data.dart';
+export 'model/data/read_data.dart';
 
 export 'model/service/service.dart';
 export 'model/service/gift_egg_service.dart';
@@ -50,6 +51,7 @@ export 'view/page/read_page.dart';
 export 'view/page/setting_page.dart';
 export 'view/page/about_page.dart';
 export 'view/page/gift_mzi_page.dart';
+export 'view/page/read_content_page.dart';
 
 export 'view/widget/net_image.dart';
 export 'view/widget/custom_app_bar.dart';

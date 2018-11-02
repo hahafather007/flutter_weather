@@ -7,6 +7,8 @@ final _platform = MethodChannel(_ChannelTag.CHANNEL_NAME);
 Future<String> getLocation() async {
   String result;
 
+  if(isIOS) return null;
+
   try {
     result = await _platform.invokeMethod(_ChannelTag.START_LOCATION);
   } on PlatformException catch (e) {
