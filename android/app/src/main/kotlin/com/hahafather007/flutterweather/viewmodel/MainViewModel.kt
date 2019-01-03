@@ -13,7 +13,7 @@ class MainViewModel : RxController {
     private var locationResult: MethodChannel.Result? = null
 
     init {
-        locationHolder.loaction
+        locationHolder.location
                 .disposable(this)
                 .doOnNext {
                     if (it.isEmpty()) {
@@ -22,9 +22,6 @@ class MainViewModel : RxController {
                         locationResult?.success(it)
                     }
                 }
-//                .doOnError {
-//                    locationResult?.error(it.message, null, null)
-//                }
                 .subscribe()
     }
 

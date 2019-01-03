@@ -4,7 +4,6 @@ import com.amap.api.location.AMapLocationClient
 import com.amap.api.location.AMapLocationClientOption
 import com.amap.api.location.AMapLocationClientOption.AMapLocationMode.Hight_Accuracy
 import com.hahafather007.flutterweather.app.WeatherApp
-import com.hahafather007.flutterweather.model.data.LocationData
 import com.hahafather007.flutterweather.utils.logError
 import com.hahafather007.flutterweather.utils.logInfo
 import io.reactivex.subjects.PublishSubject
@@ -14,7 +13,7 @@ import io.reactivex.subjects.Subject
  * 利用该类获取地理位置
  */
 class LocationHolder {
-    val loaction: Subject<String> = PublishSubject.create()
+    val location: Subject<String> = PublishSubject.create()
 
     private val client = AMapLocationClient(WeatherApp.appContext)
 
@@ -25,13 +24,13 @@ class LocationHolder {
             if (it != null) {
                 // 0表示定位成功
                 if (it.errorCode == 0) {
-                    loaction.onNext(it.district)
+                    location.onNext(it.district)
 
                     "定位信息：$it".logInfo()
                 } else {
                     "定位出错：${it.adCode}-->\n${it.errorInfo}".logError()
 
-                    loaction.onNext("")
+                    location.onNext("")
                 }
             }
         }

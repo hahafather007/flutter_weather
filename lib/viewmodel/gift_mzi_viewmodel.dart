@@ -6,7 +6,7 @@ class GiftMziViewModel extends ViewModel {
   final datas = StreamController<List<MziData>>();
 
   List<MziData> _totalDatas = List();
-  bool _loading = false;
+  bool selfLoading = false;
   int _page = 1;
 
   void init() {
@@ -14,8 +14,8 @@ class GiftMziViewModel extends ViewModel {
   }
 
   Future<Null> loadData({bool isRefresh = true}) async {
-    if (_loading) return;
-    _loading = true;
+    if (selfLoading) return;
+    selfLoading = true;
 
     if (!isRefresh) {
       isLoading.add(true);
@@ -29,7 +29,7 @@ class GiftMziViewModel extends ViewModel {
     } on DioError catch (e) {
       doError(e);
     } finally {
-      _loading = false;
+      selfLoading = false;
 
       if (!isRefresh) {
         isLoading.add(false);

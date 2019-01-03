@@ -5,7 +5,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final IconButton leftBtn;
   final List<IconButton> rightBtns;
   final Color color;
-  final bool showShadow;
+  final bool showShadowLine;
 
   CustomAppBar(
       {Key key,
@@ -13,12 +13,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       @required this.color,
       this.leftBtn,
       this.rightBtns = const [],
-      this.showShadow = true})
+      this.showShadowLine = true})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    double rightPadding = -36.0;
+    double rightPadding = -34.0;
 
     return Container(
       color: color,
@@ -26,14 +26,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(top: getSysStatsHeight(context)),
-            height: preferredSize.height + getSysStatsHeight(context) - 1,
+            padding: EdgeInsets.only(
+                top: getSysStatsHeight(context), left: 6, right: 6),
+            height: preferredSize.height +
+                getSysStatsHeight(context) -
+                (showShadowLine ? 1 : 0),
             child: Row(
               children: <Widget>[
                 // 左边的按钮
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.only(left: 2.5),
                     alignment: Alignment.centerLeft,
                     child: Material(
                       shape: CircleBorder(),
@@ -50,13 +52,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 // 右边的按钮(可能会有多个按钮)
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.only(right: 2.5),
                     child: Stack(
                       alignment: Alignment.centerRight,
                       children: rightBtns
                           .map((btn) => Padding(
                                 padding:
-                                    EdgeInsets.only(right: rightPadding += 36),
+                                    EdgeInsets.only(right: rightPadding += 34),
                                 child: Material(
                                     clipBehavior: Clip.hardEdge,
                                     borderRadius: BorderRadius.circular(50),
@@ -72,8 +73,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           // 下面的阴影线
           Container(
-            color: showShadow ? AppColor.colorShadow : color,
-            height: 1,
+            color: AppColor.colorLine,
+            height: showShadowLine ? 1 : 0,
           ),
         ],
       ),

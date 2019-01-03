@@ -7,9 +7,6 @@ class WeatherViewModel extends ViewModel {
   final weather = StreamController<Weather>();
   final air = StreamController<WeatherAir>();
 
-  /// 内部判断是否加载数据的标识
-  bool _loading = false;
-
   void init() {
     city.add(SharedDepository().lastCity);
 
@@ -38,15 +35,15 @@ class WeatherViewModel extends ViewModel {
   }
 
   Future<Null> loadData({bool isRefresh = true}) async {
-    if (_loading) return;
-    _loading = true;
+    if (selfLoading) return;
+    selfLoading = true;
 
     if (!isRefresh) {
       isLoading.add(true);
     }
 
     // 请求定位权限
-//    await SimplePermissions.requestPermission(Permission.AlwaysLocation);
+    await SimplePermissions.requestPermission(Permission.AlwaysLocation);
 
     try {
       var mCity = await getLocation();
@@ -69,7 +66,7 @@ class WeatherViewModel extends ViewModel {
     } on DioError catch (e) {
       doError(e);
     } finally {
-      _loading = false;
+      selfLoading = false;
 
       if (!isRefresh) {
         isLoading.add(false);

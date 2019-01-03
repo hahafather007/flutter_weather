@@ -19,13 +19,6 @@ class ReadContentState extends PageState<ReadContentPage>
 
     _viewModel.init();
     _viewModel.error.stream.listen((_) => networkError());
-    _viewModel.isLoading.stream.listen((loading) {
-      if (loading) {
-        loadingKey.currentState.show();
-      } else {
-        loadingKey.currentState.dismiss();
-      }
-    });
   }
 
   @override
@@ -40,7 +33,7 @@ class ReadContentState extends PageState<ReadContentPage>
     return Scaffold(
       backgroundColor: AppColor.colorRead,
       body: LoadingView(
-        key: loadingKey,
+        loadingStream: _viewModel.isLoading.stream,
         child: StreamBuilder(
           stream: _viewModel.datas.stream,
           builder: (context, snapshot) {
@@ -48,18 +41,14 @@ class ReadContentState extends PageState<ReadContentPage>
 
             return RefreshIndicator(
               onRefresh: () => _viewModel.loadData(),
-              child: SmartRefresher(
-                enablePullUp: false,
-                enableOverScroll: false,
-                enablePullDown: false,
-                child: ListView.builder(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.only(),
-                  itemCount: datas.length,
-                  itemBuilder: (context, index) {
-                    return _buildReadItem(data: datas[index]);
-                  },
-                ),
+              child: ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(
+                    parent: const ClampingScrollPhysics()),
+                padding: const EdgeInsets.only(),
+                itemCount: datas.length,
+                itemBuilder: (context, index) {
+                  return _buildReadItem(data: datas[index]);
+                },
               ),
             );
           },

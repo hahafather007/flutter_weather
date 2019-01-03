@@ -1,17 +1,19 @@
 import 'package:flutter_weather/commom_import.dart';
 
-abstract class ViewModel {
-  final rxHolder = RxHolder();
-
+abstract class ViewModel extends StreamSubController {
   final isLoading = StreamController<bool>();
   final error = StreamController<bool>();
 
+  /// 内部判断是否加载数据的标识
+  @protected
+  bool selfLoading = false;
+
   /// 调用该方法释放内存
   void dispose() {
-    rxHolder.clear();
-
     isLoading.close();
     error.close();
+
+    subDispose();
   }
 
   void doError(DioError e) {

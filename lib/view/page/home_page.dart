@@ -43,7 +43,8 @@ class HomeState extends PageState<HomePage> {
       key: scafKey,
       drawer: Drawer(
         child: ListView(
-          physics: ClampingScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(
+              parent: const ClampingScrollPhysics()),
           padding: const EdgeInsets.only(),
           children: <Widget>[
             Image.asset("images/drawer_bg.png"),

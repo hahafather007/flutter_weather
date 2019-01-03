@@ -2,23 +2,27 @@ import 'package:flutter_weather/commom_import.dart';
 
 class LoadingView extends StatefulWidget {
   final Widget child;
+  final Stream<bool> loadingStream;
 
-  LoadingView({Key key, @required this.child})
-      : assert(child != null),
+  LoadingView({Key key, @required this.child, @required this.loadingStream})
+      : assert(child != null && loadingStream != null),
         super(key: key);
 
   @override
-  State createState() => LoadingState(child: child);
+  State createState() =>
+      LoadingState(child: child, loadingStream: loadingStream);
 }
 
 /// 带有圆形加载进度条的Stack
-class LoadingState extends State<LoadingView> with TickerProviderStateMixin {
+class LoadingState extends PageState<LoadingView>
+    with TickerProviderStateMixin {
   final Widget child;
+  final Stream<bool> loadingStream;
 
   AnimationController _controller;
   Animation<Size> _animation;
 
-  LoadingState({@required this.child});
+  LoadingState({@required this.child, @required this.loadingStream});
 
   @override
   void initState() {
@@ -29,6 +33,14 @@ class LoadingState extends State<LoadingView> with TickerProviderStateMixin {
     _animation = SizeTween(begin: Size(50, 50), end: Size.zero)
         .animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
     dismiss();
+
+    bindSub(loadingStream.listen((loading) {
+      if (loading) {
+        show();
+      } else {
+        dismiss();
+      }
+    }));
   }
 
   @override
