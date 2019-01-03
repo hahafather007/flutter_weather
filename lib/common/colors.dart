@@ -3,7 +3,7 @@ import 'package:flutter_weather/commom_import.dart';
 class AppColor {
   /// app界面背景色
   static Color colorGround = Colors.white;
-  static Color colorRead = Color(0xfff7f7f7);
+  static Color colorRead = Color(0xfff6f6f6);
 
   /// 阴影
   static Color colorShadow = Color(0xffedeef0);

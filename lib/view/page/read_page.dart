@@ -42,7 +42,6 @@ class ReadState extends PageState<ReadPage> {
     }
 
     return Scaffold(
-      backgroundColor: AppColor.colorRead,
       appBar: CustomAppBar(
         showShadowLine: false,
         title: Text(
@@ -77,18 +76,18 @@ class ReadState extends PageState<ReadPage> {
               Container(height: 1, color: AppColor.colorShadow),
               Expanded(
                 child: Container(
-                  color: AppColor.colorGround,
+                  color: AppColor.colorRead,
                   child: TabBarView(
                     children: [
-                      ReadContentPage(),
-                      ReadContentPage(),
-                      ReadContentPage(),
-                      ReadContentPage(),
-                      ReadContentPage(),
-                      ReadContentPage(),
-                      ReadContentPage(),
-                      ReadContentPage(),
-                      ReadContentPage(),
+                      ReadContentPage(typeUrl: "wow"),
+                      ReadContentPage(typeUrl: "apps"),
+                      ReadContentPage(typeUrl: "imrich"),
+                      ReadContentPage(typeUrl: "funny"),
+                      ReadContentPage(typeUrl: "android"),
+                      ReadContentPage(typeUrl: "diediedie"),
+                      ReadContentPage(typeUrl: "thinking"),
+                      ReadContentPage(typeUrl: "iOS"),
+                      ReadContentPage(typeUrl: "teamblog"),
                     ],
                   ),
                 ),

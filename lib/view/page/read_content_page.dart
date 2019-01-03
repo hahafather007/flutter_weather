@@ -1,23 +1,30 @@
 import 'package:flutter_weather/commom_import.dart';
 
 class ReadContentPage extends StatefulWidget {
+  final String typeUrl;
+
+  ReadContentPage({@required this.typeUrl});
+
   @override
-  State createState() => ReadContentState();
+  State createState() => ReadContentState(typeUrl: typeUrl);
 }
 
 /// 继承[AutomaticKeepAliveClientMixin]实现页面切换不被清理
 class ReadContentState extends PageState<ReadContentPage>
     with AutomaticKeepAliveClientMixin {
+  final String typeUrl;
   final _viewModel = ReadViewModel();
 
   @override
   bool get wantKeepAlive => true;
 
+  ReadContentState({@required this.typeUrl});
+
   @override
   void initState() {
     super.initState();
 
-    _viewModel.init();
+    _viewModel.init(typeUrl: typeUrl);
     _viewModel.error.stream.listen((_) => networkError());
   }
 
@@ -65,7 +72,7 @@ class ReadContentState extends PageState<ReadContentPage>
     return Card(
       color: Colors.white,
       clipBehavior: Clip.hardEdge,
-      margin: const EdgeInsets.fromLTRB(8, 5, 8, 5),
+      margin: const EdgeInsets.fromLTRB(8, 6, 8, 6),
       child: InkWell(
         onTap: () {},
         child: Padding(
@@ -100,9 +107,9 @@ class ReadContentState extends PageState<ReadContentPage>
                 ),
               ),
               Container(
-                width: 60,
+                width: 68,
                 alignment: Alignment.centerRight,
-                padding: const EdgeInsets.only(right: 16),
+                padding: const EdgeInsets.only(right: 6),
                 child: NetImage(
                   url: data.icon,
                   height: 40,

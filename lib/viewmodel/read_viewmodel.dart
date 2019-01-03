@@ -8,8 +8,10 @@ class ReadViewModel extends ViewModel {
   List<ReadData> _cacheData = List();
   bool selfLoading = false;
   int _page = 1;
+  String _typeUrl;
 
-  void init() {
+  void init({@required String typeUrl}) {
+    _typeUrl = typeUrl;
     loadData(isRefresh: false);
   }
 
@@ -18,15 +20,17 @@ class ReadViewModel extends ViewModel {
     if (selfLoading) return;
     selfLoading = true;
 
-    if (!isRefresh&&!isLoadMore) {
+    if (!isRefresh) {
+      if (!isLoadMore) {
         isLoading.add(true);
+      }
     } else {
       _page = 1;
       _cacheData.clear();
     }
 
     try {
-      final list = await _service.getReadDatas(lastUrl: "wow", page: _page);
+      final list = await _service.getReadDatas(lastUrl: _typeUrl, page: _page);
 
       _cacheData.addAll(list);
       datas.add(_cacheData.toList());
