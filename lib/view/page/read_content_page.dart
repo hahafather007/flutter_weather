@@ -74,7 +74,9 @@ class ReadContentState extends PageState<ReadContentPage>
       clipBehavior: Clip.hardEdge,
       margin: const EdgeInsets.fromLTRB(8, 6, 8, 6),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          openBrowser(data.url);
+        },
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Row(

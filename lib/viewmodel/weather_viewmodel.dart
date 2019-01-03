@@ -46,7 +46,7 @@ class WeatherViewModel extends ViewModel {
     await SimplePermissions.requestPermission(Permission.AlwaysLocation);
 
     try {
-      var mCity = await getLocation();
+      var mCity = await ChannelUtil.getLocation();
       if (mCity == null) {
         mCity = SharedDepository().lastCity;
       } else {
