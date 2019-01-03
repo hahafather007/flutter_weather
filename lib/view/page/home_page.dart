@@ -171,7 +171,7 @@ class HomeState extends PageState<HomePage> {
             children: <Widget>[
               Icon(
                 icon,
-                color: isTarget ? AppColor.colorMain : AppColor.colorText1,
+                color: isTarget ? AppColor.colorMain : AppColor.colorText2,
               ),
               Container(
                 margin: const EdgeInsets.only(left: 30),

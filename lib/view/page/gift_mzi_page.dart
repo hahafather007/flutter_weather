@@ -17,9 +17,9 @@ class GiftMziState extends PageState<GiftMziPage> {
 
   @override
   void dispose() {
-    super.dispose();
-
     _viewModel?.dispose();
+
+    super.dispose();
   }
 
   @override

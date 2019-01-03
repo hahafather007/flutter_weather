@@ -23,9 +23,9 @@ class ReadContentState extends PageState<ReadContentPage>
 
   @override
   void dispose() {
-    super.dispose();
-
     _viewModel.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -47,7 +47,7 @@ class ReadContentState extends PageState<ReadContentPage>
                 padding: const EdgeInsets.only(),
                 itemCount: datas.length,
                 itemBuilder: (context, index) {
-                  return _buildReadItem(data: datas[index]);
+                  return _buildReadItem(data: datas[index], index: index + 1);
                 },
               ),
             );
@@ -57,28 +57,58 @@ class ReadContentState extends PageState<ReadContentPage>
     );
   }
 
-  Widget _buildReadItem({@required ReadData data}) {
+  Widget _buildReadItem({@required ReadData data, @required int index}) {
     return Card(
       color: Colors.white,
+      clipBehavior: Clip.hardEdge,
       margin: const EdgeInsets.fromLTRB(8, 5, 8, 5),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Expanded(
-            child: Column(),
+      child: InkWell(
+        onTap: () {},
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "$index. ${data.name}",
+                      textAlign: TextAlign.start,
+                      style:
+                          TextStyle(fontSize: 16, color: AppColor.colorText1),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(text: data.updateTime),
+                          TextSpan(
+                              text: " · ",
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          TextSpan(text: data.from),
+                        ],
+                        style:
+                            TextStyle(fontSize: 12, color: AppColor.colorText2),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                width: 60,
+                alignment: Alignment.centerRight,
+                padding: const EdgeInsets.only(right: 16),
+                child: NetImage(
+                  url: data.icon,
+                  height: 40,
+                  width: 40,
+                  isCircle: true,
+                ),
+              ),
+            ],
           ),
-          Container(
-            width: 120,
-            alignment: Alignment.centerRight,
-            padding: const EdgeInsets.only(right: 16),
-            child: NetImage(
-              url: data.icon,
-              height: 35,
-              width: 35,
-              isCircle: true,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

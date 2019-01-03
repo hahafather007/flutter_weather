@@ -36,10 +36,10 @@ class WeatherState extends PageState<WeatherPage> {
 
   @override
   void dispose() {
-    super.dispose();
-
     _viewModel?.dispose();
     _timer?.cancel();
+
+    super.dispose();
   }
 
   @override
@@ -317,7 +317,7 @@ class WeatherState extends PageState<WeatherPage> {
                       AppText.of(context).dataSource,
                       style: TextStyle(
                         fontSize: 12,
-                        color: AppColor.colorText1,
+                        color: AppColor.colorText2,
                       ),
                     ),
                   ),
@@ -443,7 +443,7 @@ class WeatherState extends PageState<WeatherPage> {
           "${hourly != null ? hourly.tmp : 0}°",
           style: TextStyle(
               fontSize: 14,
-              color: AppColor.colorText1,
+              color: AppColor.colorText2,
               fontWeight: FontWeight.bold),
         ),
         Padding(
@@ -457,7 +457,7 @@ class WeatherState extends PageState<WeatherPage> {
         Text(
           "${hourly != null ? hourly.time.substring(hourly.time.length - 5) : "00:00"}",
           style: TextStyle(
-            color: AppColor.colorText1,
+            color: AppColor.colorText2,
             fontSize: 12,
           ),
         ),
@@ -546,7 +546,7 @@ class WeatherState extends PageState<WeatherPage> {
             _getSoftName(type: "${lifestyle != null ? lifestyle.type : ""}"),
             style: TextStyle(
               fontSize: 10,
-              color: AppColor.colorText1,
+              color: AppColor.colorText2,
             ),
           ),
         ],
@@ -584,7 +584,7 @@ class WeatherState extends PageState<WeatherPage> {
   /// [num] 数值
   Widget _buildPm25Item(
       {@required String eName, @required name, @required String num}) {
-    final style = TextStyle(fontSize: 10, color: AppColor.colorText1);
+    final style = TextStyle(fontSize: 10, color: AppColor.colorText2);
     final numValue = double.parse(num);
     Color color;
     if (numValue <= 50) {
@@ -629,7 +629,7 @@ class WeatherState extends PageState<WeatherPage> {
               num,
               style: TextStyle(
                 fontSize: 16,
-                color: AppColor.colorText1,
+                color: AppColor.colorText2,
               ),
             ),
           ),

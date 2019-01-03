@@ -12,8 +12,9 @@ class AppColor {
   static Color colorMain = Colors.lightGreen;
 
   /// 字体颜色
-  static Color colorText1 = Color(0xff666666);
-  static Color colorText2 = Color(0xff888888);
+  static Color colorText1 = Colors.black;
+  static Color colorText2 = Color(0xff666666);
+  static Color colorText3 = Color(0xff888888);
 
   /// 分割线
   static Color colorLine = Color(0xffbbbbbb);

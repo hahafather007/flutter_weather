@@ -8,7 +8,7 @@ class ReadViewModel extends ViewModel {
   bool selfLoading = false;
   int _page = 1;
 
-  init() {
+  void init() {
     loadData(isRefresh: false);
   }
 
@@ -18,12 +18,15 @@ class ReadViewModel extends ViewModel {
 
     if (!isRefresh) {
       isLoading.add(true);
+    } else {
+      _page = 1;
     }
 
     try {
       final list = await _service.getReadDatas(lastUrl: "wow", page: _page);
 
       datas.add(list);
+      _page++;
     } on DioError catch (e) {
       doError(e);
     } finally {
@@ -37,10 +40,10 @@ class ReadViewModel extends ViewModel {
 
   @override
   void dispose() {
-    super.dispose();
-
     _service.dispose();
 
     datas.close();
+
+    super.dispose();
   }
 }
