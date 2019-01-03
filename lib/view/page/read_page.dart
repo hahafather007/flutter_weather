@@ -42,6 +42,7 @@ class ReadState extends PageState<ReadPage> {
     }
 
     return Scaffold(
+      backgroundColor: AppColor.colorRead,
       appBar: CustomAppBar(
         showShadowLine: false,
         title: Text(

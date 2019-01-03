@@ -30,29 +30,33 @@ class ReadContentState extends PageState<ReadContentPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.colorRead,
-      body: LoadingView(
-        loadingStream: _viewModel.isLoading.stream,
-        child: StreamBuilder(
-          stream: _viewModel.datas.stream,
-          builder: (context, snapshot) {
-            final List<ReadData> datas = snapshot.data ?? List();
+    return LoadingView(
+      loadingStream: _viewModel.isLoading.stream,
+      child: StreamBuilder(
+        stream: _viewModel.datas.stream,
+        builder: (context, snapshot) {
+          final List<ReadData> datas = snapshot.data ?? List();
 
-            return RefreshIndicator(
-              onRefresh: () => _viewModel.loadData(),
-              child: ListView.builder(
-                physics: const AlwaysScrollableScrollPhysics(
-                    parent: const ClampingScrollPhysics()),
-                padding: const EdgeInsets.only(),
-                itemCount: datas.length,
-                itemBuilder: (context, index) {
-                  return _buildReadItem(data: datas[index], index: index + 1);
-                },
-              ),
-            );
-          },
-        ),
+          return RefreshIndicator(
+            onRefresh: () => _viewModel.loadData(),
+            child: ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(
+                  parent: const ClampingScrollPhysics()),
+              padding: const EdgeInsets.only(),
+              itemCount: datas.length,
+              itemBuilder: (context, index) {
+                debugPrint("index====>$index");
+
+                // 在倒数第5个item显示时就加载下一页
+                if (index + 1 >= datas.length - 5) {
+                  _viewModel.loadMore();
+                }
+
+                return _buildReadItem(data: datas[index], index: index + 1);
+              },
+            ),
+          );
+        },
       ),
     );
   }

@@ -5,6 +5,7 @@ class ReadViewModel extends ViewModel {
 
   final datas = StreamController<List<ReadData>>();
 
+  List<ReadData> _cacheData = List();
   bool selfLoading = false;
   int _page = 1;
 
@@ -12,20 +13,23 @@ class ReadViewModel extends ViewModel {
     loadData(isRefresh: false);
   }
 
-  Future<Null> loadData({bool isRefresh = true}) async {
+  Future<Null> loadData(
+      {bool isRefresh = true, bool isLoadMore = false}) async {
     if (selfLoading) return;
     selfLoading = true;
 
-    if (!isRefresh) {
-      isLoading.add(true);
+    if (!isRefresh&&!isLoadMore) {
+        isLoading.add(true);
     } else {
       _page = 1;
+      _cacheData.clear();
     }
 
     try {
       final list = await _service.getReadDatas(lastUrl: "wow", page: _page);
 
-      datas.add(list);
+      _cacheData.addAll(list);
+      datas.add(_cacheData.toList());
       _page++;
     } on DioError catch (e) {
       doError(e);
@@ -38,9 +42,14 @@ class ReadViewModel extends ViewModel {
     }
   }
 
+  void loadMore() {
+    loadData(isRefresh: false, isLoadMore: true);
+  }
+
   @override
   void dispose() {
     _service.dispose();
+    _cacheData.clear();
 
     datas.close();
 
