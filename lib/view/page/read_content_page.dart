@@ -2,23 +2,25 @@ import 'package:flutter_weather/commom_import.dart';
 
 class ReadContentPage extends StatefulWidget {
   final String typeUrl;
+  final Function(Function retry) retryCallback;
 
-  ReadContentPage({@required this.typeUrl});
+  ReadContentPage({@required this.typeUrl,@required this.retryCallback});
 
   @override
-  State createState() => ReadContentState(typeUrl: typeUrl);
+  State createState() => ReadContentState(typeUrl: typeUrl,retryCallback: retryCallback);
 }
 
 /// 继承[AutomaticKeepAliveClientMixin]实现页面切换不被清理
 class ReadContentState extends PageState<ReadContentPage>
     with AutomaticKeepAliveClientMixin {
   final String typeUrl;
+  final Function(Function retry) retryCallback;
   final _viewModel = ReadViewModel();
 
   @override
   bool get wantKeepAlive => true;
 
-  ReadContentState({@required this.typeUrl});
+  ReadContentState({@required this.typeUrl,@required this.retryCallback});
 
   @override
   void initState() {
@@ -36,6 +38,13 @@ class ReadContentState extends PageState<ReadContentPage>
   }
 
   @override
+  void networkError() {
+    super.networkError();
+
+    retryCallback(()=>_viewModel.reload());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return LoadingView(
       loadingStream: _viewModel.isLoading.stream,
@@ -45,7 +54,7 @@ class ReadContentState extends PageState<ReadContentPage>
           final List<ReadData> datas = snapshot.data ?? List();
 
           return RefreshIndicator(
-            onRefresh: () => _viewModel.loadData(),
+            onRefresh: () => _viewModel.loadData(type: LoadType.REFRESH),
             child: ListView.builder(
               physics: const AlwaysScrollableScrollPhysics(
                   parent: const ClampingScrollPhysics()),

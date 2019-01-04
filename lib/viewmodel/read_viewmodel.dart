@@ -9,22 +9,20 @@ class ReadViewModel extends ViewModel {
   bool selfLoading = false;
   int _page = 1;
   String _typeUrl;
+  LoadType _reloadType = LoadType.NEW_LOAD;
 
   void init({@required String typeUrl}) {
     _typeUrl = typeUrl;
-    loadData(isRefresh: false);
+    loadData(type: LoadType.NEW_LOAD);
   }
 
-  Future<Null> loadData(
-      {bool isRefresh = true, bool isLoadMore = false}) async {
+  Future<Null> loadData({@required LoadType type}) async {
     if (selfLoading) return;
     selfLoading = true;
 
-    if (!isRefresh) {
-      if (!isLoadMore) {
-        isLoading.add(true);
-      }
-    } else {
+    if (type == LoadType.NEW_LOAD) {
+      isLoading.add(true);
+    } else if (type == LoadType.REFRESH) {
       _page = 1;
       _cacheData.clear();
     }
@@ -36,18 +34,20 @@ class ReadViewModel extends ViewModel {
       datas.add(_cacheData.toList());
       _page++;
     } on DioError catch (e) {
+      _reloadType = type;
       doError(e);
     } finally {
       selfLoading = false;
-
-      if (!isRefresh) {
-        isLoading.add(false);
-      }
+      isLoading.add(false);
     }
   }
 
+  void reload() {
+    loadData(type: _reloadType);
+  }
+
   void loadMore() {
-    loadData(isRefresh: false, isLoadMore: true);
+    loadData(type: LoadType.LOAD_MORE);
   }
 
   @override

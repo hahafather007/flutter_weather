@@ -25,3 +25,13 @@ abstract class ViewModel extends StreamSubController {
     error.add(true);
   }
 }
+
+/// 加载数据的状态
+enum LoadType{
+  /// 新加载
+  NEW_LOAD,
+  /// 刷新
+  REFRESH,
+  /// 加载更多
+  LOAD_MORE,
+}

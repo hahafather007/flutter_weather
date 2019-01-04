@@ -17,8 +17,8 @@ class ReadPage extends StatefulWidget {
 
 class ReadState extends PageState<ReadPage> {
   List<Tab> _tabItems;
-
-  Function openDrawer;
+  List<String> _retryTitles = List();
+  Function _openDrawer;
 
   @override
   void initState() {
@@ -42,6 +42,7 @@ class ReadState extends PageState<ReadPage> {
     }
 
     return Scaffold(
+      key: scafKey,
       appBar: CustomAppBar(
         showShadowLine: false,
         title: Text(
@@ -58,7 +59,7 @@ class ReadState extends PageState<ReadPage> {
             Icons.menu,
             color: Colors.white,
           ),
-          onPressed: openDrawer,
+          onPressed: _openDrawer,
         ),
       ),
       body: DefaultTabController(
@@ -79,15 +80,50 @@ class ReadState extends PageState<ReadPage> {
                   color: AppColor.colorRead,
                   child: TabBarView(
                     children: [
-                      ReadContentPage(typeUrl: "wow"),
-                      ReadContentPage(typeUrl: "apps"),
-                      ReadContentPage(typeUrl: "imrich"),
-                      ReadContentPage(typeUrl: "funny"),
-                      ReadContentPage(typeUrl: "android"),
-                      ReadContentPage(typeUrl: "diediedie"),
-                      ReadContentPage(typeUrl: "thinking"),
-                      ReadContentPage(typeUrl: "iOS"),
-                      ReadContentPage(typeUrl: "teamblog"),
+                      ReadContentPage(
+                          typeUrl: "wow",
+                          retryCallback: (retry) => showRetryBar(
+                              title: AppText.of(context).xiandu, retry: retry)),
+                      ReadContentPage(
+                          typeUrl: "apps",
+                          retryCallback: (retry) => showRetryBar(
+                              title: AppText.of(context).xianduApps,
+                              retry: retry)),
+                      ReadContentPage(
+                          typeUrl: "imrich",
+                          retryCallback: (retry) => showRetryBar(
+                              title: AppText.of(context).xianduImrich,
+                              retry: retry)),
+                      ReadContentPage(
+                          typeUrl: "funny",
+                          retryCallback: (retry) => showRetryBar(
+                              title: AppText.of(context).xianduFunny,
+                              retry: retry)),
+                      ReadContentPage(
+                          typeUrl: "android",
+                          retryCallback: (retry) => showRetryBar(
+                              title: AppText.of(context).xianduAndroid,
+                              retry: retry)),
+                      ReadContentPage(
+                          typeUrl: "diediedie",
+                          retryCallback: (retry) => showRetryBar(
+                              title: AppText.of(context).xianduDie,
+                              retry: retry)),
+                      ReadContentPage(
+                          typeUrl: "thinking",
+                          retryCallback: (retry) => showRetryBar(
+                              title: AppText.of(context).xianduThink,
+                              retry: retry)),
+                      ReadContentPage(
+                          typeUrl: "iOS",
+                          retryCallback: (retry) => showRetryBar(
+                              title: AppText.of(context).xianduIos,
+                              retry: retry)),
+                      ReadContentPage(
+                          typeUrl: "teamblog",
+                          retryCallback: (retry) => showRetryBar(
+                              title: AppText.of(context).xianduBlog,
+                              retry: retry)),
                     ],
                   ),
                 ),
@@ -100,6 +136,25 @@ class ReadState extends PageState<ReadPage> {
   }
 
   void setDrawerOpenFunc({@required Function openDrawer}) {
-    this.openDrawer = openDrawer;
+    this._openDrawer = openDrawer;
+  }
+
+  void showRetryBar({@required String title, @required Function retry}) {
+    if(_retryTitles.contains(title)){
+      scafKey.currentState.removeCurrentSnackBar();
+      _retryTitles.remove(title);
+    }
+    _retryTitles.add(title);
+    scafKey.currentState.showSnackBar(SnackBar(
+      content: Text("$title${AppText.of(context).loadFail}"),
+      duration: const Duration(days: 1),
+      action: SnackBarAction(
+        label: AppText.of(context).retry,
+        onPressed: (){
+          retry();
+          _retryTitles.remove(title);
+        },
+      ),
+    ));
   }
 }

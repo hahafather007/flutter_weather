@@ -22,6 +22,8 @@ class AppText {
       "openByOther": "其他方式打开",
       "copyUrl": "复制URL",
       "alreadyCopyUrl": "已复制链接",
+      "retry": "重试",
+      "loadFail": "加载失败！",
 
       // 主页
       "weather": "天气",
@@ -57,6 +59,7 @@ class AppText {
       "hum": "湿度",
       "pres": "气压",
       "windSc": "级",
+      "weatherGetFail": "天气信息获取失败！",
 
       // 福利
 
@@ -84,7 +87,11 @@ class AppText {
 
   String get addFav => _localizedValues[locale.languageCode]["addFav"];
 
+  String get retry => _localizedValues[locale.languageCode]["retry"];
+
   String get copyUrl => _localizedValues[locale.languageCode]["copyUrl"];
+
+  String get loadFail => _localizedValues[locale.languageCode]["loadFail"];
 
   String get alreadyCopyUrl =>
       _localizedValues[locale.languageCode]["alreadyCopyUrl"];
@@ -158,6 +165,9 @@ class AppText {
   String get pres => _localizedValues[locale.languageCode]["pres"];
 
   String get windSc => _localizedValues[locale.languageCode]["windSc"];
+
+  String get weatherGetFail =>
+      _localizedValues[locale.languageCode]["weatherGetFail"];
 
   /// 福利
 

@@ -46,11 +46,12 @@ class WeatherState extends PageState<WeatherPage> {
   void networkError() {
     super.networkError();
 
+    scafKey.currentState.removeCurrentSnackBar();
     scafKey.currentState.showSnackBar(SnackBar(
-      content: Text("天气信息获取失败！"),
+      content: Text(AppText.of(context).weatherGetFail),
       duration: const Duration(days: 1),
       action: SnackBarAction(
-        label: "重试",
+        label: AppText.of(context).retry,
         onPressed: () => _viewModel.loadData(isRefresh: false),
       ),
     ));
