@@ -4,7 +4,7 @@ class LoadingView extends StatefulWidget {
   final Widget child;
   final Stream<bool> loadingStream;
 
-  LoadingView({Key key, @required this.child, @required this.loadingStream})
+  LoadingView({Key key, @required this.loadingStream, @required this.child})
       : assert(child != null && loadingStream != null),
         super(key: key);
 
@@ -31,7 +31,7 @@ class LoadingState extends PageState<LoadingView>
     _controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 400));
     _animation = SizeTween(begin: Size(50, 50), end: Size.zero)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
     dismiss();
 
     bindSub(loadingStream.listen((loading) {

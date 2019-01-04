@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show SynchronousFuture;
 import 'dart:async';
+
+import 'package:flutter/foundation.dart' show SynchronousFuture;
+import 'package:flutter/material.dart';
 
 class AppText {
   AppText(this.locale);
@@ -15,6 +16,12 @@ class AppText {
       "yes": "是",
       "no": "否",
       "netError": "网络开小差了哦~",
+      "refresh": "刷新",
+      "addFav": "收藏",
+      "share": "分享",
+      "openByOther": "其他方式打开",
+      "copyUrl": "复制URL",
+      "alreadyCopyUrl": "已复制链接",
 
       // 主页
       "weather": "天气",
@@ -24,7 +31,6 @@ class AppText {
       "about": "关于",
 
       // 天气
-      "share": "分享",
       "cityControl": "城市管理",
       "dataSource": "数据来源：和风天气",
       "monday": "星期一",
@@ -73,6 +79,18 @@ class AppText {
   String get no => _localizedValues[locale.languageCode]["no"];
 
   String get netError => _localizedValues[locale.languageCode]["netError"];
+
+  String get refresh => _localizedValues[locale.languageCode]["refresh"];
+
+  String get addFav => _localizedValues[locale.languageCode]["addFav"];
+
+  String get copyUrl => _localizedValues[locale.languageCode]["copyUrl"];
+
+  String get alreadyCopyUrl =>
+      _localizedValues[locale.languageCode]["alreadyCopyUrl"];
+
+  String get openByOther =>
+      _localizedValues[locale.languageCode]["openByOther"];
 
   /// 主页
   String get weather => _localizedValues[locale.languageCode]["weather"];

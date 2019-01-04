@@ -20,6 +20,7 @@ class HomeState extends PageState<HomePage> {
   void initState() {
     super.initState();
 
+    initToast(context);
     // 设置打开抽屉的回调，使子页面可以打开抽屉
     _weatherPage.setDrawerOpenFunc(openDrawer: () {
       scafKey.currentState.openDrawer();
@@ -35,6 +36,13 @@ class HomeState extends PageState<HomePage> {
     _pageTypeMap[PageType.WEATHER] = true;
     _pageTypeMap[PageType.GIFT] = false;
     _pageTypeMap[PageType.READ] = false;
+  }
+
+  @override
+  void dispose() {
+    disposeToast();
+
+    super.dispose();
   }
 
   @override
