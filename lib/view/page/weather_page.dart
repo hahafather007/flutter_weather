@@ -28,7 +28,7 @@ class WeatherState extends PageState<WeatherPage> {
     debugPrint("init========>WeatherState");
 
     _viewModel.init();
-    _viewModel.error.stream.listen((_) => networkError());
+    bindStreamOfViewModel(_viewModel);
 //    DefaultAssetBundle.of(context)
 //        .loadString("jsons/weather_map.json")
 //        .then(debugPrint);
@@ -75,7 +75,7 @@ class WeatherState extends PageState<WeatherPage> {
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontSize: 17,
+                fontSize: 20,
               ),
             );
           },

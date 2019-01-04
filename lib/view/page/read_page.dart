@@ -49,7 +49,7 @@ class ReadState extends PageState<ReadPage> {
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
-            fontSize: 17,
+            fontSize: 20,
           ),
         ),
         color: AppColor.colorMain,

@@ -25,7 +25,7 @@ class ReadContentState extends PageState<ReadContentPage>
     super.initState();
 
     _viewModel.init(typeUrl: typeUrl);
-    _viewModel.error.stream.listen((_) => networkError());
+    bindStreamOfViewModel(_viewModel);
   }
 
   @override
