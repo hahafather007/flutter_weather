@@ -6,18 +6,18 @@ class GiftMziPage extends StatefulWidget {
 }
 
 class GiftMziState extends PageState<GiftMziPage> {
-  GiftMziViewModel _viewModel;
+  final _viewModel = GiftMziViewModel();
 
   @override
   void initState() {
     super.initState();
 
-    _viewModel = GiftMziViewModel()..init();
+    _viewModel.init();
   }
 
   @override
   void dispose() {
-    _viewModel?.dispose();
+    _viewModel.dispose();
 
     super.dispose();
   }
@@ -33,7 +33,7 @@ class GiftMziState extends PageState<GiftMziPage> {
             final List<MziData> datas = snapshot.data ?? List();
 
             return RefreshIndicator(
-              onRefresh: () => _viewModel.loadData(),
+              onRefresh: () => _viewModel.loadData(type: LoadType.REFRESH),
               child: StaggeredGridView.countBuilder(
                 crossAxisCount: 2,
                 mainAxisSpacing: 4,
@@ -48,15 +48,21 @@ class GiftMziState extends PageState<GiftMziPage> {
                   final headers = Map<String, String>();
                   headers["Referer"] = data.refer;
 
-                  return AspectRatio(
-                    aspectRatio: data.width / data.height,
-                    child: NetImage(
-                      headers: headers,
-                      url: data.url,
-//                        url:
-//                            "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
-                      height: null,
-                      width: null,
+                  // 在倒数第5个item显示时就加载下一页
+                  if (index + 1 >= datas.length - 5) {
+                    _viewModel.loadMore();
+                  }
+
+                  return GestureDetector(
+                    onTap: () => push(context, page: PhotoWatchPage()),
+                    child: AspectRatio(
+                      aspectRatio: data.width / data.height,
+                      child: NetImage(
+                        headers: headers,
+//                      url: data.url,
+                        url:
+                            "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
+                      ),
                     ),
                   );
                 },

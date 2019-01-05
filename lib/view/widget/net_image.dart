@@ -16,14 +16,15 @@ class NetImage extends StatelessWidget {
   NetImage(
       {Key key,
       @required this.url,
-      @required this.height,
-      @required this.width,
+      this.height,
+      this.width,
       this.isCircle = false,
       this.headers})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     final img = CachedNetworkImage(
       httpHeaders: headers,
       imageUrl: url,

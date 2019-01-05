@@ -36,6 +36,7 @@ dependencies:
   webview_flutter: ^0.1.2
   pull_to_refresh: ^1.1.6
   share: ^0.5.3
+  flutter_advanced_networkimage: ^0.3.13
 
 dev_dependencies:
   flutter_test:

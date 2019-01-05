@@ -20,6 +20,7 @@ export 'package:url_launcher/url_launcher.dart';
 export 'package:webview_flutter/webview_flutter.dart';
 export 'package:pull_to_refresh/pull_to_refresh.dart';
 export 'package:share/share.dart';
+export 'package:flutter_advanced_networkimage/zoomable_widget.dart';
 
 export 'common/colors.dart';
 export 'common/locations.dart';
@@ -54,6 +55,7 @@ export 'view/page/setting_page.dart';
 export 'view/page/splash_page.dart';
 export 'view/page/weather_page.dart';
 export 'view/page/webview_page.dart';
+export 'view/page/photo_watch_page.dart';
 
 export 'view/widget/custom_app_bar.dart';
 export 'view/widget/loading_view.dart';

@@ -5,45 +5,54 @@ class GiftMziViewModel extends ViewModel {
 
   final datas = StreamController<List<MziData>>();
 
-  List<MziData> _totalDatas = List();
+  List<MziData> _cacheData = List();
   bool selfLoading = false;
   int _page = 1;
+  LoadType _reloadType = LoadType.NEW_LOAD;
 
   void init() {
-    loadData();
+    loadData(type: LoadType.NEW_LOAD);
   }
 
-  Future<Null> loadData({bool isRefresh = true}) async {
+  Future<Null> loadData({@required LoadType type}) async {
     if (selfLoading) return;
     selfLoading = true;
 
-    if (!isRefresh) {
+    if (type == LoadType.NEW_LOAD) {
       isLoading.add(true);
+    } else if (type == LoadType.REFRESH) {
+      _page = 1;
+      _cacheData.clear();
     }
-
     try {
-      final data = await _service.getData(url: "/mm", page: _page);
-      _totalDatas.addAll(data);
-
-      datas.add(_totalDatas);
+      final list = await _service.getData(url: "/mm", page: _page);
+      _cacheData.addAll(list);
+      datas.add(_cacheData.toList());
+      _page++;
     } on DioError catch (e) {
+      _reloadType = type;
       doError(e);
     } finally {
       selfLoading = false;
-
-      if (!isRefresh) {
-        isLoading.add(false);
-      }
+      isLoading.add(false);
     }
+  }
+
+  void reload() {
+    loadData(type: _reloadType);
+  }
+
+  void loadMore() {
+    loadData(type: LoadType.LOAD_MORE);
   }
 
   @override
   void dispose() {
-    super.dispose();
-
     _service.dispose();
-    _totalDatas.clear();
+    _cacheData.clear();
 
     datas.close();
+
+    super.dispose();
   }
 }
