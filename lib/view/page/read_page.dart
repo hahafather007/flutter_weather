@@ -1,24 +1,19 @@
 import 'package:flutter_weather/commom_import.dart';
 
 class ReadPage extends StatefulWidget {
-  final ReadState _state = ReadState();
+  final Function openDrawer;
+
+  ReadPage({@required this.openDrawer});
 
   @override
-  State createState() {
-    debugPrint("========>ReadPage");
-
-    return _state;
-  }
-
-  void setDrawerOpenFunc({@required Function openDrawer}) {
-    _state.setDrawerOpenFunc(openDrawer: openDrawer);
-  }
+  State createState() => ReadState(openDrawer: openDrawer);
 }
 
 class ReadState extends PageState<ReadPage> {
-  List<Tab> _tabItems;
-  List<String> _retryTitles = List();
-  Function _openDrawer;
+  final Function openDrawer;
+  final List<String> _retryTitles = List();
+
+  ReadState({@required this.openDrawer});
 
   @override
   void initState() {
@@ -27,20 +22,6 @@ class ReadState extends PageState<ReadPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_tabItems == null) {
-      _tabItems = [
-        Tab(text: AppText.of(context).xiandu),
-        Tab(text: AppText.of(context).xianduApps),
-        Tab(text: AppText.of(context).xianduImrich),
-        Tab(text: AppText.of(context).xianduFunny),
-        Tab(text: AppText.of(context).xianduAndroid),
-        Tab(text: AppText.of(context).xianduDie),
-        Tab(text: AppText.of(context).xianduThink),
-        Tab(text: AppText.of(context).xianduIos),
-        Tab(text: AppText.of(context).xianduBlog),
-      ];
-    }
-
     return Scaffold(
       key: scafKey,
       appBar: CustomAppBar(
@@ -59,11 +40,11 @@ class ReadState extends PageState<ReadPage> {
             Icons.menu,
             color: Colors.white,
           ),
-          onPressed: _openDrawer,
+          onPressed: openDrawer,
         ),
       ),
       body: DefaultTabController(
-        length: _tabItems.length ?? 0,
+        length: 9,
         child: Container(
           color: AppColor.colorMain,
           child: Column(
@@ -72,7 +53,17 @@ class ReadState extends PageState<ReadPage> {
                 labelColor: Colors.white,
                 indicatorColor: Colors.white,
                 isScrollable: true,
-                tabs: _tabItems,
+                tabs: [
+                  Tab(text: AppText.of(context).xiandu),
+                  Tab(text: AppText.of(context).xianduApps),
+                  Tab(text: AppText.of(context).xianduImrich),
+                  Tab(text: AppText.of(context).xianduFunny),
+                  Tab(text: AppText.of(context).xianduAndroid),
+                  Tab(text: AppText.of(context).xianduDie),
+                  Tab(text: AppText.of(context).xianduThink),
+                  Tab(text: AppText.of(context).xianduIos),
+                  Tab(text: AppText.of(context).xianduBlog),
+                ],
               ),
               Container(height: 1, color: AppColor.colorShadow),
               Expanded(
@@ -135,12 +126,8 @@ class ReadState extends PageState<ReadPage> {
     );
   }
 
-  void setDrawerOpenFunc({@required Function openDrawer}) {
-    this._openDrawer = openDrawer;
-  }
-
   void showRetryBar({@required String title, @required Function retry}) {
-    if(_retryTitles.contains(title)){
+    if (_retryTitles.contains(title)) {
       scafKey.currentState.removeCurrentSnackBar();
       _retryTitles.remove(title);
     }
@@ -150,7 +137,7 @@ class ReadState extends PageState<ReadPage> {
       duration: const Duration(days: 1),
       action: SnackBarAction(
         label: AppText.of(context).retry,
-        onPressed: (){
+        onPressed: () {
           retry();
           _retryTitles.remove(title);
         },

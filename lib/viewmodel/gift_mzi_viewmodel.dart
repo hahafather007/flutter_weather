@@ -10,9 +10,11 @@ class GiftMziViewModel extends ViewModel {
 
   List<MziData> _cacheData = List();
   int _page = 1;
+  String _typeUrl;
   LoadType _reloadType = LoadType.NEW_LOAD;
 
-  void init() {
+  void init({@required String typeUrl}) {
+    _typeUrl = typeUrl;
     photoStream = _photoData.stream.asBroadcastStream();
     loadData(type: LoadType.NEW_LOAD);
   }
@@ -28,7 +30,7 @@ class GiftMziViewModel extends ViewModel {
       _cacheData.clear();
     }
     try {
-      final list = await _service.getData(url: "/mm", page: _page);
+      final list = await _service.getData(url: _typeUrl, page: _page);
       _cacheData.addAll(list);
       data.add(_cacheData.toList());
       _photoData.add(_cacheData.toList());

@@ -7,7 +7,7 @@ class GiftMziService extends Service {
 
   Future<List<MziData>> getData(
       {@required String url, @required int page}) async {
-    final response = await dio.get("$url/page/$page");
+    final response = await dio.get("/$url/page/$page");
 
     // 下面都在解析xml
     final document = parse(response.data);
@@ -17,8 +17,12 @@ class GiftMziService extends Service {
     final datas = items.map((item) {
       final img = item.querySelector("img");
       final imgUrl = img.attributes["data-original"];
-      final imgHeight = int.parse(img.attributes["height"]);
-      final imgWidth = int.parse(img.attributes["width"]);
+      final imgHeight = img.attributes["height"] != "auto"
+          ? int.parse(img.attributes["height"])
+          : -1;
+      final imgWidth = img.attributes["width"] != "auto"
+          ? int.parse(img.attributes["width"])
+          : -1;
       final link = item.querySelector("a[href]").attributes["href"];
       final refer = "${dio.options.baseUrl}$url/";
 

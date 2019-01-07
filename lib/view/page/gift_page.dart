@@ -1,27 +1,25 @@
 import 'package:flutter_weather/commom_import.dart';
 
 class GiftPage extends StatefulWidget {
-  final GiftState _state = GiftState();
+  final Function openDrawer;
+
+  GiftPage({@required this.openDrawer});
 
   @override
-  State createState() {
-    debugPrint("========>GiftPage");
-
-    return _state;
-  }
-
-  void setDrawerOpenFunc({@required Function openDrawer}) {
-    _state.setDrawerOpenFunc(openDrawer: openDrawer);
-  }
+  State createState() => GiftState(openDrawer: openDrawer);
 }
 
 class GiftState extends PageState<GiftPage> {
-  Function openDrawer;
+  final Function openDrawer;
+
+  GiftState({@required this.openDrawer});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scafKey,
       appBar: CustomAppBar(
+        showShadowLine: false,
         title: Text(
           AppText.of(context).gift,
           style: TextStyle(
@@ -39,11 +37,45 @@ class GiftState extends PageState<GiftPage> {
           onPressed: openDrawer,
         ),
       ),
-      body: GiftMziPage(),
+      body: DefaultTabController(
+        length: 6,
+        child: Container(
+          color: AppColor.colorMain,
+          child: Column(
+            children: <Widget>[
+              TabBar(
+                labelColor: Colors.white,
+                indicatorColor: Colors.white,
+                isScrollable: true,
+                tabs: [
+                  Tab(text: AppText.of(context).mostHot),
+                  Tab(text: AppText.of(context).selfGirl),
+                  Tab(text: AppText.of(context).japanGirl),
+                  Tab(text: AppText.of(context).taiwanGirl),
+                  Tab(text: AppText.of(context).beachGirl),
+                  Tab(text: AppText.of(context).selfGirl),
+                ],
+              ),
+              Container(height: 1, color: AppColor.colorShadow),
+              Expanded(
+                child: Container(
+                  color: AppColor.colorRead,
+                  child: TabBarView(
+                    children: [
+                      GiftMziPage(typeUrl: "hot"),
+                      GiftMziPage(typeUrl: "xinggan"),
+                      GiftMziPage(typeUrl: "japan"),
+                      GiftMziPage(typeUrl: "taiwan"),
+                      GiftMziPage(typeUrl: "mm"),
+                      GiftMziPage(typeUrl: "share"),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
-  }
-
-  void setDrawerOpenFunc({@required Function openDrawer}) {
-    this.openDrawer = openDrawer;
   }
 }

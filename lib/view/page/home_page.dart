@@ -6,9 +6,9 @@ class HomePage extends StatefulWidget {
 }
 
 class HomeState extends PageState<HomePage> {
-  final _weatherPage = WeatherPage();
-  final _girlPage = GiftPage();
-  final _readPage = ReadPage();
+  WeatherPage _weatherPage;
+  GiftPage _girlPage;
+  ReadPage _readPage;
 
   /// 标识有效页面
   final _pageTypeMap = Map<PageType, bool>();
@@ -21,14 +21,14 @@ class HomeState extends PageState<HomePage> {
     super.initState();
 
     initToast(context);
-    // 设置打开抽屉的回调，使子页面可以打开抽屉
-    _weatherPage.setDrawerOpenFunc(openDrawer: () {
+
+    _weatherPage = WeatherPage(openDrawer: () {
       scafKey.currentState.openDrawer();
     });
-    _girlPage.setDrawerOpenFunc(openDrawer: () {
+    _girlPage = GiftPage(openDrawer: () {
       scafKey.currentState.openDrawer();
     });
-    _readPage.setDrawerOpenFunc(openDrawer: () {
+    _readPage = ReadPage(openDrawer: () {
       scafKey.currentState.openDrawer();
     });
 

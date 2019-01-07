@@ -62,6 +62,14 @@ class AppText {
       "weatherGetFail": "天气信息获取失败！",
 
       // 福利
+      "gank": "Gank",
+      "egg": "煎蛋",
+      "mostHot": "最热",
+      "sexGirl": "性感妹子",
+      "japanGirl": "日本妹子",
+      "taiwanGirl": "台湾妹子",
+      "beachGirl": "清纯妹子",
+      "selfGirl": "妹子自拍",
 
       // 闲读
       "xiandu": "科技资讯",
@@ -170,6 +178,21 @@ class AppText {
       _localizedValues[locale.languageCode]["weatherGetFail"];
 
   /// 福利
+  String get gank => _localizedValues[locale.languageCode]["gank"];
+
+  String get egg => _localizedValues[locale.languageCode]["egg"];
+
+  String get mostHot => _localizedValues[locale.languageCode]["mostHot"];
+
+  String get sexGirl => _localizedValues[locale.languageCode]["sexGirl"];
+
+  String get japanGirl => _localizedValues[locale.languageCode]["japanGirl"];
+
+  String get taiwanGirl => _localizedValues[locale.languageCode]["taiwanGirl"];
+
+  String get beachGirl => _localizedValues[locale.languageCode]["beachGirl"];
+
+  String get selfGirl => _localizedValues[locale.languageCode]["selfGirl"];
 
   /// 闲读
   String get xiandu => _localizedValues[locale.languageCode]["xiandu"];

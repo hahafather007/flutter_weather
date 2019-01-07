@@ -1,19 +1,30 @@
 import 'package:flutter_weather/commom_import.dart';
 
 class GiftMziPage extends StatefulWidget {
+  final String typeUrl;
+
+  GiftMziPage({@required this.typeUrl});
+
   @override
-  State createState() => GiftMziState();
+  State createState() => GiftMziState(typeUrl: typeUrl);
 }
 
-class GiftMziState extends PageState<GiftMziPage> {
+class GiftMziState extends PageState<GiftMziPage>
+    with AutomaticKeepAliveClientMixin {
+  final String typeUrl;
   final _viewModel = GiftMziViewModel();
   final _scrollController = ScrollController();
+
+  @override
+  bool get wantKeepAlive => true;
+
+  GiftMziState({@required this.typeUrl});
 
   @override
   void initState() {
     super.initState();
 
-    _viewModel.init();
+    _viewModel.init(typeUrl: typeUrl);
   }
 
   @override
@@ -64,18 +75,22 @@ class GiftMziState extends PageState<GiftMziPage> {
                           photos: list,
                           photoStream: _viewModel.photoStream,
                         )),
-                    child: AspectRatio(
-                      aspectRatio: data.width / data.height,
-                      child: Hero(
-                        tag: data.url,
-                        child: NetImage(
-                          headers: headers,
-                      url: data.url,
-//                          url:
-//                              "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
-                        ),
-                      ),
-                    ),
+                    child: data.height != -1 && data.width != -1
+                        ? AspectRatio(
+                            aspectRatio: data.width / data.height,
+                            child: NetImage(
+                              headers: headers,
+//                          url: data.url,
+                              url:
+                                  "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
+                            ),
+                          )
+                        : NetImage(
+                            headers: headers,
+//                          url: data.url,
+                            url:
+                                "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
+                          ),
                   );
                 },
               ),

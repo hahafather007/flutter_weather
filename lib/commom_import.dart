@@ -1,6 +1,7 @@
 export 'dart:async';
 export 'dart:convert';
 export 'dart:io';
+export 'dart:math';
 
 export 'package:cached_network_image/cached_network_image.dart';
 export 'package:connectivity/connectivity.dart';
