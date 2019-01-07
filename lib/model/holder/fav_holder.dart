@@ -12,6 +12,10 @@ class FavHolder<T> {
   FavHolder._internal() {
     favReadStream = _favReadBroadcast.stream.asBroadcastStream();
 
+    _init();
+  }
+
+  void _init() async {
     final readValue = SharedDepository().favReadData;
     if (readValue != null) {
       final list =
@@ -22,7 +26,7 @@ class FavHolder<T> {
   }
 
   /// 添加或取消收藏
-  void autoFav(T t) {
+  void autoFav(T t) async {
     if (t is ReadData) {
       if (isFavorite(t)) {
         _cacheReads.removeWhere((v) => v.url == t.url);
@@ -30,7 +34,7 @@ class FavHolder<T> {
         _cacheReads.add(t);
       }
 
-      SharedDepository()
+      await SharedDepository()
           .setFavReadData(json.encode(_cacheReads))
           .then((_) => _favReadBroadcast.add(_cacheReads.toList()));
     }
