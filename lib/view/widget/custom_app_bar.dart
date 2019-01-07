@@ -20,7 +20,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    double rightPadding = -34.0;
+    double rightPadding = -36.0;
 
     return Container(
       color: color,
@@ -32,7 +32,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             children: <Widget>[
               Container(
                 padding: EdgeInsets.only(
-                    top: getSysStatsHeight(context), left: 6, right: 6),
+                    top: getSysStatsHeight(context), left: 4, right: 4),
                 height: preferredSize.height +
                     getSysStatsHeight(context) -
                     (showShadowLine ? 1 : 0),
@@ -59,7 +59,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                             children: rightBtns
                                 .map((btn) => Padding(
                                       padding: EdgeInsets.only(
-                                          right: rightPadding += 34),
+                                          right: rightPadding += 36),
                                       child: Material(
                                           clipBehavior: Clip.hardEdge,
                                           borderRadius:
