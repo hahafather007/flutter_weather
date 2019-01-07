@@ -1,23 +1,23 @@
 import 'package:flutter_weather/commom_import.dart';
 
-class WebViewPage extends StatefulWidget {
+class CustomWebViewPage extends StatefulWidget {
   final String title;
   final String url;
 
-  WebViewPage({@required this.title, @required this.url});
+  CustomWebViewPage({@required this.title, @required this.url});
 
   @override
-  State createState() => WebViewState(title: title, url: url);
+  State createState() => CustomWebViewState(title: title, url: url);
 }
 
-class WebViewState extends PageState<WebViewPage> {
+class CustomWebViewState extends PageState<CustomWebViewPage> {
   final String title;
   final String url;
   final _loadStream = StreamController<bool>();
 
   WebViewController _controller;
 
-  WebViewState({@required this.title, @required this.url});
+  CustomWebViewState({@required this.title, @required this.url});
 
   @override
   void dispose() {

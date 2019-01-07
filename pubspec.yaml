@@ -33,10 +33,11 @@ dependencies:
   package_info: ^0.3.2
   rxdart: ^0.20.0
   html: ^0.13.3+3
-  webview_flutter: ^0.1.2
+  webview_flutter: ^0.2.0
   pull_to_refresh: ^1.1.6
   share: ^0.5.3
   flutter_advanced_networkimage: ^0.3.13
+  flutter_webview_plugin: ^0.3.0+2
 
 dev_dependencies:
   flutter_test:

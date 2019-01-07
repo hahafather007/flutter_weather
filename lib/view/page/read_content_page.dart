@@ -84,7 +84,7 @@ class ReadContentState extends PageState<ReadContentPage>
       margin: const EdgeInsets.fromLTRB(8, 6, 8, 6),
       child: InkWell(
         onTap: () =>
-            push(context, page: WebViewPage(title: data.name, url: data.url)),
+            push(context, page: CustomWebViewPage(title: data.name, url: data.url)),
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Row(

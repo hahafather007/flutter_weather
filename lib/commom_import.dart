@@ -21,6 +21,7 @@ export 'package:webview_flutter/webview_flutter.dart';
 export 'package:pull_to_refresh/pull_to_refresh.dart';
 export 'package:share/share.dart';
 export 'package:flutter_advanced_networkimage/zoomable_widget.dart';
+export 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 export 'common/colors.dart';
 export 'common/locations.dart';
