@@ -12,6 +12,7 @@ class NetImage extends StatelessWidget {
   /// 是否为圆形图片
   final bool isCircle;
   final Map<String, String> headers;
+  final Widget placeholder;
 
   NetImage(
       {Key key,
@@ -19,12 +20,12 @@ class NetImage extends StatelessWidget {
       this.height,
       this.width,
       this.isCircle = false,
-      this.headers})
+      this.headers,
+      this.placeholder})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     final img = CachedNetworkImage(
       httpHeaders: headers,
       imageUrl: url,
@@ -32,11 +33,12 @@ class NetImage extends StatelessWidget {
       width: width,
       fadeInDuration: const Duration(microseconds: 300),
       fit: BoxFit.cover,
-      placeholder: Container(
-        height: height,
-        width: width,
-        color: AppColor.colorHolder,
-      ),
+      placeholder: placeholder ??
+          Container(
+            height: height,
+            width: width,
+            color: AppColor.colorHolder,
+          ),
     );
 
     return isCircle ? ClipOval(child: img) : img;

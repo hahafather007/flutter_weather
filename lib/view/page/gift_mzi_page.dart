@@ -83,6 +83,11 @@ class GiftMziState extends PageState<GiftMziPage>
 //                          url: data.url,
                               url:
                                   "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
+                              placeholder: Image.asset(
+                                "images/loading.gif",
+                                width: 30,
+                                height: 30,
+                              ),
                             ),
                           )
                         : NetImage(
@@ -90,6 +95,11 @@ class GiftMziState extends PageState<GiftMziPage>
 //                          url: data.url,
                             url:
                                 "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
+                            placeholder: Image.asset(
+                              "images/loading.gif",
+                              width: 25,
+                              height: 25,
+                            ),
                           ),
                   );
                 },

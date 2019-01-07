@@ -117,6 +117,7 @@ flutter:
     - images/air_soft_7.png
     - images/air_soft_8.png
     - images/drawer_bg.png
+    - images/loading.gif
 
     # json文件
     - jsons/weather_map.json

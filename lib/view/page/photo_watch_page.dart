@@ -85,7 +85,13 @@ class PhotoWatchState extends PageState<PhotoWatchPage> {
                         setState(() => canScroll = scale == 1);
                       },
                     )
-                  : Center(child: CircularProgressIndicator());
+                  : Center(
+                      child: Image.asset(
+                        "images/loading.gif",
+                        width: 36,
+                        height: 36,
+                      ),
+                    );
             },
           );
         },
