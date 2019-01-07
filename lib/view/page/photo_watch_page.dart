@@ -75,9 +75,11 @@ class PhotoWatchState extends PageState<PhotoWatchPage> {
                       child: Hero(
                         tag: list[index].url,
                         child: NetImage(
-//                      url: list[index].url,
-                          url:
-                              "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
+                          headers: Map<String, String>()
+                            ..["Referer"] = list[index].refer,
+                      url: list[index].url,
+//                          url:
+//                              "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
                         ),
                       ),
                       onZoomStateChanged: (scale) {
