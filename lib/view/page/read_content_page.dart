@@ -4,10 +4,11 @@ class ReadContentPage extends StatefulWidget {
   final String typeUrl;
   final Function(Function retry) retryCallback;
 
-  ReadContentPage({@required this.typeUrl,@required this.retryCallback});
+  ReadContentPage({@required this.typeUrl, @required this.retryCallback});
 
   @override
-  State createState() => ReadContentState(typeUrl: typeUrl,retryCallback: retryCallback);
+  State createState() =>
+      ReadContentState(typeUrl: typeUrl, retryCallback: retryCallback);
 }
 
 /// 继承[AutomaticKeepAliveClientMixin]实现页面切换不被清理
@@ -20,7 +21,7 @@ class ReadContentState extends PageState<ReadContentPage>
   @override
   bool get wantKeepAlive => true;
 
-  ReadContentState({@required this.typeUrl,@required this.retryCallback});
+  ReadContentState({@required this.typeUrl, @required this.retryCallback});
 
   @override
   void initState() {
@@ -41,7 +42,7 @@ class ReadContentState extends PageState<ReadContentPage>
   void networkError() {
     super.networkError();
 
-    retryCallback(()=>_viewModel.reload());
+    retryCallback(() => _viewModel.reload());
   }
 
   @override
@@ -83,8 +84,9 @@ class ReadContentState extends PageState<ReadContentPage>
       clipBehavior: Clip.hardEdge,
       margin: const EdgeInsets.fromLTRB(8, 6, 8, 6),
       child: InkWell(
-        onTap: () =>
-            push(context, page: CustomWebViewPage(title: data.name, url: data.url)),
+        onTap: () => push(context,
+            page: CustomWebViewPage(
+                title: data.name, url: data.url, favData: data)),
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Row(

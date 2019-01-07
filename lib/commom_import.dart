@@ -26,6 +26,7 @@ export 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 export 'common/colors.dart';
 export 'common/locations.dart';
 export 'common/stream_sub_controller.dart';
+export 'common/keys.dart';
 
 export 'model/data/egg_data.dart';
 export 'model/data/mzi_data.dart';
@@ -33,6 +34,7 @@ export 'model/data/read_data.dart';
 export 'model/data/weather_air_data.dart';
 export 'model/data/weather_data.dart';
 
+export 'model/holder/fav_holder.dart';
 export 'model/holder/shared_depository.dart';
 
 export 'model/service/gift_egg_service.dart';
@@ -67,3 +69,4 @@ export 'viewmodel/read_viewmodel.dart';
 export 'viewmodel/viewmodel.dart';
 export 'viewmodel/weather_viewmodel.dart';
 export 'viewmodel/photo_watch_viewmodel.dart';
+export 'viewmodel/web_viewmodel.dart';

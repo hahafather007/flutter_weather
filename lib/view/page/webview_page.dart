@@ -1,20 +1,29 @@
 import 'package:flutter_weather/commom_import.dart';
 
-class CustomWebViewPage extends StatefulWidget {
+class CustomWebViewPage<T> extends StatefulWidget {
   final String title;
   final String url;
 
-  CustomWebViewPage({@required this.title, @required this.url});
+  /// 收藏时保存在本地的数据
+  final T favData;
+
+  CustomWebViewPage(
+      {@required this.title, @required this.url, @required this.favData});
 
   @override
-  State createState() => CustomWebViewState(title: title, url: url);
+  State createState() =>
+      CustomWebViewState(title: title, url: url, favData: favData);
 }
 
-class CustomWebViewState extends PageState<CustomWebViewPage> {
+class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
   final String title;
   final String url;
+  final T favData;
+  final WebViewModel _viewModel;
 
-  CustomWebViewState({@required this.title, @required this.url});
+  CustomWebViewState(
+      {@required this.title, @required this.url, @required this.favData})
+      : _viewModel = WebViewModel(favData: favData);
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +62,19 @@ class CustomWebViewState extends PageState<CustomWebViewPage> {
             ),
             onPressed: () => Share.share("$title\n$url"),
           ),
-          IconButton(
-            icon: Icon(
-              Icons.favorite_border,
-              color: Colors.white,
-            ),
-            onPressed: () => Clipboard.setData(ClipboardData(text: url)),
+          StreamBuilder(
+            stream: _viewModel.isFav.stream,
+            builder: (context, snapshot) {
+              final isFav = snapshot.data ?? false;
+
+              return IconButton(
+                icon: Icon(
+                  isFav ? Icons.favorite : Icons.favorite_border,
+                  color: isFav ? Colors.red : Colors.white,
+                ),
+                onPressed: () => FavHolder().autoFav(favData),
+              );
+            },
           ),
         ],
       ),

@@ -41,6 +41,7 @@ class HomeState extends PageState<HomePage> {
   @override
   void dispose() {
     disposeToast();
+    FavHolder().dispose();
 
     super.dispose();
   }
