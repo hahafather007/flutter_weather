@@ -3,14 +3,17 @@ import 'package:flutter_weather/commom_import.dart';
 class GiftMziViewModel extends ViewModel {
   final _service = GiftMziService();
 
-  final datas = StreamController<List<MziData>>();
+  final data = StreamController<List<MziData>>();
+  final _photoData = StreamController<List<MziData>>();
+
+  Stream<List<MziData>> photoStream;
 
   List<MziData> _cacheData = List();
-  bool selfLoading = false;
   int _page = 1;
   LoadType _reloadType = LoadType.NEW_LOAD;
 
   void init() {
+    photoStream = _photoData.stream.asBroadcastStream();
     loadData(type: LoadType.NEW_LOAD);
   }
 
@@ -27,7 +30,8 @@ class GiftMziViewModel extends ViewModel {
     try {
       final list = await _service.getData(url: "/mm", page: _page);
       _cacheData.addAll(list);
-      datas.add(_cacheData.toList());
+      data.add(_cacheData.toList());
+      _photoData.add(_cacheData.toList());
       _page++;
     } on DioError catch (e) {
       _reloadType = type;
@@ -51,7 +55,8 @@ class GiftMziViewModel extends ViewModel {
     _service.dispose();
     _cacheData.clear();
 
-    datas.close();
+    data.close();
+    _photoData.close();
 
     super.dispose();
   }

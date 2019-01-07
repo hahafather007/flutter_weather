@@ -29,7 +29,7 @@ class LoadingState extends PageState<LoadingView>
     super.initState();
 
     _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 400));
+        vsync: this, duration: const Duration(milliseconds: 300));
     _animation = SizeTween(begin: Size(50, 50), end: Size.zero)
         .animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
     dismiss();

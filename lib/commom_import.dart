@@ -65,3 +65,4 @@ export 'viewmodel/gift_mzi_viewmodel.dart';
 export 'viewmodel/read_viewmodel.dart';
 export 'viewmodel/viewmodel.dart';
 export 'viewmodel/weather_viewmodel.dart';
+export 'viewmodel/photo_watch_viewmodel.dart';
