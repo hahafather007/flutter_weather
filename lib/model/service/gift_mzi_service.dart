@@ -14,18 +14,19 @@ class GiftMziService extends Service {
     final total = document.getElementsByClassName("postlist").first;
     final items = total.querySelectorAll("li");
 
-    final datas = items.map((item) {
+    final data = items.map((item) {
       final img = item.querySelector("img");
       final imgUrl = img.attributes["data-original"];
       final imgHeight = img.attributes["height"] != "auto"
           ? int.parse(img.attributes["height"])
-          : -1;
+          : 354;
       final imgWidth = img.attributes["width"] != "auto"
           ? int.parse(img.attributes["width"])
-          : -1;
+          : 236;
       final link = item.querySelector("a[href]").attributes["href"];
       final refer = "${dio.options.baseUrl}$url/";
 
+      debugPrint("width===>$imgWidth  height ===>$imgHeight");
       debugPrint("=======>$imgUrl");
       debugPrint("=======>$link");
       debugPrint("=======>$refer");
@@ -39,6 +40,6 @@ class GiftMziService extends Service {
           width: imgWidth);
     }).toList();
 
-    return datas;
+    return data;
   }
 }

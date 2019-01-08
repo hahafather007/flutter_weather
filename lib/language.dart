@@ -70,6 +70,7 @@ class AppText {
       "taiwanGirl": "台湾妹子",
       "beachGirl": "清纯妹子",
       "selfGirl": "妹子自拍",
+      "imageSet": "图集",
 
       // 闲读
       "xiandu": "科技资讯",
@@ -193,6 +194,8 @@ class AppText {
   String get beachGirl => _localizedValues[locale.languageCode]["beachGirl"];
 
   String get selfGirl => _localizedValues[locale.languageCode]["selfGirl"];
+
+  String get imageSet => _localizedValues[locale.languageCode]["imageSet"];
 
   /// 闲读
   String get xiandu => _localizedValues[locale.languageCode]["xiandu"];

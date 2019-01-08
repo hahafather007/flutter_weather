@@ -68,39 +68,36 @@ class GiftMziState extends PageState<GiftMziPage>
                   }
 
                   return GestureDetector(
-                    onTap: () => push(context,
-                        page: PhotoWatchPage(
-                          index: index,
-                          loadPhotos: () => _viewModel.loadMore(),
-                          photos: list,
-                          photoStream: _viewModel.photoStream,
-                        )),
-                    child: data.height != -1 && data.width != -1
-                        ? AspectRatio(
-                            aspectRatio: data.width / data.height,
-                            child: NetImage(
-                              headers: headers,
-                          url: data.url,
-//                              url:
-//                                  "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
-                              placeholder: Image.asset(
-                                "images/loading.gif",
-                                width: 30,
-                                height: 30,
-                              ),
-                            ),
-                          )
-                        : NetImage(
+                    onTap: () =>
+                        push(context, page: GiftMziImagePage(link: data.link)),
+                    child: Stack(
+                      alignment: Alignment.bottomRight,
+                      children: <Widget>[
+                        AspectRatio(
+                          aspectRatio: data.width / data.height,
+                          child: NetImage(
                             headers: headers,
 //                          url: data.url,
                             url:
                                 "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
-                            placeholder: Image.asset(
-                              "images/loading.gif",
-                              width: 25,
-                              height: 25,
+                            placeholder: Center(
+                              child: Image.asset(
+                                "images/loading.gif",
+                                width: 20,
+                                height: 20,
+                              ),
                             ),
                           ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 6, bottom: 6),
+                          child: Icon(
+                            Icons.photo_library,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 },
               ),

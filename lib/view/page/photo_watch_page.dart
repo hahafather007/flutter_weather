@@ -77,9 +77,16 @@ class PhotoWatchState extends PageState<PhotoWatchPage> {
                         child: NetImage(
                           headers: Map<String, String>()
                             ..["Referer"] = list[index].refer,
-                      url: list[index].url,
-//                          url:
-//                              "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
+//                      url: list[index].url,
+                          url:
+                              "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
+                          placeholder: Center(
+                            child: Image.asset(
+                              "images/loading.gif",
+                              width: 25,
+                              height: 25,
+                            ),
+                          ),
                         ),
                       ),
                       onZoomStateChanged: (scale) {
@@ -90,8 +97,8 @@ class PhotoWatchState extends PageState<PhotoWatchPage> {
                   : Center(
                       child: Image.asset(
                         "images/loading.gif",
-                        width: 36,
-                        height: 36,
+                        width: 25,
+                        height: 25,
                       ),
                     );
             },
