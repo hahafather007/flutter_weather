@@ -2,28 +2,27 @@ import 'package:flutter_weather/commom_import.dart';
 
 class PhotoWatchPage extends StatefulWidget {
   final int index;
-  final Function loadPhotos;
+  final int length;
   final List<MziData> photos;
   final Stream<List<MziData>> photoStream;
 
   PhotoWatchPage(
       {@required this.index,
-      @required this.loadPhotos,
+      @required this.length,
       @required this.photos,
-      @required this.photoStream});
+      @required this.photoStream}){
+   debugPrint("photos====>${photos.length}");
+  }
 
   @override
   State createState() => PhotoWatchState(
-      index: index,
-      loadPhotos: loadPhotos,
-      photos: photos,
-      photoStream: photoStream);
+      index: index, length: length, photos: photos, photoStream: photoStream);
 }
 
 class PhotoWatchState extends PageState<PhotoWatchPage> {
-  final Function loadPhotos;
   final Stream<List<MziData>> photoStream;
   final List<MziData> photos;
+  final int length;
   final PageController _pageController;
   final _viewModel = PhotoWatchViewModel();
 
@@ -31,10 +30,10 @@ class PhotoWatchState extends PageState<PhotoWatchPage> {
 
   PhotoWatchState(
       {@required int index,
-      @required this.loadPhotos,
+      @required this.length,
       @required this.photos,
       @required this.photoStream})
-      : _pageController = PageController(initialPage: index, keepPage: false);
+      : _pageController = PageController(initialPage: index);
 
   @override
   void initState() {
@@ -55,53 +54,36 @@ class PhotoWatchState extends PageState<PhotoWatchPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: StreamBuilder(
-        stream: _viewModel.datas.stream,
+        stream: _viewModel.data.stream,
         builder: (context, snapshot) {
           final List<MziData> list = snapshot.data ?? photos;
 
-          return PageView.builder(
-            controller: _pageController,
-            physics: canScroll
-                ? AlwaysScrollableScrollPhysics()
-                : NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              if (list.length - 1 <= index) {
-                loadPhotos();
-              }
+          if (list.length < length) {
+            list.addAll(List.generate(length - list.length, (_) => null));
+          }
 
-              return list.length > index
-                  ? ZoomableWidget(
-                      maxScale: 2,
-                      child: Hero(
-                        tag: list[index].url,
-                        child: NetImage(
+          return PhotoViewGallery(
+            pageController: _pageController,
+            loadingChild: Center(
+              child: Image.asset("images/loading.gif"),
+            ),
+            pageOptions: list.map(
+              (data) {
+                return PhotoViewGalleryPageOptions(
+                  heroTag: data?.url,
+                  imageProvider: data != null
+                      ? CachedNetworkImageProvider(
+                          data.url,
+//                          "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
                           headers: Map<String, String>()
-                            ..["Referer"] = list[index].refer,
-//                      url: list[index].url,
-                          url:
-                              "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
-                          placeholder: Center(
-                            child: Image.asset(
-                              "images/loading.gif",
-                              width: 25,
-                              height: 25,
-                            ),
-                          ),
-                        ),
-                      ),
-                      onZoomStateChanged: (scale) {
-                        debugPrint("scale====>$scale");
-                        setState(() => canScroll = scale == 1);
-                      },
-                    )
-                  : Center(
-                      child: Image.asset(
-                        "images/loading.gif",
-                        width: 25,
-                        height: 25,
-                      ),
-                    );
-            },
+                            ..["Referer"] = data.refer,
+                        )
+                      : AssetImage("images/loading.gif"),
+                  minScale: data != null ? 0.5 : 1.0,
+                  maxScale: data != null ? 5.0 : 1.0,
+                );
+              },
+            ).toList(),
           );
         },
       ),

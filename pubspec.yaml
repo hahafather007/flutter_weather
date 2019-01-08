@@ -38,6 +38,7 @@ dependencies:
   share: ^0.5.3
   flutter_advanced_networkimage: ^0.3.13
   flutter_webview_plugin: ^0.3.0+2
+  photo_view: ^0.1.2
 
 dev_dependencies:
   flutter_test:

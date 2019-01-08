@@ -50,7 +50,7 @@ class ReadContentState extends PageState<ReadContentPage>
     return LoadingView(
       loadingStream: _viewModel.isLoading.stream,
       child: StreamBuilder(
-        stream: _viewModel.datas.stream,
+        stream: _viewModel.data.stream,
         builder: (context, snapshot) {
           final List<ReadData> datas = snapshot.data ?? List();
 
@@ -62,8 +62,6 @@ class ReadContentState extends PageState<ReadContentPage>
               padding: const EdgeInsets.only(),
               itemCount: datas.length,
               itemBuilder: (context, index) {
-                debugPrint("index====>$index");
-
                 // 在倒数第5个item显示时就加载下一页
                 if (index + 1 >= datas.length - 5) {
                   _viewModel.loadMore();

@@ -22,7 +22,7 @@ class FavHolder<T> {
           (json.decode(readValue) as List).map((v) => ReadData.fromJson(v));
       _cacheReads.addAll(list);
     }
-    _favReadBroadcast.add(_cacheReads.toList());
+    _favReadBroadcast.add(_cacheReads);
   }
 
   /// 添加或取消收藏

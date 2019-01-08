@@ -3,7 +3,7 @@ import 'package:flutter_weather/commom_import.dart';
 class ReadViewModel extends ViewModel {
   final _service = ReadService();
 
-  final datas = StreamController<List<ReadData>>();
+  final data = StreamController<List<ReadData>>();
 
   List<ReadData> _cacheData = List();
   bool selfLoading = false;
@@ -20,25 +20,27 @@ class ReadViewModel extends ViewModel {
     if (selfLoading) return;
     selfLoading = true;
 
-    if (type == LoadType.NEW_LOAD) {
-      isLoading.add(true);
-    } else if (type == LoadType.REFRESH) {
+    if (type == LoadType.REFRESH) {
       _page = 1;
       _cacheData.clear();
+    } else {
+      isLoading.add(true);
     }
 
     try {
       final list = await _service.getReadDatas(lastUrl: _typeUrl, page: _page);
 
       _cacheData.addAll(list);
-      datas.add(_cacheData.toList());
+      data.add(_cacheData);
       _page++;
     } on DioError catch (e) {
       _reloadType = type;
       doError(e);
     } finally {
       selfLoading = false;
-      isLoading.add(false);
+      if (!isLoading.isClosed) {
+        isLoading.add(false);
+      }
     }
   }
 
@@ -55,7 +57,7 @@ class ReadViewModel extends ViewModel {
     _service.dispose();
     _cacheData.clear();
 
-    datas.close();
+    data.close();
 
     super.dispose();
   }
