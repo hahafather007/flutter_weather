@@ -71,7 +71,6 @@ class WeatherState extends PageState<WeatherPage> {
               snapshot.data ?? "",
               style: TextStyle(
                 color: Colors.white,
-                fontWeight: FontWeight.bold,
                 fontSize: 20,
               ),
             );

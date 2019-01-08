@@ -30,7 +30,6 @@ class ReadState extends PageState<ReadPage> {
           AppText.of(context).read,
           style: TextStyle(
             color: Colors.white,
-            fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
         ),

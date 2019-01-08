@@ -37,7 +37,6 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
           AppText.of(context).imageSet,
           style: TextStyle(
             color: Colors.white,
-            fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
         ),
@@ -79,26 +78,23 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
                       headers["Referer"] = data.refer;
 
                       return GestureDetector(
-                        onTap: () {
-                          debugPrint("list======>${list.length}");
-
-                          push(context,
-                              page: PhotoWatchPage(
-                                index: index,
-                                length: length,
-                                photos: list,
-                                photoStream: _viewModel.photoStream,
-                              ));
-                        },
+                        key: Key(data.url),
+                        onTap: () => push(context,
+                            page: PhotoWatchPage(
+                              index: index,
+                              length: length,
+                              photos: list,
+                              photoStream: _viewModel.photoStream,
+                            )),
                         child: AspectRatio(
                           aspectRatio: data.width / data.height,
                           child: Hero(
                             tag: data.url,
                             child: NetImage(
                               headers: headers,
-                          url: data.url,
-//                              url:
-//                                  "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
+//                          url: data.url,
+                              url:
+                                  "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
                               placeholder: Center(
                                 child: Image.asset(
                                   "images/loading.gif",

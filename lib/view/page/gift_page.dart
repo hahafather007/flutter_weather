@@ -24,7 +24,6 @@ class GiftState extends PageState<GiftPage> {
           AppText.of(context).gift,
           style: TextStyle(
             color: Colors.white,
-            fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
         ),
@@ -49,7 +48,7 @@ class GiftState extends PageState<GiftPage> {
                 isScrollable: true,
                 tabs: [
                   Tab(text: AppText.of(context).mostHot),
-                  Tab(text: AppText.of(context).selfGirl),
+                  Tab(text: AppText.of(context).sexGirl),
                   Tab(text: AppText.of(context).japanGirl),
                   Tab(text: AppText.of(context).taiwanGirl),
                   Tab(text: AppText.of(context).beachGirl),

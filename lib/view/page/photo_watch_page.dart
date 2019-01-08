@@ -10,8 +10,8 @@ class PhotoWatchPage extends StatefulWidget {
       {@required this.index,
       @required this.length,
       @required this.photos,
-      @required this.photoStream}){
-   debugPrint("photos====>${photos.length}");
+      @required this.photoStream}) {
+    debugPrint("photos====>${photos.length}");
   }
 
   @override
@@ -73,8 +73,8 @@ class PhotoWatchState extends PageState<PhotoWatchPage> {
                   heroTag: data?.url,
                   imageProvider: data != null
                       ? CachedNetworkImageProvider(
-                          data.url,
-//                          "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
+//                          data.url,
+                          "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
                           headers: Map<String, String>()
                             ..["Referer"] = data.refer,
                         )
