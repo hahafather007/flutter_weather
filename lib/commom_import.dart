@@ -35,6 +35,7 @@ export 'model/data/mzi_data.dart';
 export 'model/data/read_data.dart';
 export 'model/data/weather_air_data.dart';
 export 'model/data/weather_data.dart';
+export 'model/data/mixing.dart';
 
 export 'model/holder/fav_holder.dart';
 export 'model/holder/shared_depository.dart';

@@ -52,6 +52,15 @@ class SharedDepository {
   Future<bool> setFavReadData(String value) async =>
       await _prefs.setString("favReadData", value);
 
+  /// 收藏的妹子图
+  String get favMziData => _getString("favMziData");
+
+  Future<bool> setFavMziData(String value) async =>
+      await _prefs.setString("favMziData", value);
+
+  /// ==============================================
+  ///                     分界线
+  /// ==============================================
   /// 用带有默认值的形式获取prefs的数据
   String _getString(String key, {String defaultValue}) {
     final value = _prefs.getString(key);

@@ -1,30 +1,37 @@
 import 'package:flutter_weather/commom_import.dart';
 
-class PhotoWatchPage extends StatefulWidget {
+class PhotoWatchPage<T> extends StatefulWidget {
   final int index;
   final int length;
   final List<MziData> photos;
   final Stream<List<MziData>> photoStream;
 
+  /// 收藏时保存在本地的数据
+  final T favData;
+
   PhotoWatchPage(
       {@required this.index,
       @required this.length,
       @required this.photos,
-      @required this.photoStream}) {
-    debugPrint("photos====>${photos.length}");
-  }
+      @required this.photoStream,
+      @required this.favData});
 
   @override
   State createState() => PhotoWatchState(
-      index: index, length: length, photos: photos, photoStream: photoStream);
+      index: index,
+      length: length,
+      photos: photos,
+      photoStream: photoStream,
+      favData: favData);
 }
 
-class PhotoWatchState extends PageState<PhotoWatchPage> {
+class PhotoWatchState<T> extends PageState<PhotoWatchPage> {
   final Stream<List<MziData>> photoStream;
   final List<MziData> photos;
   final int length;
+  final T favData;
   final PageController _pageController;
-  final _viewModel = PhotoWatchViewModel();
+  final PhotoWatchViewModel _viewModel;
 
   bool canScroll = true;
 
@@ -32,14 +39,15 @@ class PhotoWatchState extends PageState<PhotoWatchPage> {
       {@required int index,
       @required this.length,
       @required this.photos,
-      @required this.photoStream})
-      : _pageController = PageController(initialPage: index);
+      @required this.photoStream,
+      @required this.favData})
+      : _pageController = PageController(initialPage: index),
+        _viewModel =
+            PhotoWatchViewModel(favData: null, photoStream: photoStream);
 
   @override
   void initState() {
     super.initState();
-
-    _viewModel.init(photoStream);
   }
 
   @override
@@ -79,7 +87,7 @@ class PhotoWatchState extends PageState<PhotoWatchPage> {
                             ..["Referer"] = data.refer,
                         )
                       : AssetImage("images/loading.gif"),
-                  minScale: data != null ? 0.5 : 1.0,
+                  minScale: data != null ? 0.1 : 1.0,
                   maxScale: data != null ? 5.0 : 1.0,
                 );
               },

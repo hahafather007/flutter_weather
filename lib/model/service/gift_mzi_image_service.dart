@@ -35,6 +35,7 @@ class GiftMziImageService extends Service {
     final height = double.parse(img.attributes["height"]).toInt();
     final refer = "$link/";
 
-    return MziData(url: url, width: width, height: height, refer: refer);
+    return MziData(
+        url: url, width: width, height: height, refer: refer, isImages: false);
   }
 }

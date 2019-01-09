@@ -1,25 +1,26 @@
 import 'package:flutter_weather/commom_import.dart';
 
 class GiftMziImagePage extends StatefulWidget {
-  final String link;
+  final MziData data;
 
-  GiftMziImagePage({@required this.link});
+  GiftMziImagePage({@required this.data});
 
   @override
-  State createState() => GiftMziImageState(link: link);
+  State createState() => GiftMziImageState(data: data);
 }
 
 class GiftMziImageState extends PageState<GiftMziImagePage> {
-  final String link;
-  final _viewModel = GiftMziImageViewModel();
+  final MziData data;
+  final GiftMziImageViewModel _viewModel;
 
-  GiftMziImageState({@required this.link});
+  GiftMziImageState({@required this.data})
+      : _viewModel = GiftMziImageViewModel(data: data);
 
   @override
   void initState() {
     super.initState();
 
-    _viewModel.loadData(link: link);
+    _viewModel.loadData(data: data);
   }
 
   @override
@@ -48,6 +49,22 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
           ),
           onPressed: () => pop(context),
         ),
+        rightBtns: <Widget>[
+          StreamBuilder(
+            stream: _viewModel.isFav.stream,
+            builder: (context, snapshot) {
+              final isFav = snapshot.data ?? false;
+
+              return IconButton(
+                icon: Icon(
+                  isFav ? Icons.favorite : Icons.favorite_border,
+                  color: isFav ? Colors.red : Colors.white,
+                ),
+                onPressed: () => FavHolder().autoFav(data),
+              );
+            },
+          ),
+        ],
       ),
       body: LoadingView(
         loadingStream: _viewModel.isLoading.stream,
@@ -62,7 +79,7 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
                 final length = snapshot.data ?? 0;
 
                 return RefreshIndicator(
-                  onRefresh: () => _viewModel.loadData(link: link),
+                  onRefresh: () => _viewModel.loadData(data: data),
                   child: StaggeredGridView.countBuilder(
                     crossAxisCount: 2,
                     mainAxisSpacing: 4,
@@ -85,6 +102,7 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
                               length: length,
                               photos: list,
                               photoStream: _viewModel.photoStream,
+                              favData: data,
                             )),
                         child: AspectRatio(
                           aspectRatio: data.width / data.height,

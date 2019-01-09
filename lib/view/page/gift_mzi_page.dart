@@ -70,7 +70,7 @@ class GiftMziState extends PageState<GiftMziPage>
                   return GestureDetector(
                     key: Key(data.link),
                     onTap: () =>
-                        push(context, page: GiftMziImagePage(link: data.link)),
+                        push(context, page: GiftMziImagePage(data: data)),
                     child: Stack(
                       alignment: Alignment.bottomRight,
                       children: <Widget>[

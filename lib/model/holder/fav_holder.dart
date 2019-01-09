@@ -6,11 +6,15 @@ class FavHolder<T> {
   factory FavHolder() => _holder;
 
   final List<ReadData> _cacheReads = List();
+  final List<MziData> _cacheMzis = List();
   final _favReadBroadcast = StreamController<List<ReadData>>();
+  final _favMziBroadcast = StreamController<List<MziData>>();
   Stream<List<ReadData>> favReadStream;
+  Stream<List<MziData>> favMziStream;
 
   FavHolder._internal() {
     favReadStream = _favReadBroadcast.stream.asBroadcastStream();
+    favMziStream = _favMziBroadcast.stream.asBroadcastStream();
 
     _init();
   }
@@ -23,6 +27,14 @@ class FavHolder<T> {
       _cacheReads.addAll(list);
     }
     _favReadBroadcast.add(_cacheReads);
+
+    final mziValue = SharedDepository().favMziData;
+    if (mziValue != null) {
+      final list =
+          (json.decode(mziValue) as List).map((v) => MziData.fromJson(v));
+      _cacheMzis.addAll(list);
+    }
+    _favMziBroadcast.add(_cacheMzis);
   }
 
   /// 添加或取消收藏
@@ -36,7 +48,18 @@ class FavHolder<T> {
 
       await SharedDepository()
           .setFavReadData(json.encode(_cacheReads))
-          .then((_) => _favReadBroadcast.add(_cacheReads.toList()));
+          .then((_) => _favReadBroadcast.add(_cacheReads));
+    } else if (t is MziData) {
+      if (isFavorite(t)) {
+        _cacheMzis
+            .retainWhere((v) => v.url == t.url && v.isImages == t.isImages);
+      } else {
+        _cacheMzis.add(t);
+      }
+
+      await SharedDepository()
+          .setFavMziData(json.encode(_cacheReads))
+          .then((_) => _favMziBroadcast.add(_cacheMzis));
     }
   }
 
@@ -44,6 +67,8 @@ class FavHolder<T> {
   bool isFavorite(T t) {
     if (t is ReadData) {
       return _cacheReads.any((v) => v.url == t.url);
+    } else if (t is MziData) {
+      return _cacheMzis.any((v) => v.url == t.url && v.isImages == t.isImages);
     }
 
     return false;
@@ -52,5 +77,6 @@ class FavHolder<T> {
   void dispose() {
     _cacheReads.clear();
     _favReadBroadcast.close();
+    _favMziBroadcast.close();
   }
 }

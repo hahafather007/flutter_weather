@@ -37,7 +37,8 @@ class GiftMziService extends Service {
           link: link,
           refer: refer,
           height: imgHeight,
-          width: imgWidth);
+          width: imgWidth,
+          isImages: true);
     }).toList();
 
     return data;

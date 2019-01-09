@@ -1,10 +1,18 @@
 import 'package:flutter_weather/commom_import.dart';
 
-class PhotoWatchViewModel extends ViewModel {
+class PhotoWatchViewModel<T> extends ViewModel {
   final data = StreamController<List<MziData>>();
 
-  void init(Stream<List<MziData>> photoStream) {
-    bindSub(photoStream.listen(data.add));
+  final _favHolder = FavHolder();
+
+  final isFav = StreamController<bool>();
+
+  PhotoWatchViewModel(
+      {@required T favData, @required Stream<List<MziData>> photoStream}) {
+    isFav.add(_favHolder.isFavorite(favData));
+    bindSub(_favHolder.favReadStream
+        .listen((_) => isFav.add(_favHolder.isFavorite(favData))));
+    bindSub(photoStream.listen((v) => data.add(v.toList())));
   }
 
   @override
