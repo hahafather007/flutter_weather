@@ -14,7 +14,7 @@ class GiftMziImageViewModel extends ViewModel {
   GiftMziImageViewModel({@required MziData data}) {
     photoStream = _photoData.stream.asBroadcastStream();
     isFav.add(_favHolder.isFavorite(data));
-    bindSub(_favHolder.favReadStream
+    bindSub(_favHolder.favMziStream
         .listen((_) => isFav.add(_favHolder.isFavorite(data))));
   }
 

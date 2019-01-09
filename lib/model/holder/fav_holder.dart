@@ -39,6 +39,8 @@ class FavHolder<T> {
 
   /// 添加或取消收藏
   void autoFav(T t) async {
+    if (t == null) return;
+
     if (t is ReadData) {
       if (isFavorite(t)) {
         _cacheReads.removeWhere((v) => v.url == t.url);
@@ -52,16 +54,20 @@ class FavHolder<T> {
     } else if (t is MziData) {
       if (isFavorite(t)) {
         _cacheMzis
-            .retainWhere((v) => v.url == t.url && v.isImages == t.isImages);
+            .removeWhere((v) => v.url == t.url && v.isImages == t.isImages);
       } else {
         _cacheMzis.add(t);
       }
 
       await SharedDepository()
-          .setFavMziData(json.encode(_cacheReads))
+          .setFavMziData(json.encode(_cacheMzis))
           .then((_) => _favMziBroadcast.add(_cacheMzis));
     }
   }
+
+  List<MziData> get favMzis => _cacheMzis;
+
+  List<ReadData> get favReads => _cacheReads;
 
   /// 判断[t]是否被收藏
   bool isFavorite(T t) {

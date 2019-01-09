@@ -98,12 +98,10 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
                         key: Key(data.url),
                         onTap: () => push(context,
                             page: PhotoWatchPage(
-                              index: index,
-                              length: length,
-                              photos: list,
-                              photoStream: _viewModel.photoStream,
-                              favData: data,
-                            )),
+                                index: index,
+                                length: length,
+                                photos: list,
+                                photoStream: _viewModel.photoStream)),
                         child: AspectRatio(
                           aspectRatio: data.width / data.height,
                           child: Hero(
