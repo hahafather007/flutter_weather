@@ -9,8 +9,7 @@ class GiftMziPage extends StatefulWidget {
   State createState() => GiftMziState(typeUrl: typeUrl);
 }
 
-class GiftMziState extends PageState<GiftMziPage>
-    with AutomaticKeepAliveClientMixin {
+class GiftMziState extends PageState<GiftMziPage> with MustKeepAliveMixin {
   final String typeUrl;
   final _viewModel = GiftMziViewModel();
   final _scrollController = ScrollController();
@@ -24,6 +23,8 @@ class GiftMziState extends PageState<GiftMziPage>
   void initState() {
     super.initState();
 
+    debugPrint("init========>GiftMziState:$typeUrl");
+
     _viewModel.init(typeUrl: typeUrl);
     _scrollController.addListener(() {
       // 滑到底部加载更多
@@ -36,6 +37,8 @@ class GiftMziState extends PageState<GiftMziPage>
 
   @override
   void dispose() {
+    debugPrint("dispose========>GiftMziState:$typeUrl");
+
     _viewModel.dispose();
     _scrollController.dispose();
 

@@ -6,13 +6,12 @@ class ReadContentPage extends StatefulWidget {
   ReadContentPage({@required this.typeUrl});
 
   @override
-  State createState() =>
-      ReadContentState(typeUrl: typeUrl);
+  State createState() => ReadContentState(typeUrl: typeUrl);
 }
 
-/// 继承[AutomaticKeepAliveClientMixin]实现页面切换不被清理
+/// 继承[MustKeepAliveMixin]实现页面切换不被清理
 class ReadContentState extends PageState<ReadContentPage>
-    with AutomaticKeepAliveClientMixin {
+    with MustKeepAliveMixin {
   final String typeUrl;
   final _viewModel = ReadViewModel();
 
@@ -39,8 +38,6 @@ class ReadContentState extends PageState<ReadContentPage>
   @override
   void networkError() {
     super.networkError();
-
-
   }
 
   @override

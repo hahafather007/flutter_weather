@@ -29,6 +29,7 @@ export 'common/colors.dart';
 export 'common/locations.dart';
 export 'common/stream_sub_controller.dart';
 export 'common/keys.dart';
+export 'common/keep_alive_mixin.dart';
 
 export 'model/data/egg_data.dart';
 export 'model/data/mzi_data.dart';
