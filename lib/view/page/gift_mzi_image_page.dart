@@ -100,7 +100,7 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
                       return GestureDetector(
                         key: Key(data.url),
                         onTap: () => push(context,
-                            page: PhotoWatchPage(
+                            page: GiftMziWatchPage(
                                 index: index,
                                 length: length,
                                 photos: list,
@@ -111,9 +111,9 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
                             tag: data.url,
                             child: NetImage(
                               headers: headers,
-//                          url: data.url,
-                              url:
-                                  "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
+                          url: data.url,
+//                              url:
+//                                  "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
                               placeholder: Center(
                                 child: Image.asset(
                                   "images/loading.gif",

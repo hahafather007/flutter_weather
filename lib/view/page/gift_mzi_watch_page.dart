@@ -1,23 +1,23 @@
 import 'package:flutter_weather/commom_import.dart';
 
-class PhotoWatchPage<T> extends StatefulWidget {
+class GiftMziWatchPage extends StatefulWidget {
   final int index;
   final int length;
   final List<MziData> photos;
   final Stream<List<MziData>> photoStream;
 
-  PhotoWatchPage(
+  GiftMziWatchPage(
       {@required this.index,
       @required this.length,
       @required this.photos,
       @required this.photoStream});
 
   @override
-  State createState() => PhotoWatchState(
+  State createState() => GiftMziWatchState(
       index: index, length: length, photos: photos, photoStream: photoStream);
 }
 
-class PhotoWatchState<T> extends PageState<PhotoWatchPage> {
+class GiftMziWatchState extends PageState<GiftMziWatchPage> {
   final Stream<List<MziData>> photoStream;
   final List<MziData> photos;
   final int length;
@@ -27,7 +27,7 @@ class PhotoWatchState<T> extends PageState<PhotoWatchPage> {
   int _currentPage = 0;
   bool _showAppBar = false;
 
-  PhotoWatchState(
+  GiftMziWatchState(
       {@required int index,
       @required this.length,
       @required this.photos,
@@ -87,14 +87,12 @@ class PhotoWatchState<T> extends PageState<PhotoWatchPage> {
                                   heroTag: data?.url,
                                   imageProvider: data != null
                                       ? CachedNetworkImageProvider(
-//                          data.url,
-                                          "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
+                          data.url,
+//                                          "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
                                           headers: Map<String, String>()
                                             ..["Referer"] = data.refer,
                                         )
                                       : AssetImage("images/loading.gif"),
-                                  minScale: data != null ? 0.1 : 1.0,
-                                  maxScale: data != null ? 5.0 : 1.0,
                                 ),
                           )
                           .toList(),

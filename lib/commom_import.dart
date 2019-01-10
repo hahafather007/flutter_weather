@@ -47,6 +47,7 @@ export 'model/service/read_service.dart';
 export 'model/service/service.dart';
 export 'model/service/weather_service.dart';
 export 'model/service/gift_mzi_image_service.dart';
+export 'model/service/gift_gank_service.dart';
 
 export 'utils/channel_util.dart';
 export 'utils/system_util.dart';
@@ -63,8 +64,10 @@ export 'view/page/setting_page.dart';
 export 'view/page/splash_page.dart';
 export 'view/page/weather_page.dart';
 export 'view/page/webview_page.dart';
-export 'view/page/photo_watch_page.dart';
+export 'view/page/gift_mzi_watch_page.dart';
 export 'view/page/gift_mzi_image_page.dart';
+export 'view/page/gift_gank_page.dart';
+export 'view/page/gift_gank_watch_page.dart';
 
 export 'view/widget/custom_app_bar.dart';
 export 'view/widget/loading_view.dart';
@@ -77,3 +80,4 @@ export 'viewmodel/weather_viewmodel.dart';
 export 'viewmodel/photo_watch_viewmodel.dart';
 export 'viewmodel/web_viewmodel.dart';
 export 'viewmodel/gift_mzi_image_viewmodel.dart';
+export 'viewmodel/gift_gank_viewmodel.dart';

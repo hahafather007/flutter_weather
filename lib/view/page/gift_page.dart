@@ -30,7 +30,7 @@ class GiftState extends PageState<GiftPage> {
         ),
         Expanded(
           child: DefaultTabController(
-            length: 6,
+            length: 7,
             child: Container(
               color: AppColor.colorMain,
               child: Column(
@@ -40,6 +40,7 @@ class GiftState extends PageState<GiftPage> {
                     indicatorColor: Colors.white,
                     isScrollable: true,
                     tabs: [
+                      Tab(text: AppText.of(context).gank),
                       Tab(text: AppText.of(context).mostHot),
                       Tab(text: AppText.of(context).sexGirl),
                       Tab(text: AppText.of(context).japanGirl),
@@ -54,6 +55,7 @@ class GiftState extends PageState<GiftPage> {
                       color: AppColor.colorRead,
                       child: TabBarView(
                         children: [
+                          GiftGankPage(),
                           GiftMziPage(typeUrl: "hot"),
                           GiftMziPage(typeUrl: "xinggan"),
                           GiftMziPage(typeUrl: "japan"),
