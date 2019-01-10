@@ -25,7 +25,7 @@ class PhotoWatchState<T> extends PageState<PhotoWatchPage> {
   final PhotoWatchViewModel _viewModel;
 
   int _currentPage = 0;
-  bool canScroll = true;
+  bool _showAppBar = false;
 
   PhotoWatchState(
       {@required int index,
@@ -55,7 +55,7 @@ class PhotoWatchState<T> extends PageState<PhotoWatchPage> {
       body: StreamBuilder(
         stream: _viewModel.data.stream,
         builder: (context, snapshot) {
-          final List<MziData> list = snapshot.data ?? photos;
+          final List<MziData> list = (snapshot.data ?? photos).toList();
 
           if (list.length < length) {
             list.addAll(List.generate(length - list.length, (_) => null));
@@ -72,60 +72,68 @@ class PhotoWatchState<T> extends PageState<PhotoWatchPage> {
               return Stack(
                 children: <Widget>[
                   // 图片浏览
-                  PhotoViewGallery(
-                    pageController: _pageController,
-                    onPageChanged: (index) =>
-                        setState(() => _currentPage = index),
-                    loadingChild: Center(
-                      child: Image.asset("images/loading.gif"),
-                    ),
-                    pageOptions: list.map(
-                      (data) {
-                        return PhotoViewGalleryPageOptions(
-                          heroTag: data?.url,
-                          imageProvider: data != null
-                              ? CachedNetworkImageProvider(
+                  GestureDetector(
+                    onTap: () => setState(() => _showAppBar = !_showAppBar),
+                    child: PhotoViewGallery(
+                      pageController: _pageController,
+                      onPageChanged: (index) =>
+                          setState(() => _currentPage = index),
+                      loadingChild: Center(
+                        child: Image.asset("images/loading.gif"),
+                      ),
+                      pageOptions: list
+                          .map(
+                            (data) => PhotoViewGalleryPageOptions(
+                                  heroTag: data?.url,
+                                  imageProvider: data != null
+                                      ? CachedNetworkImageProvider(
 //                          data.url,
-                                  "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
-                                  headers: Map<String, String>()
-                                    ..["Referer"] = data.refer,
-                                )
-                              : AssetImage("images/loading.gif"),
-                          minScale: data != null ? 0.1 : 1.0,
-                          maxScale: data != null ? 5.0 : 1.0,
-                        );
-                      },
-                    ).toList(),
+                                          "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
+                                          headers: Map<String, String>()
+                                            ..["Referer"] = data.refer,
+                                        )
+                                      : AssetImage("images/loading.gif"),
+                                  minScale: data != null ? 0.1 : 1.0,
+                                  maxScale: data != null ? 5.0 : 1.0,
+                                ),
+                          )
+                          .toList(),
+                    ),
                   ),
 
                   // 标题栏
-                  CustomAppBar(
-                    title: Text(
-                      AppText.of(context).imageSet,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                    ),
-                    showShadowLine: false,
-                    color: Colors.transparent,
-                    leftBtn: IconButton(
-                      icon: Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                      ),
-                      onPressed: () => pop(context),
-                    ),
-                    rightBtns: <Widget>[
-                      IconButton(
+                  AnimatedOpacity(
+                    opacity: _showAppBar ? 1.0 : 0.0,
+                    duration: const Duration(milliseconds: 200),
+                    child: CustomAppBar(
+                      title: Text(""),
+                      showShadowLine: false,
+                      color: Colors.transparent,
+                      leftBtn: IconButton(
                         icon: Icon(
-                          isFav ? Icons.favorite : Icons.favorite_border,
-                          color: isFav ? Colors.red : Colors.white,
+                          Icons.arrow_back,
+                          color: Colors.white,
                         ),
-                        onPressed: () =>
-                            FavHolder().autoFav(list[_currentPage]),
+                        onPressed: () {
+                          if (!_showAppBar) return;
+
+                          pop(context);
+                        },
                       ),
-                    ],
+                      rightBtns: <Widget>[
+                        IconButton(
+                          icon: Icon(
+                            isFav ? Icons.favorite : Icons.favorite_border,
+                            color: isFav ? Colors.red : Colors.white,
+                          ),
+                          onPressed: () {
+                            if (!_showAppBar) return;
+
+                            FavHolder().autoFav(list[_currentPage]);
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               );

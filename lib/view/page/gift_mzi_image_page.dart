@@ -12,6 +12,7 @@ class GiftMziImagePage extends StatefulWidget {
 class GiftMziImageState extends PageState<GiftMziImagePage> {
   final MziData data;
   final GiftMziImageViewModel _viewModel;
+  final _scrollController = ScrollController();
 
   GiftMziImageState({@required this.data})
       : _viewModel = GiftMziImageViewModel(data: data);
@@ -26,6 +27,7 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
   @override
   void dispose() {
     _viewModel.dispose();
+    _scrollController.dispose();
 
     super.dispose();
   }
@@ -84,6 +86,7 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
                     crossAxisCount: 2,
                     mainAxisSpacing: 4,
                     crossAxisSpacing: 4,
+                    controller: _scrollController,
                     physics: const AlwaysScrollableScrollPhysics(
                         parent: const ClampingScrollPhysics()),
                     padding: const EdgeInsets.fromLTRB(2, 4, 2, 0),

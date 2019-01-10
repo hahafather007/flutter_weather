@@ -2,26 +2,24 @@ import 'package:flutter_weather/commom_import.dart';
 
 class ReadContentPage extends StatefulWidget {
   final String typeUrl;
-  final Function(Function retry) retryCallback;
 
-  ReadContentPage({@required this.typeUrl, @required this.retryCallback});
+  ReadContentPage({@required this.typeUrl});
 
   @override
   State createState() =>
-      ReadContentState(typeUrl: typeUrl, retryCallback: retryCallback);
+      ReadContentState(typeUrl: typeUrl);
 }
 
 /// 继承[AutomaticKeepAliveClientMixin]实现页面切换不被清理
 class ReadContentState extends PageState<ReadContentPage>
     with AutomaticKeepAliveClientMixin {
   final String typeUrl;
-  final Function(Function retry) retryCallback;
   final _viewModel = ReadViewModel();
 
   @override
   bool get wantKeepAlive => true;
 
-  ReadContentState({@required this.typeUrl, @required this.retryCallback});
+  ReadContentState({@required this.typeUrl});
 
   @override
   void initState() {
@@ -42,7 +40,7 @@ class ReadContentState extends PageState<ReadContentPage>
   void networkError() {
     super.networkError();
 
-    retryCallback(() => _viewModel.reload());
+
   }
 
   @override

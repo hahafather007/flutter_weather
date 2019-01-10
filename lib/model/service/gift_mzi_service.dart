@@ -26,12 +26,6 @@ class GiftMziService extends Service {
       final link = item.querySelector("a[href]").attributes["href"];
       final refer = "${dio.options.baseUrl}$url/";
 
-      debugPrint("width===>$imgWidth  height ===>$imgHeight");
-      debugPrint("=======>$imgUrl");
-      debugPrint("=======>$link");
-      debugPrint("=======>$refer");
-      debugPrint("-------------------");
-
       return MziData(
           url: imgUrl,
           link: link,

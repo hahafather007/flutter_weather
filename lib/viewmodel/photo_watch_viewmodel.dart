@@ -9,7 +9,7 @@ class PhotoWatchViewModel<T> extends ViewModel {
   PhotoWatchViewModel({@required Stream<List<MziData>> photoStream}) {
     favList.add(_favHolder.favMzis);
     bindSub(_favHolder.favMziStream.listen(favList.add));
-    bindSub(photoStream.listen((v) => data.add(v.toList())));
+    bindSub(photoStream.listen(data.add));
   }
 
   @override

@@ -16,65 +16,68 @@ class GiftState extends PageState<GiftPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scafKey,
-      appBar: CustomAppBar(
-        showShadowLine: false,
-        title: Text(
-          AppText.of(context).gift,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
+    return Column(
+      children: <Widget>[
+        CustomAppBar(
+          showShadowLine: false,
+          title: Text(
+            AppText.of(context).gift,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+            ),
           ),
-        ),
-        color: AppColor.colorMain,
-        leftBtn: IconButton(
-          icon: Icon(
-            Icons.menu,
-            color: Colors.white,
-          ),
-          onPressed: openDrawer,
-        ),
-      ),
-      body: DefaultTabController(
-        length: 6,
-        child: Container(
           color: AppColor.colorMain,
-          child: Column(
-            children: <Widget>[
-              TabBar(
-                labelColor: Colors.white,
-                indicatorColor: Colors.white,
-                isScrollable: true,
-                tabs: [
-                  Tab(text: AppText.of(context).mostHot),
-                  Tab(text: AppText.of(context).sexGirl),
-                  Tab(text: AppText.of(context).japanGirl),
-                  Tab(text: AppText.of(context).taiwanGirl),
-                  Tab(text: AppText.of(context).beachGirl),
-                  Tab(text: AppText.of(context).selfGirl),
-                ],
-              ),
-              Container(height: 1, color: AppColor.colorShadow),
-              Expanded(
-                child: Container(
-                  color: AppColor.colorRead,
-                  child: TabBarView(
-                    children: [
-                      GiftMziPage(typeUrl: "hot"),
-                      GiftMziPage(typeUrl: "xinggan"),
-                      GiftMziPage(typeUrl: "japan"),
-                      GiftMziPage(typeUrl: "taiwan"),
-                      GiftMziPage(typeUrl: "mm"),
-                      GiftMziPage(typeUrl: "share"),
+          leftBtn: IconButton(
+            icon: Icon(
+              Icons.menu,
+              color: Colors.white,
+            ),
+            onPressed: openDrawer,
+          ),
+        ),
+        Expanded(
+          child: DefaultTabController(
+            length: 6,
+            child: Container(
+              color: AppColor.colorMain,
+              child: Column(
+                children: <Widget>[
+                  TabBar(
+                    labelColor: Colors.white,
+                    indicatorColor: Colors.white,
+                    isScrollable: true,
+                    tabs: [
+                      Tab(text: AppText.of(context).mostHot),
+                      Tab(text: AppText.of(context).sexGirl),
+                      Tab(text: AppText.of(context).japanGirl),
+                      Tab(text: AppText.of(context).taiwanGirl),
+                      Tab(text: AppText.of(context).beachGirl),
+                      Tab(text: AppText.of(context).selfGirl),
                     ],
                   ),
-                ),
+                  Container(height: 1, color: AppColor.colorShadow),
+                  Expanded(
+                    child: Container(
+                      color: AppColor.colorRead,
+                      child: TabBarView(
+                        children: [
+                          GiftMziPage(typeUrl: "hot"),
+                          GiftMziPage(typeUrl: "xinggan"),
+                          GiftMziPage(typeUrl: "japan"),
+                          GiftMziPage(typeUrl: "taiwan"),
+                          GiftMziPage(typeUrl: "mm"),
+                          GiftMziPage(typeUrl: "share"),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }
