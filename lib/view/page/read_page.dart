@@ -1,19 +1,11 @@
 import 'package:flutter_weather/commom_import.dart';
 
 class ReadPage extends StatefulWidget {
-  final Function openDrawer;
-
-  ReadPage({@required this.openDrawer});
-
   @override
-  State createState() => ReadState(openDrawer: openDrawer);
+  State createState() => ReadState();
 }
 
 class ReadState extends PageState<ReadPage> {
-  final Function openDrawer;
-
-  ReadState({@required this.openDrawer});
-
   @override
   void initState() {
     super.initState();
@@ -38,7 +30,7 @@ class ReadState extends PageState<ReadPage> {
               Icons.menu,
               color: Colors.white,
             ),
-            onPressed: openDrawer,
+            onPressed: () => HomeDrawerController().openDrawer(),
           ),
         ),
         Expanded(

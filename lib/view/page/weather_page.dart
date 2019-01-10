@@ -1,21 +1,16 @@
 import 'package:flutter_weather/commom_import.dart';
 
 class WeatherPage extends StatefulWidget {
-  final Function openDrawer;
-
-  WeatherPage({@required this.openDrawer});
-
   @override
-  State createState() => WeatherState(openDrawer: openDrawer);
+  State createState() => WeatherState();
 }
 
 class WeatherState extends PageState<WeatherPage> {
-  final Function openDrawer;
   final _viewModel = WeatherViewModel();
 
   Timer _timer;
 
-  WeatherState({@required this.openDrawer});
+  WeatherState();
 
   @override
   void initState() {
@@ -83,7 +78,7 @@ class WeatherState extends PageState<WeatherPage> {
             Icons.menu,
             color: Colors.white,
           ),
-          onPressed: openDrawer,
+          onPressed: () => HomeDrawerController().openDrawer(),
         ),
         rightBtns: [
           IconButton(

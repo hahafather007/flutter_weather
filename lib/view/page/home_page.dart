@@ -6,9 +6,9 @@ class HomePage extends StatefulWidget {
 }
 
 class HomeState extends PageState<HomePage> {
-  WeatherPage _weatherPage;
-  GiftPage _girlPage;
-  ReadPage _readPage;
+  final _weatherPage = WeatherPage();
+  final _girlPage = GiftPage();
+  final _readPage = ReadPage();
 
   /// 标识有效页面
   final _pageTypeMap = Map<PageType, bool>();
@@ -22,14 +22,12 @@ class HomeState extends PageState<HomePage> {
 
     initToast(context);
 
-    _weatherPage = WeatherPage(openDrawer: () {
-      scafKey.currentState.openDrawer();
-    });
-    _girlPage = GiftPage(openDrawer: () {
-      scafKey.currentState.openDrawer();
-    });
-    _readPage = ReadPage(openDrawer: () {
-      scafKey.currentState.openDrawer();
+    HomeDrawerController().drawerStream.listen((open){
+      if(open){
+        scafKey.currentState.openDrawer();
+      }else{
+        pop(context);
+      }
     });
 
     // 让第一个页面生效
@@ -42,6 +40,7 @@ class HomeState extends PageState<HomePage> {
   void dispose() {
     disposeToast();
     FavHolder().dispose();
+    HomeDrawerController().dispose();
 
     super.dispose();
   }
@@ -209,4 +208,29 @@ enum PageType {
 
   /// 闲读页面
   READ,
+}
+
+class HomeDrawerController {
+  /// 使用单利模式管理
+  static final HomeDrawerController _controller =
+      HomeDrawerController._internal();
+
+  factory HomeDrawerController() => _controller;
+
+  final _drawerBroadcast = StreamController<bool>();
+  Stream<bool> drawerStream;
+
+  HomeDrawerController._internal() {
+    drawerStream = _drawerBroadcast.stream.asBroadcastStream();
+  }
+
+  /// 打开抽屉
+  void openDrawer() => _drawerBroadcast.add(true);
+
+  /// 挂壁抽屉
+  void closeDrawer() => _drawerBroadcast.add(false);
+
+  void dispose() {
+    _drawerBroadcast.close();
+  }
 }

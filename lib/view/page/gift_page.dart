@@ -1,19 +1,11 @@
 import 'package:flutter_weather/commom_import.dart';
 
 class GiftPage extends StatefulWidget {
-  final Function openDrawer;
-
-  GiftPage({@required this.openDrawer});
-
   @override
-  State createState() => GiftState(openDrawer: openDrawer);
+  State createState() => GiftState();
 }
 
 class GiftState extends PageState<GiftPage> {
-  final Function openDrawer;
-
-  GiftState({@required this.openDrawer});
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -33,7 +25,7 @@ class GiftState extends PageState<GiftPage> {
               Icons.menu,
               color: Colors.white,
             ),
-            onPressed: openDrawer,
+            onPressed: () => HomeDrawerController().openDrawer(),
           ),
         ),
         Expanded(
