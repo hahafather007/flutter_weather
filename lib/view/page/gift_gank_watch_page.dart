@@ -88,17 +88,22 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                       ),
                       pageOptions: list
                           .map(
-                            (data) => PhotoViewGalleryPageOptions(
-                                  heroTag: data?.url,
-                                  imageProvider: data != null
-                                      ? CachedNetworkImageProvider(
-                          data.url,
-//                                          "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
-                                          headers: Map<String, String>()
-                                            ..["Referer"] = data.refer,
-                                        )
-                                      : AssetImage("images/loading.gif"),
-                                ),
+                            (data) => data != null
+                                ? PhotoViewGalleryPageOptions(
+                                    heroTag: data.url,
+                                    imageProvider: CachedNetworkImageProvider(
+                                          data.url,
+//                                        "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg"
+                                    ),
+                                    minScale: 0.1,
+                                    maxScale: 5.0,
+                                  )
+                                : PhotoViewGalleryPageOptions(
+                                    imageProvider:
+                                        AssetImage("images/loading.gif"),
+                                    minScale: 1.0,
+                                    maxScale: 1.0,
+                                  ),
                           )
                           .toList(),
                     ),

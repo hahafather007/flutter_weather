@@ -80,14 +80,7 @@ class GiftMziState extends PageState<GiftMziPage> with MustKeepAliveMixin {
                           headers: headers,
                           url: data.url,
 //                          url:
-//                              "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
-                          placeholder: Center(
-                            child: Image.asset(
-                              "images/loading.gif",
-                              width: 20,
-                              height: 20,
-                            ),
-                          ),
+//                              "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg"
                         ),
                       ),
                       Padding(

@@ -32,7 +32,7 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
       @required this.length,
       @required this.photos,
       @required this.photoStream})
-      : _pageController = PageController(initialPage: index),
+      : _pageController = PageController(initialPage: index, keepPage: false),
         _viewModel = PhotoWatchViewModel(photoStream: photoStream),
         _currentPage = index;
 
@@ -83,17 +83,24 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
                       ),
                       pageOptions: list
                           .map(
-                            (data) => PhotoViewGalleryPageOptions(
-                                  heroTag: data?.url,
-                                  imageProvider: data != null
-                                      ? CachedNetworkImageProvider(
-                          data.url,
-//                                          "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
-                                          headers: Map<String, String>()
-                                            ..["Referer"] = data.refer,
-                                        )
-                                      : AssetImage("images/loading.gif"),
-                                ),
+                            (data) => data != null
+                                ? PhotoViewGalleryPageOptions(
+                                    heroTag: data.url,
+                                    imageProvider: CachedNetworkImageProvider(
+                                          data.url,
+//                                      "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
+                                      headers: Map<String, String>()
+                                        ..["Referer"] = data.refer,
+                                    ),
+                                    minScale: 0.1,
+                                    maxScale: 5.0,
+                                  )
+                                : PhotoViewGalleryPageOptions(
+                                    imageProvider:
+                                        AssetImage("images/loading.gif"),
+                                    minScale: 1.0,
+                                    maxScale: 1.0,
+                                  ),
                           )
                           .toList(),
                     ),

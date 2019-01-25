@@ -14,11 +14,9 @@ class GiftGankService extends Service {
     if (map["error"]) {
       throw DioError(message: "我也不知为什么，它就是出错了");
     } else {
-      final List list = map["results"];
-
-      return list
+      return (map["results"] as List)
           .map((v) =>
-              MziData(height: 16, width: 9, url: v["url"], isImages: false))
+              MziData(height: 459, width: 337, url: v["url"], isImages: false))
           .toList();
     }
   }
