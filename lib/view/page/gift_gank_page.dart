@@ -72,10 +72,7 @@ class GiftGankState extends PageState<GiftGankPage> with MustKeepAliveMixin {
                     aspectRatio: data.width / data.height,
                     child: Hero(
                       tag: data.url,
-                      child: NetImage(url: data.url
-//                          url:
-//                              "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg"
-                          ),
+                      child: NetImage(url: data.url),
                     ),
                   ),
                 );

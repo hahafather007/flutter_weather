@@ -68,12 +68,14 @@ export 'view/page/gift_mzi_watch_page.dart';
 export 'view/page/gift_mzi_image_page.dart';
 export 'view/page/gift_gank_page.dart';
 export 'view/page/gift_gank_watch_page.dart';
+export 'view/page/gift_egg_page.dart';
 
 export 'view/widget/custom_app_bar.dart';
 export 'view/widget/loading_view.dart';
 export 'view/widget/net_image.dart';
 
 export 'viewmodel/gift_mzi_viewmodel.dart';
+export 'viewmodel/gift_egg_viewmodel.dart';
 export 'viewmodel/read_viewmodel.dart';
 export 'viewmodel/viewmodel.dart';
 export 'viewmodel/weather_viewmodel.dart';

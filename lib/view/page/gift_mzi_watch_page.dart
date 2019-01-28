@@ -87,8 +87,7 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
                                 ? PhotoViewGalleryPageOptions(
                                     heroTag: data.url,
                                     imageProvider: CachedNetworkImageProvider(
-                                          data.url,
-//                                      "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg",
+                                      data.url,
                                       headers: Map<String, String>()
                                         ..["Referer"] = data.refer,
                                     ),

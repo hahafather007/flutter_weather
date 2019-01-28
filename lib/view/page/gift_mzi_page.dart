@@ -79,8 +79,6 @@ class GiftMziState extends PageState<GiftMziPage> with MustKeepAliveMixin {
                         child: NetImage(
                           headers: headers,
                           url: data.url,
-//                          url:
-//                              "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg"
                         ),
                       ),
                       Padding(

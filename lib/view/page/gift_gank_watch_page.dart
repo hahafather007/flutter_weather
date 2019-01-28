@@ -91,10 +91,8 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                             (data) => data != null
                                 ? PhotoViewGalleryPageOptions(
                                     heroTag: data.url,
-                                    imageProvider: CachedNetworkImageProvider(
-                                          data.url,
-//                                        "http://pic.sc.chinaz.com/files/pic/pic9/201610/apic23847.jpg"
-                                    ),
+                                    imageProvider:
+                                        CachedNetworkImageProvider(data.url),
                                     minScale: 0.1,
                                     maxScale: 5.0,
                                   )
