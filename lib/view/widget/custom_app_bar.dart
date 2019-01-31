@@ -87,7 +87,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           // 下面的阴影线
           Container(
-            color: AppColor.colorLine,
+            color: AppColor.colorLine2,
             height: showShadowLine ? 1 : 0,
           ),
         ],

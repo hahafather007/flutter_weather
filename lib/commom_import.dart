@@ -23,6 +23,7 @@ export 'package:share/share.dart';
 export 'package:flutter_advanced_networkimage/zoomable_widget.dart';
 export 'package:photo_view/photo_view_gallery.dart';
 export 'package:web_vuw/web_vuw.dart';
+export 'package:flutter_colorpicker/block_picker.dart';
 
 export 'common/colors.dart';
 export 'common/locations.dart';
