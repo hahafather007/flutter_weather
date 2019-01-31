@@ -18,12 +18,11 @@ export 'package:intl/intl_standalone.dart';
 export 'package:shared_preferences/shared_preferences.dart';
 export 'package:simple_permissions/simple_permissions.dart';
 export 'package:url_launcher/url_launcher.dart';
-export 'package:webview_flutter/webview_flutter.dart';
 export 'package:pull_to_refresh/pull_to_refresh.dart';
 export 'package:share/share.dart';
 export 'package:flutter_advanced_networkimage/zoomable_widget.dart';
-export 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 export 'package:photo_view/photo_view_gallery.dart';
+export 'package:web_vuw/web_vuw.dart';
 
 export 'common/colors.dart';
 export 'common/locations.dart';

@@ -21,14 +21,27 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
   final T favData;
   final WebViewModel _viewModel;
 
+  WebVuwController _controller;
+
   CustomWebViewState(
       {@required this.title, @required this.url, @required this.favData})
       : _viewModel = WebViewModel(favData: favData);
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.stopLoading();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return WebviewScaffold(
-      url: url,
+    return Scaffold(
       appBar: CustomAppBar(
         title: Text(
           title,
@@ -48,19 +61,46 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
           onPressed: () => pop(context),
         ),
         rightBtns: [
-          IconButton(
+          PopupMenuButton(
             icon: Icon(
-              Icons.open_in_new,
+              Icons.more_vert,
               color: Colors.white,
             ),
-            onPressed: () => openBrowser(url),
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.share,
-              color: Colors.white,
-            ),
-            onPressed: () => Share.share("$title\n$url"),
+            itemBuilder: (context) => <PopupMenuEntry>[
+                  PopupMenuItem(
+                    value: "refresh",
+                    child: Text(AppText.of(context).refresh),
+                  ),
+                  PopupMenuItem(
+                    value: "share",
+                    child: Text(AppText.of(context).share),
+                  ),
+                  PopupMenuItem(
+                    value: "copy",
+                    child: Text(AppText.of(context).copyUrl),
+                  ),
+                  PopupMenuItem(
+                    value: "openByOther",
+                    child: Text(AppText.of(context).openByOther),
+                  ),
+                ],
+            onSelected: (value) {
+              switch (value) {
+                case "refresh":
+                  _controller?.reload();
+                  break;
+                case "share":
+                  Share.share("$title\n$url");
+                  break;
+                case "copy":
+                  Clipboard.setData(ClipboardData(text: url));
+                  showToast(AppText.of(context).alreadyCopyUrl);
+                  break;
+                case "openByOther":
+                  openBrowser(url);
+                  break;
+              }
+            },
           ),
           StreamBuilder(
             stream: _viewModel.isFav.stream,
@@ -77,6 +117,18 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
             },
           ),
         ],
+      ),
+      body: LoadingView(
+        loadingStream: _viewModel.isLoading.stream,
+        child: WebVuw(
+          initialUrl: url,
+          pullToRefresh: false,
+          enableJavascript: false,
+          onWebViewCreated: (controller) {
+            _controller = controller;
+            _viewModel.bindEvent(controller.onEvents());
+          },
+        ),
       ),
     );
   }
