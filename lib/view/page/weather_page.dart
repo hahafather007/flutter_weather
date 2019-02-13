@@ -78,7 +78,8 @@ class WeatherState extends PageState<WeatherPage> {
             Icons.menu,
             color: Colors.white,
           ),
-          onPressed: () => HomeDrawerController().openDrawer(),
+          onPressed: () =>
+              EventSendHolder().sendEvent(tag: "homeDrawerOpen", event: true),
         ),
         rightBtns: [
           IconButton(

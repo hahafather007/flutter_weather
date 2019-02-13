@@ -7,10 +7,10 @@ class EventSendHolder {
   factory EventSendHolder() => _controller;
 
   final _eventBroadcast = StreamController<Pair<String, dynamic>>();
-  Stream<Pair<String, dynamic>> dateStream;
+  Stream<Pair<String, dynamic>> event;
 
   EventSendHolder._internal() {
-    dateStream = _eventBroadcast.stream.asBroadcastStream();
+    event = _eventBroadcast.stream.asBroadcastStream();
   }
 
   /// [tag]表示标识符

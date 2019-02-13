@@ -25,7 +25,8 @@ class GiftState extends PageState<GiftPage> {
               Icons.menu,
               color: Colors.white,
             ),
-            onPressed: () => HomeDrawerController().openDrawer(),
+            onPressed: () =>
+                EventSendHolder().sendEvent(tag: "homeDrawerOpen", event: true),
           ),
         ),
         Expanded(

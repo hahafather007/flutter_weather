@@ -30,7 +30,7 @@ class ReadState extends PageState<ReadPage> {
               Icons.menu,
               color: Colors.white,
             ),
-            onPressed: () => HomeDrawerController().openDrawer(),
+            onPressed: () => EventSendHolder().sendEvent(tag: "homeDrawerOpen", event: true),
           ),
         ),
         Expanded(

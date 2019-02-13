@@ -76,6 +76,8 @@ class SettingState extends PageState<SettingPage> {
                       FlatButton(
                         onPressed: () {
                           pop(context);
+                          EventSendHolder().sendEvent(
+                              tag: "themeChange", event: selectColor);
                           setState(() => AppColor.colorMain = selectColor);
                         },
                         child: Text("确定"),

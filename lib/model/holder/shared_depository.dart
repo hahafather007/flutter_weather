@@ -58,12 +58,29 @@ class SharedDepository {
   Future<bool> setFavMziData(String value) async =>
       await _prefs.setString("favMziData", value);
 
+  /// 当前主题色
+  Color get themeColor =>
+      Color(_getInt("themeColor", defaultValue: 0xff7DA743));
+
+  Future<bool> setThemeColor(Color color) async =>
+      await _prefs.setInt("themeColor", color.value);
+
   /// ==============================================
   ///                     分界线
   /// ==============================================
   /// 用带有默认值的形式获取prefs的数据
   String _getString(String key, {String defaultValue}) {
     final value = _prefs.getString(key);
+
+    if (value == null) {
+      return defaultValue;
+    }
+
+    return value;
+  }
+
+  int _getInt(String key, {int defaultValue}) {
+    final value = _prefs.getInt(key);
 
     if (value == null) {
       return defaultValue;

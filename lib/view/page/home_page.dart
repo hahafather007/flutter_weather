@@ -6,10 +6,6 @@ class HomePage extends StatefulWidget {
 }
 
 class HomeState extends PageState<HomePage> {
-  final _weatherPage = WeatherPage();
-  final _girlPage = GiftPage();
-  final _readPage = ReadPage();
-
   /// 标识有效页面
   final _pageTypeMap = Map<PageType, bool>();
 
@@ -22,13 +18,16 @@ class HomeState extends PageState<HomePage> {
 
     initToast(context);
 
-    HomeDrawerController().drawerStream.listen((open){
-      if(open){
+    bindSub(EventSendHolder()
+        .event
+        .where((pair) => pair.a == "homeDrawerOpen")
+        .listen((pair) {
+      if (pair.b) {
         scafKey.currentState.openDrawer();
-      }else{
+      } else {
         pop(context);
       }
-    });
+    }));
 
     // 让第一个页面生效
     _pageTypeMap[PageType.WEATHER] = true;
@@ -40,7 +39,6 @@ class HomeState extends PageState<HomePage> {
   void dispose() {
     disposeToast();
     FavHolder().dispose();
-    HomeDrawerController().dispose();
 
     super.dispose();
   }
@@ -132,7 +130,7 @@ class HomeState extends PageState<HomePage> {
           offstage: _pageType != PageType.WEATHER,
           child: TickerMode(
             enabled: _pageType == PageType.WEATHER,
-            child: _pageTypeMap[PageType.WEATHER] ? _weatherPage : Container(),
+            child: _pageTypeMap[PageType.WEATHER] ? WeatherPage() : Container(),
           ),
         ),
 
@@ -141,7 +139,7 @@ class HomeState extends PageState<HomePage> {
           offstage: _pageType != PageType.GIFT,
           child: TickerMode(
             enabled: _pageType == PageType.GIFT,
-            child: _pageTypeMap[PageType.GIFT] ? _girlPage : Container(),
+            child: _pageTypeMap[PageType.GIFT] ? GiftPage() : Container(),
           ),
         ),
 
@@ -150,7 +148,7 @@ class HomeState extends PageState<HomePage> {
           offstage: _pageType != PageType.READ,
           child: TickerMode(
             enabled: _pageType == PageType.READ,
-            child: _pageTypeMap[PageType.READ] ? _readPage : Container(),
+            child: _pageTypeMap[PageType.READ] ? ReadPage() : Container(),
           ),
         ),
       ],
@@ -208,29 +206,4 @@ enum PageType {
 
   /// 闲读页面
   READ,
-}
-
-class HomeDrawerController {
-  /// 使用单利模式管理
-  static final HomeDrawerController _controller =
-      HomeDrawerController._internal();
-
-  factory HomeDrawerController() => _controller;
-
-  final _drawerBroadcast = StreamController<bool>();
-  Stream<bool> drawerStream;
-
-  HomeDrawerController._internal() {
-    drawerStream = _drawerBroadcast.stream.asBroadcastStream();
-  }
-
-  /// 打开抽屉
-  void openDrawer() => _drawerBroadcast.add(true);
-
-  /// 挂壁抽屉
-  void closeDrawer() => _drawerBroadcast.add(false);
-
-  void dispose() {
-    _drawerBroadcast.close();
-  }
 }

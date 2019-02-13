@@ -40,6 +40,7 @@ export 'model/data/mixing.dart';
 
 export 'model/holder/fav_holder.dart';
 export 'model/holder/shared_depository.dart';
+export 'model/holder/event_send_holder.dart';
 
 export 'model/service/gift_egg_service.dart';
 export 'model/service/gift_mzi_service.dart';
