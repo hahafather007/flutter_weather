@@ -24,12 +24,12 @@ export 'package:flutter_advanced_networkimage/zoomable_widget.dart';
 export 'package:photo_view/photo_view_gallery.dart';
 export 'package:web_vuw/web_vuw.dart';
 export 'package:flutter_colorpicker/block_picker.dart';
+export 'package:path_provider/path_provider.dart';
 
 export 'common/colors.dart';
-export 'common/locations.dart';
 export 'common/stream_sub_controller.dart';
-export 'common/keys.dart';
 export 'common/keep_alive_mixin.dart';
+export 'common/cache_path.dart';
 
 export 'model/data/egg_data.dart';
 export 'model/data/mzi_data.dart';
@@ -53,6 +53,7 @@ export 'model/service/gift_gank_service.dart';
 export 'utils/channel_util.dart';
 export 'utils/system_util.dart';
 export 'utils/view_util.dart';
+export 'utils/byte_util.dart';
 
 export 'view/page/about_page.dart';
 export 'view/page/gift_mzi_page.dart';

@@ -16,7 +16,7 @@ class HomeState extends PageState<HomePage> {
   void initState() {
     super.initState();
 
-    initToast(context);
+    ToastUtil.initToast(context);
 
     bindSub(EventSendHolder()
         .event
@@ -37,7 +37,7 @@ class HomeState extends PageState<HomePage> {
 
   @override
   void dispose() {
-    disposeToast();
+    ToastUtil.disposeToast();
     FavHolder().dispose();
 
     super.dispose();
@@ -177,7 +177,9 @@ class HomeState extends PageState<HomePage> {
             children: <Widget>[
               Icon(
                 icon,
-                color: isTarget ? AppColor.colorMain : AppColor.colorText2,
+                color: isTarget
+                    ? Theme.of(context).accentColor
+                    : AppColor.colorText2,
               ),
               Container(
                 margin: const EdgeInsets.only(left: 30),
@@ -185,7 +187,8 @@ class HomeState extends PageState<HomePage> {
                   title,
                   style: TextStyle(
                     fontSize: 14,
-                    color: isTarget ? AppColor.colorMain : Colors.black,
+                    color:
+                        isTarget ? Theme.of(context).accentColor : Colors.black,
                   ),
                 ),
               ),

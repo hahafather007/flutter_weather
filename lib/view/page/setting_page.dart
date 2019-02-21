@@ -1,4 +1,5 @@
 import 'package:flutter_weather/commom_import.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -6,6 +7,11 @@ class SettingPage extends StatefulWidget {
 }
 
 class SettingState extends PageState<SettingPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +23,7 @@ class SettingState extends PageState<SettingPage> {
             fontSize: 20,
           ),
         ),
-        color: AppColor.colorMain,
+        color: Theme.of(context).accentColor,
         leftBtn: IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -44,7 +50,7 @@ class SettingState extends PageState<SettingPage> {
             title: "主题色",
             content: getThemeName(),
             onTap: () {
-              Color selectColor = AppColor.colorMain;
+              Color selectColor = Theme.of(context).accentColor;
               showDialog(
                 context: context,
                 builder: (context) {
@@ -64,7 +70,7 @@ class SettingState extends PageState<SettingPage> {
                           AppColor.pinkYarrow,
                           AppColor.niagara,
                         ],
-                        pickerColor: AppColor.colorMain,
+                        pickerColor: Theme.of(context).accentColor,
                         onColorChanged: (color) => selectColor = color,
                       ),
                     ),
@@ -76,9 +82,9 @@ class SettingState extends PageState<SettingPage> {
                       FlatButton(
                         onPressed: () {
                           pop(context);
-                          EventSendHolder().sendEvent(
-                              tag: "themeChange", event: selectColor);
-                          setState(() => AppColor.colorMain = selectColor);
+                          SharedDepository().setThemeColor(selectColor).then(
+                              (_) => EventSendHolder().sendEvent(
+                                  tag: "themeChange", event: selectColor));
                         },
                         child: Text("确定"),
                       ),
@@ -97,8 +103,8 @@ class SettingState extends PageState<SettingPage> {
           Container(height: 1, color: AppColor.colorLine2),
           _buildItem(
             title: "清除缓存",
-            content: "0 B",
-            onTap: () {},
+            content: ByteUtil.calculateSize(0),
+            onTap: () => imageCache.clear(),
           ),
         ],
       ),
@@ -112,7 +118,7 @@ class SettingState extends PageState<SettingPage> {
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
       child: Text(
         title,
-        style: TextStyle(fontSize: 14, color: AppColor.colorMain),
+        style: TextStyle(fontSize: 14, color: Theme.of(context).accentColor),
       ),
     );
   }
@@ -150,26 +156,28 @@ class SettingState extends PageState<SettingPage> {
 
   /// 获取主题名字
   String getThemeName() {
-    if (AppColor.colorMain == AppColor.lapisBlue) {
+    final color = Theme.of(context).accentColor;
+
+    if (color == AppColor.lapisBlue) {
       return "青石色";
-    } else if (AppColor.colorMain == AppColor.paleDogWood) {
+    } else if (color == AppColor.paleDogWood) {
       return "山茱萸";
-    } else if (AppColor.colorMain == AppColor.greenery) {
+    } else if (color == AppColor.greenery) {
       return "绿篱";
-    } else if (AppColor.colorMain == AppColor.primroseYellow) {
+    } else if (color == AppColor.primroseYellow) {
       return "樱草黄";
-    } else if (AppColor.colorMain == AppColor.flame) {
+    } else if (color == AppColor.flame) {
       return "烈焰红";
-    } else if (AppColor.colorMain == AppColor.islandParadise) {
+    } else if (color == AppColor.islandParadise) {
       return "天堂岛";
-    } else if (AppColor.colorMain == AppColor.kale) {
+    } else if (color == AppColor.kale) {
       return "甘蓝";
-    } else if (AppColor.colorMain == AppColor.pinkYarrow) {
+    } else if (color == AppColor.pinkYarrow) {
       return "粉蓍草";
-    } else if (AppColor.colorMain == AppColor.niagara) {
+    } else if (color == AppColor.niagara) {
       return "尼亚加拉";
     } else {
-      return "Fuck you!";
+      return "丢雷老母！";
     }
   }
 }

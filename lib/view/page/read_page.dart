@@ -24,7 +24,7 @@ class ReadState extends PageState<ReadPage> {
               fontSize: 20,
             ),
           ),
-          color: AppColor.colorMain,
+          color: Theme.of(context).accentColor,
           leftBtn: IconButton(
             icon: Icon(
               Icons.menu,
@@ -37,7 +37,7 @@ class ReadState extends PageState<ReadPage> {
           child: DefaultTabController(
             length: 9,
             child: Container(
-              color: AppColor.colorMain,
+              color: Theme.of(context).accentColor,
               child: Column(
                 children: <Widget>[
                   TabBar(

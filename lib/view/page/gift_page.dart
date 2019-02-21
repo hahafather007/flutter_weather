@@ -19,7 +19,7 @@ class GiftState extends PageState<GiftPage> {
               fontSize: 20,
             ),
           ),
-          color: AppColor.colorMain,
+          color: Theme.of(context).accentColor,
           leftBtn: IconButton(
             icon: Icon(
               Icons.menu,
@@ -33,7 +33,7 @@ class GiftState extends PageState<GiftPage> {
           child: DefaultTabController(
             length: 8,
             child: Container(
-              color: AppColor.colorMain,
+              color: Theme.of(context).accentColor,
               child: Column(
                 children: <Widget>[
                   TabBar(

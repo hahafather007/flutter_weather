@@ -10,9 +10,11 @@ class SplashState extends State<SplashPage> {
   void initState() {
     super.initState();
 
-    SharedDepository()
-        .initShared()
-        .then((_) => push(context, page: HomePage(), replace: true));
+    SharedDepository().initShared().then((_) {
+      EventSendHolder()
+          .sendEvent(tag: "themeChange", event: SharedDepository().themeColor);
+      push(context, page: HomePage(), replace: true);
+    });
   }
 
   @override

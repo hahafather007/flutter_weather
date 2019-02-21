@@ -48,31 +48,33 @@ void showDiffDialog(
   );
 }
 
-/// 显示toast
-void showToast(String msg) async {
-  if (msg == null) return;
+class ToastUtil {
+  static OverlayEntry _overlayEntry;
+  static OverlayState _overlayState;
+  static BuildContext _toastContext;
 
-  _overlayEntry?.remove();
-  _overlayEntry = null;
+  /// 显示toast
+  static void showToast(String msg) async {
+    if (msg == null) return;
 
-  _overlayState = Overlay.of(_toastContext);
-  _overlayEntry = OverlayEntry(
-      builder: (context) => LayoutBuilder(
-          builder: (context, constraints) => ToastView(msg: msg)));
+    _overlayEntry?.remove();
+    _overlayEntry = null;
 
-  _overlayState?.insert(_overlayEntry);
-}
+    _overlayState = Overlay.of(_toastContext);
+    _overlayEntry = OverlayEntry(
+        builder: (context) => LayoutBuilder(
+            builder: (context, constraints) => ToastView(msg: msg)));
 
-OverlayEntry _overlayEntry;
-OverlayState _overlayState;
-BuildContext _toastContext;
+    _overlayState?.insert(_overlayEntry);
+  }
 
-void initToast(BuildContext context) {
-  _toastContext = context;
-}
+  static void initToast(BuildContext context) {
+    _toastContext = context;
+  }
 
-void disposeToast() {
-  _toastContext = null;
+  static void disposeToast() {
+    _toastContext = null;
+  }
 }
 
 class ToastView extends StatefulWidget {
@@ -139,17 +141,17 @@ class ToastState extends PageState<ToastView> with TickerProviderStateMixin {
             opacity: _animation.value,
             child: _animation.value != 0
                 ? Material(
-              color: Color(0xdd444444),
-              borderRadius: BorderRadius.circular(24),
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(18, 12, 18, 12),
-                child: Text(
-                  msg,
-                  style: TextStyle(fontSize: 14, color: Colors.white),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            )
+                    color: Color(0xdd444444),
+                    borderRadius: BorderRadius.circular(24),
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(18, 12, 18, 12),
+                      child: Text(
+                        msg,
+                        style: TextStyle(fontSize: 14, color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  )
                 : Container(),
           );
         },
@@ -157,4 +159,3 @@ class ToastState extends PageState<ToastView> with TickerProviderStateMixin {
     );
   }
 }
-

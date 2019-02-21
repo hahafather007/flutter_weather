@@ -42,6 +42,7 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scafKey,
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
         title: Text(
@@ -53,7 +54,7 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
             fontSize: 16,
           ),
         ),
-        color: AppColor.colorMain,
+        color: Theme.of(context).accentColor,
         leftBtn: IconButton(
           icon: Icon(
             Icons.clear,
@@ -95,7 +96,9 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
                   break;
                 case "copy":
                   Clipboard.setData(ClipboardData(text: url));
-                  showToast(AppText.of(context).alreadyCopyUrl);
+                  scafKey.currentState.showSnackBar(SnackBar(
+                      content: Text(AppText.of(context).alreadyCopyUrl),
+                      duration: Duration(milliseconds: 2500)));
                   break;
                 case "openByOther":
                   openBrowser(url);
@@ -124,7 +127,7 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
         child: WebVuw(
           initialUrl: url,
           pullToRefresh: false,
-          enableJavascript: false,
+          enableJavascript: true,
           onWebViewCreated: (controller) {
             _controller = controller;
             _viewModel.bindEvent(controller.onEvents());

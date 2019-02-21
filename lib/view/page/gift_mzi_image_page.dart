@@ -43,7 +43,7 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
             fontSize: 20,
           ),
         ),
-        color: AppColor.colorMain,
+        color: Theme.of(context).accentColor,
         leftBtn: IconButton(
           icon: Icon(
             Icons.arrow_back,
