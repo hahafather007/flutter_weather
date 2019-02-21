@@ -65,6 +65,12 @@ class SharedDepository {
   Future<bool> setThemeColor(Color color) async =>
       await _prefs.setInt("themeColor", color.value);
 
+  /// 图片本地缓存目录
+  String get imgCachePath => _getString("imgCachePath");
+
+  Future<bool> setImgCachePath(String path) async =>
+      await _prefs.setString("imgCachePath", path);
+
   /// ==============================================
   ///                     分界线
   /// ==============================================

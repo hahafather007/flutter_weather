@@ -1,5 +1,4 @@
 import 'package:flutter_weather/commom_import.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -7,9 +6,18 @@ class SettingPage extends StatefulWidget {
 }
 
 class SettingState extends PageState<SettingPage> {
+  final _viewModel = SettingViewModel();
+
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _viewModel.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -32,81 +40,93 @@ class SettingState extends PageState<SettingPage> {
           onPressed: () => pop(context),
         ),
       ),
-      body: ListView(
-        physics: const AlwaysScrollableScrollPhysics(
-            parent: const ClampingScrollPhysics()),
-        children: <Widget>[
-          // 天气
-          _buildTitle(title: AppText.of(context).weather),
-          _buildItem(
-            title: "分享形式",
-            content: "仿锤子便签",
-            onTap: () {},
-          ),
+      body: LoadingView(
+        loadingStream: _viewModel.isLoading.stream,
+        child: StreamBuilder(
+          stream: _viewModel.cacheSize.stream,
+          builder: (context, snapshot) {
+            final cacheSize = snapshot.data ?? "正在计算...";
 
-          // 通用
-          _buildTitle(title: "通用"),
-          _buildItem(
-            title: "主题色",
-            content: getThemeName(),
-            onTap: () {
-              Color selectColor = Theme.of(context).accentColor;
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text("选择主题色"),
-                    content: Container(
-                      height: 180,
-                      child: BlockPicker(
-                        availableColors: [
-                          AppColor.lapisBlue,
-                          AppColor.paleDogWood,
-                          AppColor.greenery,
-                          AppColor.primroseYellow,
-                          AppColor.flame,
-                          AppColor.islandParadise,
-                          AppColor.kale,
-                          AppColor.pinkYarrow,
-                          AppColor.niagara,
-                        ],
-                        pickerColor: Theme.of(context).accentColor,
-                        onColorChanged: (color) => selectColor = color,
-                      ),
-                    ),
-                    actions: <Widget>[
-                      FlatButton(
-                        onPressed: () => pop(context),
-                        child: Text("取消"),
-                      ),
-                      FlatButton(
-                        onPressed: () {
-                          pop(context);
-                          SharedDepository().setThemeColor(selectColor).then(
-                              (_) => EventSendHolder().sendEvent(
-                                  tag: "themeChange", event: selectColor));
-                        },
-                        child: Text("确定"),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-          ),
-          Container(height: 1, color: AppColor.colorLine2),
-          _buildItem(
-            title: "模块管理",
-            content: "启用/关闭模块",
-            onTap: () {},
-          ),
-          Container(height: 1, color: AppColor.colorLine2),
-          _buildItem(
-            title: "清除缓存",
-            content: ByteUtil.calculateSize(0),
-            onTap: () => imageCache.clear(),
-          ),
-        ],
+            return ListView(
+              physics: const AlwaysScrollableScrollPhysics(
+                  parent: const ClampingScrollPhysics()),
+              children: <Widget>[
+                // 天气
+                _buildTitle(title: AppText.of(context).weather),
+                _buildItem(
+                  title: "分享形式",
+                  content: "仿锤子便签",
+                  onTap: () {},
+                ),
+
+                // 通用
+                _buildTitle(title: "通用"),
+                _buildItem(
+                  title: "主题色",
+                  content: getThemeName(),
+                  onTap: () {
+                    Color selectColor = Theme.of(context).accentColor;
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text("选择主题色"),
+                          content: Container(
+                            height: 180,
+                            child: BlockPicker(
+                              availableColors: [
+                                AppColor.lapisBlue,
+                                AppColor.paleDogWood,
+                                AppColor.greenery,
+                                AppColor.primroseYellow,
+                                AppColor.flame,
+                                AppColor.islandParadise,
+                                AppColor.kale,
+                                AppColor.pinkYarrow,
+                                AppColor.niagara,
+                              ],
+                              pickerColor: Theme.of(context).accentColor,
+                              onColorChanged: (color) => selectColor = color,
+                            ),
+                          ),
+                          actions: <Widget>[
+                            FlatButton(
+                              onPressed: () => pop(context),
+                              child: Text("取消"),
+                            ),
+                            FlatButton(
+                              onPressed: () {
+                                pop(context);
+                                SharedDepository()
+                                    .setThemeColor(selectColor)
+                                    .then((_) => EventSendHolder().sendEvent(
+                                        tag: "themeChange",
+                                        event: selectColor));
+                              },
+                              child: Text("确定"),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                ),
+                Container(height: 1, color: AppColor.colorLine2),
+                _buildItem(
+                  title: "模块管理",
+                  content: "启用/关闭模块",
+                  onTap: () {},
+                ),
+                Container(height: 1, color: AppColor.colorLine2),
+                _buildItem(
+                  title: "清除缓存",
+                  content: cacheSize,
+                  onTap: () => _viewModel.clearCache(),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
