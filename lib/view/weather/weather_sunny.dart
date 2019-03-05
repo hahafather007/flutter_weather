@@ -13,21 +13,16 @@ class WeatherSunny extends StatefulWidget {
 class WeatherSunnyState extends WeatherBase<WeatherSunny> {
   final Widget child;
 
-  WeatherSunnyState({@required this.child});
+  WeatherSunnyState({@required this.child})
+      : super(child: child, backColor: Colors.lightBlueAccent);
 
   @override
   Widget buildView() {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: <Widget>[
-        WaveView(
-          amplitude: 15,
-          color: Colors.white,
-          waveNum: 2,
-          height: 100,
-        ),
-        child,
-      ],
+    return WaveView(
+      amplitude: 15,
+      color: Colors.white,
+      waveNum: 2,
+      height: 100,
     );
   }
 }
