@@ -1,8 +1,3 @@
-export 'dart:async';
-export 'dart:convert';
-export 'dart:io';
-export 'dart:math';
-
 export 'package:cached_network_image/cached_network_image.dart';
 export 'package:connectivity/connectivity.dart';
 export 'package:device_info/device_info.dart';
@@ -76,6 +71,9 @@ export 'view/page/gift_egg_page.dart';
 export 'view/widget/custom_app_bar.dart';
 export 'view/widget/loading_view.dart';
 export 'view/widget/net_image.dart';
+export 'view/widget/wave_view.dart';
+
+export 'view/weather/weather_sunny.dart';
 
 export 'viewmodel/gift_mzi_viewmodel.dart';
 export 'viewmodel/gift_egg_viewmodel.dart';
@@ -87,3 +85,8 @@ export 'viewmodel/web_viewmodel.dart';
 export 'viewmodel/gift_mzi_image_viewmodel.dart';
 export 'viewmodel/gift_gank_viewmodel.dart';
 export 'viewmodel/setting_viewmodel.dart';
+
+export 'dart:async';
+export 'dart:convert';
+export 'dart:io';
+export 'dart:math';

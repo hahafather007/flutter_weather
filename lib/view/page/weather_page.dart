@@ -50,12 +50,6 @@ class WeatherState extends PageState<WeatherPage> {
 
   @override
   Widget build(BuildContext context) {
-    // 天气详情的高度
-    final contentHeight = getScreenHeight(context) -
-        getSysStatsHeight(context) -
-        AppBar().preferredSize.height -
-        110;
-
     return Scaffold(
       key: scafKey,
       appBar: CustomAppBar(
@@ -106,14 +100,16 @@ class WeatherState extends PageState<WeatherPage> {
                 padding: const EdgeInsets.only(),
                 children: <Widget>[
                   // 上半部分天气详情
-                  Container(
-                    height: contentHeight,
-                    alignment: Alignment.topCenter,
-                    padding: const EdgeInsets.only(top: 56),
-                    color: Colors.lightBlueAccent,
-                    child: _buildContent(
-                        now: data != null ? data.now : null,
-                        daily: data != null ? data.dailyForecast.first : null),
+                  WeatherSunny(
+                    key: Key(data.hashCode.toString()),
+                    child: Container(
+                      alignment: Alignment.topCenter,
+                      padding: const EdgeInsets.only(top: 56),
+                      child: _buildContent(
+                          now: data != null ? data.now : null,
+                          daily:
+                              data != null ? data.dailyForecast.first : null),
+                    ),
                   ),
 
                   // 横向滚动显示每小时天气
