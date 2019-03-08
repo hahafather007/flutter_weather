@@ -84,36 +84,40 @@ class _WaveState extends State<WaveView> with TickerProviderStateMixin {
             ? _controller.value
             : -_controller.value;
 
-        return Stack(
-          children: <Widget>[
-            // 波浪
-            CustomPaint(
-              size: Size(width ?? double.infinity, height ?? double.infinity),
-              painter: WavePainter(amplitude, offsetX, color, waveNum),
-            ),
-
-            // 浮动的图片
-            Positioned(
-              child: Transform.rotate(
-                angle: -cos(2 * pi * screenWidth -
-                        120 / screenWidth +
-                        offsetX * 2 * pi) /
-                    4,
-                child: Image.asset(
-                  "images/ic_boat_day.png",
-                  width: 60,
-                  height: 18,
-                ),
+        return Container(
+          height: height + 20,
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: <Widget>[
+              // 波浪
+              CustomPaint(
+                size: Size(width ?? double.infinity, height ?? double.infinity),
+                painter: WavePainter(amplitude, offsetX, color, waveNum),
               ),
-              right: 120,
-              bottom: amplitude *
-                      sin(2 * pi * screenWidth -
+
+              // 浮动的图片
+              Positioned(
+                child: Transform.rotate(
+                  angle: -cos(2 * pi * screenWidth -
                           120 / screenWidth +
-                          offsetX * 2 * pi) +
-                  height -
-                  amplitude,
-            ),
-          ],
+                          offsetX * 2 * pi) /
+                      4,
+                  child: Image.asset(
+                    "images/ic_boat_day.png",
+                    width: 60,
+                    height: 18,
+                  ),
+                ),
+                right: 120,
+                bottom: amplitude *
+                        sin(2 * pi * screenWidth -
+                            120 / screenWidth +
+                            offsetX * 2 * pi) +
+                    height -
+                    amplitude,
+              ),
+            ],
+          ),
         );
       },
     );
