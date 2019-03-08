@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_weather/commom_import.dart';
 import 'dart:math';
 import 'dart:ui';
 
@@ -24,12 +24,12 @@ class WaveView extends StatefulWidget {
 
   WaveView(
       {@required this.amplitude,
-        @required this.color,
-        this.width,
-        this.height,
-        this.cycle = 4000,
-        this.direction = WaveDirection.RIGHT,
-        this.waveNum = 1})
+      @required this.color,
+      this.width,
+      this.height,
+      this.cycle = 4000,
+      this.direction = WaveDirection.RIGHT,
+      this.waveNum = 1})
       : assert(height != null || width != null);
 
   @override
@@ -75,6 +75,8 @@ class _WaveState extends State<WaveView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = getScreenWidth(context);
+
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
@@ -82,9 +84,36 @@ class _WaveState extends State<WaveView> with TickerProviderStateMixin {
             ? _controller.value
             : -_controller.value;
 
-        return CustomPaint(
-          size: Size(width ?? double.infinity, height ?? double.infinity),
-          painter: WavePainter(amplitude, offsetX, color, waveNum),
+        return Stack(
+          children: <Widget>[
+            // 波浪
+            CustomPaint(
+              size: Size(width ?? double.infinity, height ?? double.infinity),
+              painter: WavePainter(amplitude, offsetX, color, waveNum),
+            ),
+
+            // 浮动的图片
+            Positioned(
+              child: Transform.rotate(
+                angle: -cos(2 * pi * screenWidth -
+                        120 / screenWidth +
+                        offsetX * 2 * pi) /
+                    4,
+                child: Image.asset(
+                  "images/ic_boat_day.png",
+                  width: 60,
+                  height: 18,
+                ),
+              ),
+              right: 120,
+              bottom: amplitude *
+                      sin(2 * pi * screenWidth -
+                          120 / screenWidth +
+                          offsetX * 2 * pi) +
+                  height -
+                  amplitude,
+            ),
+          ],
         );
       },
     );

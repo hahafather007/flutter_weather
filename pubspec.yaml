@@ -119,6 +119,15 @@ flutter:
     - images/air_soft_8.png
     - images/drawer_bg.png
     - images/loading.gif
+    - images/ic_boat_day.png
+    - images/ic_boat_night.png
+    - images/ic_cloud.png
+    - images/ic_fog_ground.png
+    - images/ic_hail_ground.png
+    - images/ic_haze_ground.png
+    - images/ic_rain_ground.png
+    - images/ic_sanstorm_ground.png
+    - images/ic_snow_ground.png
 
     # json文件
     - jsons/weather_map.json
