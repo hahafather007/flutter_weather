@@ -37,9 +37,7 @@ class GiftGankViewModel extends ViewModel {
       doError(e);
     } finally {
       selfLoading = false;
-      if (!isLoading.isClosed) {
-        isLoading.add(false);
-      }
+      isLoading.add(false);
     }
   }
 

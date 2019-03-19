@@ -31,7 +31,6 @@ class GiftMziImageViewModel extends ViewModel {
       for (int i = 1; i <= length; i++) {
         list.add(await _service.getData(link: data.link, index: i));
 
-        if (this.data.isClosed) return;
         this.data.add(list);
         _photoData.add(list);
       }

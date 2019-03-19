@@ -68,7 +68,7 @@ class WeatherViewModel extends ViewModel {
     } finally {
       selfLoading = false;
 
-      if (!isRefresh && !isLoading.isClosed) {
+      if (!isRefresh) {
         isLoading.add(false);
       }
     }

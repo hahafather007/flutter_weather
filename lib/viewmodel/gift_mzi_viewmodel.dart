@@ -36,9 +36,7 @@ class GiftMziViewModel extends ViewModel {
       doError(e);
     } finally {
       selfLoading = false;
-      if (!isLoading.isClosed) {
-        isLoading.add(false);
-      }
+      isLoading.add(false);
     }
   }
 
