@@ -23,6 +23,8 @@ class WeatherSunnyState extends WeatherBase<WeatherSunny> {
       color: Colors.white,
       waveNum: 2,
       height: 100,
+      imgUrl: "images/ic_boat_day.png",
+      imgSize:Size(60, 18),
     );
   }
 }

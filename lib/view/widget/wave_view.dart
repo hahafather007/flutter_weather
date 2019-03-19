@@ -18,6 +18,14 @@ class WaveView extends StatefulWidget {
   /// 波浪方向
   final WaveDirection direction;
 
+  /// 随着波浪起伏的图片地址
+  final String imgUrl;
+
+  final Size imgSize;
+
+  /// 图片距离右边屏幕的距离
+  final double imgRight;
+
   final double height;
 
   final double width;
@@ -25,44 +33,29 @@ class WaveView extends StatefulWidget {
   WaveView(
       {@required this.amplitude,
       @required this.color,
+      this.imgUrl,
+      this.imgSize = const Size(60, 18),
       this.width,
       this.height,
+      this.imgRight = 80,
       this.cycle = 4000,
       this.direction = WaveDirection.RIGHT,
       this.waveNum = 1})
       : assert(height != null || width != null);
 
   @override
-  State createState() =>
-      _WaveState(amplitude, color, width, height, cycle, direction, waveNum);
+  State createState() => _WaveState();
 }
 
 class _WaveState extends State<WaveView> with TickerProviderStateMixin {
-  final double amplitude;
-
-  final Color color;
-
-  final int waveNum;
-
-  final int cycle;
-
-  final WaveDirection direction;
-
-  final double height;
-
-  final double width;
-
   AnimationController _controller;
-
-  _WaveState(this.amplitude, this.color, this.width, this.height, this.cycle,
-      this.direction, this.waveNum);
 
   @override
   void initState() {
     super.initState();
 
     _controller = AnimationController(
-        vsync: this, duration: Duration(milliseconds: cycle))
+        vsync: this, duration: Duration(milliseconds: widget.cycle))
       ..repeat();
   }
 
@@ -75,47 +68,65 @@ class _WaveState extends State<WaveView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = getScreenWidth(context);
+    final width = widget.width ?? getScreenWidth(context);
+    final cosHeight = widget.amplitude * (2 * pi) / width;
 
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
-        final offsetX = direction == WaveDirection.LEFT
+        final offsetX = widget.direction == WaveDirection.LEFT
             ? _controller.value
             : -_controller.value;
 
         return Container(
-          height: height + 20,
+          height: widget.height + 20,
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: <Widget>[
               // 波浪
               CustomPaint(
-                size: Size(width ?? double.infinity, height ?? double.infinity),
-                painter: WavePainter(amplitude, offsetX, color, waveNum),
+                size: Size(width, widget.height ?? double.infinity),
+                painter: WavePainter(
+                    widget.amplitude, offsetX, widget.color, widget.waveNum),
               ),
 
               // 浮动的图片
-              Positioned(
-                child: Transform.rotate(
-                  angle: -cos(2 * pi * screenWidth -
-                          120 / screenWidth +
-                          offsetX * 2 * pi) /
-                      4,
-                  child: Image.asset(
-                    "images/ic_boat_day.png",
-                    width: 60,
-                    height: 18,
-                  ),
-                ),
-                right: 120,
-                bottom: amplitude *
-                        sin(2 * pi * screenWidth -
-                            120 / screenWidth +
-                            offsetX * 2 * pi) +
-                    height -
-                    amplitude,
-              ),
+              widget.imgUrl != null
+                  ? Positioned(
+                      child: Transform.rotate(
+                        angle: _getSinY(
+                                width -
+                                    widget.imgRight -
+                                    widget.imgSize.width / 2,
+                                width,
+                                offsetX + 0.25) *
+                            cosHeight,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Image.asset(
+                              widget.imgUrl,
+                              width: widget.imgSize.width,
+                              height: widget.imgSize.height,
+                            ),
+                            Container(height: widget.imgSize.height),
+                          ],
+                        ),
+                      ),
+                      right: widget.imgRight,
+                      bottom: widget.height -
+                          widget.amplitude *
+                              (1 +
+                                  _getSinY(
+                                      width -
+                                          widget.imgRight -
+                                          widget.imgSize.width / 2,
+                                      width,
+                                      offsetX)) -
+                          widget.imgSize.height,
+                    )
+                  : Container(),
             ],
           ),
         );
@@ -128,6 +139,21 @@ class _WaveState extends State<WaveView> with TickerProviderStateMixin {
 enum WaveDirection {
   LEFT,
   RIGHT,
+}
+
+/// 缓存的Y轴点
+final _sinCache = Map<double, double>();
+
+/// 获得y轴坐标
+double _getSinY(double xPoint, double width, double xOffset) {
+  final x = (xPoint + xOffset * width).roundToDouble();
+
+  // 自动判断是否需要重新计算缓存点，节约开销
+  if (_sinCache[x] == null) {
+    _sinCache[x] = sin(2 * pi * x / width);
+  }
+
+  return _sinCache[x];
 }
 
 class WavePainter extends CustomPainter {
@@ -143,14 +169,8 @@ class WavePainter extends CustomPainter {
   /// 波浪的数量
   final int waveNum;
 
-  /// 缓存的Y轴点
-  final _sinCache = Map<double, double>();
-
   /// 每个绘制线条的透明度
   final _opacityCache = Map<double, double>();
-
-  /// 每一层波浪的偏移量
-  final _waveOffsets = Map<int, double>();
 
   /// y轴的中心点
   double _centerY;
@@ -171,29 +191,15 @@ class WavePainter extends CustomPainter {
         if (_opacityCache[i] == null) {
           _opacityCache[i] = (i / size.width) * 0.8 + 0.1;
         }
-
         paint.color = color.withOpacity(_opacityCache[i]);
 
-        if (_waveOffsets[index] == null) {
-          _waveOffsets[index] = index / waveNum / 2 * size.width;
-        }
+        final _waveOffset = (index / waveNum / 2 * size.width).roundToDouble();
+        final sinY = amplitude * _getSinY(i + _waveOffset, size.width, offsetX);
+
         canvas.drawLine(
-            Offset(i, size.height),
-            Offset(i, _getSinY(i + _waveOffsets[index], size.width) + _centerY),
-            paint);
+            Offset(i, size.height), Offset(i, sinY + _centerY), paint);
       }
     });
-  }
-
-  /// 获得y轴坐标
-  double _getSinY(double xPoint, double width) {
-    // 自动判断是否需要重新计算缓存点，节约开销
-    if (_sinCache[xPoint] == null) {
-      _sinCache[xPoint] =
-          amplitude * sin(2 * pi * xPoint / width + offsetX * 2 * pi);
-    }
-
-    return _sinCache[xPoint];
   }
 
   @override
@@ -203,11 +209,8 @@ class WavePainter extends CustomPainter {
       _sinCache.clear();
     }
 
-    final waveNumChange = waveNum != oldDelegate.waveNum;
-    if (waveNumChange) {
-      _waveOffsets.clear();
-    }
-
-    return ampChange || offsetX != oldDelegate.offsetX || waveNumChange;
+    return ampChange ||
+        offsetX != oldDelegate.offsetX ||
+        waveNum != oldDelegate.waveNum;
   }
 }
