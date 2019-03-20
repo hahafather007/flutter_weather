@@ -1,6 +1,7 @@
 import 'package:flutter_weather/commom_import.dart';
 
-abstract class WeatherBase<T extends StatefulWidget> extends State {
+abstract class WeatherBase<T extends StatefulWidget> extends State<T>
+    with TickerProviderStateMixin {
   final Widget child;
   final Color backColor;
 

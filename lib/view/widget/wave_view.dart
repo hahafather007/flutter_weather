@@ -6,6 +6,9 @@ class WaveView extends StatefulWidget {
   /// 振幅
   final double amplitude;
 
+  /// 振幅显示的百分比
+  final double amplitudePercent;
+
   /// 波浪颜色
   final Color color;
 
@@ -34,6 +37,7 @@ class WaveView extends StatefulWidget {
       {@required this.amplitude,
       @required this.color,
       this.imgUrl,
+      this.amplitudePercent = 1,
       this.imgSize = const Size(60, 18),
       this.width,
       this.height,
@@ -68,8 +72,16 @@ class _WaveState extends State<WaveView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    // widget宽和高
     final width = widget.width ?? getScreenWidth(context);
+    final height =
+        (widget.height ?? getScreenHeight(context)) - widget.imgSize.width / 2;
+    // cos对应2*pi长度时的高度
     final cosHeight = widget.amplitude * (2 * pi) / width;
+    // 小船吃水高度
+    const eatWater = 2;
+    // 小船的x坐标
+    final boatX = width - widget.imgRight - widget.imgSize.width / 2;
 
     return AnimatedBuilder(
       animation: _controller,
@@ -79,28 +91,34 @@ class _WaveState extends State<WaveView> with TickerProviderStateMixin {
             : -_controller.value;
 
         return Container(
-          height: widget.height + 20,
+          height: height + widget.imgSize.height,
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: <Widget>[
-              // 波浪
-              CustomPaint(
-                size: Size(width, widget.height ?? double.infinity),
-                painter: WavePainter(
-                    widget.amplitude, offsetX, widget.color, widget.waveNum),
-              ),
+              widget.waveNum > 1
+                  ? Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: List.generate(
+                          widget.waveNum - 1,
+                          (index) => CustomPaint(
+                                size: Size(width, height),
+                                painter: WavePainter(
+                                    widget.amplitude,
+                                    widget.amplitudePercent,
+                                    offsetX,
+                                    widget.color,
+                                    widget.waveNum,
+                                    index + 1),
+                              )),
+                    )
+                  : Container(),
 
               // 浮动的图片
               widget.imgUrl != null
                   ? Positioned(
                       child: Transform.rotate(
-                        angle: _getSinY(
-                                width -
-                                    widget.imgRight -
-                                    widget.imgSize.width / 2,
-                                width,
-                                offsetX + 0.25) *
-                            cosHeight,
+                        angle:
+                            _getSinY(boatX, width, offsetX + 0.25) * cosHeight,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
@@ -115,18 +133,22 @@ class _WaveState extends State<WaveView> with TickerProviderStateMixin {
                         ),
                       ),
                       right: widget.imgRight,
-                      bottom: widget.height -
+                      bottom: height -
                           widget.amplitude *
                               (1 +
-                                  _getSinY(
-                                      width -
-                                          widget.imgRight -
-                                          widget.imgSize.width / 2,
-                                      width,
-                                      offsetX)) -
-                          widget.imgSize.height,
+                                  widget.amplitudePercent *
+                                      _getSinY(boatX, width, offsetX)) -
+                          widget.imgSize.height -
+                          eatWater,
                     )
                   : Container(),
+
+              // 第一层波浪
+              CustomPaint(
+                size: Size(width, height),
+                painter: WavePainter(widget.amplitude, widget.amplitudePercent,
+                    offsetX, widget.color, widget.waveNum, 0),
+              ),
             ],
           ),
         );
@@ -160,6 +182,9 @@ class WavePainter extends CustomPainter {
   /// 振幅
   final double amplitude;
 
+  /// 振幅显示的百分比
+  final double amplitudePercent;
+
   /// 波浪颜色
   final Color color;
 
@@ -169,13 +194,17 @@ class WavePainter extends CustomPainter {
   /// 波浪的数量
   final int waveNum;
 
+  /// 第几条波浪
+  final int waveIndex;
+
   /// 每个绘制线条的透明度
   final _opacityCache = Map<double, double>();
 
   /// y轴的中心点
   double _centerY;
 
-  WavePainter(this.amplitude, this.offsetX, this.color, this.waveNum);
+  WavePainter(this.amplitude, this.amplitudePercent, this.offsetX, this.color,
+      this.waveNum, this.waveIndex);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -185,31 +214,34 @@ class WavePainter extends CustomPainter {
       ..strokeWidth = 1
       ..style = PaintingStyle.stroke;
 
-    List.generate(waveNum, (index) {
-      for (double i = 1; i <= size.width; i++) {
-        // 缓存线条透明度计算结果
-        if (_opacityCache[i] == null) {
-          _opacityCache[i] = (i / size.width) * 0.8 + 0.1;
-        }
-        paint.color = color.withOpacity(_opacityCache[i]);
+    final _waveOffset = (waveIndex / waveNum / 2 * size.width).roundToDouble();
 
-        final _waveOffset = (index / waveNum / 2 * size.width).roundToDouble();
-        final sinY = amplitude * _getSinY(i + _waveOffset, size.width, offsetX);
-
-        canvas.drawLine(
-            Offset(i, size.height), Offset(i, sinY + _centerY), paint);
+    for (double i = 1; i <= size.width; i++) {
+      // 缓存线条透明度计算结果
+      if (_opacityCache[i] == null) {
+        _opacityCache[i] = (i / size.width) * 0.8 + 0.1;
       }
-    });
+      paint.color = color.withOpacity(_opacityCache[i]);
+
+      final sinY = amplitude *
+          amplitudePercent *
+          _getSinY(i + _waveOffset, size.width, offsetX);
+
+      canvas.drawLine(
+          Offset(i, size.height), Offset(i, sinY + _centerY), paint);
+    }
   }
 
   @override
   bool shouldRepaint(WavePainter oldDelegate) {
     final ampChange = amplitude != oldDelegate.amplitude;
-    if (ampChange) {
+    final percentChange = amplitudePercent != oldDelegate.amplitudePercent;
+    if (ampChange || percentChange) {
       _sinCache.clear();
     }
 
     return ampChange ||
+        percentChange ||
         offsetX != oldDelegate.offsetX ||
         waveNum != oldDelegate.waveNum;
   }
