@@ -13,37 +13,30 @@ class GiftMziWatchPage extends StatefulWidget {
       @required this.photoStream});
 
   @override
-  State createState() => GiftMziWatchState(
-      index: index, length: length, photos: photos, photoStream: photoStream);
+  State createState() => GiftMziWatchState();
 }
 
 class GiftMziWatchState extends PageState<GiftMziWatchPage> {
-  final Stream<List<MziData>> photoStream;
-  final List<MziData> photos;
-  final int length;
-  final PageController _pageController;
-  final PhotoWatchViewModel _viewModel;
+  PageController _pageController;
+  PhotoWatchViewModel _viewModel;
 
   int _currentPage = 0;
   bool _showAppBar = false;
 
-  GiftMziWatchState(
-      {@required int index,
-      @required this.length,
-      @required this.photos,
-      @required this.photoStream})
-      : _pageController = PageController(initialPage: index, keepPage: false),
-        _viewModel = PhotoWatchViewModel(photoStream: photoStream),
-        _currentPage = index;
-
   @override
   void initState() {
     super.initState();
+
+    _currentPage = widget.index;
+    _pageController =
+        PageController(initialPage: _currentPage, keepPage: false);
+    _viewModel = PhotoWatchViewModel(photoStream: widget.photoStream);
   }
 
   @override
   void dispose() {
     _viewModel.dispose();
+    _pageController.dispose();
 
     super.dispose();
   }
@@ -55,10 +48,11 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
       body: StreamBuilder(
         stream: _viewModel.data.stream,
         builder: (context, snapshot) {
-          final List<MziData> list = (snapshot.data ?? photos).toList();
+          final List<MziData> list = (snapshot.data ?? widget.photos).toList();
 
-          if (list.length < length) {
-            list.addAll(List.generate(length - list.length, (_) => null));
+          if (list.length < widget.length) {
+            list.addAll(
+                List.generate(widget.length - list.length, (_) => null));
           }
 
           return StreamBuilder(

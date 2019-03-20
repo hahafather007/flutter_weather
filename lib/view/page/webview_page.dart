@@ -11,30 +11,24 @@ class CustomWebViewPage<T> extends StatefulWidget {
       {@required this.title, @required this.url, @required this.favData});
 
   @override
-  State createState() =>
-      CustomWebViewState(title: title, url: url, favData: favData);
+  State createState() => CustomWebViewState();
 }
 
 class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
-  final String title;
-  final String url;
-  final T favData;
-  final WebViewModel _viewModel;
-
+  WebViewModel _viewModel;
   WebVuwController _controller;
-
-  CustomWebViewState(
-      {@required this.title, @required this.url, @required this.favData})
-      : _viewModel = WebViewModel(favData: favData);
 
   @override
   void initState() {
     super.initState();
+
+    _viewModel = WebViewModel(favData: widget.favData);
   }
 
   @override
   void dispose() {
     _controller.stopLoading();
+    _viewModel.dispose();
 
     super.dispose();
   }
@@ -46,7 +40,7 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
         title: Text(
-          title,
+          widget.title,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
           style: TextStyle(
@@ -92,16 +86,16 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
                   _controller?.reload();
                   break;
                 case "share":
-                  Share.share("$title\n$url");
+                  Share.share("${widget.title}\n${widget.url}");
                   break;
                 case "copy":
-                  Clipboard.setData(ClipboardData(text: url));
+                  Clipboard.setData(ClipboardData(text: widget.url));
                   scafKey.currentState.showSnackBar(SnackBar(
                       content: Text(AppText.of(context).alreadyCopyUrl),
                       duration: Duration(milliseconds: 2500)));
                   break;
                 case "openByOther":
-                  openBrowser(url);
+                  openBrowser(widget.url);
                   break;
               }
             },
@@ -116,7 +110,7 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
                   isFav ? Icons.favorite : Icons.favorite_border,
                   color: isFav ? Colors.red : Colors.white,
                 ),
-                onPressed: () => FavHolder().autoFav(favData),
+                onPressed: () => FavHolder().autoFav(widget.favData),
               );
             },
           ),
@@ -125,7 +119,7 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
       body: LoadingView(
         loadingStream: _viewModel.isLoading.stream,
         child: WebVuw(
-          initialUrl: url,
+          initialUrl: widget.url,
           pullToRefresh: false,
           enableJavascript: true,
           onWebViewCreated: (controller) {

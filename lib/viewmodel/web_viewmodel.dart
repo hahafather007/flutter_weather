@@ -5,7 +5,7 @@ class WebViewModel<T> extends ViewModel {
 
   final isFav = StreamController<bool>();
 
-  List<String> openingUrls = List();
+  int openingNum = 0;
 
   WebViewModel({@required T favData}) {
     isFav.add(_favHolder.isFavorite(favData));
@@ -20,13 +20,16 @@ class WebViewModel<T> extends ViewModel {
       switch (event["event"]) {
         case "onPageStarted":
           isLoading.add(true);
-          openingUrls.add(event["url"]);
+          openingNum++;
           break;
         case "onPageFinished":
-          openingUrls.remove(event["url"]);
-          if (openingUrls.isEmpty) {
+          openingNum--;
+          if (openingNum == 0) {
             isLoading.add(false);
           }
+          break;
+        case "shouldOverrideUrlLoading":
+          openingNum--;
           break;
       }
     }));
@@ -34,8 +37,6 @@ class WebViewModel<T> extends ViewModel {
 
   @override
   void dispose() {
-    openingUrls.clear();
-
     isFav.close();
 
     super.dispose();

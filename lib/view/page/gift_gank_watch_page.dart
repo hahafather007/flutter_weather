@@ -13,40 +13,30 @@ class GiftGankWatchPage extends StatefulWidget {
       @required this.loadDataFun});
 
   @override
-  State createState() => GiftGankWatchState(
-      index: index,
-      photos: photos,
-      photoStream: photoStream,
-      loadDataFun: loadDataFun);
+  State createState() => GiftGankWatchState();
 }
 
 class GiftGankWatchState extends PageState<GiftGankWatchPage> {
-  final Stream<List<MziData>> photoStream;
-  final List<MziData> photos;
-  final Function loadDataFun;
-  final PageController _pageController;
-  final PhotoWatchViewModel _viewModel;
+  PageController _pageController;
+  PhotoWatchViewModel _viewModel;
 
   int _currentPage = 0;
   bool _showAppBar = false;
 
-  GiftGankWatchState(
-      {@required int index,
-      @required this.photos,
-      @required this.photoStream,
-      @required this.loadDataFun})
-      : _pageController = PageController(initialPage: index),
-        _viewModel = PhotoWatchViewModel(photoStream: photoStream),
-        _currentPage = index;
-
   @override
   void initState() {
     super.initState();
+
+    _currentPage = widget.index;
+    _pageController =
+        PageController(initialPage: _currentPage, keepPage: false);
+    _viewModel = PhotoWatchViewModel(photoStream: widget.photoStream);
   }
 
   @override
   void dispose() {
     _viewModel.dispose();
+    _pageController.dispose();
 
     super.dispose();
   }
@@ -58,7 +48,7 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
       body: StreamBuilder(
         stream: _viewModel.data.stream,
         builder: (context, snapshot) {
-          final List<MziData> list = (snapshot.data ?? photos).toList();
+          final List<MziData> list = (snapshot.data ?? widget.photos).toList();
 
           list.addAll(List.generate(9999, (_) => null));
 
@@ -80,7 +70,7 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                       onPageChanged: (index) {
                         setState(() => _currentPage = index);
                         if (list[index] == null) {
-                          loadDataFun();
+                          widget.loadDataFun();
                         }
                       },
                       loadingChild: Center(

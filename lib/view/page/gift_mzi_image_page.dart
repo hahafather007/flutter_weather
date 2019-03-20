@@ -6,22 +6,18 @@ class GiftMziImagePage extends StatefulWidget {
   GiftMziImagePage({@required this.data});
 
   @override
-  State createState() => GiftMziImageState(data: data);
+  State createState() => GiftMziImageState();
 }
 
 class GiftMziImageState extends PageState<GiftMziImagePage> {
-  final MziData data;
-  final GiftMziImageViewModel _viewModel;
   final _scrollController = ScrollController();
-
-  GiftMziImageState({@required this.data})
-      : _viewModel = GiftMziImageViewModel(data: data);
+  GiftMziImageViewModel _viewModel;
 
   @override
   void initState() {
     super.initState();
 
-    _viewModel.loadData(data: data);
+    _viewModel = GiftMziImageViewModel(data: widget.data)..loadData();
   }
 
   @override
@@ -62,7 +58,7 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
                   isFav ? Icons.favorite : Icons.favorite_border,
                   color: isFav ? Colors.red : Colors.white,
                 ),
-                onPressed: () => FavHolder().autoFav(data),
+                onPressed: () => FavHolder().autoFav(widget.data),
               );
             },
           ),
@@ -81,7 +77,7 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
                 final length = snapshot.data ?? 0;
 
                 return RefreshIndicator(
-                  onRefresh: () => _viewModel.loadData(data: data),
+                  onRefresh: () => _viewModel.loadData(),
                   child: StaggeredGridView.countBuilder(
                     crossAxisCount: 2,
                     mainAxisSpacing: 4,

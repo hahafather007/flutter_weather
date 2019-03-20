@@ -6,24 +6,21 @@ class GiftMziPage extends StatefulWidget {
   GiftMziPage({@required this.typeUrl});
 
   @override
-  State createState() => GiftMziState(typeUrl: typeUrl);
+  State createState() => GiftMziState();
 }
 
 class GiftMziState extends PageState<GiftMziPage> with MustKeepAliveMixin {
-  final String typeUrl;
   final _viewModel = GiftMziViewModel();
   final _scrollController = ScrollController();
 
   @override
   bool get wantKeepAlive => true;
 
-  GiftMziState({@required this.typeUrl});
-
   @override
   void initState() {
     super.initState();
 
-    _viewModel.init(typeUrl: typeUrl);
+    _viewModel.init(typeUrl: widget.typeUrl);
     _scrollController.addListener(() {
       // 滑到底部加载更多
       if (_scrollController.position.pixels ==

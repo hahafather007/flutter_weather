@@ -6,25 +6,22 @@ class ReadContentPage extends StatefulWidget {
   ReadContentPage({@required this.typeUrl});
 
   @override
-  State createState() => ReadContentState(typeUrl: typeUrl);
+  State createState() => ReadContentState();
 }
 
 /// 继承[MustKeepAliveMixin]实现页面切换不被清理
 class ReadContentState extends PageState<ReadContentPage>
     with MustKeepAliveMixin {
-  final String typeUrl;
   final _viewModel = ReadViewModel();
 
   @override
   bool get wantKeepAlive => true;
 
-  ReadContentState({@required this.typeUrl});
-
   @override
   void initState() {
     super.initState();
 
-    _viewModel.init(typeUrl: typeUrl);
+    _viewModel.init(typeUrl: widget.typeUrl);
     bindStreamOfViewModel(_viewModel);
   }
 

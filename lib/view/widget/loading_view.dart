@@ -9,20 +9,14 @@ class LoadingView extends StatefulWidget {
         super(key: key);
 
   @override
-  State createState() =>
-      LoadingState(child: child, loadingStream: loadingStream);
+  State createState() => LoadingState();
 }
 
 /// 带有圆形加载进度条的Stack
 class LoadingState extends PageState<LoadingView>
     with TickerProviderStateMixin {
-  final Widget child;
-  final Stream<bool> loadingStream;
-
   AnimationController _controller;
   Animation<Size> _animation;
-
-  LoadingState({@required this.child, @required this.loadingStream});
 
   @override
   void initState() {
@@ -34,7 +28,7 @@ class LoadingState extends PageState<LoadingView>
         .animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
     dismiss();
 
-    bindSub(loadingStream.listen((loading) {
+    bindSub(widget.loadingStream.listen((loading) {
       if (loading) {
         show();
       } else {
@@ -57,7 +51,7 @@ class LoadingState extends PageState<LoadingView>
     return Stack(
       alignment: Alignment.topCenter,
       children: <Widget>[
-        child,
+        widget.child,
         Container(
           margin: const EdgeInsets.only(top: 40),
           child: AnimatedBuilder(
