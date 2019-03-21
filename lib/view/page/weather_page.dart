@@ -97,8 +97,8 @@ class WeatherState extends PageState<WeatherPage> {
               builder: (context, snapshot) {
                 final WeatherAir air = snapshot.data;
 
-                return WeatherSunny(
-                  key: Key(data.hashCode.toString()),
+                return WeatherView(
+                  type: data?.now?.condTxt ?? "",
                   child: RefreshIndicator(
                     onRefresh: () => _viewModel.loadData(),
                     child: ListView(
@@ -114,7 +114,7 @@ class WeatherState extends PageState<WeatherPage> {
                               getSysStatsHeight(context) -
                               AppBar().preferredSize.height -
                               110,
-                          padding: const EdgeInsets.only(top: 56),
+                          padding: const EdgeInsets.only(top: 80),
                           child: _buildContent(
                               now: data != null ? data.now : null,
                               daily: data != null
@@ -422,11 +422,11 @@ class WeatherState extends PageState<WeatherPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "${now != null ? now.windSc : 0}${AppText.of(context).windSc}",
+                  "${now?.windSc ?? 0}${AppText.of(context).windSc}",
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
                 Text(
-                  "${now != null ? now.windDir : ""}",
+                  now?.windDir ?? "",
                   style: TextStyle(fontSize: 10, color: Colors.white),
                 ),
               ],

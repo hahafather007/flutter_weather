@@ -5,6 +5,8 @@ abstract class WeatherBase<T extends StatefulWidget> extends State<T>
   final Widget child;
   final Color backColor;
 
+  double _height;
+
   WeatherBase({@required this.child, @required this.backColor});
 
   @override
@@ -14,10 +16,7 @@ abstract class WeatherBase<T extends StatefulWidget> extends State<T>
       children: <Widget>[
         Container(
           color: backColor,
-          height: getScreenHeight(context) -
-              getSysStatsHeight(context) -
-              AppBar().preferredSize.height -
-              110,
+          height: fullHeight,
           alignment: Alignment.bottomCenter,
           child: buildView(),
         ),
@@ -26,6 +25,17 @@ abstract class WeatherBase<T extends StatefulWidget> extends State<T>
         child,
       ],
     );
+  }
+
+  double get fullHeight {
+    if (_height == null) {
+      _height = getScreenHeight(context) -
+          getSysStatsHeight(context) -
+          AppBar().preferredSize.height -
+          110;
+    }
+
+    return _height;
   }
 
   @protected

@@ -74,6 +74,8 @@ export 'view/widget/net_image.dart';
 export 'view/widget/wave_view.dart';
 
 export 'view/weather/weather_sunny.dart';
+export 'view/weather/weather_cloud.dart';
+export 'view/weather/weather_view.dart';
 
 export 'viewmodel/gift_mzi_viewmodel.dart';
 export 'viewmodel/gift_egg_viewmodel.dart';
