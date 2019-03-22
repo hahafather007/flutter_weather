@@ -13,17 +13,22 @@ class WeatherView extends StatefulWidget {
 class WeatherViewState extends State<WeatherView> {
   @override
   Widget build(BuildContext context) {
+    Widget weather;
+
     switch (widget.type) {
       case "多云":
-        return WeatherCloud(
-          key: Key("WeatherCloud${DateTime.now().millisecondsSinceEpoch}"),
-          child: widget.child,
-        );
+        weather = WeatherCloud();
+        break;
       default:
-        return WeatherSunny(
-          key: Key("WeatherSunny${DateTime.now().millisecondsSinceEpoch}"),
-          child: widget.child,
-        );
+        weather = WeatherSunny();
+        break;
     }
+
+    return Stack(
+      children: <Widget>[
+        weather,
+        widget.child,
+      ],
+    );
   }
 }

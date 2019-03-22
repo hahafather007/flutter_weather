@@ -2,17 +2,15 @@ import 'package:flutter_weather/commom_import.dart';
 import 'weather_base.dart';
 
 class WeatherSunny extends StatefulWidget {
-  final Widget child;
-
-  WeatherSunny({Key key, @required this.child}) : super(key: key);
+  WeatherSunny({
+    Key key,
+  }) : super(key: key);
 
   @override
-  State createState() => WeatherSunnyState(child: child);
+  State createState() => WeatherSunnyState();
 }
 
 class WeatherSunnyState extends WeatherBase<WeatherSunny> {
-  final Widget child;
-
   /// 小船动画
   AnimationController _boatController;
   Animation<double> _boatAnimation;
@@ -20,11 +18,10 @@ class WeatherSunnyState extends WeatherBase<WeatherSunny> {
   /// 太阳动画
   Animation<double> _sunAnimation;
 
-  WeatherSunnyState({@required this.child})
+  WeatherSunnyState()
       : super(
-            child: child,
             backColor: DateTime.now().hour >= 6 && DateTime.now().hour < 18
-                ? Colors.lightBlueAccent
+                ? Color(0xFF51C0F8)
                 : Color(0xFF7F9EE9));
 
   @override
@@ -38,8 +35,14 @@ class WeatherSunnyState extends WeatherBase<WeatherSunny> {
         .animate(CurvedAnimation(parent: _boatController, curve: Curves.ease));
     // 太阳动画结束位置根据时间变更
     // 6~18点为白天，18~第二天6点为夜晚
-    final sunEnd =
-        (getScreenWidth(context) - 78) * (DateTime.now().hour - 6) / 12 + 39;
+    int now = DateTime.now().hour;
+    if (now < 6) {
+      now += 24;
+      now -= 18;
+    } else {
+      now -= 6;
+    }
+    final sunEnd = (getScreenWidth(context) - 78) * now / 12 + 39;
     _sunAnimation = Tween(begin: 39.0, end: sunEnd)
         .animate(CurvedAnimation(parent: _boatController, curve: Curves.ease));
   }
@@ -110,7 +113,7 @@ class WeatherSunnyState extends WeatherBase<WeatherSunny> {
                   ),
                 ),
                 left: _sunAnimation.value - 19,
-                bottom: sin(pi * _sunAnimation.value / width) * 280,
+                bottom: sin(pi * _sunAnimation.value / width) * 265,
               );
             },
           ),

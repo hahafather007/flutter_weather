@@ -50,49 +50,49 @@ class WeatherState extends PageState<WeatherPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scafKey,
-      appBar: CustomAppBar(
-        title: StreamBuilder(
-          stream: _viewModel.city.stream,
-          builder: (context, snapshot) {
-            return Text(
-              snapshot.data ?? "",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-              ),
-            );
-          },
-        ),
-        color: Colors.lightBlueAccent,
-        showShadowLine: false,
-        leftBtn: IconButton(
-          icon: Icon(
-            Icons.menu,
-            color: Colors.white,
-          ),
-          onPressed: () =>
-              EventSendHolder().sendEvent(tag: "homeDrawerOpen", event: true),
-        ),
-        rightBtns: [
-          IconButton(
-            icon: Icon(
-              Icons.more_vert,
-              color: Colors.white,
-            ),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: LoadingView(
-        loadingStream: _viewModel.isLoading.stream,
-        child: StreamBuilder(
-          stream: _viewModel.weather.stream,
-          builder: (context, snapshot) {
-            final Weather data = snapshot.data;
+    return StreamBuilder(
+      stream: _viewModel.weather.stream,
+      builder: (context, snapshot) {
+        final Weather data = snapshot.data;
 
-            return StreamBuilder(
+        return Scaffold(
+          key: scafKey,
+          appBar: CustomAppBar(
+            title: StreamBuilder(
+              stream: _viewModel.city.stream,
+              builder: (context, snapshot) {
+                return Text(
+                  snapshot.data ?? "",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
+                );
+              },
+            ),
+            color: _getAppBarColor(type: data?.now?.condTxt ?? ""),
+            showShadowLine: false,
+            leftBtn: IconButton(
+              icon: Icon(
+                Icons.menu,
+                color: Colors.white,
+              ),
+              onPressed: () => EventSendHolder()
+                  .sendEvent(tag: "homeDrawerOpen", event: true),
+            ),
+            rightBtns: [
+              IconButton(
+                icon: Icon(
+                  Icons.more_vert,
+                  color: Colors.white,
+                ),
+                onPressed: () {},
+              ),
+            ],
+          ),
+          body: LoadingView(
+            loadingStream: _viewModel.isLoading.stream,
+            child: StreamBuilder(
               stream: _viewModel.air.stream,
               builder: (context, snapshot) {
                 final WeatherAir air = snapshot.data;
@@ -114,7 +114,7 @@ class WeatherState extends PageState<WeatherPage> {
                               getSysStatsHeight(context) -
                               AppBar().preferredSize.height -
                               110,
-                          padding: const EdgeInsets.only(top: 80),
+                          padding: const EdgeInsets.only(top: 60),
                           child: _buildContent(
                               now: data != null ? data.now : null,
                               daily: data != null
@@ -327,10 +327,10 @@ class WeatherState extends PageState<WeatherPage> {
                   ),
                 );
               },
-            );
-          },
-        ),
-      ),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -640,5 +640,17 @@ class WeatherState extends PageState<WeatherPage> {
         ],
       ),
     );
+  }
+
+  /// 获取Appbar的颜色
+  Color _getAppBarColor({@required String type}) {
+    final isDay = DateTime.now().hour >= 6 && DateTime.now().hour < 18;
+
+    switch (type) {
+      case "多云":
+        return isDay ? Color(0xFF51C0F8) : Color(0xFF7F9EE9);
+      default:
+        return isDay ? Color(0xFF51C0F8) : Color(0xFF7F9EE9);
+    }
   }
 }

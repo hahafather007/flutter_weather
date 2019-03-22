@@ -1,10 +1,8 @@
 import 'package:flutter_weather/commom_import.dart';
-import 'weather_base.dart';
 
 class WeatherCloud extends StatefulWidget {
-  final Widget child;
 
-  WeatherCloud({Key key, @required this.child}) : super(key: key);
+  WeatherCloud({Key key}) : super(key: key);
 
   @override
   State createState() => WeatherCloudState();
@@ -38,9 +36,9 @@ class WeatherCloudState extends PageState<WeatherCloud>
     _cloudAnimation = Tween(begin: 0.0, end: getScreenWidth(context) / 2)
         .animate(CurvedAnimation(parent: _cloudController, curve: Curves.ease));
     _cloudTopController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 3))
+        AnimationController(vsync: this, duration: const Duration(milliseconds: 2500))
           ..repeat(reverse: true);
-    _cloudTopAnimation = Tween(begin: 320.0, end: 310.0).animate(
+    _cloudTopAnimation = Tween(begin: 245.0, end: 240.0).animate(
         CurvedAnimation(parent: _cloudTopController, curve: Curves.easeOut));
   }
 
@@ -51,7 +49,7 @@ class WeatherCloudState extends PageState<WeatherCloud>
     return Stack(
       children: <Widget>[
         // 晴天
-        WeatherSunny(child: widget.child),
+        WeatherSunny(),
 
         // 白云
         AnimatedBuilder(
