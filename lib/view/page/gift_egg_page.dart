@@ -59,7 +59,6 @@ class GiftEggState extends PageState<GiftEggPage> with MustKeepAliveMixin {
                 final data = list[index];
 
                 return GestureDetector(
-                  key: Key(data.url),
                   onTap: () {
                     push(context,
                         page: GiftGankWatchPage(

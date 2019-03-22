@@ -59,15 +59,12 @@ class GiftGankState extends PageState<GiftGankPage> with MustKeepAliveMixin {
                 final data = list[index];
 
                 return GestureDetector(
-                  key: Key(data.url),
-                  onTap: () {
-                    push(context,
-                        page: GiftGankWatchPage(
-                            index: index,
-                            photos: list,
-                            photoStream: _viewModel.photoStream,
-                            loadDataFun: () => _viewModel.loadMore()));
-                  },
+                  onTap: () => push(context,
+                      page: GiftGankWatchPage(
+                          index: index,
+                          photos: list,
+                          photoStream: _viewModel.photoStream,
+                          loadDataFun: () => _viewModel.loadMore())),
                   child: AspectRatio(
                     aspectRatio: data.width / data.height,
                     child: Hero(

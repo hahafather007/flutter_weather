@@ -36,9 +36,9 @@ class WeatherCloudState extends PageState<WeatherCloud>
     _cloudAnimation = Tween(begin: 0.0, end: getScreenWidth(context) / 2)
         .animate(CurvedAnimation(parent: _cloudController, curve: Curves.ease));
     _cloudTopController =
-        AnimationController(vsync: this, duration: const Duration(milliseconds: 2500))
+        AnimationController(vsync: this, duration: const Duration(seconds: 2))
           ..repeat(reverse: true);
-    _cloudTopAnimation = Tween(begin: 245.0, end: 240.0).animate(
+    _cloudTopAnimation = Tween(begin: 245.0, end: 235.0).animate(
         CurvedAnimation(parent: _cloudTopController, curve: Curves.easeOut));
   }
 

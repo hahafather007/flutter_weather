@@ -94,7 +94,6 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
                       headers["Referer"] = data.refer;
 
                       return GestureDetector(
-                        key: Key(data.url),
                         onTap: () => push(context,
                             page: GiftMziWatchPage(
                                 index: index,

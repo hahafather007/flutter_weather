@@ -31,7 +31,7 @@ class NetImage extends StatelessWidget {
       imageUrl: url,
       height: height,
       width: width,
-      fadeInDuration: const Duration(microseconds: 300),
+      fadeInDuration: const Duration(milliseconds: 300),
       fit: BoxFit.cover,
       placeholder: placeholder ??
           Container(

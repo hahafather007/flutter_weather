@@ -39,6 +39,8 @@ class WeatherSunnyState extends WeatherBase<WeatherSunny> {
     if (now < 6) {
       now += 24;
       now -= 18;
+    } else if (now >= 18) {
+      now -= 18;
     } else {
       now -= 6;
     }
