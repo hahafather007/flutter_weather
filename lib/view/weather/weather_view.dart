@@ -1,4 +1,7 @@
 import 'package:flutter_weather/commom_import.dart';
+import 'weather_sunny.dart';
+import 'weather_cloud.dart';
+import 'weather_rain.dart';
 
 class WeatherView extends StatefulWidget {
   final String type;
@@ -15,13 +18,21 @@ class WeatherViewState extends State<WeatherView> {
   Widget build(BuildContext context) {
     Widget weather;
 
-    switch (widget.type) {
-      case "多云":
-        weather = WeatherCloud();
-        break;
-      default:
-        weather = WeatherSunny();
-        break;
+    final type = widget.type;
+    if (type.contains("晴")) {
+      weather = WeatherSunny();
+    } else if (type.contains("多云")) {
+      weather = WeatherCloud();
+    } else if (type.contains("雨")) {
+      if (type.contains("雪")) {
+        weather = WeatherRain(rain: true, snow: true);
+      } else {
+        weather = WeatherRain(rain: true, snow: false);
+      }
+    } else if (type.contains("雪")) {
+      weather = WeatherRain(rain: false, snow: false);
+    } else {
+      weather = WeatherRain(rain: true, snow: true);
     }
 
     return Stack(

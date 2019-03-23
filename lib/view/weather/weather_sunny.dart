@@ -13,10 +13,10 @@ class WeatherSunny extends StatefulWidget {
 class WeatherSunnyState extends WeatherBase<WeatherSunny> {
   /// 小船动画
   AnimationController _boatController;
-  Animation<double> _boatAnimation;
+  Animation<double> _boatAnim;
 
   /// 太阳动画
-  Animation<double> _sunAnimation;
+  Animation<double> _sunAnim;
 
   WeatherSunnyState()
       : super(
@@ -31,7 +31,7 @@ class WeatherSunnyState extends WeatherBase<WeatherSunny> {
     _boatController =
         AnimationController(vsync: this, duration: const Duration(seconds: 4))
           ..forward();
-    _boatAnimation = Tween(begin: 0.0, end: 1.0)
+    _boatAnim = Tween(begin: 0.0, end: 1.0)
         .animate(CurvedAnimation(parent: _boatController, curve: Curves.ease));
     // 太阳动画结束位置根据时间变更
     // 6~18点为白天，18~第二天6点为夜晚
@@ -45,7 +45,7 @@ class WeatherSunnyState extends WeatherBase<WeatherSunny> {
       now -= 6;
     }
     final sunEnd = (getScreenWidth(context) - 78) * now / 12 + 39;
-    _sunAnimation = Tween(begin: 39.0, end: sunEnd)
+    _sunAnim = Tween(begin: 39.0, end: sunEnd)
         .animate(CurvedAnimation(parent: _boatController, curve: Curves.ease));
   }
 
@@ -69,7 +69,7 @@ class WeatherSunnyState extends WeatherBase<WeatherSunny> {
         children: <Widget>[
           // 太阳
           AnimatedBuilder(
-            animation: _sunAnimation,
+            animation: _sunAnim,
             builder: (context, child) {
               return Positioned(
                 child: Container(
@@ -114,23 +114,23 @@ class WeatherSunnyState extends WeatherBase<WeatherSunny> {
                     ],
                   ),
                 ),
-                left: _sunAnimation.value - 19,
-                bottom: sin(pi * _sunAnimation.value / width) * 265,
+                left: _sunAnim.value - 19,
+                bottom: sin(pi * _sunAnim.value / width) * 265,
               );
             },
           ),
 
           // 波浪
           AnimatedBuilder(
-            animation: _boatAnimation,
+            animation: _boatAnim,
             builder: (context, child) {
               return WaveView(
                 amplitude: 15,
-                amplitudePercent: _boatAnimation.value,
+                amplitudePercent: _boatAnim.value,
                 color: isDay ? Colors.white : Color(0xE63A66CF),
                 waveNum: 2,
                 height: 120,
-                imgRight: 100 * _boatAnimation.value,
+                imgRight: 100 * _boatAnim.value,
                 imgUrl: "images/ic_boat_${isDay ? "day" : "night"}.png",
                 imgSize: const Size(60, 18),
               );

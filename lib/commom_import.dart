@@ -72,9 +72,9 @@ export 'view/widget/custom_app_bar.dart';
 export 'view/widget/loading_view.dart';
 export 'view/widget/net_image.dart';
 export 'view/widget/wave_view.dart';
+export 'view/widget/rain_view.dart';
+export 'view/widget/snow_view.dart';
 
-export 'view/weather/weather_sunny.dart';
-export 'view/weather/weather_cloud.dart';
 export 'view/weather/weather_view.dart';
 
 export 'viewmodel/gift_mzi_viewmodel.dart';

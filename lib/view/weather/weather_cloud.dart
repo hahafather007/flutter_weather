@@ -1,7 +1,7 @@
 import 'package:flutter_weather/commom_import.dart';
+import 'weather_sunny.dart';
 
 class WeatherCloud extends StatefulWidget {
-
   WeatherCloud({Key key}) : super(key: key);
 
   @override
@@ -12,11 +12,11 @@ class WeatherCloudState extends PageState<WeatherCloud>
     with TickerProviderStateMixin {
   /// 白云移动动画
   AnimationController _cloudController;
-  Animation<double> _cloudAnimation;
+  Animation<double> _cloudAnim;
 
   /// 白云上下动画
   AnimationController _cloudTopController;
-  Animation<double> _cloudTopAnimation;
+  Animation<double> _cloudTopAnim;
 
   @override
   void dispose() {
@@ -33,12 +33,12 @@ class WeatherCloudState extends PageState<WeatherCloud>
     _cloudController =
         AnimationController(vsync: this, duration: const Duration(seconds: 4))
           ..forward();
-    _cloudAnimation = Tween(begin: 0.0, end: getScreenWidth(context) / 2)
+    _cloudAnim = Tween(begin: 0.0, end: getScreenWidth(context) / 2)
         .animate(CurvedAnimation(parent: _cloudController, curve: Curves.ease));
     _cloudTopController =
         AnimationController(vsync: this, duration: const Duration(seconds: 2))
           ..repeat(reverse: true);
-    _cloudTopAnimation = Tween(begin: 245.0, end: 235.0).animate(
+    _cloudTopAnim = Tween(begin: 245.0, end: 235.0).animate(
         CurvedAnimation(parent: _cloudTopController, curve: Curves.easeOut));
   }
 
@@ -53,10 +53,10 @@ class WeatherCloudState extends PageState<WeatherCloud>
 
         // 白云
         AnimatedBuilder(
-          animation: _cloudAnimation,
+          animation: _cloudAnim,
           builder: (context, child) {
             return AnimatedBuilder(
-              animation: _cloudTopAnimation,
+              animation: _cloudTopAnim,
               builder: (context, child) {
                 return Positioned(
                   child: Opacity(
@@ -67,8 +67,8 @@ class WeatherCloudState extends PageState<WeatherCloud>
                       height: 80,
                     ),
                   ),
-                  bottom: _cloudTopAnimation.value,
-                  left: _cloudAnimation.value,
+                  bottom: _cloudTopAnim.value,
+                  left: _cloudAnim.value,
                 );
               },
             );

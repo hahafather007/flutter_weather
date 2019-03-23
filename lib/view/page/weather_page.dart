@@ -646,11 +646,12 @@ class WeatherState extends PageState<WeatherPage> {
   Color _getAppBarColor({@required String type}) {
     final isDay = DateTime.now().hour >= 6 && DateTime.now().hour < 18;
 
-    switch (type) {
-      case "多云":
-        return isDay ? Color(0xFF51C0F8) : Color(0xFF7F9EE9);
-      default:
-        return isDay ? Color(0xFF51C0F8) : Color(0xFF7F9EE9);
+    if (type.contains("晴") || type.contains("多云")) {
+      return isDay ? Color(0xFF51C0F8) : Color(0xFF7F9EE9);
+    } else if (type.contains("雨")) {
+      return Color(0xFF7187DB);
+    } else {
+      return isDay ? Color(0xFF51C0F8) : Color(0xFF7F9EE9);
     }
   }
 }
