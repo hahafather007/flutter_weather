@@ -99,6 +99,7 @@ class WeatherState extends PageState<WeatherPage> {
 
                 return WeatherView(
                   type: data?.now?.condTxt ?? "",
+                  color: _getAppBarColor(type: data?.now?.condTxt ?? ""),
                   child: RefreshIndicator(
                     onRefresh: () => _viewModel.loadData(),
                     child: ListView(
@@ -649,7 +650,13 @@ class WeatherState extends PageState<WeatherPage> {
     if (type.contains("晴") || type.contains("多云")) {
       return isDay ? Color(0xFF51C0F8) : Color(0xFF7F9EE9);
     } else if (type.contains("雨")) {
-      return Color(0xFF7187DB);
+      if (type.contains("雪")) {
+        return Color(0XFF5697D8);
+      } else {
+        return Color(0xFF7187DB);
+      }
+    } else if (type.contains("雪")) {
+      return Color(0xFF62B1FF);
     } else {
       return isDay ? Color(0xFF51C0F8) : Color(0xFF7F9EE9);
     }

@@ -19,8 +19,6 @@ class WeatherRainState extends WeatherBase<WeatherRain> {
   Animation<double> _mountainAnim;
   Animation<double> _mountainAnim2;
 
-  WeatherRainState() : super(backColor: Color(0xFF7187DB));
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -73,7 +71,7 @@ class WeatherRainState extends WeatherBase<WeatherRain> {
 
                   return Positioned(
                     child: Image.asset(
-                      "images/${!widget.rain && widget.snow ? "ic_rain_ground.png" : "ic_rain_ground.png"}",
+                      "images/${!widget.rain && widget.snow ? "ic_snow_ground.png" : "ic_rain_ground.png"}",
                       width: 210,
                       height: 90,
                     ),
@@ -115,6 +113,8 @@ class WeatherRainState extends WeatherBase<WeatherRain> {
           !widget.rain && widget.snow
               ? Stack(
                   alignment: Alignment.center,
+                  children:
+                      List.generate(40, (_) => SnowView(fullScreen: true)),
                 )
               : Container(),
         ],

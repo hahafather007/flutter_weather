@@ -18,12 +18,6 @@ class WeatherSunnyState extends WeatherBase<WeatherSunny> {
   /// 太阳动画
   Animation<double> _sunAnim;
 
-  WeatherSunnyState()
-      : super(
-            backColor: DateTime.now().hour >= 6 && DateTime.now().hour < 18
-                ? Color(0xFF51C0F8)
-                : Color(0xFF7F9EE9));
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -61,6 +55,7 @@ class WeatherSunnyState extends WeatherBase<WeatherSunny> {
     final width = getScreenWidth(context);
     // 是否为白天
     final isDay = DateTime.now().hour >= 6 && DateTime.now().hour < 18;
+    final backColor = isDay ? Color(0xFF51C0F8) : Color(0xFF7F9EE9);
 
     return Container(
       height: fullHeight,

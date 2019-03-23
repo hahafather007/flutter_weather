@@ -2,6 +2,11 @@ import 'package:flutter_weather/commom_import.dart';
 
 /// 雪花
 class SnowView extends StatefulWidget {
+  /// 是否为全屏下雪
+  final bool fullScreen;
+
+  SnowView({this.fullScreen = false});
+
   @override
   State createState() => _SnowState();
 }
@@ -19,6 +24,9 @@ class _SnowState extends State<SnowView> with TickerProviderStateMixin {
   /// 雪花大小
   double _size;
 
+  /// 最大可显示高度
+  double _height;
+
   /// 运动动画
   AnimationController _controller;
   Animation<double> _anim;
@@ -29,7 +37,7 @@ class _SnowState extends State<SnowView> with TickerProviderStateMixin {
 
     _initStartData();
     _controller = AnimationController(
-        vsync: this, duration: Duration(seconds: Random().nextInt(6) + 4))
+        vsync: this, duration: Duration(seconds: Random().nextInt(8) + 4))
       ..forward()
       ..addListener(() {
         if (_anim.value <= -20) {
@@ -39,7 +47,7 @@ class _SnowState extends State<SnowView> with TickerProviderStateMixin {
             ..forward();
         }
       });
-    _anim = Tween(begin: _bottomBegin, end: _bottomBegin - 320)
+    _anim = Tween(begin: _bottomBegin, end: _bottomBegin - _fullHeight - 20)
         .animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
   }
 
@@ -62,7 +70,7 @@ class _SnowState extends State<SnowView> with TickerProviderStateMixin {
             decoration: BoxDecoration(
                 color: Colors.white.withAlpha(_alpha), shape: BoxShape.circle),
           ),
-          left: _left + (260 - _anim.value) / 3,
+          left: _left + (widget.fullScreen ? 0 : (260 - _anim.value) / 3),
           bottom: _anim.value,
         );
       },
@@ -71,9 +79,28 @@ class _SnowState extends State<SnowView> with TickerProviderStateMixin {
 
   /// 初始化雪花开始的数据
   void _initStartData() {
-    _left = getScreenWidth(context) - Random().nextInt(280) - 40;
-    _alpha = Random().nextInt(140) + 30;
-    _bottomBegin = Random().nextDouble() * 120 + 180;
+    _alpha = Random().nextInt(140) + 60;
     _size = Random().nextDouble() * 12;
+
+    if (!widget.fullScreen) {
+      _left = getScreenWidth(context) - Random().nextInt(280) - 40;
+      _bottomBegin = Random().nextDouble() * 120 + 180;
+    } else {
+      _left = Random().nextDouble() * (getScreenWidth(context) - 12);
+      final paddingTop = _fullHeight - 100;
+      _bottomBegin =
+          Random().nextDouble() * (_fullHeight - paddingTop) + paddingTop;
+    }
+  }
+
+  double get _fullHeight {
+    if (_height == null) {
+      _height = getScreenHeight(context) -
+          getSysStatsHeight(context) -
+          AppBar().preferredSize.height -
+          110;
+    }
+
+    return _height;
   }
 }

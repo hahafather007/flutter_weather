@@ -6,8 +6,10 @@ import 'weather_rain.dart';
 class WeatherView extends StatefulWidget {
   final String type;
   final Widget child;
+  final Color color;
 
-  WeatherView({@required this.type, @required this.child});
+  WeatherView(
+      {@required this.type, @required this.child, @required this.color});
 
   @override
   State createState() => WeatherViewState();
@@ -30,14 +32,18 @@ class WeatherViewState extends State<WeatherView> {
         weather = WeatherRain(rain: true, snow: false);
       }
     } else if (type.contains("雪")) {
-      weather = WeatherRain(rain: false, snow: false);
+      weather = WeatherRain(rain: false, snow: true);
     } else {
-      weather = WeatherRain(rain: true, snow: true);
+      weather = WeatherCloud();
     }
 
     return Stack(
       children: <Widget>[
-        weather,
+        AnimatedContainer(
+          duration: const Duration(seconds: 4),
+          child: weather,
+          color: widget.color,
+        ),
         widget.child,
       ],
     );
