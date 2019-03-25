@@ -51,9 +51,9 @@ class WeatherState extends PageState<WeatherPage> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: _viewModel.weather.stream,
+      stream: _viewModel.weatherType.stream,
       builder: (context, snapshot) {
-        final Weather data = snapshot.data;
+        final type = snapshot.data ?? "";
 
         return Scaffold(
           key: scafKey,
@@ -70,7 +70,7 @@ class WeatherState extends PageState<WeatherPage> {
                 );
               },
             ),
-            color: _getAppBarColor(type: data?.now?.condTxt ?? ""),
+            color: _getAppBarColor(type: type),
             showShadowLine: false,
             leftBtn: IconButton(
               icon: Icon(
@@ -81,53 +81,82 @@ class WeatherState extends PageState<WeatherPage> {
                   .sendEvent(tag: "homeDrawerOpen", event: true),
             ),
             rightBtns: [
-              IconButton(
+              PopupMenuButton(
                 icon: Icon(
                   Icons.more_vert,
                   color: Colors.white,
                 ),
-                onPressed: () {},
+                itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: "share",
+                        child: Text(AppText.of(context).share),
+                      ),
+                      PopupMenuItem(
+                        value: "cities",
+                        child: Text("城市管理"),
+                      ),
+                      PopupMenuItem(
+                        value: "weathers",
+                        child: Text("动态天气预览"),
+                      ),
+                    ],
+                onSelected: (value) {
+                  switch (value) {
+                    case "share":
+                      break;
+                    case "cities":
+                      break;
+                    case "weathers":
+                      _showWeathersDialog();
+                      break;
+                  }
+                },
               ),
             ],
           ),
           body: LoadingView(
             loadingStream: _viewModel.isLoading.stream,
             child: StreamBuilder(
-              stream: _viewModel.air.stream,
+              stream: _viewModel.weather.stream,
               builder: (context, snapshot) {
-                final WeatherAir air = snapshot.data;
+                final Weather data = snapshot.data;
 
-                return WeatherView(
-                  type: data?.now?.condTxt ?? "",
-                  color: _getAppBarColor(type: data?.now?.condTxt ?? ""),
-                  child: RefreshIndicator(
-                    onRefresh: () => _viewModel.loadData(),
-                    child: ListView(
-                      physics: const AlwaysScrollableScrollPhysics(
-                          parent: const ClampingScrollPhysics()),
-                      padding: const EdgeInsets.only(),
-                      children: <Widget>[
-                        // 上半部分天气详情
-                        Container(
-                          color: Colors.transparent,
-                          alignment: Alignment.topCenter,
-                          height: getScreenHeight(context) -
-                              getSysStatsHeight(context) -
-                              AppBar().preferredSize.height -
-                              110,
-                          padding: const EdgeInsets.only(top: 60),
-                          child: _buildContent(
-                              now: data != null ? data.now : null,
-                              daily: data != null
-                                  ? data.dailyForecast.first
-                                  : null),
-                        ),
+                return StreamBuilder(
+                  stream: _viewModel.air.stream,
+                  builder: (context, snapshot) {
+                    final WeatherAir air = snapshot.data;
 
-                        Container(
-                          color: Colors.white,
-                          child: Column(
-                            children: <Widget>[
-                              // 横向滚动显示每小时天气
+                    return WeatherView(
+                      type: type,
+                      color: _getAppBarColor(type: type),
+                      child: RefreshIndicator(
+                        onRefresh: () => _viewModel.loadData(),
+                        child: ListView(
+                          physics: const AlwaysScrollableScrollPhysics(
+                              parent: const ClampingScrollPhysics()),
+                          padding: const EdgeInsets.only(),
+                          children: <Widget>[
+                            // 上半部分天气详情
+                            Container(
+                              color: Colors.transparent,
+                              alignment: Alignment.topCenter,
+                              height: getScreenHeight(context) -
+                                  getSysStatsHeight(context) -
+                                  AppBar().preferredSize.height -
+                                  110,
+                              padding: const EdgeInsets.only(top: 60),
+                              child: _buildContent(
+                                  now: data != null ? data.now : null,
+                                  daily: data != null
+                                      ? data.dailyForecast.first
+                                      : null),
+                            ),
+
+                            Container(
+                              color: Colors.white,
+                              child: Column(
+                                children: <Widget>[
+                                  // 横向滚动显示每小时天气
 //                  Container(
 //                    height: 110,
 //                    alignment: Alignment.centerLeft,
@@ -140,192 +169,203 @@ class WeatherState extends PageState<WeatherPage> {
 //                    ),
 //                  ),
 
-                              Divider(color: AppColor.colorLine),
+                                  Divider(color: AppColor.colorLine),
 
-                              // 每天天气情况显示
-                              Container(
-                                margin: EdgeInsets.only(top: 8),
-                                height: 200,
-                                child: Row(
-                                  children: data != null
-                                      ? data.dailyForecast
-                                          .map((v) => _buildDailyItem(daily: v))
-                                          .toList()
-                                      : const <Widget>[],
-                                ),
-                              ),
-
-                              Divider(color: AppColor.colorLine),
-
-                              // 中间显示pm2.5等情况的区域
-                              Container(
-                                height: 166,
-                                child: Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: Container(),
+                                  // 每天天气情况显示
+                                  Container(
+                                    margin: EdgeInsets.only(top: 8),
+                                    height: 200,
+                                    child: Row(
+                                      children: data != null
+                                          ? data.dailyForecast
+                                              .map((v) =>
+                                                  _buildDailyItem(daily: v))
+                                              .toList()
+                                          : const <Widget>[],
                                     ),
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          _buildPm25Item(
-                                            eName: "PM2.5",
-                                            name: AppText.of(context).pm25,
-                                            num: air?.airNowCity?.pm25 ?? "0",
-                                          ),
-                                          Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 18)),
-                                          _buildPm25Item(
-                                            eName: "SO2",
-                                            name: AppText.of(context).so2,
-                                            num: air?.airNowCity?.so2 ?? "0",
-                                          ),
-                                          Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 18)),
-                                          _buildPm25Item(
-                                            eName: "CO",
-                                            name: AppText.of(context).co,
-                                            num: air?.airNowCity?.co ?? "0",
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          _buildPm25Item(
-                                            eName: "PM10",
-                                            name: AppText.of(context).pm10,
-                                            num: air?.airNowCity?.pm10 ?? "0",
-                                          ),
-                                          Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 18)),
-                                          _buildPm25Item(
-                                            eName: "NO2",
-                                            name: AppText.of(context).no2,
-                                            num: air?.airNowCity?.no2 ?? "0",
-                                          ),
-                                          Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 18)),
-                                          _buildPm25Item(
-                                            eName: "O3",
-                                            name: AppText.of(context).o3,
-                                            num: air?.airNowCity?.o3 ?? "0",
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                  ),
 
-                              Divider(color: AppColor.colorLine),
+                                  Divider(color: AppColor.colorLine),
 
-                              // 最下面两排空气舒适度
-                              // 第一排
-                              Container(
-                                height: 100,
-                                alignment: Alignment.center,
-                                child: Row(
-                                  children: <Widget>[
-                                    _buildSoftItem(
-                                      url: "images/air_soft_1.png",
-                                      lifestyle:
-                                          data != null && data.lifestyle != null
+                                  // 中间显示pm2.5等情况的区域
+                                  Container(
+                                    height: 166,
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: Container(),
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              _buildPm25Item(
+                                                eName: "PM2.5",
+                                                name: AppText.of(context).pm25,
+                                                num: air?.airNowCity?.pm25 ??
+                                                    "0",
+                                              ),
+                                              Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 18)),
+                                              _buildPm25Item(
+                                                eName: "SO2",
+                                                name: AppText.of(context).so2,
+                                                num:
+                                                    air?.airNowCity?.so2 ?? "0",
+                                              ),
+                                              Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 18)),
+                                              _buildPm25Item(
+                                                eName: "CO",
+                                                name: AppText.of(context).co,
+                                                num: air?.airNowCity?.co ?? "0",
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              _buildPm25Item(
+                                                eName: "PM10",
+                                                name: AppText.of(context).pm10,
+                                                num: air?.airNowCity?.pm10 ??
+                                                    "0",
+                                              ),
+                                              Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 18)),
+                                              _buildPm25Item(
+                                                eName: "NO2",
+                                                name: AppText.of(context).no2,
+                                                num:
+                                                    air?.airNowCity?.no2 ?? "0",
+                                              ),
+                                              Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 18)),
+                                              _buildPm25Item(
+                                                eName: "O3",
+                                                name: AppText.of(context).o3,
+                                                num: air?.airNowCity?.o3 ?? "0",
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  Divider(color: AppColor.colorLine),
+
+                                  // 最下面两排空气舒适度
+                                  // 第一排
+                                  Container(
+                                    height: 100,
+                                    alignment: Alignment.center,
+                                    child: Row(
+                                      children: <Widget>[
+                                        _buildSoftItem(
+                                          url: "images/air_soft_1.png",
+                                          lifestyle: data != null &&
+                                                  data.lifestyle != null
                                               ? data.lifestyle[7]
                                               : null,
-                                    ),
-                                    _buildSoftItem(
-                                      url: "images/air_soft_2.png",
-                                      lifestyle:
-                                          data != null && data.lifestyle != null
+                                        ),
+                                        _buildSoftItem(
+                                          url: "images/air_soft_2.png",
+                                          lifestyle: data != null &&
+                                                  data.lifestyle != null
                                               ? data.lifestyle[0]
                                               : null,
-                                    ),
-                                    _buildSoftItem(
-                                      url: "images/air_soft_3.png",
-                                      lifestyle:
-                                          data != null && data.lifestyle != null
+                                        ),
+                                        _buildSoftItem(
+                                          url: "images/air_soft_3.png",
+                                          lifestyle: data != null &&
+                                                  data.lifestyle != null
                                               ? data.lifestyle[6]
                                               : null,
-                                    ),
-                                    _buildSoftItem(
-                                      url: "images/air_soft_4.png",
-                                      lifestyle:
-                                          data != null && data.lifestyle != null
+                                        ),
+                                        _buildSoftItem(
+                                          url: "images/air_soft_4.png",
+                                          lifestyle: data != null &&
+                                                  data.lifestyle != null
                                               ? data.lifestyle[1]
                                               : null,
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                              // 第二排
-                              Container(
-                                margin: const EdgeInsets.only(bottom: 6),
-                                height: 100,
-                                alignment: Alignment.center,
-                                child: Row(
-                                  children: <Widget>[
-                                    _buildSoftItem(
-                                      url: "images/air_soft_5.png",
-                                      lifestyle:
-                                          data != null && data.lifestyle != null
+                                  ),
+                                  // 第二排
+                                  Container(
+                                    margin: const EdgeInsets.only(bottom: 6),
+                                    height: 100,
+                                    alignment: Alignment.center,
+                                    child: Row(
+                                      children: <Widget>[
+                                        _buildSoftItem(
+                                          url: "images/air_soft_5.png",
+                                          lifestyle: data != null &&
+                                                  data.lifestyle != null
                                               ? data.lifestyle[2]
                                               : null,
-                                    ),
-                                    _buildSoftItem(
-                                      url: "images/air_soft_6.png",
-                                      lifestyle:
-                                          data != null && data.lifestyle != null
+                                        ),
+                                        _buildSoftItem(
+                                          url: "images/air_soft_6.png",
+                                          lifestyle: data != null &&
+                                                  data.lifestyle != null
                                               ? data.lifestyle[3]
                                               : null,
-                                    ),
-                                    _buildSoftItem(
-                                      url: "images/air_soft_7.png",
-                                      lifestyle:
-                                          data != null && data.lifestyle != null
+                                        ),
+                                        _buildSoftItem(
+                                          url: "images/air_soft_7.png",
+                                          lifestyle: data != null &&
+                                                  data.lifestyle != null
                                               ? data.lifestyle[4]
                                               : null,
-                                    ),
-                                    _buildSoftItem(
-                                      url: "images/air_soft_8.png",
-                                      lifestyle:
-                                          data != null && data.lifestyle != null
+                                        ),
+                                        _buildSoftItem(
+                                          url: "images/air_soft_8.png",
+                                          lifestyle: data != null &&
+                                                  data.lifestyle != null
                                               ? data.lifestyle[5]
                                               : null,
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              ),
-
-                              // 最下面"数据来源说明"
-                              Container(
-                                color: AppColor.colorShadow,
-                                alignment: Alignment.center,
-                                padding:
-                                    const EdgeInsets.only(top: 6, bottom: 6),
-                                child: Text(
-                                  AppText.of(context).dataSource,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColor.colorText2,
                                   ),
-                                ),
+
+                                  // 最下面"数据来源说明"
+                                  Container(
+                                    color: AppColor.colorShadow,
+                                    alignment: Alignment.center,
+                                    padding: const EdgeInsets.only(
+                                        top: 6, bottom: 6),
+                                    child: Text(
+                                      AppText.of(context).dataSource,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: AppColor.colorText2,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
+                      ),
+                    );
+                  },
                 );
               },
             ),
@@ -660,5 +700,74 @@ class WeatherState extends PageState<WeatherPage> {
     } else {
       return isDay ? Color(0xFF51C0F8) : Color(0xFF7F9EE9);
     }
+  }
+
+  /// 动态天气预览弹窗
+  void _showWeathersDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: Text(
+              "动态天气预览",
+              style: TextStyle(fontSize: 20, color: Colors.black),
+            ),
+            contentPadding: const EdgeInsets.only(),
+            titlePadding: const EdgeInsets.fromLTRB(20, 18, 0, 10),
+            content: Container(
+              height: double.maxFinite,
+              width: double.maxFinite,
+              child: ListView(
+                physics: const ClampingScrollPhysics(),
+                padding: const EdgeInsets.only(),
+                children: <Widget>[
+                  _buildDialogItem(title: "晴"),
+                  _buildDialogItem(title: "多云"),
+                  _buildDialogItem(title: "阴"),
+                  _buildDialogItem(title: "雨"),
+                  _buildDialogItem(title: "雷雨"),
+                  _buildDialogItem(title: "雨夹雪"),
+                  _buildDialogItem(title: "雪"),
+                  _buildDialogItem(title: "冰雹"),
+                  _buildDialogItem(title: "雾"),
+                  _buildDialogItem(title: "雾霾"),
+                  _buildDialogItem(title: "沙尘暴"),
+                ],
+              ),
+            ),
+          ),
+    );
+  }
+
+  /// 动态天气预览的选项
+  Widget _buildDialogItem({@required String title}) {
+    return Material(
+      color: Colors.white,
+      child: InkWell(
+        onTap: () {
+          pop(context);
+          _viewModel.switchType(title);
+        },
+        child: Container(
+          height: 48,
+          padding: const EdgeInsets.only(left: 20),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(right: 18),
+                child: Icon(
+                  Icons.panorama_fish_eye,
+                  color: Colors.black54,
+                ),
+              ),
+              Text(
+                title,
+                style: TextStyle(fontSize: 18, color: Colors.black),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

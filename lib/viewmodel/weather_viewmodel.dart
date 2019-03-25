@@ -6,6 +6,7 @@ class WeatherViewModel extends ViewModel {
   final city = StreamController<String>();
   final weather = StreamController<Weather>();
   final air = StreamController<WeatherAir>();
+  final weatherType = StreamController<String>();
 
   void init() {
     city.add(SharedDepository().lastCity);
@@ -20,6 +21,7 @@ class WeatherViewModel extends ViewModel {
           WeatherAirData.fromJson(json.decode(lastAirData)).weatherAir.first;
 
       weather.add(mWeather);
+      weatherType.add(mWeather.now.condTxt);
       air.add(mAir);
     }
 
@@ -62,6 +64,7 @@ class WeatherViewModel extends ViewModel {
       await SharedDepository().setLastAirData(json.encode(airData));
 
       weather.add(weatherData.weathers.first);
+      weatherType.add(weatherData.weathers.first.now.condTxt);
       air.add(airData.weatherAir.first);
     } on DioError catch (e) {
       doError(e);
@@ -74,6 +77,9 @@ class WeatherViewModel extends ViewModel {
     }
   }
 
+  /// 预览其他天气
+  void switchType(String type) => weatherType.add(type);
+
   @override
   void dispose() {
     super.dispose();
@@ -83,5 +89,6 @@ class WeatherViewModel extends ViewModel {
     city.close();
     weather.close();
     air.close();
+    weatherType.close();
   }
 }

@@ -12,6 +12,9 @@ class HomeState extends PageState<HomePage> {
   /// 当前显示页面
   var _pageType = PageType.WEATHER;
 
+  bool _readyExit = false;
+  Timer _exitTimer;
+
   @override
   void initState() {
     super.initState();
@@ -39,84 +42,100 @@ class HomeState extends PageState<HomePage> {
   void dispose() {
     ToastUtil.disposeToast();
     FavHolder().dispose();
+    _exitTimer?.cancel();
 
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scafKey,
-      drawer: Drawer(
-        child: ListView(
-          physics: const AlwaysScrollableScrollPhysics(
-              parent: const ClampingScrollPhysics()),
-          padding: const EdgeInsets.only(),
-          children: <Widget>[
-            Image.asset("images/drawer_bg.png"),
-            Padding(padding: const EdgeInsets.only(top: 8)),
-            // 天气
-            _buildDrawerItem(
-                icon: Icons.wb_sunny,
-                title: AppText.of(context).weather,
-                isTarget: _pageType == PageType.WEATHER,
-                onTap: () {
-                  if (_pageType == PageType.WEATHER) return;
+    return WillPopScope(
+      child: Scaffold(
+        key: scafKey,
+        drawer: Drawer(
+          child: ListView(
+            physics: const AlwaysScrollableScrollPhysics(
+                parent: const ClampingScrollPhysics()),
+            padding: const EdgeInsets.only(),
+            children: <Widget>[
+              Image.asset("images/drawer_bg.png"),
+              Padding(padding: const EdgeInsets.only(top: 8)),
+              // 天气
+              _buildDrawerItem(
+                  icon: Icons.wb_sunny,
+                  title: AppText.of(context).weather,
+                  isTarget: _pageType == PageType.WEATHER,
+                  onTap: () {
+                    if (_pageType == PageType.WEATHER) return;
 
-                  setState(() {
-                    _pageType = PageType.WEATHER;
-                    _pageTypeMap[_pageType] = true;
-                  });
-                }),
+                    setState(() {
+                      _pageType = PageType.WEATHER;
+                      _pageTypeMap[_pageType] = true;
+                    });
+                  }),
 
-            // 福利
-            _buildDrawerItem(
-                icon: Icons.card_giftcard,
-                title: AppText.of(context).gift,
-                isTarget: _pageType == PageType.GIFT,
-                onTap: () {
-                  if (_pageType == PageType.GIFT) return;
+              // 福利
+              _buildDrawerItem(
+                  icon: Icons.card_giftcard,
+                  title: AppText.of(context).gift,
+                  isTarget: _pageType == PageType.GIFT,
+                  onTap: () {
+                    if (_pageType == PageType.GIFT) return;
 
-                  setState(() {
-                    _pageType = PageType.GIFT;
-                    _pageTypeMap[_pageType] = true;
-                  });
-                }),
+                    setState(() {
+                      _pageType = PageType.GIFT;
+                      _pageTypeMap[_pageType] = true;
+                    });
+                  }),
 
-            // 闲读
-            _buildDrawerItem(
-                icon: Icons.local_cafe,
-                title: AppText.of(context).read,
-                isTarget: _pageType == PageType.READ,
-                onTap: () {
-                  if (_pageType == PageType.READ) return;
+              // 闲读
+              _buildDrawerItem(
+                  icon: Icons.local_cafe,
+                  title: AppText.of(context).read,
+                  isTarget: _pageType == PageType.READ,
+                  onTap: () {
+                    if (_pageType == PageType.READ) return;
 
-                  setState(() {
-                    _pageType = PageType.READ;
-                    _pageTypeMap[_pageType] = true;
-                  });
-                }),
+                    setState(() {
+                      _pageType = PageType.READ;
+                      _pageTypeMap[_pageType] = true;
+                    });
+                  }),
 
-            // 分割线
-            Divider(color: AppColor.colorLine),
+              // 分割线
+              Divider(color: AppColor.colorLine),
 
-            // 设置
-            _buildDrawerItem(
-                icon: Icons.settings,
-                title: AppText.of(context).setting,
-                isTarget: false,
-                onTap: () => push(context, page: SettingPage())),
+              // 设置
+              _buildDrawerItem(
+                  icon: Icons.settings,
+                  title: AppText.of(context).setting,
+                  isTarget: false,
+                  onTap: () => push(context, page: SettingPage())),
 
-            // 关于
-            _buildDrawerItem(
-                icon: Icons.error_outline,
-                title: AppText.of(context).about,
-                isTarget: false,
-                onTap: () => push(context, page: AboutPage())),
-          ],
+              // 关于
+              _buildDrawerItem(
+                  icon: Icons.error_outline,
+                  title: AppText.of(context).about,
+                  isTarget: false,
+                  onTap: () => push(context, page: AboutPage())),
+            ],
+          ),
         ),
+        body: _buildBody(),
       ),
-      body: _buildBody(),
+      onWillPop: () {
+        if (_readyExit) {
+          exitApp();
+        } else {
+          _readyExit = true;
+          _exitTimer =
+              Timer(const Duration(seconds: 2), () => _readyExit = false);
+          scafKey.currentState.showSnackBar(SnackBar(
+            content: Text("再按一次退出App！"),
+            duration: const Duration(seconds: 2),
+          ));
+        }
+      },
     );
   }
 

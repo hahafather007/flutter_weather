@@ -22,8 +22,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     double rightPadding = -36.0;
 
-    return Container(
+    return AnimatedContainer(
       color: color,
+      duration: const Duration(seconds: 3),
       height: preferredSize.height + getSysStatsHeight(context),
       child: Column(
         children: <Widget>[

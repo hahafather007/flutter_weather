@@ -22,25 +22,25 @@ class WeatherViewState extends State<WeatherView> {
 
     final type = widget.type;
     if (type.contains("晴")) {
-      weather = WeatherSunny();
+      weather = WeatherSunny(key: Key("晴"));
     } else if (type.contains("多云")) {
-      weather = WeatherCloud();
+      weather = WeatherCloud(key: Key("多云"));
     } else if (type.contains("雨")) {
       if (type.contains("雪")) {
-        weather = WeatherRain(rain: true, snow: true);
+        weather = WeatherRain(key: Key("雨夹雪"), rain: true, snow: true);
       } else {
-        weather = WeatherRain(rain: true, snow: false);
+        weather = WeatherRain(key: Key("雨"), rain: true, snow: false);
       }
     } else if (type.contains("雪")) {
-      weather = WeatherRain(rain: false, snow: true);
+      weather = WeatherRain(key: Key("雪"), rain: false, snow: true);
     } else {
-      weather = WeatherCloud();
+      weather = WeatherCloud(key: Key("多云"));
     }
 
     return Stack(
       children: <Widget>[
         AnimatedContainer(
-          duration: const Duration(seconds: 4),
+          duration: const Duration(seconds: 3),
           child: weather,
           color: widget.color,
         ),

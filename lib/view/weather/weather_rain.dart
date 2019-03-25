@@ -6,7 +6,8 @@ class WeatherRain extends StatefulWidget {
   final bool rain;
   final bool snow;
 
-  WeatherRain({@required this.rain, @required this.snow});
+  WeatherRain({Key key, @required this.rain, @required this.snow})
+      : super(key: key);
 
   @override
   State createState() => WeatherRainState();
@@ -35,7 +36,7 @@ class WeatherRainState extends WeatherBase<WeatherRain> {
             }
           });
     _mountainController2 =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1));
+        AnimationController(vsync: this, duration: const Duration(seconds: 2));
     _mountainAnim = Tween(begin: -160.0, end: width - 160).animate(
         CurvedAnimation(parent: _mountainController, curve: Curves.easeOut));
     _mountainAnim2 = Tween(begin: width - 160, end: width - 200).animate(

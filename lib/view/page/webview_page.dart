@@ -62,7 +62,7 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
               Icons.more_vert,
               color: Colors.white,
             ),
-            itemBuilder: (context) => <PopupMenuEntry>[
+            itemBuilder: (context) => [
                   PopupMenuItem(
                     value: "refresh",
                     child: Text(AppText.of(context).refresh),
