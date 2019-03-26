@@ -3,6 +3,7 @@ import 'weather_sunny.dart';
 import 'weather_cloud.dart';
 import 'weather_rain.dart';
 
+/// 天气显示控件
 class WeatherView extends StatefulWidget {
   final String type;
   final Widget child;
@@ -25,14 +26,20 @@ class WeatherViewState extends State<WeatherView> {
       weather = WeatherSunny(key: Key("晴"));
     } else if (type.contains("多云")) {
       weather = WeatherCloud(key: Key("多云"));
+    } else if (type.contains("雷")) {
+      weather =
+          WeatherRain(key: Key("雷"), rain: true, snow: false, flash: true);
     } else if (type.contains("雨")) {
       if (type.contains("雪")) {
-        weather = WeatherRain(key: Key("雨夹雪"), rain: true, snow: true);
+        weather =
+            WeatherRain(key: Key("雨夹雪"), rain: true, snow: true, flash: false);
       } else {
-        weather = WeatherRain(key: Key("雨"), rain: true, snow: false);
+        weather =
+            WeatherRain(key: Key("雨"), rain: true, snow: false, flash: false);
       }
     } else if (type.contains("雪")) {
-      weather = WeatherRain(key: Key("雪"), rain: false, snow: true);
+      weather =
+          WeatherRain(key: Key("雪"), rain: false, snow: true, flash: false);
     } else {
       weather = WeatherCloud(key: Key("多云"));
     }

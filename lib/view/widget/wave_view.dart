@@ -2,6 +2,7 @@ import 'package:flutter_weather/commom_import.dart';
 import 'dart:math';
 import 'dart:ui';
 
+/// 波浪控件
 class WaveView extends StatefulWidget {
   /// 振幅
   final double amplitude;
@@ -102,7 +103,7 @@ class _WaveState extends State<WaveView> with TickerProviderStateMixin {
                           widget.waveNum - 1,
                           (index) => CustomPaint(
                                 size: Size(width, height),
-                                painter: WavePainter(
+                                painter: _WavePainter(
                                     widget.amplitude,
                                     widget.amplitudePercent,
                                     offsetX,
@@ -146,7 +147,7 @@ class _WaveState extends State<WaveView> with TickerProviderStateMixin {
               // 第一层波浪
               CustomPaint(
                 size: Size(width, height),
-                painter: WavePainter(widget.amplitude, widget.amplitudePercent,
+                painter: _WavePainter(widget.amplitude, widget.amplitudePercent,
                     offsetX, widget.color, widget.waveNum, 0),
               ),
             ],
@@ -178,7 +179,7 @@ double _getSinY(double xPoint, double width, double xOffset) {
   return _sinCache[x];
 }
 
-class WavePainter extends CustomPainter {
+class _WavePainter extends CustomPainter {
   /// 振幅
   final double amplitude;
 
@@ -203,7 +204,7 @@ class WavePainter extends CustomPainter {
   /// y轴的中心点
   double _centerY;
 
-  WavePainter(this.amplitude, this.amplitudePercent, this.offsetX, this.color,
+  _WavePainter(this.amplitude, this.amplitudePercent, this.offsetX, this.color,
       this.waveNum, this.waveIndex);
 
   @override
@@ -233,7 +234,7 @@ class WavePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(WavePainter oldDelegate) {
+  bool shouldRepaint(_WavePainter oldDelegate) {
     final ampChange = amplitude != oldDelegate.amplitude;
     final percentChange = amplitudePercent != oldDelegate.amplitudePercent;
     if (ampChange || percentChange) {

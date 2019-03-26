@@ -5,8 +5,10 @@ import 'weather_base.dart';
 class WeatherRain extends StatefulWidget {
   final bool rain;
   final bool snow;
+  final bool flash;
 
-  WeatherRain({Key key, @required this.rain, @required this.snow})
+  WeatherRain(
+      {Key key, @required this.rain, @required this.snow, @required this.flash})
       : super(key: key);
 
   @override
@@ -116,6 +118,18 @@ class WeatherRainState extends WeatherBase<WeatherRain> {
                   alignment: Alignment.center,
                   children:
                       List.generate(40, (_) => SnowView(fullScreen: true)),
+                )
+              : Container(),
+
+          // 闪电
+          widget.flash
+              ? Positioned(
+                  child: FlashView(
+                    height: 200,
+                    width: 200,
+                  ),
+                  bottom: 80,
+                  right: 80,
                 )
               : Container(),
         ],
