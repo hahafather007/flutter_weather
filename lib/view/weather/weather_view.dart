@@ -28,21 +28,19 @@ class WeatherViewState extends State<WeatherView> {
     } else if (type.contains("多云")) {
       weather = WeatherCloud(key: Key("多云"));
     } else if (type.contains("雷")) {
-      weather =
-          WeatherRain(key: Key("雷"), rain: true, snow: false, flash: true);
+      weather = WeatherRain(key: Key("雷"), rain: true, flash: true);
     } else if (type.contains("雨")) {
       if (type.contains("雪")) {
-        weather =
-            WeatherRain(key: Key("雨夹雪"), rain: true, snow: true, flash: false);
+        weather = WeatherRain(key: Key("雨夹雪"), rain: true, snow: true);
       } else {
-        weather =
-            WeatherRain(key: Key("雨"), rain: true, snow: false, flash: false);
+        weather = WeatherRain(key: Key("雨"), rain: true);
       }
     } else if (type.contains("雪")) {
-      weather =
-          WeatherRain(key: Key("雪"), rain: false, snow: true, flash: false);
+      weather = WeatherRain(key: Key("雪"), snow: true);
     } else if (type.contains("霾")) {
       weather = WeatherSandstorm(key: Key("霾"), isSmog: true);
+    } else if (type.contains("雾")) {
+      weather = WeatherRain(key: Key("雾"), fog: true);
     } else if (type.contains("沙")) {
       weather = WeatherSandstorm(key: Key("沙"), isSmog: false);
     } else {

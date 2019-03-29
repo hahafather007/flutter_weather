@@ -32,10 +32,9 @@ class _SnowState extends State<SnowView> with TickerProviderStateMixin {
   Animation<double> _anim;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
 
-    _initStartData();
     _controller = AnimationController(
         vsync: this, duration: Duration(seconds: Random().nextInt(8) + 4))
       ..forward()
@@ -47,6 +46,13 @@ class _SnowState extends State<SnowView> with TickerProviderStateMixin {
             ..forward();
         }
       });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _initStartData();
     _anim = Tween(begin: _bottomBegin, end: _bottomBegin - _fullHeight - 20)
         .animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
   }

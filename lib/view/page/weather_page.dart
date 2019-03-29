@@ -678,21 +678,23 @@ class WeatherState extends PageState<WeatherPage> {
     final isDay = DateTime.now().hour >= 6 && DateTime.now().hour < 18;
 
     if (type.contains("晴") || type.contains("多云")) {
-      return isDay ? Color(0xFF51C0F8) : Color(0xFF7F9EE9);
+      return isDay ? const Color(0xFF51C0F8) : const Color(0xFF7F9EE9);
     } else if (type.contains("雨")) {
       if (type.contains("雪")) {
-        return Color(0XFF5697D8);
+        return const Color(0XFF5697D8);
       } else {
-        return Color(0xFF7187DB);
+        return const Color(0xFF7187DB);
       }
     } else if (type.contains("雪")) {
-      return Color(0xFF62B1FF);
+      return const Color(0xFF62B1FF);
     } else if (type.contains("霾")) {
-      return Color(0xFF7F8195);
+      return const Color(0xFF7F8195);
     } else if (type.contains("沙")) {
-      return Color(0xFFE99E3C);
+      return const Color(0xFFE99E3C);
+    } else if (type.contains("雾")) {
+      return const Color(0xFF8CADD3);
     } else {
-      return isDay ? Color(0xFF51C0F8) : Color(0xFF7F9EE9);
+      return isDay ? const Color(0xFF51C0F8) : const Color(0xFF7F9EE9);
     }
   }
 
