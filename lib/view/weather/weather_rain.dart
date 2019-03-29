@@ -35,8 +35,8 @@ class WeatherRainState extends WeatherBase<WeatherRain> {
               _mountainController2.forward();
             }
           });
-    _mountainController2 =
-        AnimationController(vsync: this, duration: const Duration(seconds: 2));
+    _mountainController2 = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 300));
   }
 
   @override
@@ -48,7 +48,7 @@ class WeatherRainState extends WeatherBase<WeatherRain> {
       _mountainAnim = Tween(begin: -160.0, end: width - 160).animate(
           CurvedAnimation(parent: _mountainController, curve: Curves.easeOut));
       _mountainAnim2 = Tween(begin: width - 160, end: width - 200).animate(
-          CurvedAnimation(parent: _mountainController2, curve: Curves.ease));
+          CurvedAnimation(parent: _mountainController2, curve: Curves.easeIn));
     }
   }
 
@@ -83,9 +83,8 @@ class WeatherRainState extends WeatherBase<WeatherRain> {
                     child: Image.asset(
                       "images/${!widget.rain && widget.snow ? "ic_snow_ground.png" : "ic_rain_ground.png"}",
                       width: 210,
-                      height: 90,
                     ),
-                    bottom: -10,
+                    bottom: 0,
                     left: left,
                   );
                 },

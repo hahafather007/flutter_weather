@@ -14,9 +14,6 @@ class GiftMziState extends PageState<GiftMziPage> with MustKeepAliveMixin {
   final _scrollController = ScrollController();
 
   @override
-  bool get wantKeepAlive => true;
-
-  @override
   void initState() {
     super.initState();
 

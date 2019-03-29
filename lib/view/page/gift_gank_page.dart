@@ -10,9 +10,6 @@ class GiftGankState extends PageState<GiftGankPage> with MustKeepAliveMixin {
   final _scrollController = ScrollController();
 
   @override
-  bool get wantKeepAlive => true;
-
-  @override
   void initState() {
     super.initState();
 

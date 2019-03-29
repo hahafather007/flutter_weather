@@ -15,9 +15,6 @@ class ReadContentState extends PageState<ReadContentPage>
   final _viewModel = ReadViewModel();
 
   @override
-  bool get wantKeepAlive => true;
-
-  @override
   void initState() {
     super.initState();
 

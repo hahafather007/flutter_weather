@@ -687,6 +687,10 @@ class WeatherState extends PageState<WeatherPage> {
       }
     } else if (type.contains("雪")) {
       return Color(0xFF62B1FF);
+    } else if (type.contains("霾")) {
+      return Color(0xFF7F8195);
+    } else if (type.contains("沙")) {
+      return Color(0xFFE99E3C);
     } else {
       return isDay ? Color(0xFF51C0F8) : Color(0xFF7F9EE9);
     }

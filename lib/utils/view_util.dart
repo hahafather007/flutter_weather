@@ -141,7 +141,7 @@ class ToastState extends PageState<ToastView> with TickerProviderStateMixin {
             opacity: _animation.value,
             child: _animation.value != 0
                 ? Material(
-                    color: Color(0xdd444444),
+                    color: const Color(0xDD444444),
                     borderRadius: BorderRadius.circular(24),
                     child: Container(
                       padding: const EdgeInsets.fromLTRB(18, 12, 18, 12),

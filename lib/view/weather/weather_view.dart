@@ -2,6 +2,7 @@ import 'package:flutter_weather/commom_import.dart';
 import 'weather_sunny.dart';
 import 'weather_cloud.dart';
 import 'weather_rain.dart';
+import 'weather_sandstorm.dart';
 
 /// 天气显示控件
 class WeatherView extends StatefulWidget {
@@ -40,6 +41,10 @@ class WeatherViewState extends State<WeatherView> {
     } else if (type.contains("雪")) {
       weather =
           WeatherRain(key: Key("雪"), rain: false, snow: true, flash: false);
+    } else if (type.contains("霾")) {
+      weather = WeatherSandstorm(key: Key("霾"), isSmog: true);
+    } else if (type.contains("沙")) {
+      weather = WeatherSandstorm(key: Key("沙"), isSmog: false);
     } else {
       weather = WeatherCloud(key: Key("多云"));
     }

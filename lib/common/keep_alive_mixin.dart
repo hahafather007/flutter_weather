@@ -16,28 +16,16 @@ mixin MustKeepAliveMixin<T extends StatefulWidget> on State<T> {
     _keepAliveHandle = null;
   }
 
-  /// Whether the current instance should be kept alive.
-  ///
-  /// Call [updateKeepAlive] whenever this getter's value changes.
-  @protected
-  bool get wantKeepAlive;
-
-  /// Ensures that any [AutomaticKeepAlive] ancestors are in a good state, by
-  /// firing a [KeepAliveNotification] or triggering the [KeepAliveHandle] as
-  /// appropriate.
   @protected
   void updateKeepAlive() {
-    if (wantKeepAlive) {
-      if (_keepAliveHandle == null) _ensureKeepAlive();
-    } else {
-      if (_keepAliveHandle != null) _releaseKeepAlive();
-    }
+    _ensureKeepAlive();
   }
 
   @override
   void initState() {
     super.initState();
-    if (wantKeepAlive) _ensureKeepAlive();
+
+    _ensureKeepAlive();
   }
 
   /// 将原来的[deactivate]改成[dispose]实现一定会保活
@@ -50,7 +38,7 @@ mixin MustKeepAliveMixin<T extends StatefulWidget> on State<T> {
   @mustCallSuper
   @override
   Widget build(BuildContext context) {
-    if (wantKeepAlive && _keepAliveHandle == null) _ensureKeepAlive();
+    if (_keepAliveHandle == null) _ensureKeepAlive();
     return null;
   }
 }
