@@ -1,6 +1,7 @@
 import 'package:flutter_weather/commom_import.dart';
 import 'weather_base.dart';
 
+/// 晴天
 class WeatherSunny extends StatefulWidget {
   WeatherSunny({
     Key key,
@@ -19,28 +20,36 @@ class WeatherSunnyState extends WeatherBase<WeatherSunny> {
   Animation<double> _sunAnim;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
 
     _boatController =
         AnimationController(vsync: this, duration: const Duration(seconds: 4))
           ..forward();
     _boatAnim = Tween(begin: 0.0, end: 1.0)
         .animate(CurvedAnimation(parent: _boatController, curve: Curves.ease));
-    // 太阳动画结束位置根据时间变更
-    // 6~18点为白天，18~第二天6点为夜晚
-    int now = DateTime.now().hour;
-    if (now < 6) {
-      now += 24;
-      now -= 18;
-    } else if (now >= 18) {
-      now -= 18;
-    } else {
-      now -= 6;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_sunAnim == null) {
+      // 太阳动画结束位置根据时间变更
+      // 6~18点为白天，18~第二天6点为夜晚
+      int now = DateTime.now().hour;
+      if (now < 6) {
+        now += 24;
+        now -= 18;
+      } else if (now >= 18) {
+        now -= 18;
+      } else {
+        now -= 6;
+      }
+      final sunEnd = (getScreenWidth(context) - 78) * now / 12 + 39;
+      _sunAnim = Tween(begin: 39.0, end: sunEnd).animate(
+          CurvedAnimation(parent: _boatController, curve: Curves.ease));
     }
-    final sunEnd = (getScreenWidth(context) - 78) * now / 12 + 39;
-    _sunAnim = Tween(begin: 39.0, end: sunEnd)
-        .animate(CurvedAnimation(parent: _boatController, curve: Curves.ease));
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter_weather/commom_import.dart';
 import 'weather_sunny.dart';
 
+/// 多云
 class WeatherCloud extends StatefulWidget {
   WeatherCloud({Key key}) : super(key: key);
 
@@ -19,27 +20,36 @@ class WeatherCloudState extends PageState<WeatherCloud>
   Animation<double> _cloudTopAnim;
 
   @override
-  void dispose() {
-    _cloudController?.dispose();
-    _cloudTopController?.dispose();
+  void initState() {
+    super.initState();
 
-    super.dispose();
+    _cloudController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 4))
+          ..forward();
+
+    _cloudTopController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 2))
+          ..repeat(reverse: true);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _cloudController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 4))
-          ..forward();
-    _cloudAnim = Tween(begin: 0.0, end: getScreenWidth(context) / 2)
-        .animate(CurvedAnimation(parent: _cloudController, curve: Curves.ease));
-    _cloudTopController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 2))
-          ..repeat(reverse: true);
-    _cloudTopAnim = Tween(begin: 245.0, end: 235.0).animate(
-        CurvedAnimation(parent: _cloudTopController, curve: Curves.easeOut));
+    if (_cloudAnim == null || _cloudTopAnim == null) {
+      _cloudAnim = Tween(begin: 0.0, end: getScreenWidth(context) / 2).animate(
+          CurvedAnimation(parent: _cloudController, curve: Curves.ease));
+      _cloudTopAnim = Tween(begin: 245.0, end: 235.0).animate(
+          CurvedAnimation(parent: _cloudTopController, curve: Curves.easeOut));
+    }
+  }
+
+  @override
+  void dispose() {
+    _cloudController?.dispose();
+    _cloudTopController?.dispose();
+
+    super.dispose();
   }
 
   @override

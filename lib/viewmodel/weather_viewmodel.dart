@@ -21,7 +21,7 @@ class WeatherViewModel extends ViewModel {
           WeatherAirData.fromJson(json.decode(lastAirData)).weatherAir.first;
 
       weather.add(mWeather);
-      weatherType.add(mWeather.now.condTxt);
+      weatherType.add(mWeather.now?.condTxt);
       air.add(mAir);
     }
 

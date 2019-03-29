@@ -146,10 +146,8 @@ class WeatherState extends PageState<WeatherPage> {
                                   110,
                               padding: const EdgeInsets.only(top: 60),
                               child: _buildContent(
-                                  now: data != null ? data.now : null,
-                                  daily: data != null
-                                      ? data.dailyForecast.first
-                                      : null),
+                                  now: data?.now,
+                                  daily: data?.dailyForecast?.first),
                             ),
 
                             Container(
@@ -162,7 +160,7 @@ class WeatherState extends PageState<WeatherPage> {
 //                    alignment: Alignment.centerLeft,
 //                    child: ListView.builder(
 //                      scrollDirection: Axis.horizontal,
-//                      itemCount: data != null ? data.hourly.length : 0,
+//                      itemCount: data?.hourly.length ?? 0,
 //                      itemBuilder: (ctx, index) {
 //                        return _buildHourItem(hourly: data.hourly[index]);
 //                      },
@@ -276,29 +274,25 @@ class WeatherState extends PageState<WeatherPage> {
                                       children: <Widget>[
                                         _buildSoftItem(
                                           url: "images/air_soft_1.png",
-                                          lifestyle: data != null &&
-                                                  data.lifestyle != null
+                                          lifestyle: data != null
                                               ? data.lifestyle[7]
                                               : null,
                                         ),
                                         _buildSoftItem(
                                           url: "images/air_soft_2.png",
-                                          lifestyle: data != null &&
-                                                  data.lifestyle != null
+                                          lifestyle: data != null
                                               ? data.lifestyle[0]
                                               : null,
                                         ),
                                         _buildSoftItem(
                                           url: "images/air_soft_3.png",
-                                          lifestyle: data != null &&
-                                                  data.lifestyle != null
+                                          lifestyle: data != null
                                               ? data.lifestyle[6]
                                               : null,
                                         ),
                                         _buildSoftItem(
                                           url: "images/air_soft_4.png",
-                                          lifestyle: data != null &&
-                                                  data.lifestyle != null
+                                          lifestyle: data != null
                                               ? data.lifestyle[1]
                                               : null,
                                         ),
@@ -314,29 +308,25 @@ class WeatherState extends PageState<WeatherPage> {
                                       children: <Widget>[
                                         _buildSoftItem(
                                           url: "images/air_soft_5.png",
-                                          lifestyle: data != null &&
-                                                  data.lifestyle != null
+                                          lifestyle: data != null
                                               ? data.lifestyle[2]
                                               : null,
                                         ),
                                         _buildSoftItem(
                                           url: "images/air_soft_6.png",
-                                          lifestyle: data != null &&
-                                                  data.lifestyle != null
+                                          lifestyle: data != null
                                               ? data.lifestyle[3]
                                               : null,
                                         ),
                                         _buildSoftItem(
                                           url: "images/air_soft_7.png",
-                                          lifestyle: data != null &&
-                                                  data.lifestyle != null
+                                          lifestyle: data != null
                                               ? data.lifestyle[4]
                                               : null,
                                         ),
                                         _buildSoftItem(
                                           url: "images/air_soft_8.png",
-                                          lifestyle: data != null &&
-                                                  data.lifestyle != null
+                                          lifestyle: data != null
                                               ? data.lifestyle[5]
                                               : null,
                                         ),
@@ -387,7 +377,7 @@ class WeatherState extends PageState<WeatherPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              "${now != null ? now.tmp : 0}°",
+              "${now?.tmp ?? 0}°",
               style: TextStyle(fontSize: 70, color: Colors.white),
             ),
             Padding(padding: const EdgeInsets.only(left: 10)),
@@ -395,18 +385,18 @@ class WeatherState extends PageState<WeatherPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "${now != null ? now.condTxt : ""}",
+                  now?.condTxt ?? "",
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 6, bottom: 2),
                   child: Text(
-                    "↑${daily != null ? daily.tmpMax : 0}℃",
+                    "↑${daily?.tmpMax ?? 0}℃",
                     style: TextStyle(fontSize: 10, color: Colors.white),
                   ),
                 ),
                 Text(
-                  "↓${daily != null ? daily.tmpMin : 0}℃",
+                  "↓${daily?.tmpMin ?? 0}℃",
                   style: TextStyle(fontSize: 10, color: Colors.white),
                 )
               ],
@@ -425,7 +415,7 @@ class WeatherState extends PageState<WeatherPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "${now != null ? now.hum : 0}％",
+                  "${now?.hum ?? 0}％",
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
                 Text(
@@ -444,7 +434,7 @@ class WeatherState extends PageState<WeatherPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "${now != null ? now.pres : 0}",
+                  "${now?.pres ?? 0}",
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
                 Text(
@@ -485,7 +475,7 @@ class WeatherState extends PageState<WeatherPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(
-          "${hourly != null ? hourly.tmp : 0}°",
+          "${hourly?.tmp ?? 0}°",
           style: TextStyle(
               fontSize: 14,
               color: AppColor.colorText2,
@@ -494,13 +484,13 @@ class WeatherState extends PageState<WeatherPage> {
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
           child: Image.asset(
-            "images/${hourly != null ? hourly.condCode : 100}.png",
+            "images/${hourly?.condCode ?? 100}.png",
             height: 30,
             width: 30,
           ),
         ),
         Text(
-          "${hourly != null ? hourly.time.substring(hourly.time.length - 5) : "00:00"}",
+          hourly?.time?.substring(hourly.time.length - 5) ?? "00:00",
           style: TextStyle(
             color: AppColor.colorText2,
             fontSize: 12,
@@ -522,19 +512,19 @@ class WeatherState extends PageState<WeatherPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Text(
-            _getWeekday(date: daily != null ? daily.date : ""),
+            _getWeekday(date: daily?.date ?? ""),
             style: style,
           ),
           Padding(
             padding: const EdgeInsets.only(top: 8, bottom: 8),
             child: Image.asset(
-              "images/${daily != null ? daily.condCodeD : 100}.png",
+              "images/${daily?.condCodeD ?? 100}.png",
               height: 30,
               width: 30,
             ),
           ),
           Text(
-            "${daily != null ? daily.condTxtD : ""}",
+            daily.condTxtD ?? "",
             style: style,
           ),
         ],
@@ -583,12 +573,12 @@ class WeatherState extends PageState<WeatherPage> {
           Padding(
             padding: const EdgeInsets.only(top: 5, bottom: 1),
             child: Text(
-              "${lifestyle != null ? lifestyle.brf : ""}",
+              lifestyle?.brf ?? "",
               style: TextStyle(fontSize: 12, color: Colors.black),
             ),
           ),
           Text(
-            _getSoftName(type: "${lifestyle != null ? lifestyle.type : ""}"),
+            _getSoftName(type: lifestyle?.type ?? ""),
             style: TextStyle(
               fontSize: 10,
               color: AppColor.colorText2,

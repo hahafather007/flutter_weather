@@ -23,10 +23,8 @@ class WeatherRainState extends WeatherBase<WeatherRain> {
   Animation<double> _mountainAnim2;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    final width = getScreenWidth(context);
+  void initState() {
+    super.initState();
 
     _mountainController =
         AnimationController(vsync: this, duration: const Duration(seconds: 2))
@@ -39,10 +37,19 @@ class WeatherRainState extends WeatherBase<WeatherRain> {
           });
     _mountainController2 =
         AnimationController(vsync: this, duration: const Duration(seconds: 2));
-    _mountainAnim = Tween(begin: -160.0, end: width - 160).animate(
-        CurvedAnimation(parent: _mountainController, curve: Curves.easeOut));
-    _mountainAnim2 = Tween(begin: width - 160, end: width - 200).animate(
-        CurvedAnimation(parent: _mountainController2, curve: Curves.ease));
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_mountainAnim == null || _mountainAnim2 == null) {
+      final width = getScreenWidth(context);
+      _mountainAnim = Tween(begin: -160.0, end: width - 160).animate(
+          CurvedAnimation(parent: _mountainController, curve: Curves.easeOut));
+      _mountainAnim2 = Tween(begin: width - 160, end: width - 200).animate(
+          CurvedAnimation(parent: _mountainController2, curve: Curves.ease));
+    }
   }
 
   @override
