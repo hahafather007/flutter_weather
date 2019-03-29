@@ -1,25 +1,14 @@
 import 'package:flutter_weather/commom_import.dart';
 
-/// 雪花
-class SnowView extends StatefulWidget {
-  /// 是否为全屏下雪
-  final bool fullScreen;
-
-  SnowView({this.fullScreen = false});
-
+/// 冰雹
+class HailView extends StatefulWidget {
   @override
   State createState() => _SnowState();
 }
 
-class _SnowState extends State<SnowView> with TickerProviderStateMixin {
-  /// 雪花透明度
-  int _alpha;
-
+class _SnowState extends State<HailView> with TickerProviderStateMixin {
   /// 初始距离左侧边距
   double _left;
-
-  /// 初始距离底部位置
-  double _bottomBegin;
 
   /// 雪花大小
   double _size;
@@ -38,7 +27,7 @@ class _SnowState extends State<SnowView> with TickerProviderStateMixin {
     _controller = AnimationController(
         vsync: this,
         duration: Duration(
-            milliseconds: (Random().nextDouble() * 8000 + 4000).toInt()))
+            milliseconds: (Random().nextDouble() * 6000 + 2000).toInt()))
       ..forward()
       ..addListener(() {
         if (_anim.value <= -20) {
@@ -55,7 +44,7 @@ class _SnowState extends State<SnowView> with TickerProviderStateMixin {
     super.didChangeDependencies();
 
     _initStartData();
-    _anim = Tween(begin: _bottomBegin, end: _bottomBegin - _fullHeight - 20)
+    _anim = Tween(begin: _fullHeight, end: -20.0)
         .animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
   }
 
@@ -71,14 +60,32 @@ class _SnowState extends State<SnowView> with TickerProviderStateMixin {
     return AnimatedBuilder(
       animation: _anim,
       builder: (context, child) {
+        final color = Colors.white.withOpacity(_controller.value * 0.6 + 0.2);
+
         return Positioned(
           child: Container(
-            height: _size,
+            height: _size / 3 * 4,
             width: _size,
-            decoration: BoxDecoration(
-                color: Colors.white.withAlpha(_alpha), shape: BoxShape.circle),
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                Positioned.fill(
+                  child: Material(
+                    color: color,
+                    shape: BeveledRectangleBorder(
+                        borderRadius: BorderRadius.circular(_size / 6 * 5)),
+                  ),
+                ),
+                Container(
+                  width: _size / 3 * 2,
+                  height: _size / 3 * 2,
+                  decoration:
+                      BoxDecoration(shape: BoxShape.circle, color: color),
+                ),
+              ],
+            ),
           ),
-          left: _left + (widget.fullScreen ? 0 : (260 - _anim.value) / 3),
+          left: _left,
           bottom: _anim.value,
         );
       },
@@ -87,18 +94,8 @@ class _SnowState extends State<SnowView> with TickerProviderStateMixin {
 
   /// 初始化雪花开始的数据
   void _initStartData() {
-    _alpha = Random().nextInt(140) + 60;
     _size = Random().nextDouble() * 12;
-
-    if (!widget.fullScreen) {
-      _left = getScreenWidth(context) - Random().nextInt(280) - 40;
-      _bottomBegin = Random().nextDouble() * 120 + 180;
-    } else {
-      _left = Random().nextDouble() * (getScreenWidth(context) - 12);
-      final paddingTop = _fullHeight - 100;
-      _bottomBegin =
-          Random().nextDouble() * (_fullHeight - paddingTop) + paddingTop;
-    }
+    _left = Random().nextDouble() * getScreenWidth(context);
   }
 
   double get _fullHeight {

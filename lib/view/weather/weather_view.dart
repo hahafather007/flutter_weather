@@ -35,6 +35,8 @@ class WeatherViewState extends State<WeatherView> {
       } else {
         weather = WeatherRain(key: Key("雨"), rain: true);
       }
+    } else if (type.contains("冰雹")) {
+      weather = WeatherRain(key: Key("冰雹"), hail: true);
     } else if (type.contains("雪")) {
       weather = WeatherRain(key: Key("雪"), snow: true);
     } else if (type.contains("霾")) {

@@ -1,19 +1,21 @@
 import 'package:flutter_weather/commom_import.dart';
 import 'weather_base.dart';
 
-/// 雨天、雪天和雾天
+/// 雨天、雪天、雾天和冰雹
 class WeatherRain extends StatefulWidget {
   final bool rain;
   final bool snow;
   final bool flash;
   final bool fog;
+  final bool hail;
 
   WeatherRain(
       {Key key,
       this.rain = false,
       this.snow = false,
       this.flash = false,
-      this.fog = false})
+      this.fog = false,
+      this.hail = false})
       : super(key: key);
 
   @override
@@ -86,10 +88,10 @@ class WeatherRainState extends WeatherBase<WeatherRain> {
 
                   return Positioned(
                     child: Image.asset(
-                      "images/${widget.snow ? "ic_snow_ground.png" : widget.fog ? "ic_fog_ground.png" : "ic_rain_ground.png"}",
+                      "images/${widget.snow ? "ic_snow_ground.png" : widget.fog ? "ic_fog_ground.png" : widget.hail ? "ic_hail_ground.png" : "ic_rain_ground.png"}",
                       width: 210,
                     ),
-                    bottom: widget.snow ? -8 : -4,
+                    bottom: widget.snow ? -6 : widget.hail ? 0 : -2,
                     left: left,
                   );
                 },
@@ -150,6 +152,14 @@ class WeatherRainState extends WeatherBase<WeatherRain> {
                   child: FogView(),
                   bottom: 0,
                   left: 80,
+                )
+              : Container(),
+
+          // 冰雹
+          widget.hail
+              ? Stack(
+                  alignment: Alignment.center,
+                  children: List.generate(20, (_) => HailView()),
                 )
               : Container(),
         ],
