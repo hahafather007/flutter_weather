@@ -77,6 +77,7 @@ export 'view/widget/snow_view.dart';
 export 'view/widget/flash_view.dart';
 export 'view/widget/fog_view.dart';
 export 'view/widget/hail_view.dart';
+export 'view/widget/mountain_view.dart';
 
 export 'view/weather/weather_view.dart';
 

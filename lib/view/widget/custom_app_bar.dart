@@ -24,7 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return AnimatedContainer(
       color: color,
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 2),
       height: preferredSize.height + getSysStatsHeight(context),
       child: Column(
         children: <Widget>[

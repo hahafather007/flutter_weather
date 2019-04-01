@@ -3,6 +3,7 @@ import 'weather_sunny.dart';
 import 'weather_cloud.dart';
 import 'weather_rain.dart';
 import 'weather_sandstorm.dart';
+import 'weather_overcast.dart';
 
 /// 天气显示控件
 class WeatherView extends StatefulWidget {
@@ -45,6 +46,8 @@ class WeatherViewState extends State<WeatherView> {
       weather = WeatherRain(key: Key("雾"), fog: true);
     } else if (type.contains("沙")) {
       weather = WeatherSandstorm(key: Key("沙"), isSmog: false);
+    } else if (type.contains("阴")) {
+      weather = WeatherOvercast(key: Key("阴"));
     } else {
       weather = WeatherCloud(key: Key("多云"));
     }
@@ -52,7 +55,7 @@ class WeatherViewState extends State<WeatherView> {
     return Stack(
       children: <Widget>[
         AnimatedContainer(
-          duration: const Duration(seconds: 3),
+          duration: const Duration(seconds: 2),
           child: weather,
           color: widget.color,
         ),

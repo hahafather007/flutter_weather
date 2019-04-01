@@ -695,6 +695,8 @@ class WeatherState extends PageState<WeatherPage> {
       return const Color(0xFFE99E3C);
     } else if (type.contains("雾")) {
       return const Color(0xFF8CADD3);
+    } else if (type.contains("阴")) {
+      return const Color(0xFF6D8DB1);
     } else {
       return isDay ? const Color(0xFF51C0F8) : const Color(0xFF7F9EE9);
     }
