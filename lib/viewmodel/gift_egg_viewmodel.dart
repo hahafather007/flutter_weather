@@ -2,13 +2,13 @@ import 'package:flutter_weather/commom_import.dart';
 
 class GiftEggViewModel extends ViewModel {
   final _service = GiftEggService();
+
   final data = StreamController<List<MziData>>();
   final _photoData = StreamController<List<MziData>>();
 
   Stream<List<MziData>> photoStream;
   List<MziData> _cacheData = List();
   int _page = 1;
-  LoadType _reloadType = LoadType.NEW_LOAD;
 
   GiftEggViewModel() {
     photoStream = _photoData.stream.asBroadcastStream();
@@ -22,7 +22,7 @@ class GiftEggViewModel extends ViewModel {
       _page = 1;
       _cacheData.clear();
     } else {
-      isLoading.add(true);
+      streamAdd(isLoading, true);
     }
 
     try {
@@ -31,20 +31,20 @@ class GiftEggViewModel extends ViewModel {
         _cacheData.addAll(v.pics.map((url) =>
             MziData(height: 459, width: 337, url: url, isImages: false)));
       });
-      data.add(_cacheData);
-      _photoData.add(_cacheData);
+      streamAdd(data, _cacheData);
+      streamAdd(_photoData, _cacheData);
       _page++;
     } on DioError catch (e) {
-      _reloadType = type;
+      selfLoadType = type;
       doError(e);
     } finally {
       selfLoading = false;
-      isLoading.add(false);
+      streamAdd(isLoading, false);
     }
   }
 
   void reload() {
-    loadData(type: _reloadType);
+    loadData(type: selfLoadType);
   }
 
   void loadMore() {

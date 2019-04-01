@@ -9,7 +9,6 @@ class ReadViewModel extends ViewModel {
   bool selfLoading = false;
   int _page = 1;
   String _typeUrl;
-  LoadType _reloadType = LoadType.NEW_LOAD;
 
   void init({@required String typeUrl}) {
     _typeUrl = typeUrl;
@@ -24,26 +23,26 @@ class ReadViewModel extends ViewModel {
       _page = 1;
       _cacheData.clear();
     } else {
-      isLoading.add(true);
+      streamAdd(isLoading, true);
     }
 
     try {
       final list = await _service.getReadDatas(lastUrl: _typeUrl, page: _page);
 
       _cacheData.addAll(list);
-      data.add(_cacheData);
+      streamAdd(data, _cacheData);
       _page++;
     } on DioError catch (e) {
-      _reloadType = type;
+      selfLoadType = type;
       doError(e);
     } finally {
       selfLoading = false;
-      isLoading.add(false);
+      streamAdd(isLoading, false);
     }
   }
 
   void reload() {
-    loadData(type: _reloadType);
+    loadData(type: selfLoadType);
   }
 
   void loadMore() {

@@ -23,7 +23,7 @@ class GiftMziViewModel extends ViewModel {
       _page = 1;
       _cacheData.clear();
     } else {
-      isLoading.add(true);
+      streamAdd(isLoading, true);
     }
 
     try {
@@ -36,7 +36,7 @@ class GiftMziViewModel extends ViewModel {
       doError(e);
     } finally {
       selfLoading = false;
-      isLoading.add(false);
+      streamAdd(isLoading, false);
     }
   }
 

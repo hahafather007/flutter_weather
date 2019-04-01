@@ -13,3 +13,9 @@ abstract class StreamSubController {
     _subList.forEach((v) => v.cancel());
   }
 }
+
+void streamAdd<T>(StreamController<T> controller, T data) {
+  if (controller.isClosed) return;
+
+  controller.add(data);
+}

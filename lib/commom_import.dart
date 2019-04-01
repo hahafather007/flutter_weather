@@ -23,7 +23,7 @@ export 'package:path_provider/path_provider.dart';
 export 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 export 'common/colors.dart';
-export 'common/stream_sub_controller.dart';
+export 'common/streams.dart';
 export 'common/keep_alive_mixin.dart';
 export 'common/cache_path.dart';
 

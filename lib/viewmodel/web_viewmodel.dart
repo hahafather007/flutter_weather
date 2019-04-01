@@ -8,10 +8,10 @@ class WebViewModel<T> extends ViewModel {
   int openingNum = 0;
 
   WebViewModel({@required T favData}) {
-    isFav.add(_favHolder.isFavorite(favData));
-    isLoading.add(true);
+    streamAdd(isFav, _favHolder.isFavorite(favData));
+    streamAdd(isLoading, true);
     bindSub(_favHolder.favReadStream
-        .listen((_) => isFav.add(_favHolder.isFavorite(favData))));
+        .listen((_) => streamAdd(isFav, _favHolder.isFavorite(favData))));
   }
 
   void bindEvent(Stream eventStream) {
@@ -19,13 +19,13 @@ class WebViewModel<T> extends ViewModel {
       debugPrint(event.toString());
       switch (event["event"]) {
         case "onPageStarted":
-          isLoading.add(true);
+          streamAdd(isLoading, true);
           openingNum++;
           break;
         case "onPageFinished":
           openingNum--;
           if (openingNum == 0) {
-            isLoading.add(false);
+            streamAdd(isLoading, false);
           }
           break;
         case "shouldOverrideUrlLoading":

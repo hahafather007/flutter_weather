@@ -4,13 +4,13 @@ class SettingViewModel extends ViewModel {
   final cacheSize = StreamController<String>();
 
   SettingViewModel() {
-    isLoading.add(true);
+    streamAdd(isLoading, true);
 
-    calculateSize().then((_) => isLoading.add(false));
+    calculateSize().then((_) => streamAdd(isLoading, false));
   }
 
   void clearCache() async {
-    isLoading.add(true);
+    streamAdd(isLoading, true);
     final directory = Directory(await DefaultCacheManager().getFilePath());
 
     if (directory.existsSync()) {
@@ -19,7 +19,7 @@ class SettingViewModel extends ViewModel {
       await calculateSize();
     }
 
-    isLoading.add(false);
+    streamAdd(isLoading, false);
   }
 
   Future<Null> calculateSize() async {
@@ -32,7 +32,7 @@ class SettingViewModel extends ViewModel {
           .map((v) => File(v.path).lengthSync())
           .forEach((length) => size += length);
     }
-    cacheSize.add(ByteUtil.calculateSize(size));
+    streamAdd(cacheSize, ByteUtil.calculateSize(size));
   }
 
   @override
