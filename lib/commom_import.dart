@@ -4,7 +4,6 @@ export 'package:device_info/device_info.dart';
 export 'package:dio/dio.dart';
 export 'package:flutter/material.dart';
 export 'package:flutter/services.dart';
-export 'package:flutter/services.dart';
 export 'package:flutter_localizations/flutter_localizations.dart';
 export 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 export 'package:flutter_weather/language.dart';
@@ -77,7 +76,6 @@ export 'view/widget/snow_view.dart';
 export 'view/widget/flash_view.dart';
 export 'view/widget/fog_view.dart';
 export 'view/widget/hail_view.dart';
-export 'view/widget/mountain_view.dart';
 
 export 'view/weather/weather_view.dart';
 

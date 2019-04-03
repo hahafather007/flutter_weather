@@ -90,8 +90,8 @@ class WeatherSunnyState extends WeatherBase<WeatherSunny> {
                         decoration: BoxDecoration(
                             gradient: RadialGradient(colors: [
                               Colors.white,
-                              Colors.white,
-                              backColor,
+                              Colors.transparent,
+                              Colors.transparent,
                             ]),
                             shape: BoxShape.circle),
                         child: Container(
@@ -145,3 +145,5 @@ class WeatherSunnyState extends WeatherBase<WeatherSunny> {
     );
   }
 }
+
+
