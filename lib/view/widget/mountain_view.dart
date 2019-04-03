@@ -20,7 +20,7 @@ class _MountainState extends State<MountainView> with TickerProviderStateMixin {
         vsync: this, duration: const Duration(milliseconds: 1300))
       ..forward();
     _mountainAnim = Tween(begin: 0.0, end: 88.0).animate(CurvedAnimation(
-        parent: _mountainController, curve: const Cubic(0.18, 0.6, 0.4, 1.3)));
+        parent: _mountainController, curve: const Cubic(0.4, 0.8, 0.75, 1.3)));
   }
 
   @override

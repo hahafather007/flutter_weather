@@ -25,7 +25,7 @@ class WeatherSandstormState extends WeatherBase<WeatherSandstorm> {
         vsync: this, duration: const Duration(milliseconds: 1300))
       ..forward();
     _anim = Tween(begin: -pi / 2, end: 0.0).animate(CurvedAnimation(
-        parent: _controller, curve: const Cubic(0.18, 0.6, 0.4, 1.6)));
+        parent: _controller, curve: const Cubic(0.4, 0.8, 0.75, 1.6)));
   }
 
   @override

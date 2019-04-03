@@ -31,9 +31,9 @@ class WeatherRainState extends WeatherBase<WeatherRain> {
   void initState() {
     super.initState();
 
-    _mountainController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 2))
-          ..forward();
+    _mountainController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 2400))
+      ..forward();
   }
 
   @override
@@ -45,7 +45,7 @@ class WeatherRainState extends WeatherBase<WeatherRain> {
       _mountainAnim = Tween(begin: -160.0, end: width - 200).animate(
           CurvedAnimation(
               parent: _mountainController,
-              curve: const Cubic(0.18, 0.6, 0.4, 1.3)));
+              curve: const Cubic(0.4, 0.8, 0.75, 1.3)));
     }
   }
 
