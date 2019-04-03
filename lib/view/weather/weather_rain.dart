@@ -25,9 +25,7 @@ class WeatherRain extends StatefulWidget {
 class WeatherRainState extends WeatherBase<WeatherRain> {
   /// 山的移动动画
   AnimationController _mountainController;
-  AnimationController _mountainController2;
   Animation<double> _mountainAnim;
-  Animation<double> _mountainAnim2;
 
   @override
   void initState() {
@@ -35,34 +33,25 @@ class WeatherRainState extends WeatherBase<WeatherRain> {
 
     _mountainController =
         AnimationController(vsync: this, duration: const Duration(seconds: 2))
-          ..forward()
-          ..addStatusListener((statue) {
-            // 往右移动完毕之后开始回弹
-            if (statue == AnimationStatus.completed) {
-              _mountainController2.forward();
-            }
-          });
-    _mountainController2 = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 300));
+          ..forward();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    if (_mountainAnim == null || _mountainAnim2 == null) {
+    if (_mountainAnim == null) {
       final width = getScreenWidth(context);
-      _mountainAnim = Tween(begin: -160.0, end: width - 160).animate(
-          CurvedAnimation(parent: _mountainController, curve: Curves.easeOut));
-      _mountainAnim2 = Tween(begin: width - 160, end: width - 200).animate(
-          CurvedAnimation(parent: _mountainController2, curve: Curves.easeIn));
+      _mountainAnim = Tween(begin: -160.0, end: width - 200).animate(
+          CurvedAnimation(
+              parent: _mountainController,
+              curve: const Cubic(0.18, 0.6, 0.4, 1.3)));
     }
   }
 
   @override
   void dispose() {
     _mountainController?.dispose();
-    _mountainController2?.dispose();
 
     super.dispose();
   }
@@ -78,23 +67,13 @@ class WeatherRainState extends WeatherBase<WeatherRain> {
           AnimatedBuilder(
             animation: _mountainAnim,
             builder: (context, child) {
-              return AnimatedBuilder(
-                animation: _mountainAnim2,
-                builder: (context, child) {
-                  final left =
-                      _mountainController.status == AnimationStatus.completed
-                          ? _mountainAnim2.value
-                          : _mountainAnim.value;
-
-                  return Positioned(
-                    child: Image.asset(
-                      "images/${widget.snow ? "ic_snow_ground.png" : widget.fog ? "ic_fog_ground.png" : widget.hail ? "ic_hail_ground.png" : "ic_rain_ground.png"}",
-                      width: 210,
-                    ),
-                    bottom: widget.snow ? -6 : widget.hail ? 0 : -2,
-                    left: left,
-                  );
-                },
+              return Positioned(
+                child: Image.asset(
+                  "images/${widget.snow ? "ic_snow_ground.png" : widget.fog ? "ic_fog_ground.png" : widget.hail ? "ic_hail_ground.png" : "ic_rain_ground.png"}",
+                  width: 210,
+                ),
+                bottom: widget.snow ? -6 : widget.hail ? 0 : -2,
+                left: _mountainAnim.value,
               );
             },
           ),

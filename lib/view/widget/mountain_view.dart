@@ -12,29 +12,15 @@ class _MountainState extends State<MountainView> with TickerProviderStateMixin {
   AnimationController _mountainController;
   Animation<double> _mountainAnim;
 
-  /// 山的回弹动画
-  AnimationController _mountainController2;
-  Animation<double> _mountainAnim2;
-
   @override
   void initState() {
     super.initState();
 
-    _mountainController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1))
-          ..forward()
-          ..addStatusListener((status) {
-            if (status == AnimationStatus.completed) {
-              _mountainController2.forward();
-            }
-          });
-    _mountainAnim = Tween(begin: 0.0, end: 95.0).animate(
-        CurvedAnimation(parent: _mountainController, curve: Curves.easeOut));
-
-    _mountainController2 = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 200));
-    _mountainAnim2 = Tween(begin: 95.0, end: 88.0).animate(
-        CurvedAnimation(parent: _mountainController2, curve: Curves.easeIn));
+    _mountainController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1300))
+      ..forward();
+    _mountainAnim = Tween(begin: 0.0, end: 88.0).animate(CurvedAnimation(
+        parent: _mountainController, curve: const Cubic(0.18, 0.6, 0.4, 1.3)));
   }
 
   @override
@@ -45,7 +31,6 @@ class _MountainState extends State<MountainView> with TickerProviderStateMixin {
   @override
   void dispose() {
     _mountainController?.dispose();
-    _mountainController2?.dispose();
 
     super.dispose();
   }
@@ -57,29 +42,20 @@ class _MountainState extends State<MountainView> with TickerProviderStateMixin {
     return AnimatedBuilder(
       animation: _mountainAnim,
       builder: (context, snapshot) {
-        return AnimatedBuilder(
-          animation: _mountainAnim2,
-          builder: (context, snapshot) {
-            final height = _mountainAnim.status == AnimationStatus.completed
-                ? _mountainAnim2.value
-                : _mountainAnim.value;
-
-            return Stack(
-              alignment: Alignment.bottomCenter,
-              children: <Widget>[
-                CustomPaint(
-                  size: Size(width, 120),
-                  painter: _MountainPainter(
-                      height, width * 1 / 7, const Color(0xFF6484A8)),
-                ),
-                CustomPaint(
-                  size: Size(width, 120),
-                  painter: _MountainPainter(
-                      height, width * 6 / 7, const Color(0xFF59789D)),
-                ),
-              ],
-            );
-          },
+        return Stack(
+          alignment: Alignment.bottomCenter,
+          children: <Widget>[
+            CustomPaint(
+              size: Size(width, 120),
+              painter: _MountainPainter(
+                  _mountainAnim.value, width * 1 / 7, const Color(0xFF6484A8)),
+            ),
+            CustomPaint(
+              size: Size(width, 120),
+              painter: _MountainPainter(
+                  _mountainAnim.value, width * 6 / 7, const Color(0xFF59789D)),
+            ),
+          ],
         );
       },
     );

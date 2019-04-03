@@ -17,28 +17,15 @@ class WeatherSandstormState extends WeatherBase<WeatherSandstorm> {
   AnimationController _controller;
   Animation<double> _anim;
 
-  /// 回弹
-  AnimationController _controller2;
-  Animation<double> _anim2;
-
   @override
   void initState() {
     super.initState();
 
-    _controller =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1))
-          ..forward()
-          ..addStatusListener((status) {
-            if (status == AnimationStatus.completed) {
-              _controller2.forward();
-            }
-          });
-    _anim = Tween(begin: -pi / 2, end: pi / 6)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
-    _controller2 = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 333));
-    _anim2 = Tween(begin: pi / 6, end: 0.0)
-        .animate(CurvedAnimation(parent: _controller2, curve: Curves.easeIn));
+    _controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1300))
+      ..forward();
+    _anim = Tween(begin: -pi / 2, end: 0.0).animate(CurvedAnimation(
+        parent: _controller, curve: const Cubic(0.18, 0.6, 0.4, 1.6)));
   }
 
   @override
@@ -46,7 +33,6 @@ class WeatherSandstormState extends WeatherBase<WeatherSandstorm> {
     super.dispose();
 
     _controller?.dispose();
-    _controller2?.dispose();
   }
 
   @override
@@ -74,23 +60,16 @@ class WeatherSandstormState extends WeatherBase<WeatherSandstorm> {
             child: AnimatedBuilder(
               animation: _anim,
               builder: (context, child) {
-                return AnimatedBuilder(
-                  animation: _anim2,
-                  builder: (context, child) {
-                    // 参考https://medium.com/flutter-io/perspective-on-flutter-6f832f4d912e
-                    return Transform(
-                      alignment: Alignment.bottomCenter,
-                      transform: Matrix4.identity()
-                        ..setEntry(3, 2, 0.003)
-                        ..rotateX(_anim.status == AnimationStatus.completed
-                            ? _anim2.value
-                            : _anim.value),
-                      child: Image.asset(
-                        "images/ic_${widget.isSmog ? "haze" : "sanstorm"}_ground.png",
-                        width: 150,
-                      ),
-                    );
-                  },
+                // 参考https://medium.com/flutter-io/perspective-on-flutter-6f832f4d912e
+                return Transform(
+                  alignment: Alignment.bottomCenter,
+                  transform: Matrix4.identity()
+                    ..setEntry(3, 2, 0.003)
+                    ..rotateX(_anim.value),
+                  child: Image.asset(
+                    "images/ic_${widget.isSmog ? "haze" : "sanstorm"}_ground.png",
+                    width: 150,
+                  ),
                 );
               },
             ),
