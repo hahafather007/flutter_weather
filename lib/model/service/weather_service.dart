@@ -2,12 +2,12 @@ import 'package:flutter_weather/commom_import.dart';
 
 class WeatherService extends Service {
   WeatherService() {
-    dio.options.baseUrl = "https://free-api.heweather.com";
+    dio.options.baseUrl = "https://free-api.heweather.net";
   }
 
   Future<WeatherData> getWeather({@required String city}) async {
     final response =
-        await dio.get("/s6/weather?key=8c1c2b0cae5b422a8938a75c669976cc&location=$city");
+        await dio.get("/s6/weather?key=2d2a76fac8324146a1b17b68bda42c76&location=$city");
 
     debugPrint(response.toString());
 
@@ -16,7 +16,7 @@ class WeatherService extends Service {
 
   Future<WeatherAirData> getAir({@required String city}) async {
     final response =
-        await dio.get("/s6/air/now?key=8c1c2b0cae5b422a8938a75c669976cc&location=$city");
+        await dio.get("/s6/air/now?key=2d2a76fac8324146a1b17b68bda42c76&location=$city");
 
     debugPrint(response.toString());
 

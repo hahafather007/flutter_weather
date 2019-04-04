@@ -25,7 +25,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AnimatedContainer(
       color: color,
       duration: const Duration(seconds: 2),
-      height: preferredSize.height + getSysStatsHeight(context),
+      height: preferredSize.height + getStatusHeight(context),
       child: Column(
         children: <Widget>[
           Stack(
@@ -33,9 +33,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             children: <Widget>[
               Container(
                 padding: EdgeInsets.only(
-                    top: getSysStatsHeight(context), left: 4, right: 4),
+                    top: getStatusHeight(context), left: 4, right: 4),
                 height: preferredSize.height +
-                    getSysStatsHeight(context) -
+                    getStatusHeight(context) -
                     (showShadowLine ? 1 : 0),
                 child: Row(
                   children: <Widget>[
@@ -97,5 +97,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(AppBar().preferredSize.height);
+  Size get preferredSize => Size.fromHeight(getAppBarHeight());
 }

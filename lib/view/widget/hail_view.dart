@@ -101,8 +101,8 @@ class _SnowState extends State<HailView> with TickerProviderStateMixin {
   double get _fullHeight {
     if (_height == null) {
       _height = getScreenHeight(context) -
-          getSysStatsHeight(context) -
-          AppBar().preferredSize.height -
+          getStatusHeight(context) -
+          getAppBarHeight() -
           110;
     }
 

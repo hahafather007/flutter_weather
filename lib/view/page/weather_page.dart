@@ -141,8 +141,8 @@ class WeatherState extends PageState<WeatherPage> {
                               color: Colors.transparent,
                               alignment: Alignment.topCenter,
                               height: getScreenHeight(context) -
-                                  getSysStatsHeight(context) -
-                                  AppBar().preferredSize.height -
+                                  getStatusHeight(context) -
+                                  getAppBarHeight() -
                                   110,
                               padding: const EdgeInsets.only(top: 60),
                               child: _buildContent(
@@ -155,17 +155,18 @@ class WeatherState extends PageState<WeatherPage> {
                               child: Column(
                                 children: <Widget>[
                                   // 横向滚动显示每小时天气
-//                  Container(
-//                    height: 110,
-//                    alignment: Alignment.centerLeft,
-//                    child: ListView.builder(
-//                      scrollDirection: Axis.horizontal,
-//                      itemCount: data?.hourly.length ?? 0,
-//                      itemBuilder: (ctx, index) {
-//                        return _buildHourItem(hourly: data.hourly[index]);
-//                      },
-//                    ),
-//                  ),
+                                  Container(
+                                    height: 110,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: data?.hourly?.length ?? 0,
+                                      padding: const EdgeInsets.only(),
+                                      itemBuilder: (context, index) {
+                                        return _buildHourItem(
+                                            hourly: data.hourly[index]);
+                                      },
+                                    ),
+                                  ),
 
                                   Divider(color: AppColor.colorLine),
 
@@ -179,7 +180,7 @@ class WeatherState extends PageState<WeatherPage> {
                                               .map((v) =>
                                                   _buildDailyItem(daily: v))
                                               .toList()
-                                          : const <Widget>[],
+                                          : const [],
                                     ),
                                   ),
 

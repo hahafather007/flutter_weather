@@ -5,20 +5,61 @@ bool get isAndroid => Platform.isAndroid;
 
 bool get isIOS => Platform.isIOS;
 
-/// 获取当前版本信息
-String get versionName => "0.0.1";
+double _screenWidth = 0;
 
 /// 获取屏幕宽度
-double getScreenWidth(BuildContext context) =>
-    MediaQuery.of(context).size.width;
+double getScreenWidth(BuildContext context) {
+  if (_screenWidth != 0) {
+    return _screenWidth;
+  } else {
+    final width = MediaQuery.of(context).size.width;
+    _screenWidth = width;
+
+    return _screenWidth;
+  }
+}
+
+double _screenHeight = 0;
 
 /// 获取屏幕高度
-double getScreenHeight(BuildContext context) =>
-    MediaQuery.of(context).size.height;
+double getScreenHeight(BuildContext context) {
+  if (_screenHeight != 0) {
+    return _screenHeight;
+  } else {
+    final height = MediaQuery.of(context).size.height;
+    _screenHeight = height;
+
+    return _screenHeight;
+  }
+}
+
+double _statusHeight = 0;
 
 /// 获取系统状态栏高度
-double getSysStatsHeight(BuildContext context) =>
-    MediaQuery.of(context).padding.top;
+double getStatusHeight(BuildContext context) {
+  if (_statusHeight != 0) {
+    return _statusHeight;
+  } else {
+    final height = MediaQuery.of(context).padding.top;
+    _statusHeight = height;
+
+    return _statusHeight;
+  }
+}
+
+double _appBarHeight = 0;
+
+/// 获取标题栏高度
+double getAppBarHeight() {
+  if (_appBarHeight != 0) {
+    return _appBarHeight;
+  } else {
+    final height = AppBar().preferredSize.height;
+    _appBarHeight = height;
+
+    return _appBarHeight;
+  }
+}
 
 /// 关闭窗口
 void pop(BuildContext context, {int count = 1, dynamic extraData}) {

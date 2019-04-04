@@ -16,8 +16,8 @@ abstract class WeatherBase<T extends StatefulWidget> extends State<T>
   double get fullHeight {
     if (_height == null) {
       _height = getScreenHeight(context) -
-          getSysStatsHeight(context) -
-          AppBar().preferredSize.height -
+          getStatusHeight(context) -
+          getAppBarHeight() -
           110;
     }
 
