@@ -61,6 +61,18 @@ class AppText {
       "pres": "气压",
       "windSc": "级",
       "weatherFail": "天气信息获取失败！",
+      "weathersView": "动态天气预览",
+      "sunny": "晴",
+      "cloudy": "多云",
+      "overcast": "阴",
+      "rain": "雨",
+      "flashRain": "雷雨",
+      "snowRain": "雨夹雪",
+      "snow": "雪",
+      "hail": "冰雹",
+      "fog": "雾",
+      "smog": "雾霾",
+      "sandstorm": "沙尘暴",
 
       // 福利
       "gank": "Gank",
@@ -199,6 +211,31 @@ class AppText {
   String get pres => _localizedValues[locale.languageCode]["pres"];
 
   String get windSc => _localizedValues[locale.languageCode]["windSc"];
+
+  String get sunny => _localizedValues[locale.languageCode]["sunny"];
+
+  String get cloudy => _localizedValues[locale.languageCode]["cloudy"];
+
+  String get overcast => _localizedValues[locale.languageCode]["overcast"];
+
+  String get rain => _localizedValues[locale.languageCode]["rain"];
+
+  String get flashRain => _localizedValues[locale.languageCode]["flashRain"];
+
+  String get snowRain => _localizedValues[locale.languageCode]["snowRain"];
+
+  String get snow => _localizedValues[locale.languageCode]["snow"];
+
+  String get hail => _localizedValues[locale.languageCode]["hail"];
+
+  String get fog => _localizedValues[locale.languageCode]["fog"];
+
+  String get smog => _localizedValues[locale.languageCode]["smog"];
+
+  String get sandstorm => _localizedValues[locale.languageCode]["sandstorm"];
+
+  String get weathersView =>
+      _localizedValues[locale.languageCode]["weathersView"];
 
   String get weatherFail =>
       _localizedValues[locale.languageCode]["weatherFail"];

@@ -16,8 +16,6 @@ class WeatherState extends PageState<WeatherPage> {
   void initState() {
     super.initState();
 
-    debugPrint("init========>WeatherState");
-
     _viewModel.init();
   }
 
@@ -83,11 +81,11 @@ class WeatherState extends PageState<WeatherPage> {
                       ),
                       PopupMenuItem(
                         value: "cities",
-                        child: Text("城市管理"),
+                        child: Text(AppText.of(context).cityControl),
                       ),
                       PopupMenuItem(
                         value: "weathers",
-                        child: Text("动态天气预览"),
+                        child: Text(AppText.of(context).weathersView),
                       ),
                     ],
                 onSelected: (value) {
@@ -769,7 +767,7 @@ class WeatherState extends PageState<WeatherPage> {
       context: context,
       builder: (context) => AlertDialog(
             title: Text(
-              "动态天气预览",
+              AppText.of(context).weathersView,
               style: TextStyle(fontSize: 20, color: Colors.black),
             ),
             contentPadding: const EdgeInsets.only(),
@@ -781,17 +779,17 @@ class WeatherState extends PageState<WeatherPage> {
                 physics: const ClampingScrollPhysics(),
                 padding: const EdgeInsets.only(),
                 children: <Widget>[
-                  _buildDialogItem(title: "晴"),
-                  _buildDialogItem(title: "多云"),
-                  _buildDialogItem(title: "阴"),
-                  _buildDialogItem(title: "雨"),
-                  _buildDialogItem(title: "雷雨"),
-                  _buildDialogItem(title: "雨夹雪"),
-                  _buildDialogItem(title: "雪"),
-                  _buildDialogItem(title: "冰雹"),
-                  _buildDialogItem(title: "雾"),
-                  _buildDialogItem(title: "雾霾"),
-                  _buildDialogItem(title: "沙尘暴"),
+                  _buildDialogItem(title: AppText.of(context).sunny),
+                  _buildDialogItem(title: AppText.of(context).cloudy),
+                  _buildDialogItem(title: AppText.of(context).overcast),
+                  _buildDialogItem(title: AppText.of(context).rain),
+                  _buildDialogItem(title: AppText.of(context).flashRain),
+                  _buildDialogItem(title: AppText.of(context).snowRain),
+                  _buildDialogItem(title: AppText.of(context).snow),
+                  _buildDialogItem(title: AppText.of(context).hail),
+                  _buildDialogItem(title: AppText.of(context).fog),
+                  _buildDialogItem(title: AppText.of(context).smog),
+                  _buildDialogItem(title: AppText.of(context).sandstorm),
                 ],
               ),
             ),
