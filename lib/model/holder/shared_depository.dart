@@ -22,7 +22,7 @@ class SharedDepository {
   }
 
   /// 上一次城市定位
-  String get lastCity => _getString("lastCity", defaultValue: "成都");
+  String get lastCity => _getString("lastCity", defaultValue: "成都,成都");
 
   Future<bool> setLastCity(String value) async =>
       await _prefs.setString("lastCity", value);

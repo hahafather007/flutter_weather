@@ -42,11 +42,7 @@ class LocationHolder {
             
             if let reGeocode = reGeocode {
                 debugPrint("reGeocode:%@", reGeocode)
-                if (reGeocode.district != nil) {
-                    result?(reGeocode.district)
-                } else {
-                    result?(FlutterMethodNotImplemented)
-                }
+                result?("\(reGeocode.district!),\(reGeocode.city!)")
             } else {
                 result?(FlutterMethodNotImplemented)
             }

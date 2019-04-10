@@ -20,9 +20,6 @@ class WeatherState extends PageState<WeatherPage> {
 
     _viewModel.init();
     bindStreamOfViewModel(_viewModel);
-//    DefaultAssetBundle.of(context)
-//        .loadString("jsons/weather_map.json")
-//        .then(debugPrint);
   }
 
   @override

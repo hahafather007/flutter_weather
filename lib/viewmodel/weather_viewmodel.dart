@@ -9,7 +9,7 @@ class WeatherViewModel extends ViewModel {
   final weatherType = StreamController<String>();
 
   void init() {
-    streamAdd(city, SharedDepository().lastCity);
+    streamAdd(city, SharedDepository().lastCity.split(",")[0]);
 
     // 首先将缓存的数据作为第一数据显示，再判断请求逻辑
     final lastWeatherData = SharedDepository().lastWeatherData;
@@ -48,16 +48,14 @@ class WeatherViewModel extends ViewModel {
     await SimplePermissions.requestPermission(Permission.AlwaysLocation);
 
     try {
-      var mCity = await ChannelUtil.getLocation();
-      if (mCity == null) {
-        mCity = SharedDepository().lastCity;
-      } else {
-        SharedDepository().setLastCity(mCity);
-      }
-      streamAdd(city, mCity);
+      var mCity =
+          (await ChannelUtil.getLocation() ?? SharedDepository().lastCity)
+              .split(",");
+      SharedDepository().setLastCity("${mCity[0]},${mCity[1]}");
+      streamAdd(city, mCity[0]);
 
-      final weatherData = await _service.getWeather(city: mCity);
-      final airData = await _service.getAir(city: mCity);
+      final weatherData = await _service.getWeather(city: mCity[0]);
+      final airData = await _service.getAir(city: mCity[1]);
       // 储存本次天气结果
       await SharedDepository().setWeatherUpdateTime(DateTime.now().toString());
       await SharedDepository().setLastWeatherData(json.encode(weatherData));

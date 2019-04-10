@@ -131,9 +131,6 @@ flutter:
     - images/cloud_car1.png
     - images/cloud_car2.png
 
-    # json文件
-    - jsons/weather_map.json
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
 
