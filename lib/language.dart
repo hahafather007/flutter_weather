@@ -42,6 +42,7 @@ class AppText {
       "friday": "星期五",
       "saturday": "星期六",
       "sunday": "星期日",
+      "today": "今天",
       "air": "空气",
       "cw": "洗车",
       "uv": "紫外线",
@@ -59,7 +60,7 @@ class AppText {
       "hum": "湿度",
       "pres": "气压",
       "windSc": "级",
-      "weatherGetFail": "天气信息获取失败！",
+      "weatherFail": "天气信息获取失败！",
 
       // 福利
       "gank": "Gank",
@@ -73,6 +74,17 @@ class AppText {
       "allGirl": "每日更新",
       "landGirl": "街拍美女",
       "imageSet": "图集",
+      "gankFail": "Gank获取失败！",
+      "eggFail": "煎蛋获取失败！",
+      "mostHotFail": "最热获取失败！",
+      "sexGirlFail": "性感妹子获取失败！",
+      "japanGirlFail": "日本妹子获取失败！",
+      "taiwanGirFail": "台湾妹子获取失败！",
+      "beachGirlFail": "清纯妹子获取失败！",
+      "selfGirlFail": "妹子自拍获取失败！",
+      "allGirlFail": "每日更新获取失败！",
+      "landGirlFail": "街拍美女获取失败！",
+      "imageSetFail": "组图加载是失败！",
 
       // 闲读
       "xiandu": "科技资讯",
@@ -84,6 +96,15 @@ class AppText {
       "xianduThink": "独立思想",
       "xianduIos": "iOS",
       "xianduBlog": "团队博客",
+      "xianduFail": "科技资讯获取失败！",
+      "xianduAppsFail": "趣味软件/游戏获取失败！",
+      "xianduImrichFail": "装备党获取失败！",
+      "xianduFunnyFail": "草根新闻获取失败！",
+      "xianduAndroidFail": "Android获取失败！",
+      "xianduDieFail": "创业新闻获取失败！",
+      "xianduThinkFail": "独立思想获取失败！",
+      "xianduIosFail": "iOS获取失败！",
+      "xianduBlogFail": "团队博客获取失败！",
     },
   };
 
@@ -143,6 +164,8 @@ class AppText {
 
   String get sunday => _localizedValues[locale.languageCode]["sunday"];
 
+  String get today => _localizedValues[locale.languageCode]["today"];
+
   String get air => _localizedValues[locale.languageCode]["air"];
 
   String get cw => _localizedValues[locale.languageCode]["cw"];
@@ -177,8 +200,8 @@ class AppText {
 
   String get windSc => _localizedValues[locale.languageCode]["windSc"];
 
-  String get weatherGetFail =>
-      _localizedValues[locale.languageCode]["weatherGetFail"];
+  String get weatherFail =>
+      _localizedValues[locale.languageCode]["weatherFail"];
 
   /// 福利
   String get gank => _localizedValues[locale.languageCode]["gank"];
@@ -203,6 +226,37 @@ class AppText {
 
   String get imageSet => _localizedValues[locale.languageCode]["imageSet"];
 
+  String get gankFail => _localizedValues[locale.languageCode]["gankFail"];
+
+  String get eggFail => _localizedValues[locale.languageCode]["eggFail"];
+
+  String get mostHotFail =>
+      _localizedValues[locale.languageCode]["mostHotFail"];
+
+  String get sexGirlFail =>
+      _localizedValues[locale.languageCode]["sexGirlFail"];
+
+  String get japanGirlFail =>
+      _localizedValues[locale.languageCode]["japanGirlFail"];
+
+  String get taiwanGirFail =>
+      _localizedValues[locale.languageCode]["taiwanGirFail"];
+
+  String get beachGirlFail =>
+      _localizedValues[locale.languageCode]["beachGirlFail"];
+
+  String get selfGirlFail =>
+      _localizedValues[locale.languageCode]["selfGirlFail"];
+
+  String get allGirlFail =>
+      _localizedValues[locale.languageCode]["allGirlFail"];
+
+  String get landGirlFail =>
+      _localizedValues[locale.languageCode]["landGirlFail"];
+
+  String get imageSetFail =>
+      _localizedValues[locale.languageCode]["imageSetFail"];
+
   /// 闲读
   String get xiandu => _localizedValues[locale.languageCode]["xiandu"];
 
@@ -225,6 +279,32 @@ class AppText {
   String get xianduIos => _localizedValues[locale.languageCode]["xianduIos"];
 
   String get xianduBlog => _localizedValues[locale.languageCode]["xianduBlog"];
+
+  String get xianduFail => _localizedValues[locale.languageCode]["xianduFail"];
+
+  String get xianduAppsFail =>
+      _localizedValues[locale.languageCode]["xianduAppsFail"];
+
+  String get xianduImrichFail =>
+      _localizedValues[locale.languageCode]["xianduImrichFail"];
+
+  String get xianduFunnyFail =>
+      _localizedValues[locale.languageCode]["xianduFunnyFail"];
+
+  String get xianduAndroidFail =>
+      _localizedValues[locale.languageCode]["xianduAndroidFail"];
+
+  String get xianduDieFail =>
+      _localizedValues[locale.languageCode]["xianduDieFail"];
+
+  String get xianduThinkFail =>
+      _localizedValues[locale.languageCode]["xianduThinkFail"];
+
+  String get xianduIosFail =>
+      _localizedValues[locale.languageCode]["xianduIosFail"];
+
+  String get xianduBlogFail =>
+      _localizedValues[locale.languageCode]["xianduBlogFail"];
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppText> {

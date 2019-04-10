@@ -21,6 +21,15 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    bindErrorStream(_viewModel.error.stream,
+        errorText: AppText.of(context).imageSetFail,
+        retry: () => _viewModel.loadData());
+  }
+
+  @override
   void dispose() {
     _viewModel.dispose();
     _scrollController.dispose();
@@ -31,6 +40,7 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scafKey,
       appBar: CustomAppBar(
         title: Text(
           AppText.of(context).imageSet,

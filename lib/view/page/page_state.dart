@@ -5,15 +5,32 @@ abstract class PageState<T extends StatefulWidget> extends State<T>
   @protected
   final scafKey = GlobalKey<ScaffoldState>();
 
+  bool _bindError = false;
+
   /// 绑定viewModel中通用的stream
   @protected
-  void bindStreamOfViewModel(ViewModel viewModel) {
-    bindSub(viewModel.error.stream.listen((_) => networkError()));
+  void bindErrorStream(Stream<bool> error,
+      {@required String errorText, @required Function retry}) {
+    if (_bindError) return;
+    _bindError = true;
+
+    bindSub(error
+        .where((b) => b)
+        .listen((_) => _networkError(errorText: errorText, retry: retry)));
   }
 
   /// 网络错误
-  @protected
-  void networkError() {}
+  void _networkError({@required String errorText, @required Function retry}) {
+    scafKey.currentState.removeCurrentSnackBar();
+    scafKey.currentState.showSnackBar(SnackBar(
+      content: Text(errorText),
+      duration: const Duration(days: 1),
+      action: SnackBarAction(
+        label: AppText.of(context).retry,
+        onPressed: retry,
+      ),
+    ));
+  }
 
   @override
   void dispose() {

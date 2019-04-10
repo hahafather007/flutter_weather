@@ -1,11 +1,6 @@
 import 'package:flutter_weather/commom_import.dart';
 
-class GiftPage extends StatefulWidget {
-  @override
-  State createState() => GiftState();
-}
-
-class GiftState extends PageState<GiftPage> {
+class GiftPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -56,13 +51,32 @@ class GiftState extends PageState<GiftPage> {
                       color: AppColor.colorRead,
                       child: TabBarView(
                         children: [
-                          GiftGankPage(),
-                          GiftEggPage(),
-                          GiftMziPage(typeUrl: "mm"),
-                          GiftMziPage(typeUrl: "hot"),
-                          GiftMziPage(typeUrl: "taiwan"),
-                          GiftMziPage(typeUrl: "xinggan"),
-                          GiftMziPage(typeUrl: "japan"),
+                          GiftGankPage(
+                            key: Key("GiftGankPage"),
+                          ),
+                          GiftEggPage(
+                            key: Key("GiftEggPage"),
+                          ),
+                          GiftMziPage(
+                            key: Key("GiftMziPagemm"),
+                            typeUrl: "mm",
+                          ),
+                          GiftMziPage(
+                            key: Key("GiftMziPagehot"),
+                            typeUrl: "hot",
+                          ),
+                          GiftMziPage(
+                            key: Key("GiftMziPagetaiwan"),
+                            typeUrl: "taiwan",
+                          ),
+                          GiftMziPage(
+                            key: Key("GiftMziPagexinggan"),
+                            typeUrl: "xinggan",
+                          ),
+                          GiftMziPage(
+                            key: Key("GiftMziPagejapan"),
+                            typeUrl: "japan",
+                          ),
                         ],
                       ),
                     ),

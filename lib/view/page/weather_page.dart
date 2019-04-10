@@ -19,7 +19,15 @@ class WeatherState extends PageState<WeatherPage> {
     debugPrint("init========>WeatherState");
 
     _viewModel.init();
-    bindStreamOfViewModel(_viewModel);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    bindErrorStream(_viewModel.error.stream,
+        errorText: AppText.of(context).weatherFail,
+        retry: () => _viewModel.loadData(isRefresh: false));
   }
 
   @override
@@ -28,21 +36,6 @@ class WeatherState extends PageState<WeatherPage> {
     _timer?.cancel();
 
     super.dispose();
-  }
-
-  @override
-  void networkError() {
-    super.networkError();
-
-    scafKey.currentState.removeCurrentSnackBar();
-    scafKey.currentState.showSnackBar(SnackBar(
-      content: Text(AppText.of(context).weatherGetFail),
-      duration: const Duration(days: 1),
-      action: SnackBarAction(
-        label: AppText.of(context).retry,
-        onPressed: () => _viewModel.loadData(isRefresh: false),
-      ),
-    ));
   }
 
   @override
@@ -167,18 +160,11 @@ class WeatherState extends PageState<WeatherPage> {
 
                                   Divider(color: AppColor.colorLine),
 
-                                  // 每天天气情况显示
+                                  // 一周天气预测
                                   Container(
                                     margin: EdgeInsets.only(top: 8),
-                                    height: 200,
-                                    child: Row(
-                                      children: data != null
-                                          ? data.dailyForecast
-                                              .map((v) =>
-                                                  _buildDailyItem(daily: v))
-                                              .toList()
-                                          : const [],
-                                    ),
+                                    height: 240,
+                                    child: _buildWeekWeather(data: data),
                                   ),
 
                                   Divider(color: AppColor.colorLine),
@@ -466,6 +452,111 @@ class WeatherState extends PageState<WeatherPage> {
     );
   }
 
+  /// 一周天气预测
+  Widget _buildWeekWeather({@required Weather data}) {
+    final style = TextStyle(color: Colors.black, fontSize: 10);
+
+    // 整体最高温度
+    int maxTemp = -100;
+    // 整体最低温度
+    int minTemp = 100;
+
+    data?.dailyForecast?.forEach((daily) {
+      final max = int.parse("${daily?.tmpMax ?? -100}");
+      final min = int.parse("${daily?.tmpMin ?? 100}");
+      if (max > maxTemp) {
+        maxTemp = max;
+      }
+      if (min < minTemp) {
+        minTemp = min;
+      }
+    });
+
+    return Row(
+      children: data != null
+          ? data.dailyForecast.map((daily) {
+              return Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    // 星期
+                    Text(
+                      _getWeekday(date: daily?.date ?? ""),
+                      style: style,
+                    ),
+
+                    // 天气图片
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: Image.asset(
+                        "images/${daily?.condCodeD ?? 100}.png",
+                        height: 30,
+                        width: 30,
+                      ),
+                    ),
+
+                    // 天气文字
+                    Text(
+                      daily?.condTxtD ?? "",
+                      style: style,
+                    ),
+
+                    // 温度
+                    Expanded(
+                      child: daily?.tmpMin != null && daily?.tmpMax != null
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Expanded(
+                                  child: Container(),
+                                  flex:
+                                      (maxTemp - int.parse(daily.tmpMax)).abs(),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 8, bottom: 2),
+                                  child: Text(
+                                    "${daily.tmpMax}℃",
+                                    style: TextStyle(
+                                        color: Colors.black87, fontSize: 10),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    width: 8,
+                                    decoration: BoxDecoration(
+                                        color: const Color(0xffdde1e2),
+                                        borderRadius: BorderRadius.circular(3)),
+                                  ),
+                                  flex: int.parse(daily.tmpMax) -
+                                      int.parse(daily.tmpMin),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 2, bottom: 8),
+                                  child: Text(
+                                    "${daily.tmpMin}℃",
+                                    style: TextStyle(
+                                        color: Colors.black87, fontSize: 10),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(),
+                                  flex:
+                                      (minTemp - int.parse(daily.tmpMin)).abs(),
+                                ),
+                              ],
+                            )
+                          : Container(),
+                    ),
+                  ],
+                ),
+              );
+            }).toList()
+          : const [],
+    );
+  }
+
   /// 每小时天气的Item
   Widget _buildHourItem({@required WeatherHourly hourly}) {
     return Column(
@@ -498,41 +589,13 @@ class WeatherState extends PageState<WeatherPage> {
     );
   }
 
-  /// 每天天气的Item
-  Widget _buildDailyItem({@required WeatherDailyForecast daily}) {
-    final style = TextStyle(
-      color: Colors.black,
-      fontSize: 10,
-    );
-
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            _getWeekday(date: daily?.date ?? ""),
-            style: style,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8, bottom: 8),
-            child: Image.asset(
-              "images/${daily?.condCodeD ?? 100}.png",
-              height: 30,
-              width: 30,
-            ),
-          ),
-          Text(
-            daily.condTxtD ?? "",
-            style: style,
-          ),
-        ],
-      ),
-    );
-  }
-
   /// 根据日期返回星期几
   String _getWeekday({@required String date}) {
     final weekDate = DateTime.parse(date);
+
+    if (weekDate.day == DateTime.now().day) {
+      return AppText.of(context).today;
+    }
 
     switch (weekDate.weekday) {
       case DateTime.monday:

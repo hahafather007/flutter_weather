@@ -1,16 +1,6 @@
 import 'package:flutter_weather/commom_import.dart';
 
-class ReadPage extends StatefulWidget {
-  @override
-  State createState() => ReadState();
-}
-
-class ReadState extends PageState<ReadPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class ReadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -30,7 +20,8 @@ class ReadState extends PageState<ReadPage> {
               Icons.menu,
               color: Colors.white,
             ),
-            onPressed: () => EventSendHolder().sendEvent(tag: "homeDrawerOpen", event: true),
+            onPressed: () =>
+                EventSendHolder().sendEvent(tag: "homeDrawerOpen", event: true),
           ),
         ),
         Expanded(
@@ -62,15 +53,42 @@ class ReadState extends PageState<ReadPage> {
                       color: AppColor.colorRead,
                       child: TabBarView(
                         children: [
-                          ReadContentPage(typeUrl: "wow"),
-                          ReadContentPage(typeUrl: "apps"),
-                          ReadContentPage(typeUrl: "imrich"),
-                          ReadContentPage(typeUrl: "funny"),
-                          ReadContentPage(typeUrl: "android"),
-                          ReadContentPage(typeUrl: "diediedie"),
-                          ReadContentPage(typeUrl: "thinking"),
-                          ReadContentPage(typeUrl: "iOS"),
-                          ReadContentPage(typeUrl: "teamblog"),
+                          ReadContentPage(
+                            key: Key("ReadContentPagewow"),
+                            typeUrl: "wow",
+                          ),
+                          ReadContentPage(
+                            key: Key("ReadContentPageapps"),
+                            typeUrl: "apps",
+                          ),
+                          ReadContentPage(
+                            key: Key("ReadContentPageimrich"),
+                            typeUrl: "imrich",
+                          ),
+                          ReadContentPage(
+                            key: Key("ReadContentPagefunny"),
+                            typeUrl: "funny",
+                          ),
+                          ReadContentPage(
+                            key: Key("ReadContentPageandroid"),
+                            typeUrl: "android",
+                          ),
+                          ReadContentPage(
+                            key: Key("ReadContentPagediediedie"),
+                            typeUrl: "diediedie",
+                          ),
+                          ReadContentPage(
+                            key: Key("ReadContentPagethinking"),
+                            typeUrl: "thinking",
+                          ),
+                          ReadContentPage(
+                            key: Key("ReadContentPageiOS"),
+                            typeUrl: "iOS",
+                          ),
+                          ReadContentPage(
+                            key: Key("ReadContentPageteamblog"),
+                            typeUrl: "teamblog",
+                          ),
                         ],
                       ),
                     ),

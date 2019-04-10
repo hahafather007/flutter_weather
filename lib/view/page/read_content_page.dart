@@ -3,7 +3,7 @@ import 'package:flutter_weather/commom_import.dart';
 class ReadContentPage extends StatefulWidget {
   final String typeUrl;
 
-  ReadContentPage({@required this.typeUrl});
+  ReadContentPage({Key key, @required this.typeUrl}) : super(key: key);
 
   @override
   State createState() => ReadContentState();
@@ -19,7 +19,45 @@ class ReadContentState extends PageState<ReadContentPage>
     super.initState();
 
     _viewModel.init(typeUrl: widget.typeUrl);
-    bindStreamOfViewModel(_viewModel);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    String errorText = "";
+    switch (widget.typeUrl) {
+      case "wow":
+        errorText = AppText.of(context).xianduFail;
+        break;
+      case "apps":
+        errorText = AppText.of(context).xianduAppsFail;
+        break;
+      case "imrich":
+        errorText = AppText.of(context).xianduImrichFail;
+        break;
+      case "funny":
+        errorText = AppText.of(context).xianduFunnyFail;
+        break;
+      case "android":
+        errorText = AppText.of(context).xianduAndroidFail;
+        break;
+      case "diediedie":
+        errorText = AppText.of(context).xianduDieFail;
+        break;
+      case "thinking":
+        errorText = AppText.of(context).xianduThinkFail;
+        break;
+      case "iOS":
+        errorText = AppText.of(context).xianduIosFail;
+        break;
+      case "teamblog":
+        errorText = AppText.of(context).xianduBlogFail;
+        break;
+    }
+    bindErrorStream(_viewModel.error.stream,
+        errorText: errorText,
+        retry: () => _viewModel.loadData(type: LoadType.NEW_LOAD));
   }
 
   @override
@@ -30,37 +68,35 @@ class ReadContentState extends PageState<ReadContentPage>
   }
 
   @override
-  void networkError() {
-    super.networkError();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return LoadingView(
-      loadingStream: _viewModel.isLoading.stream,
-      child: StreamBuilder(
-        stream: _viewModel.data.stream,
-        builder: (context, snapshot) {
-          final List<ReadData> datas = snapshot.data ?? List();
+    return Scaffold(
+      key: scafKey,
+      body: LoadingView(
+        loadingStream: _viewModel.isLoading.stream,
+        child: StreamBuilder(
+          stream: _viewModel.data.stream,
+          builder: (context, snapshot) {
+            final List<ReadData> datas = snapshot.data ?? List();
 
-          return RefreshIndicator(
-            onRefresh: () => _viewModel.loadData(type: LoadType.REFRESH),
-            child: ListView.builder(
-              physics: const AlwaysScrollableScrollPhysics(
-                  parent: const ClampingScrollPhysics()),
-              padding: const EdgeInsets.only(),
-              itemCount: datas.length,
-              itemBuilder: (context, index) {
-                // 在倒数第5个item显示时就加载下一页
-                if (index + 1 >= datas.length - 5) {
-                  _viewModel.loadMore();
-                }
+            return RefreshIndicator(
+              onRefresh: () => _viewModel.loadData(type: LoadType.REFRESH),
+              child: ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(
+                    parent: const ClampingScrollPhysics()),
+                padding: const EdgeInsets.only(),
+                itemCount: datas.length,
+                itemBuilder: (context, index) {
+                  // 在倒数第5个item显示时就加载下一页
+                  if (index + 1 >= datas.length - 5) {
+                    _viewModel.loadMore();
+                  }
 
-                return _buildReadItem(data: datas[index], index: index + 1);
-              },
-            ),
-          );
-        },
+                  return _buildReadItem(data: datas[index], index: index + 1);
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }
