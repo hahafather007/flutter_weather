@@ -6,8 +6,9 @@ class WeatherService extends Service {
   }
 
   Future<WeatherData> getWeather({@required String city}) async {
-    final response =
-        await dio.get("/s6/weather?key=2d2a76fac8324146a1b17b68bda42c76&location=$city");
+    final response = await dio.get(
+        "/s6/weather?key=2d2a76fac8324146a1b17b68bda42c76&location=$city",
+        cancelToken: cancelToken);
 
     debugPrint(response.toString());
 
@@ -15,8 +16,9 @@ class WeatherService extends Service {
   }
 
   Future<WeatherAirData> getAir({@required String city}) async {
-    final response =
-        await dio.get("/s6/air/now?key=2d2a76fac8324146a1b17b68bda42c76&location=$city");
+    final response = await dio.get(
+        "/s6/air/now?key=2d2a76fac8324146a1b17b68bda42c76&location=$city",
+        cancelToken: cancelToken);
 
     debugPrint(response.toString());
 

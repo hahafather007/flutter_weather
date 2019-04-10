@@ -16,11 +16,6 @@ mixin MustKeepAliveMixin<T extends StatefulWidget> on State<T> {
     _keepAliveHandle = null;
   }
 
-  @protected
-  void updateKeepAlive() {
-    _ensureKeepAlive();
-  }
-
   @override
   void initState() {
     super.initState();
@@ -33,12 +28,5 @@ mixin MustKeepAliveMixin<T extends StatefulWidget> on State<T> {
   void dispose() {
     if (_keepAliveHandle != null) _releaseKeepAlive();
     super.dispose();
-  }
-
-  @mustCallSuper
-  @override
-  Widget build(BuildContext context) {
-    if (_keepAliveHandle == null) _ensureKeepAlive();
-    return null;
   }
 }

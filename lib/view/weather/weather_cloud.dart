@@ -3,7 +3,9 @@ import 'weather_sunny.dart';
 
 /// 多云
 class WeatherCloud extends StatefulWidget {
-  WeatherCloud({Key key}) : super(key: key);
+  final Color color;
+
+  WeatherCloud({Key key, @required this.color}) : super(key: key);
 
   @override
   State createState() => WeatherCloudState();
@@ -59,7 +61,7 @@ class WeatherCloudState extends PageState<WeatherCloud>
     return Stack(
       children: <Widget>[
         // 晴天
-        WeatherSunny(),
+        WeatherSunny(color: widget.color),
 
         // 白云
         AnimatedBuilder(

@@ -6,15 +6,16 @@ class GiftEggService extends Service {
   }
 
   Future<EggData> getData({@required int page}) async {
-    final response =
-        await dio.get("/?oxwlxojflwblxbsapi=jandan.get_ooxx_comments&page=$page");
+    final response = await dio.get(
+        "/?oxwlxojflwblxbsapi=jandan.get_ooxx_comments&page=$page",
+        cancelToken: cancelToken);
 
     debugPrint(response.toString());
 
     final egg = EggData.fromJson(response.data);
-    if(egg.status != "ok"){
+    if (egg.status != "ok") {
       throw DioError(message: "我也不知为什么，它就是出错了");
-    }else{
+    } else {
       return egg;
     }
   }

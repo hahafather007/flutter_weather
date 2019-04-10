@@ -23,25 +23,11 @@ class _FogState extends State<FogView> with TickerProviderStateMixin {
 
     _controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 5))
-          ..forward()
-          ..addStatusListener((status) {
-            if (status == AnimationStatus.completed) {
-              _controller
-                ..reset()
-                ..forward();
-            }
-          });
+          ..repeat();
     _controller2 =
-        AnimationController(vsync: this, duration: const Duration(seconds: 5))
-          ..addStatusListener((status) {
-            if (status == AnimationStatus.completed) {
-              _controller2
-                ..reset()
-                ..forward();
-            }
-          });
+        AnimationController(vsync: this, duration: const Duration(seconds: 5));
     _initTimer =
-        Timer(const Duration(milliseconds: 2500), () => _controller2.forward());
+        Timer(const Duration(milliseconds: 2500), () => _controller2.repeat());
   }
 
   @override
@@ -72,9 +58,9 @@ class _FogState extends State<FogView> with TickerProviderStateMixin {
         AnimatedBuilder(
           animation: _anim,
           builder: (context, child) {
-            double opacity = 0.3;
+            double opacity = 0.2;
             if (_anim.value > width / 3) {
-              opacity -= 0.3 * (_anim.value - width / 3) / (width / 6);
+              opacity -= 0.2 * (_anim.value - width / 3) / (width / 6);
             }
 
             return CustomPaint(
@@ -86,9 +72,9 @@ class _FogState extends State<FogView> with TickerProviderStateMixin {
         AnimatedBuilder(
           animation: _anim2,
           builder: (context, child) {
-            double opacity = 0.3;
+            double opacity = 0.2;
             if (_anim2.value > width / 3) {
-              opacity -= 0.3 * (_anim2.value - width / 3) / (width / 6);
+              opacity -= 0.2 * (_anim2.value - width / 3) / (width / 6);
             }
 
             return CustomPaint(

@@ -3,9 +3,9 @@ import 'weather_base.dart';
 
 /// 晴天
 class WeatherSunny extends StatefulWidget {
-  WeatherSunny({
-    Key key,
-  }) : super(key: key);
+  final Color color;
+
+  WeatherSunny({Key key, @required this.color}) : super(key: key);
 
   @override
   State createState() => WeatherSunnyState();
@@ -64,7 +64,6 @@ class WeatherSunnyState extends WeatherBase<WeatherSunny> {
     final width = getScreenWidth(context);
     // 是否为白天
     final isDay = DateTime.now().hour >= 6 && DateTime.now().hour < 18;
-    final backColor = isDay ? Color(0xFF51C0F8) : Color(0xFF7F9EE9);
 
     return Container(
       height: fullHeight,
@@ -90,8 +89,8 @@ class WeatherSunnyState extends WeatherBase<WeatherSunny> {
                         decoration: BoxDecoration(
                             gradient: RadialGradient(colors: [
                               Colors.white,
-                              Colors.transparent,
-                              Colors.transparent,
+                              Colors.white,
+                              widget.color,
                             ]),
                             shape: BoxShape.circle),
                         child: Container(
@@ -112,7 +111,8 @@ class WeatherSunnyState extends WeatherBase<WeatherSunny> {
                                 height: 32,
                                 width: 32,
                                 decoration: BoxDecoration(
-                                    shape: BoxShape.circle, color: backColor),
+                                    shape: BoxShape.circle,
+                                    color: widget.color),
                               ),
                             ),
                     ],
@@ -145,5 +145,3 @@ class WeatherSunnyState extends WeatherBase<WeatherSunny> {
     );
   }
 }
-
-
