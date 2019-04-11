@@ -49,6 +49,7 @@ export 'utils/channel_util.dart';
 export 'utils/system_util.dart';
 export 'utils/view_util.dart';
 export 'utils/byte_util.dart';
+export 'utils/aqi_util.dart';
 
 export 'view/page/about_page.dart';
 export 'view/page/gift_mzi_page.dart';
@@ -76,6 +77,7 @@ export 'view/widget/snow_view.dart';
 export 'view/widget/flash_view.dart';
 export 'view/widget/fog_view.dart';
 export 'view/widget/hail_view.dart';
+export 'view/widget/circle_air_view.dart';
 
 export 'view/weather/weather_view.dart';
 

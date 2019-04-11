@@ -16,6 +16,7 @@ abstract class AppColor {
   /// 分割线
   static const colorLine = Color(0xffbbbbbb);
   static const colorLine2 = Color(0xffdddddd);
+  static const colorLine3 = Color(0xffeeeeee);
 
   /// placeholder颜色
   static const colorHolder = Color(0xffcccccc);

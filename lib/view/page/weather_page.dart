@@ -7,7 +7,9 @@ class WeatherPage extends StatefulWidget {
 
 class WeatherState extends PageState<WeatherPage> {
   final _viewModel = WeatherViewModel();
+  final _scrollController = ScrollController();
 
+  bool _airAnimed = false;
   Timer _timer;
 
   WeatherState();
@@ -17,6 +19,13 @@ class WeatherState extends PageState<WeatherPage> {
     super.initState();
 
     _viewModel.init();
+    _scrollController.addListener(() {
+      if (_airAnimed) return;
+      if (_scrollController.offset >= 320) {
+        _airAnimed = true;
+        EventSendHolder().sendEvent(tag: "CircleAirViewAnimation", event: null);
+      }
+    });
   }
 
   @override
@@ -30,7 +39,8 @@ class WeatherState extends PageState<WeatherPage> {
 
   @override
   void dispose() {
-    _viewModel?.dispose();
+    _viewModel.dispose();
+    _scrollController.dispose();
     _timer?.cancel();
 
     super.dispose();
@@ -123,6 +133,7 @@ class WeatherState extends PageState<WeatherPage> {
                           physics: const AlwaysScrollableScrollPhysics(
                               parent: const ClampingScrollPhysics()),
                           padding: const EdgeInsets.only(),
+                          controller: _scrollController,
                           children: <Widget>[
                             // 上半部分天气详情
                             Container(
@@ -173,7 +184,18 @@ class WeatherState extends PageState<WeatherPage> {
                                     child: Row(
                                       children: <Widget>[
                                         Expanded(
-                                          child: Container(),
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 16, right: 16),
+                                            child: CircleAirView(
+                                                key: Key(
+                                                    "CircleAirView${air?.airNowCity?.aqi ?? "0"}"),
+                                                aqi: double.parse(
+                                                    air?.airNowCity?.aqi ??
+                                                        "0"),
+                                                qlty: air?.airNowCity?.qlty ??
+                                                    ""),
+                                          ),
                                         ),
                                         Expanded(
                                           child: Column(
@@ -680,22 +702,9 @@ class WeatherState extends PageState<WeatherPage> {
       {@required String eName, @required name, @required String num}) {
     final style = TextStyle(fontSize: 10, color: AppColor.colorText2);
     final numValue = double.parse(num);
-    Color color;
-    if (numValue <= 50) {
-      color = Color(0xFF6BCD07);
-    } else if (numValue <= 100) {
-      color = Color(0xFFFBD029);
-    } else if (numValue <= 150) {
-      color = Color(0xFFFE8800);
-    } else if (numValue <= 200) {
-      color = Color(0xFFFE0000);
-    } else if (numValue <= 300) {
-      color = Color(0xFF970454);
-    } else {
-      color = Color(0xFF62001E);
-    }
+
     return Container(
-      margin: const EdgeInsets.only(right: 20),
+      margin: const EdgeInsets.only(right: 12),
       child: Stack(
         children: <Widget>[
           Column(
@@ -712,7 +721,7 @@ class WeatherState extends PageState<WeatherPage> {
               Container(
                 margin: const EdgeInsets.only(top: 3),
                 height: 2,
-                color: color,
+                color: AqiUtil.getAqiColor(numValue),
               )
             ],
           ),
