@@ -2,6 +2,8 @@ import 'package:flutter_weather/commom_import.dart';
 
 /// 空气质量指数环形图
 class CircleAirView extends StatefulWidget {
+  static bool canAnim = false;
+
   /// 空气指数
   final double aqi;
 
@@ -27,18 +29,23 @@ class _CircleAirState extends PageState<CircleAirView>
 
     _controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 2));
-    _numAnim = IntTween(begin: 0, end: widget.aqi.round())
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
-    _colorAnim = ColorTween(
-            begin: AqiUtil.getAqiColor(0), end: AqiUtil.getAqiColor(widget.aqi))
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
 
+    _initAndStartAnim();
     bindSub(EventSendHolder()
         .event
         .where((pair) => pair.a == "CircleAirViewAnimation")
         .listen((_) => _controller
           ..reset()
           ..forward()));
+  }
+
+  @override
+  void didUpdateWidget(CircleAirView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.aqi != oldWidget.aqi) {
+      _initAndStartAnim();
+    }
   }
 
   @override
@@ -94,6 +101,20 @@ class _CircleAirState extends PageState<CircleAirView>
         );
       },
     );
+  }
+
+  void _initAndStartAnim() {
+    _numAnim = IntTween(begin: 0, end: widget.aqi.round())
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
+    _colorAnim = ColorTween(
+            begin: AqiUtil.getAqiColor(0), end: AqiUtil.getAqiColor(widget.aqi))
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
+
+    if (CircleAirView.canAnim) {
+      _controller
+        ..reset()
+        ..forward();
+    }
   }
 }
 

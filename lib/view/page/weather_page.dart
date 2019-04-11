@@ -9,7 +9,6 @@ class WeatherState extends PageState<WeatherPage> {
   final _viewModel = WeatherViewModel();
   final _scrollController = ScrollController();
 
-  bool _airAnimed = false;
   Timer _timer;
 
   WeatherState();
@@ -20,10 +19,14 @@ class WeatherState extends PageState<WeatherPage> {
 
     _viewModel.init();
     _scrollController.addListener(() {
-      if (_airAnimed) return;
       if (_scrollController.offset >= 320) {
-        _airAnimed = true;
-        EventSendHolder().sendEvent(tag: "CircleAirViewAnimation", event: null);
+        if (!CircleAirView.canAnim) {
+          CircleAirView.canAnim = true;
+          EventSendHolder()
+              .sendEvent(tag: "CircleAirViewAnimation", event: null);
+        }
+      } else if (_scrollController.offset <= 280) {
+        CircleAirView.canAnim = false;
       }
     });
   }
@@ -188,8 +191,6 @@ class WeatherState extends PageState<WeatherPage> {
                                             padding: const EdgeInsets.only(
                                                 left: 16, right: 16),
                                             child: CircleAirView(
-                                                key: Key(
-                                                    "CircleAirView${air?.airNowCity?.aqi ?? "0"}"),
                                                 aqi: double.parse(
                                                     air?.airNowCity?.aqi ??
                                                         "0"),
