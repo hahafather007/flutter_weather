@@ -27,7 +27,7 @@ dependencies:
   intl: ^0.15.7
   flutter_staggered_grid_view: ^0.2.5
   url_launcher: ^4.0.3
-  cached_network_image: ^0.6.0-beta+1
+  cached_network_image: ^0.7.0
   connectivity: ^0.3.2
   simple_permissions: ^0.1.9
   package_info: ^0.3.2
@@ -36,7 +36,6 @@ dependencies:
   web_vuw: ^0.2.2
   pull_to_refresh: ^1.1.6
   share: ^0.5.3
-  flutter_advanced_networkimage: ^0.3.13
   photo_view: ^0.1.2
   flutter_colorpicker: ^0.2.1
 

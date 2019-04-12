@@ -14,7 +14,6 @@ export 'package:simple_permissions/simple_permissions.dart';
 export 'package:url_launcher/url_launcher.dart';
 export 'package:pull_to_refresh/pull_to_refresh.dart';
 export 'package:share/share.dart';
-export 'package:flutter_advanced_networkimage/zoomable_widget.dart';
 export 'package:photo_view/photo_view_gallery.dart';
 export 'package:web_vuw/web_vuw.dart';
 export 'package:flutter_colorpicker/block_picker.dart';
