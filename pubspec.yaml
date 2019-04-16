@@ -132,6 +132,11 @@ flutter:
     - images/cloud_car2.png
     - images/nothing_here.gif
 
+    # json
+    - jsons/province.json
+    - jsons/city.json
+    - jsons/district.json
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
 

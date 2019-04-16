@@ -106,6 +106,7 @@ class WeatherState extends PageState<WeatherPage> {
                     case "share":
                       break;
                     case "cities":
+                      push(context, page: CityControlPage());
                       break;
                     case "weathers":
                       _showWeathersDialog();

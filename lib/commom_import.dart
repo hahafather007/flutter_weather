@@ -33,6 +33,7 @@ export 'model/data/weather_air_data.dart';
 export 'model/data/weather_data.dart';
 export 'model/data/mixing.dart';
 export 'model/data/page_module_data.dart';
+export 'model/data/city_data.dart';
 
 export 'model/holder/fav_holder.dart';
 export 'model/holder/shared_depository.dart';
@@ -69,6 +70,8 @@ export 'view/page/gift_mzi_image_page.dart';
 export 'view/page/gift_gank_page.dart';
 export 'view/page/gift_gank_watch_page.dart';
 export 'view/page/gift_egg_page.dart';
+export 'view/page/city_control_page.dart';
+export 'view/page/city_choose_page.dart';
 
 export 'view/widget/custom_app_bar.dart';
 export 'view/widget/loading_view.dart';
