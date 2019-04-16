@@ -24,9 +24,6 @@ class _SnowState extends State<SnowView> with TickerProviderStateMixin {
   /// 雪花大小
   double _size;
 
-  /// 最大可显示高度
-  double _height;
-
   /// 运动动画
   AnimationController _controller;
   Animation<double> _anim;
@@ -101,14 +98,9 @@ class _SnowState extends State<SnowView> with TickerProviderStateMixin {
     }
   }
 
-  double get _fullHeight {
-    if (_height == null) {
-      _height = getScreenHeight(context) -
-          getStatusHeight(context) -
-          getAppBarHeight() -
-          110;
-    }
-
-    return _height;
-  }
+  double get _fullHeight =>
+      getScreenHeight(context) -
+      getStatusHeight(context) -
+      getAppBarHeight() -
+      110;
 }

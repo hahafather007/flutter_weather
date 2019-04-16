@@ -2,8 +2,6 @@ import 'package:flutter_weather/commom_import.dart';
 
 abstract class WeatherBase<T extends StatefulWidget> extends State<T>
     with TickerProviderStateMixin {
-  double _height;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -13,16 +11,11 @@ abstract class WeatherBase<T extends StatefulWidget> extends State<T>
     );
   }
 
-  double get fullHeight {
-    if (_height == null) {
-      _height = getScreenHeight(context) -
-          getStatusHeight(context) -
-          getAppBarHeight() -
-          110;
-    }
-
-    return _height;
-  }
+  double get fullHeight =>
+      getScreenHeight(context) -
+      getStatusHeight(context) -
+      getAppBarHeight() -
+      110;
 
   @protected
   Widget buildView() {
