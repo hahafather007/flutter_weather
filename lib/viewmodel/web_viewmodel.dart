@@ -17,20 +17,43 @@ class WebViewModel<T> extends ViewModel {
   void bindEvent(Stream eventStream) {
     bindSub(eventStream.listen((event) {
       debugPrint(event.toString());
-      switch (event["event"]) {
-        case "onPageStarted":
-          streamAdd(isLoading, true);
-          openingNum++;
-          break;
-        case "onPageFinished":
-          openingNum--;
-          if (openingNum == 0) {
-            streamAdd(isLoading, false);
-          }
-          break;
-        case "shouldOverrideUrlLoading":
-          openingNum--;
-          break;
+
+      if (isAndroid) {
+        switch (event["event"]) {
+          case "onPageStarted":
+            streamAdd(isLoading, true);
+            openingNum++;
+            break;
+          case "onPageFinished":
+            openingNum--;
+            if (openingNum <= 0) {
+              streamAdd(isLoading, false);
+            }
+            break;
+          case "shouldOverrideUrlLoading":
+            if (openingNum > 0) {
+              openingNum--;
+            }
+            break;
+        }
+      } else {
+        switch (event["event"]) {
+          case "didStart":
+            streamAdd(isLoading, true);
+            openingNum++;
+            break;
+          case "didFinish":
+            openingNum--;
+            if (openingNum <= 0) {
+              streamAdd(isLoading, false);
+            }
+            break;
+          case "didStartProvisionalNavigation":
+            if (openingNum > 0) {
+              openingNum--;
+            }
+            break;
+        }
       }
     }));
   }

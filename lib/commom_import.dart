@@ -19,6 +19,7 @@ export 'package:web_vuw/web_vuw.dart';
 export 'package:flutter_colorpicker/block_picker.dart';
 export 'package:path_provider/path_provider.dart';
 export 'package:flutter_cache_manager/flutter_cache_manager.dart';
+export 'package:dragable_flutter_list/dragable_flutter_list.dart';
 
 export 'common/colors.dart';
 export 'common/streams.dart';
@@ -31,6 +32,7 @@ export 'model/data/read_data.dart';
 export 'model/data/weather_air_data.dart';
 export 'model/data/weather_data.dart';
 export 'model/data/mixing.dart';
+export 'model/data/page_module_data.dart';
 
 export 'model/holder/fav_holder.dart';
 export 'model/holder/shared_depository.dart';
@@ -58,6 +60,7 @@ export 'view/page/page_state.dart';
 export 'view/page/read_content_page.dart';
 export 'view/page/read_page.dart';
 export 'view/page/setting_page.dart';
+export 'view/page/setting_module_page.dart';
 export 'view/page/splash_page.dart';
 export 'view/page/weather_page.dart';
 export 'view/page/webview_page.dart';
@@ -90,6 +93,7 @@ export 'viewmodel/web_viewmodel.dart';
 export 'viewmodel/gift_mzi_image_viewmodel.dart';
 export 'viewmodel/gift_gank_viewmodel.dart';
 export 'viewmodel/setting_viewmodel.dart';
+export 'viewmodel/setting_module_viewmodel.dart';
 
 export 'dart:async';
 export 'dart:convert';

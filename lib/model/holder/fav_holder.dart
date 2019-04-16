@@ -26,7 +26,7 @@ class FavHolder<T> {
           (json.decode(readValue) as List).map((v) => ReadData.fromJson(v));
       _cacheReads.addAll(list);
     }
-    _favReadBroadcast.add(_cacheReads);
+    streamAdd(_favReadBroadcast, _cacheReads);
 
     final mziValue = SharedDepository().favMziData;
     if (mziValue != null) {
@@ -34,7 +34,7 @@ class FavHolder<T> {
           (json.decode(mziValue) as List).map((v) => MziData.fromJson(v));
       _cacheMzis.addAll(list);
     }
-    _favMziBroadcast.add(_cacheMzis);
+    streamAdd(_favMziBroadcast, _cacheMzis);
   }
 
   /// 添加或取消收藏
@@ -50,7 +50,7 @@ class FavHolder<T> {
 
       await SharedDepository()
           .setFavReadData(json.encode(_cacheReads))
-          .then((_) => _favReadBroadcast.add(_cacheReads));
+          .then((_) => streamAdd(_favReadBroadcast, _cacheReads));
     } else if (t is MziData) {
       if (isFavorite(t)) {
         _cacheMzis
@@ -61,7 +61,7 @@ class FavHolder<T> {
 
       await SharedDepository()
           .setFavMziData(json.encode(_cacheMzis))
-          .then((_) => _favMziBroadcast.add(_cacheMzis));
+          .then((_) => streamAdd(_favMziBroadcast, _cacheMzis));
     }
   }
 

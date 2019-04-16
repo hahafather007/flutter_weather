@@ -39,6 +39,51 @@ class HomeState extends PageState<HomePage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final pageModules = SharedDepository().pageModules;
+    pageModules.forEach((module) {
+      switch (module.module) {
+        case "weather":
+          if (!module.open) {
+            _pageTypeMap[PageType.WEATHER] = false;
+          }
+          break;
+        case "read":
+          if (!module.open) {
+            _pageTypeMap[PageType.READ] = false;
+          }
+          break;
+        case "gift":
+          if (!module.open) {
+            _pageTypeMap[PageType.GIFT] = false;
+          }
+          break;
+      }
+    });
+    if (!_pageTypeMap.values.contains(true)) {
+      final index = pageModules.indexWhere((v) => v.open);
+      if (index != -1) {
+        switch (pageModules[index].module) {
+          case "weather":
+            _pageTypeMap[PageType.WEATHER] = true;
+            _pageType = PageType.WEATHER;
+            break;
+          case "read":
+            _pageTypeMap[PageType.READ] = true;
+            _pageType = PageType.READ;
+            break;
+          case "gift":
+            _pageTypeMap[PageType.GIFT] = true;
+            _pageType = PageType.GIFT;
+            break;
+        }
+      }
+    }
+  }
+
+  @override
   void dispose() {
     ToastUtil.disposeToast();
     FavHolder().dispose();
@@ -49,6 +94,8 @@ class HomeState extends PageState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final pageModules = SharedDepository().pageModules;
+
     return WillPopScope(
       child: Scaffold(
         key: scafKey,
@@ -58,49 +105,69 @@ class HomeState extends PageState<HomePage> {
                 parent: const ClampingScrollPhysics()),
             padding: const EdgeInsets.only(),
             children: <Widget>[
-              Image.asset("images/drawer_bg.png"),
-              Padding(padding: const EdgeInsets.only(top: 8)),
-              // 天气
-              _buildDrawerItem(
-                  icon: Icons.wb_sunny,
-                  title: AppText.of(context).weather,
-                  isTarget: _pageType == PageType.WEATHER,
-                  onTap: () {
-                    if (_pageType == PageType.WEATHER) return;
+              // 顶部图片
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Image.asset("images/drawer_bg.png"),
+              ),
 
-                    setState(() {
-                      _pageType = PageType.WEATHER;
-                      _pageTypeMap[_pageType] = true;
-                    });
-                  }),
+              // 主要页面选项
+              Column(
+                children: pageModules.map((module) {
+                  switch (module.module) {
+                    // 天气
+                    case "weather":
+                      return module.open
+                          ? _buildDrawerItem(
+                              icon: Icons.wb_sunny,
+                              title: AppText.of(context).weather,
+                              isTarget: _pageType == PageType.WEATHER,
+                              onTap: () {
+                                if (_pageType == PageType.WEATHER) return;
 
-              // 福利
-              _buildDrawerItem(
-                  icon: Icons.card_giftcard,
-                  title: AppText.of(context).gift,
-                  isTarget: _pageType == PageType.GIFT,
-                  onTap: () {
-                    if (_pageType == PageType.GIFT) return;
+                                setState(() {
+                                  _pageType = PageType.WEATHER;
+                                  _pageTypeMap[_pageType] = true;
+                                });
+                              })
+                          : Container();
 
-                    setState(() {
-                      _pageType = PageType.GIFT;
-                      _pageTypeMap[_pageType] = true;
-                    });
-                  }),
+                    // 福利
+                    case "gift":
+                      return module.open
+                          ? _buildDrawerItem(
+                              icon: Icons.card_giftcard,
+                              title: AppText.of(context).gift,
+                              isTarget: _pageType == PageType.GIFT,
+                              onTap: () {
+                                if (_pageType == PageType.GIFT) return;
 
-              // 闲读
-              _buildDrawerItem(
-                  icon: Icons.local_cafe,
-                  title: AppText.of(context).read,
-                  isTarget: _pageType == PageType.READ,
-                  onTap: () {
-                    if (_pageType == PageType.READ) return;
+                                setState(() {
+                                  _pageType = PageType.GIFT;
+                                  _pageTypeMap[_pageType] = true;
+                                });
+                              })
+                          : Container();
 
-                    setState(() {
-                      _pageType = PageType.READ;
-                      _pageTypeMap[_pageType] = true;
-                    });
-                  }),
+                    // 闲读
+                    case "read":
+                      return module.open
+                          ? _buildDrawerItem(
+                              icon: Icons.local_cafe,
+                              title: AppText.of(context).read,
+                              isTarget: _pageType == PageType.READ,
+                              onTap: () {
+                                if (_pageType == PageType.READ) return;
+
+                                setState(() {
+                                  _pageType = PageType.READ;
+                                  _pageTypeMap[_pageType] = true;
+                                });
+                              })
+                          : Container();
+                  }
+                }).toList(),
+              ),
 
               // 分割线
               Divider(color: AppColor.colorLine),
@@ -169,6 +236,13 @@ class HomeState extends PageState<HomePage> {
             enabled: _pageType == PageType.READ,
             child: _pageTypeMap[PageType.READ] ? ReadPage() : Container(),
           ),
+        ),
+
+        // 关闭所有页面时的占位图片
+        Center(
+          child: SharedDepository().pageModules.indexWhere((v) => v.open) == -1
+              ? Image.asset("images/nothing_here.gif")
+              : Container(),
         ),
       ],
     );

@@ -45,7 +45,7 @@ class SettingState extends PageState<SettingPage> {
         child: StreamBuilder(
           stream: _viewModel.cacheSize.stream,
           builder: (context, snapshot) {
-            final cacheSize = snapshot.data ?? "正在计算...";
+            final cacheSize = snapshot.data ?? AppText.of(context).caculating;
 
             return ListView(
               physics: const AlwaysScrollableScrollPhysics(
@@ -54,15 +54,15 @@ class SettingState extends PageState<SettingPage> {
                 // 天气
                 _buildTitle(title: AppText.of(context).weather),
                 _buildItem(
-                  title: "分享形式",
-                  content: "仿锤子便签",
+                  title: AppText.of(context).shareType,
+                  content: AppText.of(context).likeHammer,
                   onTap: () {},
                 ),
 
                 // 通用
-                _buildTitle(title: "通用"),
+                _buildTitle(title: AppText.of(context).commonUse),
                 _buildItem(
-                  title: "主题色",
+                  title: AppText.of(context).themeColor,
                   content: getThemeName(),
                   onTap: () {
                     Color selectColor = Theme.of(context).accentColor;
@@ -70,7 +70,7 @@ class SettingState extends PageState<SettingPage> {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: Text("选择主题色"),
+                          title: Text(AppText.of(context).chooseTheme),
                           content: Container(
                             height: 180,
                             child: BlockPicker(
@@ -92,7 +92,7 @@ class SettingState extends PageState<SettingPage> {
                           actions: <Widget>[
                             FlatButton(
                               onPressed: () => pop(context),
-                              child: Text("取消"),
+                              child: Text(AppText.of(context).cancel),
                             ),
                             FlatButton(
                               onPressed: () {
@@ -103,7 +103,7 @@ class SettingState extends PageState<SettingPage> {
                                         tag: "themeChange",
                                         event: selectColor));
                               },
-                              child: Text("确定"),
+                              child: Text(AppText.of(context).certain),
                             ),
                           ],
                         );
@@ -113,13 +113,13 @@ class SettingState extends PageState<SettingPage> {
                 ),
                 Container(height: 1, color: AppColor.colorLine2),
                 _buildItem(
-                  title: "模块管理",
-                  content: "启用/关闭模块",
-                  onTap: () {},
+                  title: AppText.of(context).moduleControl,
+                  content: AppText.of(context).openOrCloseModule,
+                  onTap: () => push(context, page: SettingModulePage()),
                 ),
                 Container(height: 1, color: AppColor.colorLine2),
                 _buildItem(
-                  title: "清除缓存",
+                  title: AppText.of(context).clearCache,
                   content: cacheSize,
                   onTap: () => _viewModel.clearCache(),
                 ),
@@ -179,25 +179,25 @@ class SettingState extends PageState<SettingPage> {
     final color = Theme.of(context).accentColor;
 
     if (color == AppColor.lapisBlue) {
-      return "青石色";
+      return AppText.of(context).colorLapisBlue;
     } else if (color == AppColor.paleDogWood) {
-      return "山茱萸";
+      return AppText.of(context).colorPaleDogWood;
     } else if (color == AppColor.greenery) {
-      return "绿篱";
+      return AppText.of(context).colorGreenery;
     } else if (color == AppColor.primroseYellow) {
-      return "樱草黄";
+      return AppText.of(context).colorPrimroseYellow;
     } else if (color == AppColor.flame) {
-      return "烈焰红";
+      return AppText.of(context).colorFlame;
     } else if (color == AppColor.islandParadise) {
-      return "天堂岛";
+      return AppText.of(context).colorIslandParadise;
     } else if (color == AppColor.kale) {
-      return "甘蓝";
+      return AppText.of(context).colorKale;
     } else if (color == AppColor.pinkYarrow) {
-      return "粉蓍草";
+      return AppText.of(context).colorPinkYarrow;
     } else if (color == AppColor.niagara) {
-      return "尼亚加拉";
+      return AppText.of(context).colorNiagara;
     } else {
-      return "丢雷老母！";
+      return AppText.of(context).colorNone;
     }
   }
 }

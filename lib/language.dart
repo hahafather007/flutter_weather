@@ -24,6 +24,8 @@ class AppText {
       "alreadyCopyUrl": "已复制链接",
       "retry": "重试",
       "loadFail": "加载失败！",
+      "cancel": "取消",
+      "certain": "确定",
 
       // 主页
       "weather": "天气",
@@ -117,6 +119,27 @@ class AppText {
       "xianduThinkFail": "独立思想获取失败！",
       "xianduIosFail": "iOS获取失败！",
       "xianduBlogFail": "团队博客获取失败！",
+
+      // 设置
+      "moduleControl": "模块管理",
+      "caculating": "正在计算...",
+      "shareType": "分享形式",
+      "likeHammer": "仿锤子便签",
+      "commonUse": "通用",
+      "themeColor": "主题色",
+      "chooseTheme": "选择主题色",
+      "openOrCloseModule": "启用/关闭模块",
+      "clearCache": "清除缓存",
+      "colorLapisBlue": "青石色",
+      "colorPaleDogWood": "山茱萸",
+      "colorGreenery": "绿篱",
+      "colorPrimroseYellow": "樱草黄",
+      "colorFlame": "烈焰红",
+      "colorIslandParadise": "天堂岛",
+      "colorKale": "甘蓝",
+      "colorPinkYarrow": "粉蓍草",
+      "colorNiagara": "尼亚加拉",
+      "colorNone": "丢雷老母",
     },
   };
 
@@ -136,6 +159,10 @@ class AppText {
   String get copyUrl => _localizedValues[locale.languageCode]["copyUrl"];
 
   String get loadFail => _localizedValues[locale.languageCode]["loadFail"];
+
+  String get cancel => _localizedValues[locale.languageCode]["cancel"];
+
+  String get certain => _localizedValues[locale.languageCode]["certain"];
 
   String get alreadyCopyUrl =>
       _localizedValues[locale.languageCode]["alreadyCopyUrl"];
@@ -342,6 +369,55 @@ class AppText {
 
   String get xianduBlogFail =>
       _localizedValues[locale.languageCode]["xianduBlogFail"];
+
+  // 设置
+  String get moduleControl =>
+      _localizedValues[locale.languageCode]["moduleControl"];
+
+  String get caculating => _localizedValues[locale.languageCode]["caculating"];
+
+  String get shareType => _localizedValues[locale.languageCode]["shareType"];
+
+  String get likeHammer => _localizedValues[locale.languageCode]["likeHammer"];
+
+  String get commonUse => _localizedValues[locale.languageCode]["commonUse"];
+
+  String get themeColor => _localizedValues[locale.languageCode]["themeColor"];
+
+  String get chooseTheme =>
+      _localizedValues[locale.languageCode]["chooseTheme"];
+
+  String get openOrCloseModule =>
+      _localizedValues[locale.languageCode]["openOrCloseModule"];
+
+  String get clearCache => _localizedValues[locale.languageCode]["clearCache"];
+
+  String get colorLapisBlue =>
+      _localizedValues[locale.languageCode]["colorLapisBlue"];
+
+  String get colorPaleDogWood =>
+      _localizedValues[locale.languageCode]["colorPaleDogWood"];
+
+  String get colorGreenery =>
+      _localizedValues[locale.languageCode]["colorGreenery"];
+
+  String get colorPrimroseYellow =>
+      _localizedValues[locale.languageCode]["colorPrimroseYellow"];
+
+  String get colorFlame => _localizedValues[locale.languageCode]["colorFlame"];
+
+  String get colorIslandParadise =>
+      _localizedValues[locale.languageCode]["colorIslandParadise"];
+
+  String get colorKale => _localizedValues[locale.languageCode]["colorKale"];
+
+  String get colorPinkYarrow =>
+      _localizedValues[locale.languageCode]["colorPinkYarrow"];
+
+  String get colorNiagara =>
+      _localizedValues[locale.languageCode]["colorNiagara"];
+
+  String get colorNone => _localizedValues[locale.languageCode]["colorNone"];
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppText> {

@@ -34,6 +34,8 @@ class _CircleAirState extends PageState<CircleAirView>
     bindSub(EventSendHolder()
         .event
         .where((pair) => pair.a == "CircleAirViewAnimation")
+        .where((_) => CircleAirView.canAnim)
+        .where((_) => _controller.value == 0)
         .listen((_) => _controller
           ..reset()
           ..forward()));
@@ -109,11 +111,10 @@ class _CircleAirState extends PageState<CircleAirView>
     _colorAnim = ColorTween(
             begin: AqiUtil.getAqiColor(0), end: AqiUtil.getAqiColor(widget.aqi))
         .animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
+    _controller.reset();
 
     if (CircleAirView.canAnim) {
-      _controller
-        ..reset()
-        ..forward();
+      _controller.forward();
     }
   }
 }

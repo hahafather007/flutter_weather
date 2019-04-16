@@ -71,6 +71,25 @@ class SharedDepository {
   Future<bool> setImgCachePath(String path) async =>
       await _prefs.setString("imgCachePath", path);
 
+  /// 页面模块
+  List<PageModule> get pageModules {
+    final str = _getString("pageModules");
+    if (str == null) {
+      return List.from([
+        PageModule(module: "weather", open: true),
+        PageModule(module: "gift", open: true),
+        PageModule(module: "read", open: true),
+      ]);
+    } else {
+      return (jsonDecode(str) as List)
+          .map((v) => PageModule.fromJson(v))
+          .toList();
+    }
+  }
+
+  Future<bool> setPageModules(List<PageModule> modules) async =>
+      await _prefs.setString("pageModules", jsonEncode(modules));
+
   /// ==============================================
   ///                     分界线
   /// ==============================================

@@ -25,7 +25,7 @@ class WeatherState extends PageState<WeatherPage> {
           EventSendHolder()
               .sendEvent(tag: "CircleAirViewAnimation", event: null);
         }
-      } else if (_scrollController.offset <= 280) {
+      } else {
         CircleAirView.canAnim = false;
       }
     });
