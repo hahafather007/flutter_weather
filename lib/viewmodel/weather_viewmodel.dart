@@ -9,7 +9,7 @@ class WeatherViewModel extends ViewModel {
   final weatherType = StreamController<String>();
 
   WeatherViewModel() {
-    streamAdd(city, SharedDepository().cities.first.district);
+    streamAdd(city, SharedDepository().cities.first);
 
     // 首先将缓存的数据作为第一数据显示，再判断请求逻辑
     final mWeather = SharedDepository().weathers.first;
@@ -34,30 +34,32 @@ class WeatherViewModel extends ViewModel {
 
     try {
       final cities = SharedDepository().cities;
-      final location = await ChannelUtil.getLocation() ?? cities.first;
+      final mCity = await ChannelUtil.getLocation() ?? cities.first;
       cities.removeAt(0);
-      cities.insert(0, location);
-      streamAdd(city, location.district);
+      cities.insert(0, mCity);
+      streamAdd(city, mCity);
 
-      final weatherData = await _service.getWeather(city: location.district);
-      final airData = await _service.getAir(city: location.city);
+      final weatherData = await _service.getWeather(city: mCity);
       // 储存本次天气结果
       if (weatherData?.weathers?.isNotEmpty ?? false) {
-        streamAdd(weather, weatherData.weathers.first);
-        streamAdd(weatherType, weatherData.weathers.first.now.condTxt);
+        final mWeather = weatherData.weathers.first;
+        streamAdd(weather, mWeather);
+        streamAdd(weatherType, mWeather.now.condTxt);
 
         final weathers = SharedDepository().weathers;
         weathers.removeAt(0);
         weathers.insert(0, weatherData.weathers.first);
         await SharedDepository().setWeathers(weathers);
-      }
-      if (airData?.weatherAir?.isNotEmpty ?? false) {
-        streamAdd(air, airData.weatherAir.first);
 
-        final airs = SharedDepository().airs;
-        airs.removeAt(0);
-        airs.insert(0, airData.weatherAir.first);
-        await SharedDepository().setAirs(airs);
+        final airData = await _service.getAir(city: mWeather.basic.parentCity);
+        if (airData?.weatherAir?.isNotEmpty ?? false) {
+          streamAdd(air, airData.weatherAir.first);
+
+          final airs = SharedDepository().airs;
+          airs.removeAt(0);
+          airs.insert(0, airData.weatherAir.first);
+          await SharedDepository().setAirs(airs);
+        }
       }
     } on DioError catch (e) {
       doError(e);

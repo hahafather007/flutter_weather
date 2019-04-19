@@ -18,6 +18,7 @@ class CityControlState extends PageState<CityControlPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scafKey,
       appBar: CustomAppBar(
         title: Text(
           AppText.of(context).cityControl,
@@ -40,20 +41,25 @@ class CityControlState extends PageState<CityControlPage> {
               Icons.add,
               color: Colors.white,
             ),
-            onPressed: () {
-              push(context, page: CityChoosePage()).then((location) {
-                if (location == null) return;
+            onPressed: () async {
+              final location = await push(context, page: CityChoosePage());
+              if (location == null) return;
 
-                _viewModel.addCity(location);
-              });
+              final result = await _viewModel.addCity(location);
+              if (!result) {
+                scafKey.currentState.showSnackBar(SnackBar(
+                  content: Text(AppText.of(context).repeatCity),
+                  duration: const Duration(seconds: 2),
+                ));
+              }
             },
           ),
         ],
       ),
       body: StreamBuilder(
-        stream: _viewModel.locations.stream,
+        stream: _viewModel.cities.stream,
         builder: (context, snapshot) {
-          final List<Location> cities = snapshot.data ?? List();
+          final List<String> cities = snapshot.data ?? List();
 
           return StreamBuilder(
             stream: _viewModel.weathers.stream,
@@ -64,10 +70,14 @@ class CityControlState extends PageState<CityControlPage> {
                 cities.length,
                 canBeDraggedTo: (oldIndex, _) => false,
                 itemBuilder: (context, index) {
-                  return _buildCityItem(
-                    city: cities[index].district,
-                    data: weathers[index],
-                    isFirst: index == 0,
+                  return Dismissible(
+                    key: Key("Dismissible${cities[index]}"),
+                    child: _buildCityItem(
+                      city: cities[index],
+                      data: weathers[index],
+                      isFirst: index == 0,
+                    ),
+                    onDismissed: (_) => _viewModel.removeCity(index),
                   );
                 },
                 onDragFinish: (before, after) {},
@@ -81,9 +91,7 @@ class CityControlState extends PageState<CityControlPage> {
 
   /// 城市列表Item
   Widget _buildCityItem(
-      {@required String city,
-      @required Weather data,
-      @required bool isFirst}) {
+      {@required String city, @required Weather data, @required bool isFirst}) {
     final now = data?.now;
 
     return Card(

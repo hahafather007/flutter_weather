@@ -38,6 +38,7 @@ class AppText {
       // 天气
       "cityControl": "城市管理",
       "cityChoose": "城市选择",
+      "repeatCity": "重复的城市！",
       "dataSource": "数据来源：和风天气",
       "monday": "星期一",
       "tuesday": "星期二",
@@ -189,6 +190,8 @@ class AppText {
   String get share => _localizedValues[locale.languageCode]["share"];
 
   String get cityChoose => _localizedValues[locale.languageCode]["cityChoose"];
+
+  String get repeatCity => _localizedValues[locale.languageCode]["repeatCity"];
 
   String get cityControl =>
       _localizedValues[locale.languageCode]["cityControl"];
