@@ -22,10 +22,10 @@ class SharedDepository {
   }
 
   /// 获取所有城市定位
-  List<String> get cities => _getStringList("cities", defaultValue: ["成都"]);
+  List<String> get cities => _getStringList("locations", defaultValue: ["成都"]);
 
   Future<bool> setCities(List<String> value) async => await _prefs
-      .setStringList("cities", value.map((v) => jsonEncode(v)).toList());
+      .setStringList("locations", value.map((v) => jsonEncode(v)).toList());
 
   /// 所有城市天气情况
   List<Weather> get weathers {

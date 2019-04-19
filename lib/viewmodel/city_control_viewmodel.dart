@@ -25,10 +25,9 @@ class CityControlViewModel extends ViewModel {
     final index = _cacheWeathers.length;
     _cacheWeathers.add(Weather());
 
-    await SharedDepository().setCities(_cacheCities);
-    await SharedDepository().setWeathers(_cacheWeathers);
-    await SharedDepository()
-        .setAirs(SharedDepository().airs..add(WeatherAir()));
+    await WeatherHolder().setCities(_cacheCities);
+    await WeatherHolder().setWeathers(_cacheWeathers);
+    await WeatherHolder().setAirs(SharedDepository().airs..add(WeatherAir()));
 
     weathers.add(_cacheWeathers);
     cities.add(_cacheCities);
@@ -37,7 +36,7 @@ class CityControlViewModel extends ViewModel {
     if (weatherData?.weathers?.isNotEmpty ?? false) {
       _cacheWeathers.removeAt(index);
       _cacheWeathers.insert(index, weatherData.weathers.first);
-      await SharedDepository().setWeathers(_cacheWeathers);
+      await WeatherHolder().setWeathers(_cacheWeathers);
       weathers.add(_cacheWeathers);
     }
 
@@ -48,9 +47,9 @@ class CityControlViewModel extends ViewModel {
   void removeCity(int index) async {
     _cacheCities.removeAt(index);
     _cacheWeathers.removeAt(index);
-    await SharedDepository().setCities(_cacheCities);
-    await SharedDepository().setWeathers(_cacheWeathers);
-    await SharedDepository().setAirs(SharedDepository().airs..removeAt(index));
+    await WeatherHolder().setCities(_cacheCities);
+    await WeatherHolder().setWeathers(_cacheWeathers);
+    await WeatherHolder().setAirs(SharedDepository().airs..removeAt(index));
 
     weathers.add(_cacheWeathers);
     cities.add(_cacheCities);

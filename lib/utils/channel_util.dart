@@ -9,7 +9,10 @@ class ChannelUtil {
     String city;
 
     try {
-      city = await _platform.invokeMethod(_ChannelTag.START_LOCATION);
+      final String result = await _platform.invokeMethod(_ChannelTag.START_LOCATION);
+      if(result?.isNotEmpty ?? false){
+        city = result;
+      }
     } on PlatformException catch (e) {
       _doError(e);
     } on MissingPluginException catch (e) {
