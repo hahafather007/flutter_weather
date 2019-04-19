@@ -21,30 +21,53 @@ class SharedDepository {
     return this;
   }
 
-  /// 上一次城市定位
-  String get lastCity => _getString("lastCity", defaultValue: "成都,成都");
+  /// 获取所有城市定位
+  List<Location> get cities {
+    final list = _getStringList("cities");
+    if (list == null || list.isEmpty) {
+      return [Location(city: "成都", district: "成都")];
+    } else {
+      return list
+          .map((v) => jsonDecode(v))
+          .map((map) => Location.fromJson(map))
+          .toList();
+    }
+  }
 
-  Future<bool> setLastCity(String value) async =>
-      await _prefs.setString("lastCity", value);
+  Future<bool> setCities(List<Location> value) async => await _prefs
+      .setStringList("cities", value.map((v) => jsonEncode(v)).toList());
 
-  /// 上次获取天气数据的时间
-  String get weatherUpdateTime => _getString("weatherUpdateTime",
-      defaultValue: DateTime.now().subtract(Duration(days: 1)).toString());
+  /// 所有城市天气情况
+  List<Weather> get weathers {
+    final list = _getStringList("weathersData");
+    if (list == null || list.isEmpty) {
+      return [Weather()];
+    } else {
+      return list
+          .map((v) => jsonDecode(v))
+          .map((v) => Weather.fromJson(v))
+          .toList();
+    }
+  }
 
-  Future<bool> setWeatherUpdateTime(String value) async =>
-      await _prefs.setString("weatherUpdateTime", value);
+  Future<bool> setWeathers(List<Weather> value) async => await _prefs
+      .setStringList("weathersData", value.map((v) => jsonEncode(v)).toList());
 
-  /// 上次天气情况数据
-  String get lastWeatherData => _getString("lastWeatherData");
+  /// 所有城市空气质量
+  List<WeatherAir> get airs {
+    final list = _getStringList("airsData");
+    if (list == null || list.isEmpty) {
+      return [WeatherAir()];
+    } else {
+      return list
+          .map((v) => jsonDecode(v))
+          .map((v) => WeatherAir.fromJson(v))
+          .toList();
+    }
+  }
 
-  Future<bool> setLastWeatherData(String value) async =>
-      await _prefs.setString("lastWeatherData", value);
-
-  /// 上次空气质量情况
-  String get lastAirData => _getString("lastAirData");
-
-  Future<bool> setLastAirData(String value) async =>
-      await _prefs.setString("lastAirData", value);
+  Future<bool> setAirs(List<WeatherAir> value) async => await _prefs
+      .setStringList("airsData", value.map((v) => jsonEncode(v)).toList());
 
   /// 收藏的闲读文章
   String get favReadData => _getString("favReadData");
@@ -102,6 +125,16 @@ class SharedDepository {
     }
 
     return value;
+  }
+
+  List<String> _getStringList(String key, {List<String> defaultValue}) {
+    final list = _prefs.getStringList(key);
+
+    if (list == null) {
+      return defaultValue;
+    }
+
+    return list;
   }
 
   int _getInt(String key, {int defaultValue}) {

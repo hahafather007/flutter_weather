@@ -17,7 +17,6 @@ class WeatherState extends PageState<WeatherPage> {
   void initState() {
     super.initState();
 
-    _viewModel.init();
     _scrollController.addListener(() {
       if (_scrollController.offset >= 320) {
         if (!CircleAirView.canAnim) {
@@ -280,25 +279,25 @@ class WeatherState extends PageState<WeatherPage> {
                                       children: <Widget>[
                                         _buildSoftItem(
                                           url: "images/air_soft_1.png",
-                                          lifestyle: data != null
+                                          lifestyle: data?.lifestyle != null
                                               ? data.lifestyle[7]
                                               : null,
                                         ),
                                         _buildSoftItem(
                                           url: "images/air_soft_2.png",
-                                          lifestyle: data != null
+                                          lifestyle: data?.lifestyle != null
                                               ? data.lifestyle[0]
                                               : null,
                                         ),
                                         _buildSoftItem(
                                           url: "images/air_soft_3.png",
-                                          lifestyle: data != null
+                                          lifestyle: data?.lifestyle != null
                                               ? data.lifestyle[6]
                                               : null,
                                         ),
                                         _buildSoftItem(
                                           url: "images/air_soft_4.png",
-                                          lifestyle: data != null
+                                          lifestyle: data?.lifestyle != null
                                               ? data.lifestyle[1]
                                               : null,
                                         ),
@@ -314,25 +313,25 @@ class WeatherState extends PageState<WeatherPage> {
                                       children: <Widget>[
                                         _buildSoftItem(
                                           url: "images/air_soft_5.png",
-                                          lifestyle: data != null
+                                          lifestyle: data?.lifestyle != null
                                               ? data.lifestyle[2]
                                               : null,
                                         ),
                                         _buildSoftItem(
                                           url: "images/air_soft_6.png",
-                                          lifestyle: data != null
+                                          lifestyle: data?.lifestyle != null
                                               ? data.lifestyle[3]
                                               : null,
                                         ),
                                         _buildSoftItem(
                                           url: "images/air_soft_7.png",
-                                          lifestyle: data != null
+                                          lifestyle: data?.lifestyle != null
                                               ? data.lifestyle[4]
                                               : null,
                                         ),
                                         _buildSoftItem(
                                           url: "images/air_soft_8.png",
-                                          lifestyle: data != null
+                                          lifestyle: data?.lifestyle != null
                                               ? data.lifestyle[5]
                                               : null,
                                         ),
@@ -495,7 +494,7 @@ class WeatherState extends PageState<WeatherPage> {
     });
 
     return Row(
-      children: data != null
+      children: data?.dailyForecast != null
           ? data.dailyForecast.map((daily) {
               return Expanded(
                 child: Column(

@@ -26,6 +26,7 @@ class AppText {
       "loadFail": "加载失败！",
       "cancel": "取消",
       "certain": "确定",
+      "unknown": "未知",
 
       // 主页
       "weather": "天气",
@@ -164,6 +165,8 @@ class AppText {
   String get cancel => _localizedValues[locale.languageCode]["cancel"];
 
   String get certain => _localizedValues[locale.languageCode]["certain"];
+
+  String get unknown => _localizedValues[locale.languageCode]["unknown"];
 
   String get alreadyCopyUrl =>
       _localizedValues[locale.languageCode]["alreadyCopyUrl"];

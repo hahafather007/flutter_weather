@@ -82,6 +82,7 @@ class SettingModuleState extends PageState<SettingModulePage> {
     );
   }
 
+  /// 页面模块选项
   Widget _buildModuleItem(
       {@required IconData icon,
       @required String title,

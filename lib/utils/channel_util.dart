@@ -5,18 +5,22 @@ class ChannelUtil {
   static final _platform = MethodChannel(_ChannelTag.CHANNEL_NAME);
 
   /// 获取位置
-  static Future<String> getLocation() async {
-    String result;
+  static Future<Location> getLocation() async {
+    Location location;
 
     try {
-      result = await _platform.invokeMethod(_ChannelTag.START_LOCATION);
+      final result =
+          (await _platform.invokeMethod(_ChannelTag.START_LOCATION) as String);
+      if (result != null && result.isNotEmpty) {
+        location = Location.fromJson(jsonDecode(result));
+      }
     } on PlatformException catch (e) {
       _doError(e);
     } on MissingPluginException catch (e) {
       _doError(e);
     }
 
-    return result;
+    return location;
   }
 
   static void _doError<T extends Exception>(T e) =>

@@ -8,32 +8,17 @@ class WeatherViewModel extends ViewModel {
   final air = StreamController<WeatherAir>();
   final weatherType = StreamController<String>();
 
-  void init() {
-    streamAdd(city, SharedDepository().lastCity.split(",")[0]);
+  WeatherViewModel() {
+    streamAdd(city, SharedDepository().cities.first.district);
 
     // 首先将缓存的数据作为第一数据显示，再判断请求逻辑
-    final lastWeatherData = SharedDepository().lastWeatherData;
-    final lastAirData = SharedDepository().lastAirData;
-    if (lastAirData != null && lastWeatherData != null) {
-      final mWeather =
-          WeatherData.fromJson(json.decode(lastWeatherData)).weathers.first;
-      final mAir =
-          WeatherAirData.fromJson(json.decode(lastAirData)).weatherAir.first;
+    final mWeather = SharedDepository().weathers.first;
+    final mAir = SharedDepository().airs.first;
+    streamAdd(weather, mWeather);
+    streamAdd(weatherType, mWeather.now?.condTxt);
+    streamAdd(air, mAir);
 
-      streamAdd(weather, mWeather);
-      streamAdd(weatherType, mWeather.now?.condTxt);
-      streamAdd(air, mAir);
-    }
-
-    final minutes = (DateTime.now().millisecondsSinceEpoch -
-            DateTime.parse(SharedDepository().weatherUpdateTime)
-                .millisecondsSinceEpoch) ~/
-        1000;
-    debugPrint("时间========$minutes秒");
-    // 两次请求时间间隔需要大于5分钟（300秒）
-    if (minutes >= 300) {
-      loadData(isRefresh: false);
-    }
+    loadData(isRefresh: false);
   }
 
   Future<Null> loadData({bool isRefresh = true}) async {
@@ -48,22 +33,32 @@ class WeatherViewModel extends ViewModel {
     await SimplePermissions.requestPermission(Permission.AlwaysLocation);
 
     try {
-      var mCity =
-          (await ChannelUtil.getLocation() ?? SharedDepository().lastCity)
-              .split(",");
-      SharedDepository().setLastCity("${mCity[0]},${mCity[1]}");
-      streamAdd(city, mCity[0]);
+      final cities = SharedDepository().cities;
+      final location = await ChannelUtil.getLocation() ?? cities.first;
+      cities.removeAt(0);
+      cities.insert(0, location);
+      streamAdd(city, location.district);
 
-      final weatherData = await _service.getWeather(city: mCity[0]);
-      final airData = await _service.getAir(city: mCity[1]);
+      final weatherData = await _service.getWeather(city: location.district);
+      final airData = await _service.getAir(city: location.city);
       // 储存本次天气结果
-      await SharedDepository().setWeatherUpdateTime(DateTime.now().toString());
-      await SharedDepository().setLastWeatherData(json.encode(weatherData));
-      await SharedDepository().setLastAirData(json.encode(airData));
+      if (weatherData?.weathers?.isNotEmpty ?? false) {
+        streamAdd(weather, weatherData.weathers.first);
+        streamAdd(weatherType, weatherData.weathers.first.now.condTxt);
 
-      streamAdd(weather, weatherData.weathers.first);
-      streamAdd(weatherType, weatherData.weathers.first.now.condTxt);
-      streamAdd(air, airData.weatherAir.first);
+        final weathers = SharedDepository().weathers;
+        weathers.removeAt(0);
+        weathers.insert(0, weatherData.weathers.first);
+        await SharedDepository().setWeathers(weathers);
+      }
+      if (airData?.weatherAir?.isNotEmpty ?? false) {
+        streamAdd(air, airData.weatherAir.first);
+
+        final airs = SharedDepository().airs;
+        airs.removeAt(0);
+        airs.insert(0, airData.weatherAir.first);
+        await SharedDepository().setAirs(airs);
+      }
     } on DioError catch (e) {
       doError(e);
     } finally {

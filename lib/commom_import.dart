@@ -34,6 +34,7 @@ export 'model/data/weather_data.dart';
 export 'model/data/mixing.dart';
 export 'model/data/page_module_data.dart';
 export 'model/data/city_data.dart';
+export 'model/data/location_data.dart';
 
 export 'model/holder/fav_holder.dart';
 export 'model/holder/shared_depository.dart';
@@ -97,6 +98,7 @@ export 'viewmodel/gift_mzi_image_viewmodel.dart';
 export 'viewmodel/gift_gank_viewmodel.dart';
 export 'viewmodel/setting_viewmodel.dart';
 export 'viewmodel/setting_module_viewmodel.dart';
+export 'viewmodel/city_control_viewmodel.dart';
 
 export 'dart:async';
 export 'dart:convert';

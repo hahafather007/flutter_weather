@@ -8,6 +8,7 @@ class CityChoosePage extends StatefulWidget {
 class CityChooseState extends PageState<CityChoosePage> {
   String _provinceId;
   String _cityId;
+  String _cityName;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +75,10 @@ class CityChooseState extends PageState<CityChoosePage> {
                     return _buildItem(
                       name: city.name,
                       isSelect: city.id == _cityId,
-                      onTap: () => setState(() => _cityId = city.id),
+                      onTap: () => setState(() {
+                            _cityName = city.name;
+                            _cityId = city.id;
+                          }),
                     );
                   },
                 );
@@ -100,7 +104,9 @@ class CityChooseState extends PageState<CityChoosePage> {
                     return _buildItem(
                       name: district.name,
                       isSelect: false,
-                      onTap: () => pop(context, extraData: district.name),
+                      onTap: () => pop(context,
+                          extraData: Location(
+                              city: _cityName, district: district.name)),
                     );
                   },
                 );

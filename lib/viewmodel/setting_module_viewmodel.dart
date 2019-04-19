@@ -10,6 +10,7 @@ class SettingModuleViewModel extends ViewModel {
     streamAdd(pageModules, _cacheModules);
   }
 
+  /// 拖动后改变列表中元素位置
   void indexChange(int before, int after) {
     final beforeModule = _cacheModules[before];
     _cacheModules.removeAt(before);
@@ -19,6 +20,7 @@ class SettingModuleViewModel extends ViewModel {
     streamAdd(pageModules, _cacheModules);
   }
 
+  /// 每个module是否开启
   void valueChange(bool open, {@required String module}) {
     _cacheModules.firstWhere((v) => v.module == module).open = open;
     SharedDepository().setPageModules(_cacheModules);
