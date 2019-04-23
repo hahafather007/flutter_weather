@@ -67,20 +67,29 @@ class CityControlState extends PageState<CityControlPage> {
               final List<Weather> weathers = snapshot.data ?? List();
 
               return DragAndDropList(
-                cities.length,
-                canBeDraggedTo: (oldIndex, _) => false,
+                min(cities.length, weathers.length),
+                canBeDraggedTo: (oldIndex, newIndex) =>
+                    oldIndex != 0 && newIndex != 0,
                 itemBuilder: (context, index) {
-                  return Dismissible(
-                    key: Key("Dismissible${cities[index]}"),
-                    child: _buildCityItem(
+                  if (index == 0) {
+                    return _buildCityItem(
                       city: cities[index],
                       data: weathers[index],
                       isFirst: index == 0,
-                    ),
-                    onDismissed: (_) => _viewModel.removeCity(index),
-                  );
+                    );
+                  } else {
+                    return Dismissible(
+                      key: Key("Dismissible${cities[index]}"),
+                      child: _buildCityItem(
+                        city: cities[index],
+                        data: weathers[index],
+                        isFirst: index == 0,
+                      ),
+                      onDismissed: (_) => _viewModel.removeCity(index),
+                    );
+                  }
                 },
-                onDragFinish: (before, after) {},
+                onDragFinish: _viewModel.cityIndexChange,
               );
             },
           );

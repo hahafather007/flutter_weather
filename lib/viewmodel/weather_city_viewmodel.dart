@@ -1,20 +1,24 @@
 import 'package:flutter_weather/commom_import.dart';
 
 class WeatherCityViewModel extends ViewModel {
+  final int index;
+
   final _service = WeatherService();
 
   final weather = StreamController<Weather>();
   final air = StreamController<WeatherAir>();
 
-  WeatherCityViewModel() {
+  WeatherCityViewModel({@required this.index}) {
     // 首先将缓存的数据作为第一数据显示，再判断请求逻辑
-    final mWeather = SharedDepository().weathers.first;
-    final mAir = SharedDepository().airs.first;
+    final mWeather = WeatherHolder().weathers[index];
+    final mAir = WeatherHolder().airs[index];
     streamAdd(weather, mWeather);
     streamAdd(air, mAir);
+
+    loadData(isRefresh: false);
   }
 
-  Future<Null> loadData(int index, {bool isRefresh = true}) async {
+  Future<Null> loadData({bool isRefresh = true}) async {
     if (selfLoading) return;
     selfLoading = true;
 
@@ -22,18 +26,14 @@ class WeatherCityViewModel extends ViewModel {
       streamAdd(isLoading, true);
     }
 
-    final cities = SharedDepository().cities;
     String mCity;
     if (index == 0) {
       // 请求定位权限
       await SimplePermissions.requestPermission(Permission.AlwaysLocation);
 
-      mCity = await ChannelUtil.getLocation() ?? cities.first;
-      cities.removeAt(0);
-      cities.insert(0, mCity);
-      WeatherHolder().setCities(cities);
+      mCity = await ChannelUtil.getLocation() ?? WeatherHolder().cities[index];
     } else {
-      mCity = cities[index];
+      mCity = WeatherHolder().cities[index];
     }
 
     try {
@@ -43,17 +43,14 @@ class WeatherCityViewModel extends ViewModel {
         final mWeather = weatherData.weathers.first;
         streamAdd(weather, mWeather);
 
-        final weathers = SharedDepository().weathers;
-        weathers.removeAt(0);
-        weathers.insert(0, weatherData.weathers.first);
-
-        final airData = await _service.getAir(city: mWeather.basic.parentCity);
+        final airData = await _service.getAir(city: mWeather.basic?.parentCity);
         if (airData?.weatherAir?.isNotEmpty ?? false) {
-          streamAdd(air, airData.weatherAir.first);
+          final mAir = airData.weatherAir.first;
+          streamAdd(air, mAir);
 
-          final airs = SharedDepository().airs;
-          airs.removeAt(0);
-          airs.insert(0, airData.weatherAir.first);
+          WeatherHolder().addCity(mCity, updateIndex: index);
+          WeatherHolder().addWeather(mWeather, updateIndex: index);
+          WeatherHolder().addAir(mAir, updateIndex: index);
         }
       }
     } on DioError catch (e) {

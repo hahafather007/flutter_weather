@@ -9,14 +9,18 @@ class WeatherViewModel extends ViewModel {
   int _index = 0;
 
   WeatherViewModel() {
-    WeatherHolder().cities.listen((list) => streamAdd(cities, list));
-    WeatherHolder().weathers
-      ..map((list) => list[_index])
-          .listen((v) => streamAdd(weatherType, v.now?.condTxt));
+    bindSub(
+        WeatherHolder().cityStream.listen((list) => streamAdd(cities, list)));
+    bindSub(WeatherHolder()
+        .weatherStream
+        .map((list) => list[min(_index, list.length - 1)])
+        .listen((v) => streamAdd(weatherType, v.now?.condTxt)));
   }
 
   void indexChange(int index) {
     _index = index;
+
+    streamAdd(weatherType, WeatherHolder().weathers[index].now?.condTxt);
   }
 
   /// 预览其他天气

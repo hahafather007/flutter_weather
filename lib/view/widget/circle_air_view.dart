@@ -8,7 +8,14 @@ class CircleAirView extends StatefulWidget {
   /// 等级
   final String qlty;
 
-  CircleAirView({Key key, @required this.aqi, @required this.qlty})
+  /// 动画开始的标志
+  final String animTag;
+
+  CircleAirView(
+      {Key key,
+      @required this.aqi,
+      @required this.qlty,
+      @required this.animTag})
       : super(key: key);
 
   @override
@@ -31,7 +38,7 @@ class _CircleAirState extends PageState<CircleAirView>
     _initAndStartAnim();
     bindSub(EventSendHolder()
         .event
-        .where((pair) => pair.a == "CircleAirViewAnimation")
+        .where((pair) => pair.a == widget.animTag)
         .where((_) => _controller.value == 0)
         .listen((_) => _controller
           ..reset()

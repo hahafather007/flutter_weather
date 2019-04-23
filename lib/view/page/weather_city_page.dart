@@ -11,17 +11,19 @@ class WeatherCityPage extends StatefulWidget {
 
 class WeatherCityState extends PageState<WeatherCityPage>
     with MustKeepAliveMixin {
-  final _viewModel = WeatherCityViewModel();
   final _scrollController = ScrollController();
+
+  WeatherCityViewModel _viewModel;
 
   @override
   void initState() {
     super.initState();
 
-    _viewModel.loadData(widget.index, isRefresh: false);
+    _viewModel = WeatherCityViewModel(index: widget.index);
     _scrollController.addListener(() {
       if (_scrollController.offset >= 320) {
-        EventSendHolder().sendEvent(tag: "CircleAirViewAnimation", event: null);
+        EventSendHolder().sendEvent(
+            tag: "CircleAirViewAnimation${widget.index}", event: null);
       }
     });
   }
@@ -32,7 +34,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
 
     bindErrorStream(_viewModel.error.stream,
         errorText: AppText.of(context).weatherFail,
-        retry: () => _viewModel.loadData(widget.index, isRefresh: false));
+        retry: () => _viewModel.loadData(isRefresh: false));
   }
 
   @override
@@ -60,7 +62,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
                 final WeatherAir air = snapshot.data;
 
                 return RefreshIndicator(
-                  onRefresh: () => _viewModel.loadData(widget.index),
+                  onRefresh: () => _viewModel.loadData(),
                   child: ListView(
                     physics: const AlwaysScrollableScrollPhysics(
                         parent: const ClampingScrollPhysics()),
@@ -119,9 +121,12 @@ class WeatherCityState extends PageState<WeatherCityPage>
                                       padding: const EdgeInsets.only(
                                           left: 16, right: 16),
                                       child: CircleAirView(
-                                          aqi: double.parse(
-                                              air?.airNowCity?.aqi ?? "0"),
-                                          qlty: air?.airNowCity?.qlty ?? ""),
+                                        aqi: double.parse(
+                                            air?.airNowCity?.aqi ?? "0"),
+                                        qlty: air?.airNowCity?.qlty ?? "",
+                                        animTag:
+                                            "CircleAirViewAnimation${widget.index}",
+                                      ),
                                     ),
                                   ),
                                   Expanded(

@@ -7,15 +7,21 @@ class WeatherPage extends StatefulWidget {
 
 class WeatherState extends PageState<WeatherPage> {
   final _viewModel = WeatherViewModel();
+  final _controller = PageController();
+  final _pageStream = StreamController<double>();
 
   @override
   void initState() {
     super.initState();
+
+    _controller.addListener(() => streamAdd(_pageStream, _controller.page));
   }
 
   @override
   void dispose() {
     _viewModel.dispose();
+    _controller.dispose();
+    _pageStream.close();
 
     super.dispose();
   }
@@ -32,75 +38,89 @@ class WeatherState extends PageState<WeatherPage> {
           builder: (context, snapshot) {
             final List<String> cities = snapshot.data ?? [];
 
-            return Scaffold(
-              key: scafKey,
-              appBar: CustomAppBar(
-                title: Text(
-                  cities.isNotEmpty ? cities.first : "",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
-                ),
-                color: _getAppBarColor(type: type),
-                showShadowLine: false,
-                leftBtn: IconButton(
-                  icon: Icon(
-                    Icons.menu,
-                    color: Colors.white,
-                  ),
-                  onPressed: () => EventSendHolder()
-                      .sendEvent(tag: "homeDrawerOpen", event: true),
-                ),
-                rightBtns: [
-                  PopupMenuButton(
-                    icon: Icon(
-                      Icons.more_vert,
-                      color: Colors.white,
+            return StreamBuilder(
+              stream: _pageStream.stream,
+              builder: (context, snapshot) {
+                final double pageValue = snapshot.data ?? 0;
+
+                return Scaffold(
+                  key: scafKey,
+                  appBar: CustomAppBar(
+                    title: Text(
+                      cities.isNotEmpty
+                          ? cities[min(cities.length - 1, pageValue.round())]
+                          : "",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
                     ),
-                    itemBuilder: (context) => [
-                          PopupMenuItem(
-                            value: "share",
-                            child: Text(AppText.of(context).share),
-                          ),
-                          PopupMenuItem(
-                            value: "cities",
-                            child: Text(AppText.of(context).cityControl),
-                          ),
-                          PopupMenuItem(
-                            value: "weathers",
-                            child: Text(AppText.of(context).weathersView),
-                          ),
-                        ],
-                    onSelected: (value) {
-                      switch (value) {
-                        case "share":
-                          break;
-                        case "cities":
-                          push(context, page: CityControlPage());
-                          break;
-                        case "weathers":
-                          _showWeathersDialog();
-                          break;
-                      }
-                    },
+                    color: _getAppBarColor(type: type),
+                    showShadowLine: false,
+                    leftBtn: IconButton(
+                      icon: Icon(
+                        Icons.menu,
+                        color: Colors.white,
+                      ),
+                      onPressed: () => EventSendHolder()
+                          .sendEvent(tag: "homeDrawerOpen", event: true),
+                    ),
+                    rightBtns: [
+                      PopupMenuButton(
+                        icon: Icon(
+                          Icons.more_vert,
+                          color: Colors.white,
+                        ),
+                        itemBuilder: (context) => [
+                              PopupMenuItem(
+                                value: "share",
+                                child: Text(AppText.of(context).share),
+                              ),
+                              PopupMenuItem(
+                                value: "cities",
+                                child: Text(AppText.of(context).cityControl),
+                              ),
+                              PopupMenuItem(
+                                value: "weathers",
+                                child: Text(AppText.of(context).weathersView),
+                              ),
+                            ],
+                        onSelected: (value) {
+                          switch (value) {
+                            case "share":
+                              break;
+                            case "cities":
+                              push(context, page: CityControlPage());
+                              break;
+                            case "weathers":
+                              _showWeathersDialog();
+                              break;
+                          }
+                        },
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              body: WeatherView(
-                type: type,
-                color: _getAppBarColor(type: type),
-                child: PageView.builder(
-                  itemCount: cities.length,
-                  physics: const ClampingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return WeatherCityPage(
-                      key: Key("WeatherCityPage$index"),
-                      index: index,
-                    );
-                  },
-                ),
-              ),
+                  body: WeatherView(
+                    type: type,
+                    color: _getAppBarColor(type: type),
+                    child: PageView.builder(
+                      itemCount: cities.length,
+                      controller: _controller,
+                      physics: const ClampingScrollPhysics(),
+                      onPageChanged: (index) => _viewModel.indexChange(index),
+                      itemBuilder: (context, index) {
+                        return Opacity(
+                          opacity: 1 - (pageValue - index).abs() % 1,
+                          child: WeatherCityPage(
+                            key: Key("WeatherCityPage${cities[index]}"),
+                            index: index,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                );
+              },
             );
           },
         );

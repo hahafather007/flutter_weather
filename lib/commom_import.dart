@@ -85,6 +85,7 @@ export 'view/widget/flash_view.dart';
 export 'view/widget/fog_view.dart';
 export 'view/widget/hail_view.dart';
 export 'view/widget/circle_air_view.dart';
+export 'view/widget/alpha_pageview.dart';
 
 export 'view/weather/weather_view.dart';
 

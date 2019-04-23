@@ -6,38 +6,28 @@ class CityControlViewModel extends ViewModel {
   final cities = StreamController<List<String>>();
   final weathers = StreamController<List<Weather>>();
 
-  List<String> _cacheCities = List();
-  List<Weather> _cacheWeathers = List();
-
   CityControlViewModel() {
-    _cacheCities.addAll(SharedDepository().cities);
-    _cacheWeathers.addAll(SharedDepository().weathers);
-    weathers.add(_cacheWeathers);
-    cities.add(_cacheCities);
+    streamAdd(cities, WeatherHolder().cities);
+    streamAdd(weathers, WeatherHolder().weathers);
+    bindSub(
+        WeatherHolder().weatherStream.listen((v) => streamAdd(weathers, v)));
+    bindSub(WeatherHolder().cityStream.listen((v) => streamAdd(cities, v)));
   }
 
   /// 添加城市
   Future<bool> addCity(String city) async {
     // 排除重复城市
-    if (_cacheCities.contains(city)) return false;
+    if (WeatherHolder().cities.contains(city)) return false;
 
-    _cacheCities.add(city);
-    final index = _cacheWeathers.length;
-    _cacheWeathers.add(Weather());
-
-    await WeatherHolder().setCities(_cacheCities);
-    await WeatherHolder().setWeathers(_cacheWeathers);
-    await WeatherHolder().setAirs(SharedDepository().airs..add(WeatherAir()));
-
-    weathers.add(_cacheWeathers);
-    cities.add(_cacheCities);
+    final index = WeatherHolder().weathers.length;
+    await WeatherHolder().addWeather(Weather());
+    await WeatherHolder().addAir(WeatherAir());
+    await WeatherHolder().addCity(city);
 
     final weatherData = await _loadWeather(city: city);
     if (weatherData?.weathers?.isNotEmpty ?? false) {
-      _cacheWeathers.removeAt(index);
-      _cacheWeathers.insert(index, weatherData.weathers.first);
-      await WeatherHolder().setWeathers(_cacheWeathers);
-      weathers.add(_cacheWeathers);
+      await WeatherHolder()
+          .addWeather(weatherData.weathers.first, updateIndex: index);
     }
 
     return true;
@@ -45,14 +35,17 @@ class CityControlViewModel extends ViewModel {
 
   /// 删除城市
   void removeCity(int index) async {
-    _cacheCities.removeAt(index);
-    _cacheWeathers.removeAt(index);
-    await WeatherHolder().setCities(_cacheCities);
-    await WeatherHolder().setWeathers(_cacheWeathers);
-    await WeatherHolder().setAirs(SharedDepository().airs..removeAt(index));
+    await WeatherHolder().removeWeather(index);
+    await WeatherHolder().removeAir(index);
+    await WeatherHolder().removeCity(index);
+  }
 
-    weathers.add(_cacheWeathers);
-    cities.add(_cacheCities);
+  void cityIndexChange(int before, int after) async {
+    if (before == 0 || after == 0) return;
+
+    await WeatherHolder().updateWeather(before, after);
+    await WeatherHolder().updateAir(before, after);
+    await WeatherHolder().updateCity(before, after);
   }
 
   /// 获取天气
@@ -71,7 +64,6 @@ class CityControlViewModel extends ViewModel {
   @override
   void dispose() {
     _service.dispose();
-    _cacheCities.clear();
 
     cities.close();
     weathers.close();
