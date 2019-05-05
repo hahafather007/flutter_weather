@@ -27,6 +27,7 @@ class AppText {
       "cancel": "取消",
       "certain": "确定",
       "unknown": "未知",
+      "appName": "假装看天气(Flutter)",
 
       // 主页
       "weather": "天气",
@@ -168,6 +169,8 @@ class AppText {
   String get certain => _localizedValues[locale.languageCode]["certain"];
 
   String get unknown => _localizedValues[locale.languageCode]["unknown"];
+
+  String get appName => _localizedValues[locale.languageCode]["appName"];
 
   String get alreadyCopyUrl =>
       _localizedValues[locale.languageCode]["alreadyCopyUrl"];

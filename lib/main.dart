@@ -6,21 +6,20 @@ void main() {
   // 显示布局边框
   debugPaintSizeEnabled = false;
 
+  // 设置状态栏字体颜色
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Color(0xFF000000),
+      systemNavigationBarDividerColor: null,
+      statusBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.light,
+      statusBarBrightness: Brightness.dark));
+
   // 强制竖屏
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
-  ]).then((_) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        systemNavigationBarColor: Color(0xFF000000),
-        systemNavigationBarDividerColor: null,
-        statusBarColor: Colors.transparent,
-        systemNavigationBarIconBrightness: Brightness.light,
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.dark));
-
-    runApp(MyApp());
-  });
+  ]).then((_) => runApp(MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -38,11 +37,8 @@ class MyAppState extends PageState<MyApp> {
     bindSub(EventSendHolder()
         .event
         .where((pair) => pair.a == "themeChange")
-        .listen((pair) {
-      debugPrint("themeChanged=========>${pair.b}");
-      setState(
-          () => theme = ThemeData(primaryColor: pair.b, accentColor: pair.b));
-    }));
+        .listen(
+            (pair) => setState(() => theme = ThemeData(accentColor: pair.b))));
   }
 
   @override

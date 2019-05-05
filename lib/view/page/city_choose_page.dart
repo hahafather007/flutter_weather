@@ -140,7 +140,6 @@ class CityChooseState extends PageState<CityChoosePage> {
                   alignment: Alignment.center,
                   child: Text(
                     name,
-                    softWrap: false,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(fontSize: 16, color: AppColor.colorText1),
                   ),

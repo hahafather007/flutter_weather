@@ -42,7 +42,6 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
         title: Text(
           widget.title,
           overflow: TextOverflow.ellipsis,
-          softWrap: false,
           style: TextStyle(
             color: Colors.white,
             fontSize: 16,
