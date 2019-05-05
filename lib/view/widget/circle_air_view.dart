@@ -28,6 +28,8 @@ class _CircleAirState extends PageState<CircleAirView>
   Animation<int> _numAnim;
   Animation<Color> _colorAnim;
 
+  bool _canAnim = false;
+
   @override
   void initState() {
     super.initState();
@@ -40,9 +42,13 @@ class _CircleAirState extends PageState<CircleAirView>
         .event
         .where((pair) => pair.a == widget.animTag)
         .where((_) => _controller.value == 0)
-        .listen((_) => _controller
-          ..reset()
-          ..forward()));
+        .where((_) => !_canAnim)
+        .listen((_) {
+      _canAnim = true;
+      _controller
+        ..reset()
+        ..forward();
+    }));
   }
 
   @override
@@ -116,7 +122,10 @@ class _CircleAirState extends PageState<CircleAirView>
             begin: AqiUtil.getAqiColor(0), end: AqiUtil.getAqiColor(widget.aqi))
         .animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
     _controller.reset();
-    _controller.forward();
+
+    if (_canAnim) {
+      _controller.forward();
+    }
   }
 }
 

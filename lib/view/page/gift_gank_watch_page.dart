@@ -74,10 +74,7 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                         }
                       },
                       loadingChild: Center(
-                        child: Image.asset(
-                          "images/loading.gif",
-                          scale: 0.5,
-                        ),
+                        child: Image.asset("images/loading.gif"),
                       ),
                       pageOptions: list
                           .map(
@@ -92,8 +89,8 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                                 : PhotoViewGalleryPageOptions(
                                     imageProvider:
                                         AssetImage("images/loading.gif"),
-                                    minScale: 0.5,
-                                    maxScale: 0.5,
+                                    minScale: 1.0,
+                                    maxScale: 1.0,
                                   ),
                           )
                           .toList(),

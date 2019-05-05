@@ -74,8 +74,7 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
                           setState(() => _currentPage = index),
                       loadingChild: Center(
                         child: Image.asset(
-                          "images/loading.gif",
-                          scale: 0.5,
+                          "images/loading.gif"
                         ),
                       ),
                       pageOptions: list
@@ -94,8 +93,8 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
                                 : PhotoViewGalleryPageOptions(
                                     imageProvider:
                                         AssetImage("images/loading.gif"),
-                                    minScale: 0.5,
-                                    maxScale: 0.5,
+                                    minScale: 1.0,
+                                    maxScale: 1.0,
                                   ),
                           )
                           .toList(),

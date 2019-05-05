@@ -47,6 +47,8 @@ class WeatherCityState extends PageState<WeatherCityPage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: LoadingView(

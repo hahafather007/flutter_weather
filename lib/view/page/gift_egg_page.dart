@@ -44,6 +44,8 @@ class GiftEggState extends PageState<GiftEggPage> with MustKeepAliveMixin {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       key: scafKey,
       body: LoadingView(
