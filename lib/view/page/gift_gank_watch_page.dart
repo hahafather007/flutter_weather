@@ -103,7 +103,7 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                     duration: const Duration(milliseconds: 200),
                     child: CustomAppBar(
                       title: Text(""),
-                      showShadowLine: false,
+                      showShadow: false,
                       color: Colors.transparent,
                       leftBtn: IconButton(
                         icon: Icon(

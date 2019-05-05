@@ -50,6 +50,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
     super.build(context);
 
     return Scaffold(
+      key: scafKey,
       backgroundColor: Colors.transparent,
       body: LoadingView(
         loadingStream: _viewModel.isLoading.stream,

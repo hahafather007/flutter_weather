@@ -40,7 +40,8 @@ class MyAppState extends PageState<MyApp> {
         .where((pair) => pair.a == "themeChange")
         .listen((pair) {
       debugPrint("themeChanged=========>${pair.b}");
-      setState(() => theme = ThemeData(accentColor: pair.b));
+      setState(
+          () => theme = ThemeData(primaryColor: pair.b, accentColor: pair.b));
     }));
   }
 

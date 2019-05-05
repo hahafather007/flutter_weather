@@ -7,7 +7,8 @@ abstract class Service {
   final cancelToken = CancelToken();
 
   Service() {
-    dio.options.connectTimeout = 5000;
+    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = 10000;
   }
 
   void dispose() {

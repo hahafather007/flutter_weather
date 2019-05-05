@@ -6,7 +6,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final IconButton leftBtn;
   final List<Widget> rightBtns;
   final Color color;
-  final bool showShadowLine;
+  final bool showShadow;
 
   CustomAppBar(
       {Key key,
@@ -15,28 +15,26 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       @required this.color,
       this.leftBtn,
       this.rightBtns = const [],
-      this.showShadowLine = true})
+      this.showShadow = true})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     double rightPadding = -36.0;
 
-    return AnimatedContainer(
-      color: color,
-      duration: const Duration(seconds: 2),
-      height: preferredSize.height + getStatusHeight(context),
-      child: Column(
-        children: <Widget>[
-          Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              Container(
+    return Material(
+      elevation: showShadow ? 4.0 : 0.0,
+      child: AnimatedContainer(
+        color: color,
+        duration: const Duration(seconds: 2),
+        height: preferredSize.height + getStatusHeight(context),
+        child: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            Positioned.fill(
+              child: Container(
                 padding: EdgeInsets.only(
                     top: getStatusHeight(context), left: 4, right: 4),
-                height: preferredSize.height +
-                    getStatusHeight(context) -
-                    (showShadowLine ? 1 : 0),
                 child: Row(
                   children: <Widget>[
                     // 左边的按钮
@@ -74,24 +72,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ],
                 ),
               ),
+            ),
 
-              // 中间的标题控件
-              centerTitle != null
-                  ? Material(
-                      shape: CircleBorder(),
-                      clipBehavior: Clip.hardEdge,
-                      color: Colors.transparent,
-                      child: centerTitle,
-                    )
-                  : Container()
-            ],
-          ),
-          // 下面的阴影线
-          Container(
-            color: AppColor.colorLine2,
-            height: showShadowLine ? 1 : 0,
-          ),
-        ],
+            // 中间的标题控件
+            centerTitle != null
+                ? Material(
+                    shape: CircleBorder(),
+                    clipBehavior: Clip.hardEdge,
+                    color: Colors.transparent,
+                    child: centerTitle,
+                  )
+                : Container()
+          ],
+        ),
       ),
     );
   }

@@ -56,7 +56,7 @@ class WeatherState extends PageState<WeatherPage> {
                       ),
                     ),
                     color: _getAppBarColor(type: type),
-                    showShadowLine: false,
+                    showShadow: false,
                     leftBtn: IconButton(
                       icon: Icon(
                         Icons.menu,
