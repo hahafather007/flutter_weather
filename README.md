@@ -7,8 +7,13 @@
 如果喜欢的话记得点一波Star。
 
 ### 部分截图 ###
-<img src="screenshot/1.jpg" width="22%"/> <img src="screenshot/2.jpg" width="22%"/> <img src="screenshot/3.jpg" width="22%"/> <img src="screenshot/4.jpg" width="22%"/>
-<img src="screenshot/5.jpg" width="22%"/> <img src="screenshot/6.jpg" width="22%"/> <img src="screenshot/7.jpg" width="22%"/> <img src="screenshot/8.jpg" width="22%"/>
+<img src="screenshot/1.jpg" width="24%"/><img width="1%"/><img src="screenshot/2.jpg" width="24%"/><img width="1%"/><img src="screenshot/3.jpg" width="24%"/><img width="1%"/><img src="screenshot/4.jpg" width="24%"/>
+<img src="screenshot/5.jpg" width="24%"/><img width="1%"/><img src="screenshot/6.jpg" width="24%"/><img width="1%"/><img src="screenshot/7.jpg" width="24%"/><img width="1%"/><img src="screenshot/8.jpg" width="24%"/>
+
+### 下载方式 ###
+Android:<img src="qrcode/android.png"/>
+
+IOS:没有开发者账号，暂时只能自己编译
 
 ### 编译环境 ###
 ```
