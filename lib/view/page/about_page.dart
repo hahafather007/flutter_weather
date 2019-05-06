@@ -151,7 +151,7 @@ class AboutState extends PageState<AboutPage> {
               icon: Icons.share,
               text: AppText.of(context).shareApp,
               onTap: () =>
-                  ShareExtend.share(AppText.of(context).shareAppUrl, "text"),
+                  Share.share(AppText.of(context).shareAppUrl),
             ),
 
             Padding(
