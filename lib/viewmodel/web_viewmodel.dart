@@ -8,6 +8,8 @@ class WebViewModel<T> extends ViewModel {
   int openingNum = 0;
 
   WebViewModel({@required T favData}) {
+    if (favData == null) return;
+
     streamAdd(isFav, _favHolder.isFavorite(favData));
     streamAdd(isLoading, true);
     bindSub(_favHolder.favReadStream

@@ -99,20 +99,22 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
               }
             },
           ),
-          StreamBuilder(
-            stream: _viewModel.isFav.stream,
-            builder: (context, snapshot) {
-              final isFav = snapshot.data ?? false;
+          widget.favData != null
+              ? StreamBuilder(
+                  stream: _viewModel.isFav.stream,
+                  builder: (context, snapshot) {
+                    final isFav = snapshot.data ?? false;
 
-              return IconButton(
-                icon: Icon(
-                  isFav ? Icons.favorite : Icons.favorite_border,
-                  color: isFav ? Colors.red : Colors.white,
-                ),
-                onPressed: () => FavHolder().autoFav(widget.favData),
-              );
-            },
-          ),
+                    return IconButton(
+                      icon: Icon(
+                        isFav ? Icons.favorite : Icons.favorite_border,
+                        color: isFav ? Colors.red : Colors.white,
+                      ),
+                      onPressed: () => FavHolder().autoFav(widget.favData),
+                    );
+                  },
+                )
+              : Container(),
         ],
       ),
       body: LoadingView(
@@ -121,6 +123,7 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
           initialUrl: widget.url,
           pullToRefresh: false,
           enableJavascript: true,
+          enableLocalStorage: true,
           onWebViewCreated: (controller) {
             _controller = controller;
             _viewModel.bindEvent(controller.onEvents());

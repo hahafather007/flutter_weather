@@ -39,6 +39,7 @@ dependencies:
   photo_view: ^0.1.2
   flutter_colorpicker: ^0.2.1
   dragable_flutter_list: ^1.0.2
+  flutter_linkify: ^2.1.0
 
 dev_dependencies:
   flutter_test:

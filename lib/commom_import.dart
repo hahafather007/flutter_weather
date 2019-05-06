@@ -20,6 +20,9 @@ export 'package:flutter_colorpicker/block_picker.dart';
 export 'package:path_provider/path_provider.dart';
 export 'package:flutter_cache_manager/flutter_cache_manager.dart';
 export 'package:dragable_flutter_list/dragable_flutter_list.dart';
+export 'package:package_info/package_info.dart';
+export 'package:flutter/gestures.dart';
+export 'package:flutter_linkify/flutter_linkify.dart';
 
 export 'common/colors.dart';
 export 'common/streams.dart';
@@ -85,7 +88,6 @@ export 'view/widget/flash_view.dart';
 export 'view/widget/fog_view.dart';
 export 'view/widget/hail_view.dart';
 export 'view/widget/circle_air_view.dart';
-export 'view/widget/alpha_pageview.dart';
 
 export 'view/weather/weather_view.dart';
 

@@ -144,6 +144,22 @@ class AppText {
       "colorPinkYarrow": "粉蓍草",
       "colorNiagara": "尼亚加拉",
       "colorNone": "丢雷老母",
+
+      // 关于
+      "overview": "概述",
+      "programHome": "项目主页",
+      "feedback": "意见反馈",
+      "checkUpdate": "检查更新",
+      "alreadyNew": "已是最新版本！",
+      "shareApp": "分享应用",
+      "shareAppUrl":
+          "来不及了，赶急上车！https://github.com/hahafather007/flutter_weather",
+      "thanks": "感谢",
+      "connectMe": "联系我",
+      "zhihuPage": "活雷轰-知乎",
+      "zhihuName": "• @活雷轰",
+      "thankItems":
+          "• 和风天气提供天气数据\n• 高德定位提供定位服务\n• 某个她提供吵架服务\n• 『Gank』『煎蛋』『妹子图』提供妹纸数据\n• 丰富精彩的开源世界 https://github.com/hahafather007/flutter_weather/blob/master/README.md",
     },
   };
 
@@ -430,6 +446,34 @@ class AppText {
       _localizedValues[locale.languageCode]["colorNiagara"];
 
   String get colorNone => _localizedValues[locale.languageCode]["colorNone"];
+
+  /// 关于
+  String get overview => _localizedValues[locale.languageCode]["overview"];
+
+  String get programHome =>
+      _localizedValues[locale.languageCode]["programHome"];
+
+  String get feedback => _localizedValues[locale.languageCode]["feedback"];
+
+  String get checkUpdate =>
+      _localizedValues[locale.languageCode]["checkUpdate"];
+
+  String get alreadyNew => _localizedValues[locale.languageCode]["alreadyNew"];
+
+  String get shareApp => _localizedValues[locale.languageCode]["shareApp"];
+
+  String get thanks => _localizedValues[locale.languageCode]["thanks"];
+
+  String get connectMe => _localizedValues[locale.languageCode]["connectMe"];
+
+  String get zhihuPage => _localizedValues[locale.languageCode]["zhihuPage"];
+
+  String get zhihuName => _localizedValues[locale.languageCode]["zhihuName"];
+
+  String get thankItems => _localizedValues[locale.languageCode]["thankItems"];
+
+  String get shareAppUrl =>
+      _localizedValues[locale.languageCode]["shareAppUrl"];
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppText> {
