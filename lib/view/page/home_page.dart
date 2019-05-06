@@ -20,6 +20,7 @@ class HomeState extends PageState<HomePage> {
     super.initState();
 
     ToastUtil.initToast(context);
+    AppVersionHolder().checkUpdate(context);
 
     bindSub(EventSendHolder()
         .event

@@ -6,45 +6,43 @@ void cleanFocus(BuildContext context) =>
     FocusScope.of(context).requestFocus(FocusNode());
 
 /// 根据Android或IOS显示不同风格dialog
-void showDiffDialog(
-    BuildContext context, String title, String content, Function pressed) {
-  showDialog(
+Future<Null> showDiffDialog(BuildContext context,
+    {Widget title,
+      Widget content,
+      String yesText,
+      String noText,
+      @required Function pressed}) async {
+  await showDialog(
     context: context,
     builder: (context) => isAndroid
         ? AlertDialog(
-            title: Text(title),
-            content: Text(content),
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () => pop(context),
-                child: Text(AppText.of(context).no),
-              ),
-              FlatButton(
-                onPressed: () {
-                  pop(context);
-                  pressed();
-                },
-                child: Text(AppText.of(context).yes),
-              ),
-            ],
-          )
+      title: title,
+      content: content,
+      actions: <Widget>[
+        FlatButton(
+          onPressed: () => pop(context),
+          child: Text(noText ?? AppText.of(context).no),
+        ),
+        FlatButton(
+          onPressed: () => pressed(),
+          child: Text(yesText ?? AppText.of(context).yes),
+        ),
+      ],
+    )
         : CupertinoAlertDialog(
-            title: Text(title),
-            content: Text(content),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                onPressed: () => pop(context),
-                child: Text(AppText.of(context).no),
-              ),
-              CupertinoDialogAction(
-                onPressed: () {
-                  pop(context);
-                  pressed();
-                },
-                child: Text(AppText.of(context).yes),
-              ),
-            ],
-          ),
+      title: title,
+      content: content,
+      actions: <Widget>[
+        CupertinoDialogAction(
+          onPressed: () => pop(context),
+          child: Text(noText ?? AppText.of(context).no),
+        ),
+        CupertinoDialogAction(
+          onPressed: () => pressed(),
+          child: Text(yesText ?? AppText.of(context).yes),
+        ),
+      ],
+    ),
   );
 }
 

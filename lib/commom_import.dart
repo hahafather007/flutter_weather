@@ -37,11 +37,13 @@ export 'model/data/weather_data.dart';
 export 'model/data/mixing.dart';
 export 'model/data/page_module_data.dart';
 export 'model/data/city_data.dart';
+export 'model/data/version_data.dart';
 
 export 'model/holder/fav_holder.dart';
 export 'model/holder/shared_depository.dart';
 export 'model/holder/event_send_holder.dart';
 export 'model/holder/weather_holder.dart';
+export 'model/holder/app_version_holder.dart';
 
 export 'model/service/gift_egg_service.dart';
 export 'model/service/gift_mzi_service.dart';
@@ -50,6 +52,7 @@ export 'model/service/service.dart';
 export 'model/service/weather_service.dart';
 export 'model/service/gift_mzi_image_service.dart';
 export 'model/service/gift_gank_service.dart';
+export 'model/service/app_version_service.dart';
 
 export 'utils/channel_util.dart';
 export 'utils/system_util.dart';
