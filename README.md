@@ -6,6 +6,10 @@
 
 如果喜欢的话记得点一波Star。
 
+### 部分截图 ###
+<img src="screenshot/1.jpg" width="22%"/> <img src="screenshot/2.jpg" width="22%"/> <img src="screenshot/3.jpg" width="22%"/> <img src="screenshot/4.jpg" width="22%"/>
+<img src="screenshot/5.jpg" width="22%"/> <img src="screenshot/6.jpg" width="22%"/> <img src="screenshot/7.jpg" width="22%"/> <img src="screenshot/8.jpg" width="22%"/>
+
 ### 编译环境 ###
 ```
 [✓] Flutter (Channel dev, v1.4.5-pre.9, on Mac OS X 10.14.3 18D109, locale zh-Hans-CN)
@@ -22,7 +26,3 @@
 
 - 项目中部分图片素材大部分来自《假装看天气》，版权归属原作者，侵立删
 - 整个项目仅供学习和交流使用，请勿未经允许私自商用！
-
-### License ###
-[Apache License
-Version 2.0](https://github.com/li-yu/FakeWeather/blob/master/LICENSE)
