@@ -26,3 +26,7 @@
 
 - 项目中部分图片素材大部分来自《假装看天气》，版权归属原作者，侵立删
 - 整个项目仅供学习和交流使用，请勿未经允许私自商用！
+
+### License ###
+[Apache License
+Version 2.0](https://github.com/hahafather007/flutter_weather/blob/master/LICENSE)
