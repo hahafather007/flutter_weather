@@ -131,7 +131,7 @@ class AboutState extends PageState<AboutPage> {
             _buildOverviewItem(
               icon: Icons.feedback,
               text: AppText.of(context).feedback,
-              onTap: () {},
+              onTap: () => ChannelUtil.sendEmail(email: "965083574@qq.com"),
             ),
 
             // 检查更新
@@ -150,7 +150,8 @@ class AboutState extends PageState<AboutPage> {
             _buildOverviewItem(
               icon: Icons.share,
               text: AppText.of(context).shareApp,
-              onTap: () => Share.share(AppText.of(context).shareAppUrl),
+              onTap: () =>
+                  ShareExtend.share(AppText.of(context).shareAppUrl, "text"),
             ),
 
             Padding(

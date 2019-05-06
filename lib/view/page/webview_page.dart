@@ -85,7 +85,7 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
                   _controller?.reload();
                   break;
                 case "share":
-                  Share.share("${widget.title}\n${widget.url}");
+                  ShareExtend.share("${widget.title}\n${widget.url}", "text");
                   break;
                 case "copy":
                   Clipboard.setData(ClipboardData(text: widget.url));

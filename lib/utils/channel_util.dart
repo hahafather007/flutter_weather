@@ -9,8 +9,9 @@ class ChannelUtil {
     String city;
 
     try {
-      final String result = await _platform.invokeMethod(_ChannelTag.START_LOCATION);
-      if(result?.isNotEmpty ?? false){
+      final String result =
+          await _platform.invokeMethod(_ChannelTag.START_LOCATION);
+      if (result?.isNotEmpty ?? false) {
         city = result;
       }
     } on PlatformException catch (e) {
@@ -22,6 +23,50 @@ class ChannelUtil {
     return city;
   }
 
+  /// 调用系统邮件
+  static Future<bool> sendEmail({@required String email}) async {
+    bool result = false;
+    try {
+      result = await _platform.invokeMethod(_ChannelTag.SEND_EMAIL, {
+        "email": email,
+      });
+    } on PlatformException catch (e) {
+      _doError(e);
+    }
+
+    return result;
+  }
+
+  /// 更新安装包
+  static Future<bool> updateApp(
+      {@required String url,
+      @required int verCode,
+      @required bool isWifi}) async {
+    bool result = false;
+    try {
+      result = await _platform.invokeMethod(_ChannelTag.DOWNLOAD_APK, {
+        "url": url,
+        "verCode": verCode,
+        "isWifi": isWifi,
+      });
+    } on PlatformException catch (e) {
+      _doError(e);
+    }
+
+    return result;
+  }
+
+  /// 更新安装包
+  static Future<Null> installApp({@required int verCode}) async {
+    try {
+      await _platform.invokeMethod(_ChannelTag.INSTALL_APK, {
+        "verCode": verCode,
+      });
+    } on PlatformException catch (e) {
+      _doError(e);
+    }
+  }
+
   static void _doError<T extends Exception>(T e) =>
       debugPrint("=====>通道错误：${e.toString()}");
 }
@@ -30,5 +75,8 @@ class ChannelUtil {
 abstract class _ChannelTag {
   static const CHANNEL_NAME = "flutter_weather_channel";
 
-  static const START_LOCATION = "startLocation";
+  static const START_LOCATION = "weatherStartLocation";
+  static const SEND_EMAIL = "weatherSendEmail";
+  static const DOWNLOAD_APK = "weatherDownloadApk";
+  static const INSTALL_APK = "weatherInstallApk";
 }

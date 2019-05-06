@@ -51,5 +51,7 @@
 	<string></string>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>分享天气时需要该权限！</string>
 </dict>
 </plist>
