@@ -48,16 +48,29 @@ double getStatusHeight(BuildContext context) {
 }
 
 double _appBarHeight = 0;
+double _appBarHeightBottom = 0;
 
 /// 获取标题栏高度
-double getAppBarHeight() {
-  if (_appBarHeight != 0) {
-    return _appBarHeight;
-  } else {
-    final height = AppBar().preferredSize.height;
-    _appBarHeight = height;
+double getAppBarHeight({bool withBottom = false}) {
+  if (withBottom) {
+    if (_appBarHeightBottom != 0) {
+      return _appBarHeightBottom;
+    } else {
+      final height =
+          AppBar(bottom: const TabBar(tabs: const [])).preferredSize.height;
+      _appBarHeightBottom = height;
 
-    return _appBarHeight;
+      return _appBarHeightBottom;
+    }
+  } else {
+    if (_appBarHeight != 0) {
+      return _appBarHeight;
+    } else {
+      final height = AppBar().preferredSize.height;
+      _appBarHeight = height;
+
+      return _appBarHeight;
+    }
   }
 }
 

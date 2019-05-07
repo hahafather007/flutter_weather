@@ -67,6 +67,7 @@ class AboutState extends PageState<AboutPage> {
                 stream: _paddingStream.stream,
                 builder: (context, snapshot) {
                   return FlexibleSpaceBar(
+                    centerTitle: false,
                     titlePadding:
                         EdgeInsets.only(left: snapshot.data ?? 0.0, bottom: 13),
                     title: Text(
@@ -90,7 +91,7 @@ class AboutState extends PageState<AboutPage> {
                         ),
                         Positioned.fill(
                           child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                            filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                             child: Container(
                               color: Colors.transparent,
                             ),

@@ -24,6 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Material(
       elevation: showShadow ? 4.0 : 0.0,
+      color: Colors.transparent,
       child: AnimatedContainer(
         height: preferredSize.height + getStatusHeight(context),
         duration: const Duration(seconds: 2),
@@ -37,14 +38,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               centerTitle: false,
               leading: leftBtn,
               actions: rightBtns,
-              bottom: bottom,
               elevation: 0.0,
+            ),
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: bottom ?? Container(),
             ),
             AnimatedContainer(
               height: getStatusHeight(context),
               duration: const Duration(seconds: 2),
               color: color,
-            )
+            ),
           ],
         ),
       ),
