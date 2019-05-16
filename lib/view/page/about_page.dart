@@ -27,8 +27,10 @@ class AboutState extends PageState<AboutPage> {
     super.initState();
 
     _controller.addListener(() {
-      final offset = _controller.offset;
-      if (offset > 144) return;
+      var offset = _controller.offset;
+      if (offset > 144) {
+        offset = 144;
+      }
 
       streamAdd(_paddingStream, offset / 2);
     });
@@ -107,7 +109,7 @@ class AboutState extends PageState<AboutPage> {
         },
         body: ListView(
           padding: const EdgeInsets.only(),
-          physics: const ClampingScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           children: <Widget>[
             // 版本和名称
             _buildAppName(),
@@ -151,8 +153,7 @@ class AboutState extends PageState<AboutPage> {
             _buildOverviewItem(
               icon: Icons.share,
               text: AppText.of(context).shareApp,
-              onTap: () =>
-                  Share.share(AppText.of(context).shareAppUrl),
+              onTap: () => Share.share(AppText.of(context).shareAppUrl),
             ),
 
             Padding(

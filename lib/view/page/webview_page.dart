@@ -56,6 +56,22 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
           onPressed: () => pop(context),
         ),
         rightBtns: [
+          widget.favData != null
+              ? StreamBuilder(
+                  stream: _viewModel.isFav.stream,
+                  builder: (context, snapshot) {
+                    final isFav = snapshot.data ?? false;
+
+                    return IconButton(
+                      icon: Icon(
+                        isFav ? Icons.favorite : Icons.favorite_border,
+                        color: isFav ? Colors.red : Colors.white,
+                      ),
+                      onPressed: () => FavHolder().autoFav(widget.favData),
+                    );
+                  },
+                )
+              : Container(),
           PopupMenuButton(
             icon: Icon(
               Icons.more_vert,
@@ -99,22 +115,6 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
               }
             },
           ),
-          widget.favData != null
-              ? StreamBuilder(
-                  stream: _viewModel.isFav.stream,
-                  builder: (context, snapshot) {
-                    final isFav = snapshot.data ?? false;
-
-                    return IconButton(
-                      icon: Icon(
-                        isFav ? Icons.favorite : Icons.favorite_border,
-                        color: isFav ? Colors.red : Colors.white,
-                      ),
-                      onPressed: () => FavHolder().autoFav(widget.favData),
-                    );
-                  },
-                )
-              : Container(),
         ],
       ),
       body: LoadingView(
