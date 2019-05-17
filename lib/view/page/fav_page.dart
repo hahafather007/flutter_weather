@@ -38,9 +38,10 @@ class FavPage extends StatelessWidget {
             child: Container(
               color: AppColor.colorRead,
               child: TabBarView(
-                physics: const NeverScrollableScrollPhysics(),
                 children: <Widget>[
-                  Container(),
+                  FavReadPage(
+                    key: Key("FavReadPage"),
+                  ),
                   Container(),
                   Container(),
                 ],

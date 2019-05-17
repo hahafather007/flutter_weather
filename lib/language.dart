@@ -127,6 +127,7 @@ class AppText {
 
       // 收藏
       "giftPhotos": "福利(图集)",
+      "listEmpty": "列表为空",
 
       // 设置
       "moduleControl": "模块管理",
@@ -406,6 +407,8 @@ class AppText {
 
   /// 收藏
   String get giftPhotos => _localizedValues[locale.languageCode]["giftPhotos"];
+
+  String get listEmpty => _localizedValues[locale.languageCode]["listEmpty"];
 
   /// 设置
   String get moduleControl =>
