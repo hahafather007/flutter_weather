@@ -43,7 +43,9 @@ class FavPage extends StatelessWidget {
                     key: Key("FavReadPage"),
                   ),
                   Container(),
-                  Container(),
+                  FavGiftsPage(
+                    key: Key("FavGiftsPage"),
+                  ),
                 ],
               ),
             ),

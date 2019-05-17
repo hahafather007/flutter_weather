@@ -93,7 +93,6 @@ class GiftMziState extends PageState<GiftMziPage> with MustKeepAliveMixin {
                   headers["Referer"] = data.refer;
 
                   return GestureDetector(
-                    key: Key(data.link),
                     onTap: () =>
                         push(context, page: GiftMziImagePage(data: data)),
                     child: Stack(
