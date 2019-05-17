@@ -92,6 +92,7 @@ class SharedDepository {
         PageModule(module: "weather", open: true),
         PageModule(module: "gift", open: true),
         PageModule(module: "read", open: true),
+        PageModule(module: "collect", open: true),
       ]);
     } else {
       return (jsonDecode(str) as List)

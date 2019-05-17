@@ -72,6 +72,14 @@ class SettingModuleState extends PageState<SettingModulePage> {
                     onChanged: (b) =>
                         _viewModel.valueChange(b, module: module.module),
                   );
+                case "collect":
+                  return _buildModuleItem(
+                    icon: Icons.favorite_border,
+                    title: AppText.of(context).collect,
+                    open: module.open,
+                    onChanged: (b) =>
+                        _viewModel.valueChange(b, module: module.module),
+                  );
               }
             },
             onDragFinish: (before, after) =>

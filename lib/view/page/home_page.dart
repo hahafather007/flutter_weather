@@ -37,6 +37,7 @@ class HomeState extends PageState<HomePage> {
     _pageTypeMap[PageType.WEATHER] = true;
     _pageTypeMap[PageType.GIFT] = false;
     _pageTypeMap[PageType.READ] = false;
+    _pageTypeMap[PageType.COLLECT] = false;
   }
 
   @override
@@ -61,6 +62,11 @@ class HomeState extends PageState<HomePage> {
             _pageTypeMap[PageType.GIFT] = false;
           }
           break;
+        case "collect":
+          if (!module.open) {
+            _pageTypeMap[PageType.COLLECT] = false;
+          }
+          break;
       }
     });
     if (!_pageTypeMap.values.contains(true)) {
@@ -78,6 +84,10 @@ class HomeState extends PageState<HomePage> {
           case "gift":
             _pageTypeMap[PageType.GIFT] = true;
             _pageType = PageType.GIFT;
+            break;
+          case "collect":
+            _pageTypeMap[PageType.COLLECT] = true;
+            _pageType = PageType.COLLECT;
             break;
         }
       }
@@ -166,6 +176,22 @@ class HomeState extends PageState<HomePage> {
                                 });
                               })
                           : Container();
+                    // 闲读
+                    case "collect":
+                      return module.open
+                          ? _buildDrawerItem(
+                              icon: Icons.favorite_border,
+                              title: AppText.of(context).collect,
+                              isTarget: _pageType == PageType.COLLECT,
+                              onTap: () {
+                                if (_pageType == PageType.COLLECT) return;
+
+                                setState(() {
+                                  _pageType = PageType.COLLECT;
+                                  _pageTypeMap[_pageType] = true;
+                                });
+                              })
+                          : Container();
                   }
                 }).toList(),
               ),
@@ -239,6 +265,15 @@ class HomeState extends PageState<HomePage> {
           ),
         ),
 
+        // 收藏页面
+        Offstage(
+          offstage: _pageType != PageType.COLLECT,
+          child: TickerMode(
+            enabled: _pageType == PageType.COLLECT,
+            child: _pageTypeMap[PageType.COLLECT] ? FavPage() : Container(),
+          ),
+        ),
+
         // 关闭所有页面时的占位图片
         Center(
           child: SharedDepository().pageModules.indexWhere((v) => v.open) == -1
@@ -303,4 +338,7 @@ enum PageType {
 
   /// 闲读页面
   READ,
+
+  /// 收藏页面
+  COLLECT,
 }

@@ -33,6 +33,7 @@ class AppText {
       "weather": "天气",
       "gift": "福利",
       "read": "闲读",
+      "collect": "收藏",
       "setting": "设置",
       "about": "关于",
 
@@ -124,6 +125,9 @@ class AppText {
       "xianduIosFail": "iOS获取失败！",
       "xianduBlogFail": "团队博客获取失败！",
 
+      // 收藏
+      "giftPhotos": "福利(图集)",
+
       // 设置
       "moduleControl": "模块管理",
       "caculating": "正在计算...",
@@ -202,6 +206,8 @@ class AppText {
   String get read => _localizedValues[locale.languageCode]["read"];
 
   String get setting => _localizedValues[locale.languageCode]["setting"];
+
+  String get collect => _localizedValues[locale.languageCode]["collect"];
 
   String get about => _localizedValues[locale.languageCode]["about"];
 
@@ -398,7 +404,10 @@ class AppText {
   String get xianduBlogFail =>
       _localizedValues[locale.languageCode]["xianduBlogFail"];
 
-  // 设置
+  /// 收藏
+  String get giftPhotos => _localizedValues[locale.languageCode]["giftPhotos"];
+
+  /// 设置
   String get moduleControl =>
       _localizedValues[locale.languageCode]["moduleControl"];
 

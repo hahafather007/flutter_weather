@@ -64,6 +64,7 @@ export 'view/page/about_page.dart';
 export 'view/page/gift_mzi_page.dart';
 export 'view/page/gift_page.dart';
 export 'view/page/home_page.dart';
+export 'view/page/fav_page.dart';
 export 'view/page/page_state.dart';
 export 'view/page/read_content_page.dart';
 export 'view/page/read_page.dart';
