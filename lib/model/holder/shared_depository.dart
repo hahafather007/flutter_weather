@@ -86,7 +86,7 @@ class SharedDepository {
 
   /// 页面模块
   List<PageModule> get pageModules {
-    final str = _getString("pageModules");
+    final str = _getString("pageModules2");
     if (str == null) {
       return List.from([
         PageModule(module: "weather", open: true),
@@ -102,7 +102,7 @@ class SharedDepository {
   }
 
   Future<bool> setPageModules(List<PageModule> modules) async =>
-      await _prefs.setString("pageModules", jsonEncode(modules));
+      await _prefs.setString("pageModules2", jsonEncode(modules));
 
   /// ==============================================
   ///                     分界线
