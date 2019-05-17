@@ -9,8 +9,8 @@ class GiftGankWatchPage extends StatefulWidget {
   GiftGankWatchPage(
       {@required this.index,
       @required this.photos,
-      @required this.photoStream,
-      @required this.loadDataFun});
+      this.photoStream,
+      this.loadDataFun});
 
   @override
   State createState() => GiftGankWatchState();
@@ -50,15 +50,16 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
         builder: (context, snapshot) {
           final List<MziData> list = (snapshot.data ?? widget.photos).toList();
 
-          list.addAll(List.generate(9999, (_) => null));
-
+          if (widget.photoStream != null) {
+            list.addAll(List.generate(9999, (_) => null));
+          }
           return StreamBuilder(
             stream: _viewModel.favList.stream,
             builder: (context, snapshot) {
-              final List<MziData> favList = snapshot.data ?? List();
+              final List<MziData> favList = snapshot.data ?? [];
               final isFav = favList.any((v) =>
                   v.url == list[_currentPage]?.url &&
-                  v.url == list[_currentPage]?.url);
+                  v.isImages == list[_currentPage]?.isImages);
 
               return GestureDetector(
                 onTap: () => setState(() => _showAppBar = !_showAppBar),
@@ -69,18 +70,27 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                       pageController: _pageController,
                       onPageChanged: (index) {
                         setState(() => _currentPage = index);
-                        if (list[index] == null) {
+                        if (list[index] == null && widget.loadDataFun != null) {
                           widget.loadDataFun();
                         }
                       },
                       loadingChild: Center(
-                        child: Image.asset("images/loading.gif"),
+                        child: Hero(
+                          tag:
+                              "${list[widget.index].url}${widget.index}${widget.photoStream != null}",
+                          child: NetImage(
+                            url: list[widget.index].url,
+                            placeholder: Container(),
+                            fit: BoxFit.contain,
+                          ),
+                        ),
                       ),
                       pageOptions: list
                           .map(
                             (data) => data != null
                                 ? PhotoViewGalleryPageOptions(
-                                    heroTag: data.url,
+                                    heroTag:
+                                        "${data.url}${list.indexOf(data)}${widget.photoStream != null}",
                                     imageProvider:
                                         CachedNetworkImageProvider(data.url),
                                     minScale: 0.1,

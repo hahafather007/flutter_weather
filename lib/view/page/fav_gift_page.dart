@@ -1,15 +1,15 @@
 import 'package:flutter_weather/commom_import.dart';
 
-class FavGiftsPage extends StatefulWidget {
-  FavGiftsPage({Key key}) : super(key: key);
+class FavGiftPage extends StatefulWidget {
+  FavGiftPage({Key key}) : super(key: key);
 
   @override
-  State createState() => FavGiftsState();
+  State createState() => FavGiftState();
 }
 
 /// 继承[MustKeepAliveMixin]实现页面切换不被清理
-class FavGiftsState extends PageState<FavGiftsPage> with MustKeepAliveMixin {
-  final _viewModel = FavGiftsViewModel();
+class FavGiftState extends PageState<FavGiftPage> with MustKeepAliveMixin {
+  final _viewModel = FavGiftViewModel();
 
   @override
   void initState() {
@@ -47,31 +47,17 @@ class FavGiftsState extends PageState<FavGiftsPage> with MustKeepAliveMixin {
                     staggeredTileBuilder: (index) => StaggeredTile.fit(1),
                     itemBuilder: (context, index) {
                       final data = datas[index];
-                      final headers = Map<String, String>();
-                      headers["Referer"] = data.refer;
 
                       return GestureDetector(
-                        onTap: () =>
-                            push(context, page: GiftMziImagePage(data: data)),
-                        child: Stack(
-                          alignment: Alignment.bottomRight,
-                          children: <Widget>[
-                            AspectRatio(
-                              aspectRatio: data.width / data.height,
-                              child: NetImage(
-                                headers: headers,
-                                url: data.url,
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(right: 6, bottom: 6),
-                              child: Icon(
-                                Icons.photo_library,
-                                color: Colors.white70,
-                              ),
-                            ),
-                          ],
+                        onTap: () => push(context,
+                            page:
+                                GiftGankWatchPage(index: index, photos: datas)),
+                        child: AspectRatio(
+                          aspectRatio: data.width / data.height,
+                          child: Hero(
+                            tag: "${data.url}${index}false",
+                            child: NetImage(url: data.url),
+                          ),
                         ),
                       );
                     },

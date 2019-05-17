@@ -9,6 +9,8 @@ class NetImage extends StatelessWidget {
   final double height;
   final double width;
 
+  final BoxFit fit;
+
   /// 是否为圆形图片
   final bool isCircle;
   final Map<String, String> headers;
@@ -21,6 +23,7 @@ class NetImage extends StatelessWidget {
       this.width,
       this.isCircle = false,
       this.headers,
+      this.fit = BoxFit.cover,
       this.placeholder})
       : super(key: key);
 
@@ -32,7 +35,7 @@ class NetImage extends StatelessWidget {
       height: height,
       width: width,
       fadeInDuration: const Duration(milliseconds: 300),
-      fit: BoxFit.cover,
+      fit: fit,
       placeholder: (context, url) =>
           placeholder ??
           Container(

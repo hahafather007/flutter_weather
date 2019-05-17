@@ -58,10 +58,10 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
           return StreamBuilder(
             stream: _viewModel.favList.stream,
             builder: (context, snapshot) {
-              final List<MziData> favList = snapshot.data ?? List();
+              final List<MziData> favList = snapshot.data ?? [];
               final isFav = favList.any((v) =>
                   v.url == list[_currentPage]?.url &&
-                  v.url == list[_currentPage]?.url);
+                  v.isImages == list[_currentPage]?.isImages);
 
               return GestureDetector(
                 onTap: () => setState(() => _showAppBar = !_showAppBar),
@@ -73,13 +73,20 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
                       onPageChanged: (index) =>
                           setState(() => _currentPage = index),
                       loadingChild: Center(
-                        child: Image.asset("images/loading.gif"),
+                        child: Hero(
+                          tag: "${list[widget.index].url}${widget.index}",
+                          child: NetImage(
+                            url: list[widget.index].url,
+                            placeholder: Container(),
+                            fit: BoxFit.contain,
+                          ),
+                        ),
                       ),
                       pageOptions: list
                           .map(
                             (data) => data != null
                                 ? PhotoViewGalleryPageOptions(
-                                    heroTag: data.url,
+                                    heroTag: "${data.url}${list.indexOf(data)}",
                                     imageProvider: CachedNetworkImageProvider(
                                       data.url,
                                       headers: Map<String, String>()

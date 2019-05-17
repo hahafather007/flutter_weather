@@ -79,7 +79,7 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
         child: StreamBuilder(
           stream: _viewModel.data.stream,
           builder: (context, snapshot) {
-            final List<MziData> list = snapshot.data ?? List();
+            final List<MziData> list = snapshot.data ?? [];
 
             return StreamBuilder(
               stream: _viewModel.dataLength.stream,
@@ -113,7 +113,7 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
                         child: AspectRatio(
                           aspectRatio: data.width / data.height,
                           child: Hero(
-                            tag: data.url,
+                            tag: "${data.url}$index",
                             child: NetImage(
                               headers: headers,
                               url: data.url,
