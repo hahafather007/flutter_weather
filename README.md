@@ -26,6 +26,7 @@ IOS:没有开发者账号，暂时只能自己编译
     ✗ Flutter plugin not installed; this adds Flutter specific functionality.
 [✓] Connected device (3 available)
 ```
++ 注意！目前该项目所用到的部分第三方库与Flutter v1.4.5-pre10以上版本不兼容，所以编译时请使用v1.4.5-pre.9及其以下版本编译！！！
 
 ### 免责声明 ###
 
