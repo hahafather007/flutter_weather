@@ -1,4 +1,5 @@
 import 'package:flutter_weather/commom_import.dart';
+import 'package:flutter/cupertino.dart' show CupertinoActivityIndicator;
 
 class GiftMziWatchPage extends StatefulWidget {
   final int index;
@@ -68,41 +69,35 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
                 child: Stack(
                   children: <Widget>[
                     // 图片浏览
-                    PhotoViewGallery(
-                      pageController: _pageController,
-                      onPageChanged: (index) =>
-                          setState(() => _currentPage = index),
-                      loadingChild: Center(
-                        child: Hero(
-                          tag: "${list[widget.index].url}${widget.index}",
-                          child: NetImage(
-                            url: list[widget.index].url,
-                            placeholder: Container(),
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
-                      pageOptions: list
-                          .map(
-                            (data) => data != null
-                                ? PhotoViewGalleryPageOptions(
-                                    heroTag: "${data.url}${list.indexOf(data)}",
-                                    imageProvider: CachedNetworkImageProvider(
-                                      data.url,
-                                      headers: Map<String, String>()
-                                        ..["Referer"] = data.refer,
-                                    ),
-                                    minScale: 0.1,
-                                    maxScale: 5.0,
-                                  )
-                                : PhotoViewGalleryPageOptions(
-                                    imageProvider:
-                                        AssetImage("images/loading.gif"),
-                                    minScale: 1.0,
-                                    maxScale: 1.0,
-                                  ),
-                          )
-                          .toList(),
+                    PageView.builder(
+                      itemCount: list.length,
+                      controller: _pageController,
+                      onPageChanged: (index) {
+                        setState(() => _currentPage = index);
+                      },
+                      itemBuilder: (context, index) {
+                        final data = list[index];
+
+                        if (data == null) {
+                          return Center(
+                            child: const CupertinoActivityIndicator(),
+                          );
+                        } else {
+                          return Hero(
+                            tag:
+                                "${data.url}$index${widget.photoStream != null}",
+                            child: ZoomableWidget(
+                              maxScale: 5,
+                              minScale: 0.1,
+                              child: NetImage(
+                                url: data.url,
+                                placeholder: Container(),
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          );
+                        }
+                      },
                     ),
 
                     // 标题栏

@@ -113,7 +113,7 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
                         child: AspectRatio(
                           aspectRatio: data.width / data.height,
                           child: Hero(
-                            tag: "${data.url}$index",
+                            tag: "${data.url}${index}true",
                             child: NetImage(
                               headers: headers,
                               url: data.url,

@@ -5,16 +5,14 @@ export 'package:dio/dio.dart';
 export 'package:flutter/material.dart';
 export 'package:flutter/services.dart';
 export 'package:flutter_localizations/flutter_localizations.dart';
-export 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+export 'package:flutter_weather/view/widget/staggered_grid_view/flutter_staggered_grid_view.dart';
 export 'package:flutter_weather/language.dart';
 export 'package:html/parser.dart';
 export 'package:intl/intl_standalone.dart';
 export 'package:shared_preferences/shared_preferences.dart';
 export 'package:simple_permissions/simple_permissions.dart';
 export 'package:url_launcher/url_launcher.dart';
-export 'package:pull_to_refresh/pull_to_refresh.dart';
 export 'package:share/share.dart';
-export 'package:photo_view/photo_view_gallery.dart';
 export 'package:web_vuw/web_vuw.dart';
 export 'package:flutter_colorpicker/block_picker.dart';
 export 'package:path_provider/path_provider.dart';
@@ -95,6 +93,7 @@ export 'view/widget/flash_view.dart';
 export 'view/widget/fog_view.dart';
 export 'view/widget/hail_view.dart';
 export 'view/widget/circle_air_view.dart';
+export 'view/widget/zoomable_widget.dart';
 
 export 'view/weather/weather_view.dart';
 
