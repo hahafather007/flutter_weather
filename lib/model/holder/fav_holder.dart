@@ -48,9 +48,8 @@ class FavHolder<T> {
         _cacheReads.add(t);
       }
 
-      await SharedDepository()
-          .setFavReadData(json.encode(_cacheReads))
-          .then((_) => streamAdd(_favReadBroadcast, _cacheReads));
+      streamAdd(_favReadBroadcast, _cacheReads);
+      await SharedDepository().setFavReadData(json.encode(_cacheReads));
     } else if (t is MziData) {
       if (isFavorite(t)) {
         _cacheMzis
@@ -59,9 +58,8 @@ class FavHolder<T> {
         _cacheMzis.add(t);
       }
 
-      await SharedDepository()
-          .setFavMziData(json.encode(_cacheMzis))
-          .then((_) => streamAdd(_favMziBroadcast, _cacheMzis));
+      streamAdd(_favMziBroadcast, _cacheMzis);
+      await SharedDepository().setFavMziData(json.encode(_cacheMzis));
     }
   }
 

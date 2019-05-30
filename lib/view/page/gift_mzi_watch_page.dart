@@ -1,4 +1,5 @@
 import 'package:flutter_weather/commom_import.dart';
+import 'package:flutter/cupertino.dart' show CupertinoActivityIndicator;
 
 class GiftMziWatchPage extends StatefulWidget {
   final int index;
@@ -58,44 +59,45 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
           return StreamBuilder(
             stream: _viewModel.favList.stream,
             builder: (context, snapshot) {
-              final List<MziData> favList = snapshot.data ?? List();
+              final List<MziData> favList = snapshot.data ?? [];
               final isFav = favList.any((v) =>
                   v.url == list[_currentPage]?.url &&
-                  v.url == list[_currentPage]?.url);
+                  v.isImages == list[_currentPage]?.isImages);
 
               return GestureDetector(
                 onTap: () => setState(() => _showAppBar = !_showAppBar),
                 child: Stack(
                   children: <Widget>[
                     // 图片浏览
-                    PhotoViewGallery(
-                      pageController: _pageController,
-                      onPageChanged: (index) =>
-                          setState(() => _currentPage = index),
-                      loadingChild: Center(
-                        child: Image.asset("images/loading.gif"),
-                      ),
-                      pageOptions: list
-                          .map(
-                            (data) => data != null
-                                ? PhotoViewGalleryPageOptions(
-                                    heroTag: data.url,
-                                    imageProvider: CachedNetworkImageProvider(
-                                      data.url,
-                                      headers: Map<String, String>()
-                                        ..["Referer"] = data.refer,
-                                    ),
-                                    minScale: 0.1,
-                                    maxScale: 5.0,
-                                  )
-                                : PhotoViewGalleryPageOptions(
-                                    imageProvider:
-                                        AssetImage("images/loading.gif"),
-                                    minScale: 1.0,
-                                    maxScale: 1.0,
-                                  ),
-                          )
-                          .toList(),
+                    PageView.builder(
+                      itemCount: list.length,
+                      controller: _pageController,
+                      onPageChanged: (index) {
+                        setState(() => _currentPage = index);
+                      },
+                      itemBuilder: (context, index) {
+                        final data = list[index];
+
+                        if (data == null) {
+                          return Center(
+                            child: const CupertinoActivityIndicator(),
+                          );
+                        } else {
+                          return Hero(
+                            tag:
+                                "${data.url}$index${widget.photoStream != null}",
+                            child: ZoomableWidget(
+                              maxScale: 5,
+                              minScale: 0.1,
+                              child: NetImage(
+                                url: data.url,
+                                placeholder: Container(),
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          );
+                        }
+                      },
                     ),
 
                     // 标题栏

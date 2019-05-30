@@ -17,6 +17,7 @@ class AboutPage extends StatefulWidget {
 
 class AboutState extends PageState<AboutPage> {
   final String _url;
+  final _viewModel = AboutViewModel();
   final _controller = ScrollController();
   final _paddingStream = StreamController<double>();
 
@@ -34,10 +35,72 @@ class AboutState extends PageState<AboutPage> {
 
       streamAdd(_paddingStream, offset / 2);
     });
+
+    bindSub(_viewModel.version.stream.listen((version) async {
+      final packageInfo = await PackageInfo.fromPlatform();
+      final needUpdate = int.parse(packageInfo.buildNumber) < version.version;
+
+      if (needUpdate) {
+        if (isAndroid) {
+          showDiffDialog(
+            context,
+            title: Text(AppText.of(context).hasNewVersion),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(AppText.of(context).hasNewVersionLong),
+                Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: Text(
+                    "${AppText.of(context).apkSize}${version.size}",
+                    style: TextStyle(fontSize: 14, color: AppColor.colorText2),
+                  ),
+                ),
+              ],
+            ),
+            yesText: AppText.of(context).download,
+            noText: AppText.of(context).wait,
+            pressed: () {
+              pop(context);
+
+              ToastUtil.showToast(AppText.of(context).apkStartDownload);
+              _viewModel.updateApp(version.url, version.version);
+            },
+          );
+        } else {
+          await showDiffDialog(context,
+              title: Text(AppText.of(context).hasNewVersion),
+              content: Text(AppText.of(context).hasNewVersionLongIOS),
+              yesText: AppText.of(context).certain,
+              noText: AppText.of(context).wait,
+              pressed: () => pop(context));
+        }
+      } else {
+        showSnack(text: AppText.of(context).alreadyNew);
+      }
+    }));
+    bindSub(_viewModel.updateResult.stream.where((_) => isAndroid).listen((b) {
+      if (b) {
+        showSnack(text: AppText.of(context).apkPleaseInstall);
+      } else {
+        showSnack(text: AppText.of(context).apkFail);
+      }
+    }));
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    bindErrorStream(_viewModel.error.stream,
+        errorText: AppText.of(context).checkUpdateFail,
+        retry: () => _viewModel.checkUpdate());
   }
 
   @override
   void dispose() {
+    _viewModel.dispose();
     _controller.dispose();
     _paddingStream.close();
 
@@ -48,146 +111,150 @@ class AboutState extends PageState<AboutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scafKey,
-      body: NestedScrollView(
-        controller: _controller,
-        physics: const ClampingScrollPhysics(),
-        headerSliverBuilder: (context, isScrolled) {
-          return <Widget>[
-            SliverAppBar(
-              expandedHeight: 200,
-              floating: true,
-              pinned: true,
-              leading: IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
+      body: LoadingView(
+        loadingStream: _viewModel.isLoading.stream,
+        child: NestedScrollView(
+          controller: _controller,
+          physics: const ClampingScrollPhysics(),
+          headerSliverBuilder: (context, isScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                expandedHeight: 200,
+                floating: true,
+                pinned: true,
+                leading: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
+                  onPressed: () => pop(context),
                 ),
-                onPressed: () => pop(context),
-              ),
-              backgroundColor: Theme.of(context).accentColor,
-              flexibleSpace: StreamBuilder(
-                stream: _paddingStream.stream,
-                builder: (context, snapshot) {
-                  return FlexibleSpaceBar(
-                    centerTitle: false,
-                    titlePadding:
-                        EdgeInsets.only(left: snapshot.data ?? 0.0, bottom: 13),
-                    title: Text(
-                      AppText.of(context).about,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Colors.white
-                            .withOpacity((snapshot.data ?? 0.0) / 72),
-                        fontSize: 20,
+                backgroundColor: Theme.of(context).accentColor,
+                flexibleSpace: StreamBuilder(
+                  stream: _paddingStream.stream,
+                  builder: (context, snapshot) {
+                    return FlexibleSpaceBar(
+                      centerTitle: false,
+                      titlePadding: EdgeInsets.only(
+                          left: snapshot.data ?? 0.0, bottom: 13),
+                      title: Text(
+                        AppText.of(context).about,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Colors.white
+                              .withOpacity((snapshot.data ?? 0.0) / 72),
+                          fontSize: 20,
 
-                        //
-                      ),
-                    ),
-                    background: Stack(
-                      children: <Widget>[
-                        Positioned.fill(
-                          child: NetImage(
-                            url: _url,
-                            placeholder: Container(),
-                          ),
+                          //
                         ),
-                        Positioned.fill(
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                            child: Container(
-                              color: Colors.transparent,
+                      ),
+                      background: Stack(
+                        children: <Widget>[
+                          Positioned.fill(
+                            child: NetImage(
+                              url: _url,
+                              placeholder: Container(),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-          ];
-        },
-        body: ListView(
-          padding: const EdgeInsets.only(),
-          physics: const NeverScrollableScrollPhysics(),
-          children: <Widget>[
-            // 版本和名称
-            _buildAppName(),
-
-            _buildLine(),
-
-            // 概述
-            _buildTitle(title: AppText.of(context).overview),
-
-            // 项目主页
-            _buildOverviewItem(
-              icon: Icons.home,
-              text: AppText.of(context).programHome,
-              onTap: () => push(context,
-                  page: CustomWebViewPage(
-                      title: AppText.of(context).appName,
-                      url: "https://github.com/hahafather007/flutter_weather",
-                      favData: null)),
-            ),
-
-            // 意见反馈
-            _buildOverviewItem(
-              icon: Icons.feedback,
-              text: AppText.of(context).feedback,
-              onTap: () => ChannelUtil.sendEmail(email: "965083574@qq.com"),
-            ),
-
-            // 检查更新
-            _buildOverviewItem(
-              icon: Icons.autorenew,
-              text: AppText.of(context).checkUpdate,
-              onTap: () {
-                scafKey.currentState.removeCurrentSnackBar();
-                scafKey.currentState.showSnackBar(SnackBar(
-                    content: Text(AppText.of(context).alreadyNew),
-                    duration: const Duration(milliseconds: 2500)));
-              },
-            ),
-
-            // 分享
-            _buildOverviewItem(
-              icon: Icons.share,
-              text: AppText.of(context).shareApp,
-              onTap: () => Share.share(AppText.of(context).shareAppUrl),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: _buildLine(),
-            ),
-
-            // 感谢
-            _buildTitle(title: AppText.of(context).thanks),
-
-            // 感谢内容
-            _buildThanks(),
-
-            _buildLine(),
-
-            // 联系我
-            _buildTitle(title: AppText.of(context).connectMe),
-            Container(
-              padding: const EdgeInsets.only(left: 16, bottom: 16),
-              alignment: Alignment.centerLeft,
-              child: GestureDetector(
-                onTap: () => push(context,
-                    page: CustomWebViewPage(
-                        title: AppText.of(context).zhihuPage,
-                        url:
-                            "https://www.zhihu.com/people/huo-lei-hong/activities",
-                        favData: null)),
-                child: Text(
-                  AppText.of(context).zhihuName,
-                  style: TextStyle(fontSize: 12, color: AppColor.colorText2),
+                          Positioned.fill(
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                              child: Container(
+                                color: Colors.transparent,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
               ),
-            ),
-          ],
+            ];
+          },
+          body: ListView(
+            padding: const EdgeInsets.only(),
+            physics: const NeverScrollableScrollPhysics(),
+            children: <Widget>[
+              // 版本和名称
+              _buildAppName(),
+
+              _buildLine(),
+
+              // 概述
+              _buildTitle(title: AppText.of(context).overview),
+
+              // 项目主页
+              _buildOverviewItem(
+                icon: Icons.home,
+                text: AppText.of(context).programHome,
+                onTap: () => push(context,
+                    page: CustomWebViewPage(
+                        title: AppText.of(context).appName,
+                        url: "https://github.com/hahafather007/flutter_weather",
+                        favData: null)),
+              ),
+
+              // 意见反馈
+              _buildOverviewItem(
+                icon: Icons.feedback,
+                text: AppText.of(context).feedback,
+                onTap: () => ChannelUtil.sendEmail(email: "965083574@qq.com"),
+              ),
+
+              // 检查更新
+              _buildOverviewItem(
+                icon: Icons.autorenew,
+                text: AppText.of(context).checkUpdate,
+                onTap: () async {
+                  if (await ChannelUtil.isDownloading()) {
+                    showSnack(text: AppText.of(context).apkDownloading);
+                  } else {
+                    _viewModel.checkUpdate();
+                  }
+                },
+              ),
+
+              // 分享
+              _buildOverviewItem(
+                icon: Icons.share,
+                text: AppText.of(context).shareApp,
+                onTap: () => Share.share(AppText.of(context).shareAppUrl),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: _buildLine(),
+              ),
+
+              // 感谢
+              _buildTitle(title: AppText.of(context).thanks),
+
+              // 感谢内容
+              _buildThanks(),
+
+              _buildLine(),
+
+              // 联系我
+              _buildTitle(title: AppText.of(context).connectMe),
+              Container(
+                padding: const EdgeInsets.only(left: 16, bottom: 16),
+                alignment: Alignment.centerLeft,
+                child: GestureDetector(
+                  onTap: () => push(context,
+                      page: CustomWebViewPage(
+                          title: AppText.of(context).zhihuPage,
+                          url:
+                              "https://www.zhihu.com/people/huo-lei-hong/activities",
+                          favData: null)),
+                  child: Text(
+                    AppText.of(context).zhihuName,
+                    style: TextStyle(fontSize: 12, color: AppColor.colorText2),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

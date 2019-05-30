@@ -67,6 +67,20 @@ class ChannelUtil {
     }
   }
 
+  /// 判断是否正在下载安装包
+  static Future<bool> isDownloading() async {
+    bool result = false;
+    if (isAndroid) {
+      try {
+        result = await _platform.invokeMethod(_ChannelTag.IS_DOWNLOADING);
+      } on PlatformException catch (e) {
+        _doError(e);
+      }
+    }
+
+    return result;
+  }
+
   static void _doError<T extends Exception>(T e) =>
       debugPrint("=====>通道错误：${e.toString()}");
 }
@@ -79,4 +93,5 @@ abstract class _ChannelTag {
   static const SEND_EMAIL = "weatherSendEmail";
   static const DOWNLOAD_APK = "weatherDownloadApk";
   static const INSTALL_APK = "weatherInstallApk";
+  static const IS_DOWNLOADING = "weatherIsDownloading";
 }
