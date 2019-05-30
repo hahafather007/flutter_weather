@@ -105,9 +105,7 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
                   break;
                 case "copy":
                   Clipboard.setData(ClipboardData(text: widget.url));
-                  scafKey.currentState.showSnackBar(SnackBar(
-                      content: Text(AppText.of(context).alreadyCopyUrl),
-                      duration: Duration(milliseconds: 2500)));
+                  showSnack(text: AppText.of(context).alreadyCopyUrl);
                   break;
                 case "openByOther":
                   openBrowser(widget.url);

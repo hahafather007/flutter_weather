@@ -27,6 +27,9 @@ class AppText {
       "cancel": "取消",
       "certain": "确定",
       "unknown": "未知",
+      "wait": "稍后",
+      "install": "安装",
+      "download": "下载",
       "appName": "假装看天气(Flutter)",
 
       // 主页
@@ -36,6 +39,7 @@ class AppText {
       "collect": "收藏",
       "setting": "设置",
       "about": "关于",
+      "retryToExit": "再按一次退出App！",
 
       // 天气
       "cityControl": "城市管理",
@@ -151,6 +155,17 @@ class AppText {
       "colorNone": "丢雷老母",
 
       // 关于
+      "hasNewVersion": "检测到新版本",
+      "hasNewVersionLong": "已有新版本等待下载，是否立即下载更新？（继续使用旧版本可能会发生意想不到的错误）",
+      "hasNewVersionLongIOS": "IOS请自行拉去代码编译！（继续使用旧版本可能会发生意想不到的错误）",
+      "newVersionReady": "新版本准备就绪",
+      "newVersionReadyLong": "新版本的安装包已经在WIFI环境下载完成，是否立即安装？（该过程不消耗流量）",
+      "apkSize": "APK大小：",
+      "apkPleaseInstall": "APK下载成功！请安装",
+      "apkFail": "APK下载失败！",
+      "apkDownloading": "应用正在更新中！",
+      "apkStartDownload": "安装包开始下载",
+      "checkUpdateFail": "检测更新失败，请检查网络！",
       "overview": "概述",
       "programHome": "项目主页",
       "feedback": "意见反馈",
@@ -193,6 +208,12 @@ class AppText {
 
   String get appName => _localizedValues[locale.languageCode]["appName"];
 
+  String get wait => _localizedValues[locale.languageCode]["wait"];
+
+  String get install => _localizedValues[locale.languageCode]["install"];
+
+  String get download => _localizedValues[locale.languageCode]["download"];
+
   String get alreadyCopyUrl =>
       _localizedValues[locale.languageCode]["alreadyCopyUrl"];
 
@@ -211,6 +232,9 @@ class AppText {
   String get collect => _localizedValues[locale.languageCode]["collect"];
 
   String get about => _localizedValues[locale.languageCode]["about"];
+
+  String get retryToExit =>
+      _localizedValues[locale.languageCode]["retryToExit"];
 
   /// 天气
   String get share => _localizedValues[locale.languageCode]["share"];
@@ -486,6 +510,37 @@ class AppText {
 
   String get shareAppUrl =>
       _localizedValues[locale.languageCode]["shareAppUrl"];
+
+  String get hasNewVersion =>
+      _localizedValues[locale.languageCode]["hasNewVersion"];
+
+  String get hasNewVersionLong =>
+      _localizedValues[locale.languageCode]["hasNewVersionLong"];
+
+  String get hasNewVersionLongIOS =>
+      _localizedValues[locale.languageCode]["hasNewVersionLongIOS"];
+
+  String get newVersionReady =>
+      _localizedValues[locale.languageCode]["newVersionReady"];
+
+  String get newVersionReadyLong =>
+      _localizedValues[locale.languageCode]["newVersionReadyLong"];
+
+  String get apkSize => _localizedValues[locale.languageCode]["apkSize"];
+
+  String get apkPleaseInstall =>
+      _localizedValues[locale.languageCode]["apkPleaseInstall"];
+
+  String get apkFail => _localizedValues[locale.languageCode]["apkFail"];
+
+  String get apkDownloading =>
+      _localizedValues[locale.languageCode]["apkDownloading"];
+
+  String get apkStartDownload =>
+      _localizedValues[locale.languageCode]["apkStartDownload"];
+
+  String get checkUpdateFail =>
+      _localizedValues[locale.languageCode]["checkUpdateFail"];
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppText> {

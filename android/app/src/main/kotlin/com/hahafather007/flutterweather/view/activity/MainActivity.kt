@@ -1,5 +1,6 @@
 package com.hahafather007.flutterweather.view.activity
 
+import android.app.PendingIntent
 import android.os.Bundle
 import com.hahafather007.flutterweather.utils.*
 import com.hahafather007.flutterweather.viewmodel.MainViewModel
@@ -13,6 +14,7 @@ class MainActivity : FlutterActivity(), RxController {
     override val rxComposite = CompositeDisposable()
 
     private val viewModel = MainViewModel()
+    private var isDownloading = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,10 +25,11 @@ class MainActivity : FlutterActivity(), RxController {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
-
         dispose()
         viewModel.dispose()
+        UpdateUtil.cancelDownload()
+
+        super.onDestroy()
     }
 
     private fun initChannel() {
@@ -48,6 +51,9 @@ class MainActivity : FlutterActivity(), RxController {
 
                     result.success(true)
                 }
+                IS_DOWNLOADING -> {
+                    result.success(isDownloading)
+                }
                 else ->
                     result.notImplemented()
             }
@@ -58,25 +64,40 @@ class MainActivity : FlutterActivity(), RxController {
      * 下载APK更新包
      */
     private fun downloadApk(url: String, verCode: Int, isWifi: Boolean, result: MethodChannel.Result) {
+        UpdateUtil.cancelDownload()
+        val notifyUtil = NotificationUtil(this)
+        val pi = PendingIntent.getActivity(this, 0,
+                UpdateUtil.getInstallIntent(this, verCode), PendingIntent.FLAG_CANCEL_CURRENT)
+
+
         if (UpdateUtil.isApkExist(this, verCode)) {
+            notifyUtil.sendNotificationProgress(
+                    "APK下载完成", "点击安装", 100, pi)
+
             result.success(true)
         } else {
-            if (!isWifi) return
+            UpdateUtil.downloadApk(this, url, verCode, isWifi, object : DownloadListener {
+                override fun onStart() {
+                    isDownloading = true
+                }
 
-            Observable.just(verCode)
-                    .map {
-                        UpdateUtil.downloadApk(this, url, it)
-                        it
+                override fun onSuccess() {
+                    isDownloading = false
+                    result.success(true)
+                    notifyUtil.sendNotificationProgress(
+                            "APK下载完成", "点击安装", 100, pi)
+                    if (!isWifi) {
+                        UpdateUtil.installApk(this@MainActivity, verCode)
                     }
-                    .disposable(this)
-                    .asyncSwitch()
-                    .doOnNext {
-                        result.success(true)
-                    }
-                    .doOnError {
-                        result.success(false)
-                    }
-                    .subscribe()
+                }
+
+                override fun onFail() {
+                    isDownloading = false
+                    result.success(false)
+                    notifyUtil.sendNotificationProgress(
+                            "APK下载失败", "请检查网络后重试！", 100, null)
+                }
+            }, notifyUtil)
         }
     }
 
@@ -106,6 +127,7 @@ class MainActivity : FlutterActivity(), RxController {
         private const val SEND_EMAIL = "weatherSendEmail"
         private const val DOWNLOAD_APK = "weatherDownloadApk"
         private const val INSTALL_APK = "weatherInstallApk"
+        private const val IS_DOWNLOADING = "weatherIsDownloading"
     }
 }
 

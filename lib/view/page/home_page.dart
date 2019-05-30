@@ -224,10 +224,7 @@ class HomeState extends PageState<HomePage> {
           _readyExit = true;
           _exitTimer =
               Timer(const Duration(seconds: 2), () => _readyExit = false);
-          scafKey.currentState.showSnackBar(SnackBar(
-            content: Text("再按一次退出App！"),
-            duration: const Duration(seconds: 2),
-          ));
+          showSnack(text: AppText.of(context).retryToExit);
         }
       },
     );

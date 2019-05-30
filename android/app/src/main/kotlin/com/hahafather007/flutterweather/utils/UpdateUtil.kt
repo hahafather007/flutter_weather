@@ -5,56 +5,38 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.support.v4.content.FileProvider
-import java.io.BufferedInputStream
 import java.io.File
-import java.io.FileOutputStream
-import java.net.HttpURLConnection
-import java.net.URL
 
 object UpdateUtil {
+    var task: DownloadTask? = null
+
     /**
      * 下载apk
      */
-    fun downloadApk(context: Context, url: String, verCode: Int): File? {
-        // 创建apk下载文件夹
-        val dir = File("${context.filesDir.absolutePath}/apk_download")
-        if (!dir.exists()) {
-            dir.mkdir()
+    fun downloadApk(context: Context, url: String, verCode: Int, isQuiet: Boolean,
+                    listener: DownloadListener, notifyUtil: NotificationUtil) {
+        if (task == null) {
+            task = DownloadTask(context, url, verCode, isQuiet, listener, notifyUtil)
         }
-        val file = File(dir, "$verCode.apk")
-        if (file.exists()) {
-            return file
-        }
-        val conn = URL(url).openConnection() as HttpURLConnection
-        conn.connectTimeout = 5000
-        conn.setRequestProperty("Accept-Encoding", "identity")
-        val inputStream = conn.inputStream
-        val outputStream = FileOutputStream(file)
-        val buff = BufferedInputStream(inputStream)
-        val buffer = ByteArray(1024)
-        // 开始写入文件
-        do {
-            val len = buff.read(buffer)
-            if (len == -1) {
-                break
-            } else {
-                outputStream.write(buffer, 0, len)
-            }
-        } while (true)
+        task?.execute()
+    }
 
-        outputStream.close()
-        inputStream.close()
-        buff.close()
-
-        return file
+    fun cancelDownload() {
+        task?.cancel(true)
+        task = null
     }
 
     /**
      * 安装apk
      */
     fun installApk(context: Context, verCode: Int) {
+        val intent = getInstallIntent(context, verCode)
+
+        context.startActivity(intent)
+    }
+
+    fun getInstallIntent(context: Context, verCode: Int): Intent {
         val file = File("${context.filesDir.absolutePath}/apk_download", "$verCode.apk")
-        if (!file.exists()) return
 
         val intent = Intent()
         intent.action = Intent.ACTION_VIEW
@@ -63,7 +45,7 @@ object UpdateUtil {
         val uri: Uri
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             uri = FileProvider.getUriForFile(context,
-                    "com.hahafather007.flutterweather.fileProvider", file)
+                    "com.g2game.scoreapp.fileProvider", file)
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
         } else {
@@ -71,7 +53,8 @@ object UpdateUtil {
         }
 
         intent.setDataAndType(uri, "application/vnd.android.package-archive")
-        context.startActivity(intent)
+
+        return intent
     }
 
     /**

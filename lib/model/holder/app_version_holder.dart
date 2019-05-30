@@ -22,18 +22,62 @@ class AppVersionHolder {
         if (isAndroid) {
           final isWifi = await Connectivity().checkConnectivity() ==
               ConnectivityResult.wifi;
-          final readyUpdate = await ChannelUtil.updateApp(
-              url: version.url, verCode: version.version, isWifi: isWifi);
 
-          if (readyUpdate) {
-            showDiffDialog(context,
-                title: Text("新版本准备就绪"),
-                content: Text("新版本的安装包已经在WIFI环境下载完成，是否立即安装？（该过程不消耗流量）"),
-                yesText: "安装",
-                noText: "稍后",
-                pressed: () =>
-                    ChannelUtil.installApp(verCode: version.version));
+          if (isWifi) {
+            final readyUpdate = await ChannelUtil.updateApp(
+                url: version.url, verCode: version.version, isWifi: true);
+
+            if (readyUpdate) {
+              await showDiffDialog(context,
+                  title: Text(AppText.of(context).newVersionReady),
+                  content: Text(AppText.of(context).newVersionReadyLong),
+                  yesText: AppText.of(context).install,
+                  noText: AppText.of(context).wait,
+                  pressed: () =>
+                      ChannelUtil.installApp(verCode: version.version));
+            }
+          } else {
+            await showDiffDialog(
+              context,
+              title: Text(AppText.of(context).hasNewVersion),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(AppText.of(context).hasNewVersionLong),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: Text(
+                      "${AppText.of(context).apkSize}${version.size}",
+                      style:
+                          TextStyle(fontSize: 14, color: AppColor.colorText2),
+                    ),
+                  ),
+                ],
+              ),
+              yesText: AppText.of(context).download,
+              noText: AppText.of(context).wait,
+              pressed: () async {
+                pop(context);
+
+                final readyUpdate = await ChannelUtil.updateApp(
+                    url: version.url, verCode: version.version, isWifi: false);
+
+                if (readyUpdate) {
+                  ToastUtil.showToast(AppText.of(context).apkPleaseInstall);
+                } else {
+                  ToastUtil.showToast(AppText.of(context).apkFail);
+                }
+              },
+            );
           }
+        } else {
+          await showDiffDialog(context,
+              title: Text(AppText.of(context).hasNewVersion),
+              content: Text(AppText.of(context).hasNewVersionLongIOS),
+              yesText: AppText.of(context).certain,
+              noText: AppText.of(context).wait,
+              pressed: () => pop(context));
         }
       }
     } on DioError catch (e) {

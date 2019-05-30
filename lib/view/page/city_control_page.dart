@@ -47,10 +47,7 @@ class CityControlState extends PageState<CityControlPage> {
 
               final result = await _viewModel.addCity(location);
               if (!result) {
-                scafKey.currentState.showSnackBar(SnackBar(
-                  content: Text(AppText.of(context).repeatCity),
-                  duration: const Duration(seconds: 2),
-                ));
+                showSnack(text: AppText.of(context).repeatCity);
               }
             },
           ),

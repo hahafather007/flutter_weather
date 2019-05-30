@@ -113,6 +113,7 @@ export 'viewmodel/gift_gank_viewmodel.dart';
 export 'viewmodel/setting_viewmodel.dart';
 export 'viewmodel/setting_module_viewmodel.dart';
 export 'viewmodel/city_control_viewmodel.dart';
+export 'viewmodel/about_viewmodel.dart';
 
 export 'dart:async';
 export 'dart:convert';
