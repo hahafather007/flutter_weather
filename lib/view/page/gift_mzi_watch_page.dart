@@ -83,19 +83,29 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
                             child: const CupertinoActivityIndicator(),
                           );
                         } else {
-                          return Hero(
-                            tag:
-                                "${data.url}$index${widget.photoStream != null}",
-                            child: ZoomableWidget(
-                              maxScale: 5,
-                              minScale: 0.1,
-                              child: NetImage(
-                                url: data.url,
-                                placeholder: Container(),
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          );
+                          return index == _currentPage
+                              ? Hero(
+                                  tag:
+                                      "${data.url}$index${widget.photoStream != null}",
+                                  child: ZoomableWidget(
+                                    maxScale: 5,
+                                    minScale: 0.1,
+                                    child: NetImage(
+                                      url: data.url,
+                                      placeholder: Container(),
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                )
+                              : ZoomableWidget(
+                                  maxScale: 5,
+                                  minScale: 0.1,
+                                  child: NetImage(
+                                    url: data.url,
+                                    placeholder: Container(),
+                                    fit: BoxFit.contain,
+                                  ),
+                                );
                         }
                       },
                     ),
