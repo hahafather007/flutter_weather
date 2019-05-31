@@ -18,15 +18,15 @@ IOS:没有开发者账号，暂时只能自己编译
 ### 编译环境 ###
 ~~注意！目前该项目所用到的部分第三方库与Flutter v1.4.5-pre10以上版本不兼容，所以编译时请使用v1.4.5-pre.9及其以下版本编译！！！~~
 + 已适配Flutter新版本
-```
-[✓] Flutter (Channel dev, v1.4.5-pre.9, on Mac OS X 10.14.3 18D109, locale zh-Hans-CN)
- 
++ 由于Flutter v1.4.5-pre10以上版本修改了部分api参数，故老版本Flutter可能无法正常编译，请升级至pre10及其以上版本！
+ ```
+[✓] Flutter (Channel dev, v1.4.5-pre.11, on Mac OS X 10.14.3 18D109, locale zh-Hans-CN)
 [✓] Android toolchain - develop for Android devices (Android SDK version 28.0.3)
 [✓] iOS toolchain - develop for iOS devices (Xcode 10.2.1)
 [✓] Android Studio (version 3.4)
 [!] IntelliJ IDEA Community Edition (version 2018.2.1)
     ✗ Flutter plugin not installed; this adds Flutter specific functionality.
-[✓] Connected device (3 available)
+[✓] Connected device (2 available)
 ```
 
 ### 免责声明 ###
