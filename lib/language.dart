@@ -108,6 +108,9 @@ class AppText {
       "allGirlFail": "每日更新获取失败！",
       "landGirlFail": "街拍美女获取失败！",
       "imageSetFail": "组图加载是失败！",
+      "imgSave": "保存图片",
+      "imgSaveSuccess": "图片保存成功！",
+      "imgSaveFail": "图片保存失败！",
 
       // 闲读
       "xiandu": "科技资讯",
@@ -352,6 +355,14 @@ class AppText {
   String get gankFail => _localizedValues[locale.languageCode]["gankFail"];
 
   String get eggFail => _localizedValues[locale.languageCode]["eggFail"];
+
+  String get imgSaveSuccess =>
+      _localizedValues[locale.languageCode]["imgSaveSuccess"];
+
+  String get imgSaveFail =>
+      _localizedValues[locale.languageCode]["imgSaveFail"];
+
+  String get imgSave => _localizedValues[locale.languageCode]["imgSave"];
 
   String get mostHotFail =>
       _localizedValues[locale.languageCode]["mostHotFail"];

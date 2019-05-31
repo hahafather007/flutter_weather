@@ -1,5 +1,6 @@
 import 'package:flutter_weather/commom_import.dart';
 import 'package:flutter/cupertino.dart' show CupertinoActivityIndicator;
+import 'dart:typed_data' show Uint8List;
 
 class GiftGankWatchPage extends StatefulWidget {
   final int index;
@@ -28,6 +29,8 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
   void initState() {
     super.initState();
 
+    SystemChrome.setEnabledSystemUIOverlays([]);
+
     _currentPage = widget.index;
     _pageController =
         PageController(initialPage: _currentPage, keepPage: false);
@@ -36,6 +39,11 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
 
   @override
   void dispose() {
+    SystemChrome.setEnabledSystemUIOverlays([
+      SystemUiOverlay.top,
+      SystemUiOverlay.bottom,
+    ]);
+
     _viewModel.dispose();
     _pageController.dispose();
 
@@ -45,6 +53,7 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scafKey,
       backgroundColor: Colors.black,
       body: StreamBuilder(
         stream: _viewModel.data.stream,
@@ -63,7 +72,17 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                   v.isImages == list[_currentPage]?.isImages);
 
               return GestureDetector(
-                onTap: () => setState(() => _showAppBar = !_showAppBar),
+                onTap: () {
+                  if (_showAppBar) {
+                    SystemChrome.setEnabledSystemUIOverlays([]);
+                  } else {
+                    SystemChrome.setEnabledSystemUIOverlays([
+                      SystemUiOverlay.top,
+                      SystemUiOverlay.bottom,
+                    ]);
+                  }
+                  setState(() => _showAppBar = !_showAppBar);
+                },
                 child: Stack(
                   children: <Widget>[
                     PageView.builder(
@@ -92,7 +111,10 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                                     minScale: 0.1,
                                     child: NetImage(
                                       url: data.url,
-                                      placeholder: Container(),
+                                      placeholder: Center(
+                                        child:
+                                            const CupertinoActivityIndicator(),
+                                      ),
                                       fit: BoxFit.contain,
                                     ),
                                   ),
@@ -102,7 +124,9 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                                   minScale: 0.1,
                                   child: NetImage(
                                     url: data.url,
-                                    placeholder: Container(),
+                                    placeholder: Center(
+                                      child: const CupertinoActivityIndicator(),
+                                    ),
                                     fit: BoxFit.contain,
                                   ),
                                 );
@@ -114,38 +138,68 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                     AnimatedOpacity(
                       opacity: _showAppBar ? 1.0 : 0.0,
                       duration: const Duration(milliseconds: 200),
-                      child: Container(
-                        height: getAppBarHeight(withBottom: true) +
-                            getStatusHeight(context),
-                        child: CustomAppBar(
-                          title: Text(""),
-                          showShadow: false,
-                          color: Colors.transparent,
-                          leftBtn: IconButton(
+                      child: CustomAppBar(
+                        title: Text(""),
+                        showShadow: false,
+                        color: Colors.transparent,
+                        leftBtn: IconButton(
+                          icon: Icon(
+                            Icons.arrow_back,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            if (!_showAppBar) return;
+
+                            pop(context);
+                          },
+                        ),
+                        rightBtns: <Widget>[
+                          IconButton(
                             icon: Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
+                              isFav ? Icons.favorite : Icons.favorite_border,
+                              color: isFav ? Colors.red : Colors.white,
                             ),
                             onPressed: () {
                               if (!_showAppBar) return;
 
-                              pop(context);
+                              FavHolder().autoFav(list[_currentPage]);
                             },
                           ),
-                          rightBtns: <Widget>[
-                            IconButton(
-                              icon: Icon(
-                                isFav ? Icons.favorite : Icons.favorite_border,
-                                color: isFav ? Colors.red : Colors.white,
-                              ),
-                              onPressed: () {
-                                if (!_showAppBar) return;
-
-                                FavHolder().autoFav(list[_currentPage]);
-                              },
+                          PopupMenuButton(
+                            icon: Icon(
+                              Icons.more_vert,
+                              color: Colors.white,
                             ),
-                          ],
-                        ),
+                            itemBuilder: (context) => [
+                                  PopupMenuItem(
+                                    value: "save",
+                                    child: Text(AppText.of(context).imgSave),
+                                  ),
+                                ],
+                            onSelected: (value) async {
+                              switch (value) {
+                                case "save":
+                                  final file = await DefaultCacheManager()
+                                      .getSingleFile(list[_currentPage].url);
+
+                                  await SimplePermissions.requestPermission(
+                                      Permission.ReadExternalStorage);
+                                  if (file != null) {
+                                    final u8 = Uint8List.fromList(
+                                        file.readAsBytesSync());
+                                    await ImageGallerySaver.save(u8);
+                                    showSnack(
+                                        text:
+                                            AppText.of(context).imgSaveSuccess);
+                                  } else {
+                                    showSnack(
+                                        text: AppText.of(context).imgSaveFail);
+                                  }
+                                  break;
+                              }
+                            },
+                          ),
+                        ],
                       ),
                     ),
                   ],

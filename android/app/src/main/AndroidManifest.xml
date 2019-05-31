@@ -12,6 +12,9 @@
     <!--更新权限-->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
+    <!--保存图片-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".app.WeatherApp"
         android:allowBackup="false"

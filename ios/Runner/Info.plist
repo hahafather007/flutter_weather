@@ -25,13 +25,13 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string></string>
+	<string>天气定位需要该权限！</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string></string>
+	<string>天气定位需要该权限！</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>天气定位需要该权限！</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>分享天气时需要该权限！</string>
+	<string>分享天气或保存图片需要该权限！</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
