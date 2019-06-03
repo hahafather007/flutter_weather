@@ -44,11 +44,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               alignment: Alignment.bottomCenter,
               child: bottom ?? Container(),
             ),
-            AnimatedContainer(
-              height: getStatusHeight(context),
-              duration: const Duration(seconds: 2),
-              color: color,
-            ),
           ],
         ),
       ),

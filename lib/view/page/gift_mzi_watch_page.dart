@@ -29,8 +29,6 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
   void initState() {
     super.initState();
 
-    SystemChrome.setEnabledSystemUIOverlays([]);
-
     _currentPage = widget.index;
     _pageController =
         PageController(initialPage: _currentPage, keepPage: false);
@@ -39,11 +37,6 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
 
   @override
   void dispose() {
-    SystemChrome.setEnabledSystemUIOverlays([
-      SystemUiOverlay.top,
-      SystemUiOverlay.bottom,
-    ]);
-
     _viewModel.dispose();
     _pageController.dispose();
 
@@ -73,17 +66,7 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
                   v.isImages == list[_currentPage]?.isImages);
 
               return GestureDetector(
-                onTap: () {
-                  if (_showAppBar) {
-                    SystemChrome.setEnabledSystemUIOverlays([]);
-                  } else {
-                    SystemChrome.setEnabledSystemUIOverlays([
-                      SystemUiOverlay.top,
-                      SystemUiOverlay.bottom,
-                    ]);
-                  }
-                  setState(() => _showAppBar = !_showAppBar);
-                },
+                onTap: () => setState(() => _showAppBar = !_showAppBar),
                 child: Stack(
                   children: <Widget>[
                     // 图片浏览
@@ -101,34 +84,25 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
                             child: const CupertinoActivityIndicator(),
                           );
                         } else {
+                          final zoomImg = ZoomableWidget(
+                            maxScale: 5,
+                            minScale: 0.1,
+                            child: NetImage(
+                              url: data.url,
+                              placeholder: Center(
+                                child: const CupertinoActivityIndicator(),
+                              ),
+                              fit: BoxFit.contain,
+                            ),
+                          );
+
                           return index == _currentPage
                               ? Hero(
                                   tag:
                                       "${data.url}$index${widget.photoStream != null}",
-                                  child: ZoomableWidget(
-                                    maxScale: 5,
-                                    minScale: 0.1,
-                                    child: NetImage(
-                                      url: data.url,
-                                      placeholder: Center(
-                                        child:
-                                            const CupertinoActivityIndicator(),
-                                      ),
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
+                                  child: zoomImg,
                                 )
-                              : ZoomableWidget(
-                                  maxScale: 5,
-                                  minScale: 0.1,
-                                  child: NetImage(
-                                    url: data.url,
-                                    placeholder: Center(
-                                      child: const CupertinoActivityIndicator(),
-                                    ),
-                                    fit: BoxFit.contain,
-                                  ),
-                                );
+                              : zoomImg;
                         }
                       },
                     ),

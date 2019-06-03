@@ -29,8 +29,6 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
   void initState() {
     super.initState();
 
-    SystemChrome.setEnabledSystemUIOverlays([]);
-
     _currentPage = widget.index;
     _pageController =
         PageController(initialPage: _currentPage, keepPage: false);
@@ -39,11 +37,6 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
 
   @override
   void dispose() {
-    SystemChrome.setEnabledSystemUIOverlays([
-      SystemUiOverlay.top,
-      SystemUiOverlay.bottom,
-    ]);
-
     _viewModel.dispose();
     _pageController.dispose();
 
@@ -72,17 +65,7 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                   v.isImages == list[_currentPage]?.isImages);
 
               return GestureDetector(
-                onTap: () {
-                  if (_showAppBar) {
-                    SystemChrome.setEnabledSystemUIOverlays([]);
-                  } else {
-                    SystemChrome.setEnabledSystemUIOverlays([
-                      SystemUiOverlay.top,
-                      SystemUiOverlay.bottom,
-                    ]);
-                  }
-                  setState(() => _showAppBar = !_showAppBar);
-                },
+                onTap: () => setState(() => _showAppBar = !_showAppBar),
                 child: Stack(
                   children: <Widget>[
                     PageView.builder(
@@ -102,34 +85,25 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                             child: const CupertinoActivityIndicator(),
                           );
                         } else {
+                          final zoomImg = ZoomableWidget(
+                            maxScale: 5,
+                            minScale: 0.1,
+                            child: NetImage(
+                              url: data.url,
+                              placeholder: Center(
+                                child: const CupertinoActivityIndicator(),
+                              ),
+                              fit: BoxFit.contain,
+                            ),
+                          );
+
                           return index == _currentPage
                               ? Hero(
                                   tag:
                                       "${data.url}$index${widget.photoStream != null}",
-                                  child: ZoomableWidget(
-                                    maxScale: 5,
-                                    minScale: 0.1,
-                                    child: NetImage(
-                                      url: data.url,
-                                      placeholder: Center(
-                                        child:
-                                            const CupertinoActivityIndicator(),
-                                      ),
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
+                                  child: zoomImg,
                                 )
-                              : ZoomableWidget(
-                                  maxScale: 5,
-                                  minScale: 0.1,
-                                  child: NetImage(
-                                    url: data.url,
-                                    placeholder: Center(
-                                      child: const CupertinoActivityIndicator(),
-                                    ),
-                                    fit: BoxFit.contain,
-                                  ),
-                                );
+                              : zoomImg;
                         }
                       },
                     ),
@@ -182,8 +156,6 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                                   final file = await DefaultCacheManager()
                                       .getSingleFile(list[_currentPage].url);
 
-                                  await SimplePermissions.requestPermission(
-                                      Permission.ReadExternalStorage);
                                   if (file != null) {
                                     final u8 = Uint8List.fromList(
                                         file.readAsBytesSync());
