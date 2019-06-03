@@ -45,7 +45,7 @@ object UpdateUtil {
         val uri: Uri
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             uri = FileProvider.getUriForFile(context,
-                    "com.g2game.scoreapp.fileProvider", file)
+                    "com.hahafather007.flutterweather.fileProvider", file)
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
         } else {
