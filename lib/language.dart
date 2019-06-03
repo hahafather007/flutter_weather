@@ -182,7 +182,7 @@ class AppText {
       "zhihuPage": "活雷轰-知乎",
       "zhihuName": "• @活雷轰",
       "thankItems":
-          "• 和风天气提供天气数据\n• 高德定位提供定位服务\n• 和她在一起的1221天，谢谢\n• 『Gank』『煎蛋』『妹子图』提供妹纸数据\n• 丰富精彩的开源世界 https://github.com/hahafather007/flutter_weather/blob/master/README.md",
+          "• 和风天气提供天气数据\n• 高德定位提供定位服务\n• 『Gank』『煎蛋』『妹子图』提供妹纸数据\n• 丰富精彩的开源世界 https://github.com/hahafather007/flutter_weather/blob/master/README.md",
     },
   };
 
