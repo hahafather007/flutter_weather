@@ -2,6 +2,7 @@ package com.hahafather007.flutterweather.view.activity
 
 import android.app.PendingIntent
 import android.os.Bundle
+import cc.shinichi.wallpaperlib.SetWallpaper
 import com.hahafather007.flutterweather.utils.*
 import com.hahafather007.flutterweather.viewmodel.MainViewModel
 import io.flutter.app.FlutterActivity
@@ -53,6 +54,12 @@ class MainActivity : FlutterActivity(), RxController {
                 }
                 IS_DOWNLOADING -> {
                     result.success(isDownloading)
+                }
+                SET_WALLPAPER -> {
+                    SetWallpaper.setWallpaper(this, call.argument("path"),
+                            "com.hahafather007.flutterweather.fileProvider")
+
+                    result.success(true)
                 }
                 else ->
                     result.notImplemented()
@@ -119,15 +126,30 @@ class MainActivity : FlutterActivity(), RxController {
          * Channel通道的名字
          */
         private const val CHANNEL_NAME = "flutter_weather_channel"
-
         /**
          * 开始定位
          */
         private const val START_LOCATION = "weatherStartLocation"
+        /**
+         * 发送邮件
+         */
         private const val SEND_EMAIL = "weatherSendEmail"
+        /**
+         * 下载APK
+         */
         private const val DOWNLOAD_APK = "weatherDownloadApk"
+        /**
+         * 安装APK
+         */
         private const val INSTALL_APK = "weatherInstallApk"
+        /**
+         * 判断是否正在下载APK
+         */
         private const val IS_DOWNLOADING = "weatherIsDownloading"
+        /**
+         * 设置壁纸
+         */
+        private const val SET_WALLPAPER = "weatherSetWallpaper"
     }
 }
 

@@ -3,4 +3,7 @@
     <files-path
         name="."
         path="apk_download/" />
+    <cache-path
+        name="."
+        path="." />
 </paths>

@@ -111,6 +111,8 @@ class AppText {
       "imgSave": "保存图片",
       "imgSaveSuccess": "图片保存成功！",
       "imgSaveFail": "图片保存失败！",
+      "setAsWallpaper": "设为壁纸",
+      "canNotSetWallpaper": "无法设置壁纸，请检查网络！",
 
       // 闲读
       "xiandu": "科技资讯",
@@ -160,7 +162,7 @@ class AppText {
       // 关于
       "hasNewVersion": "检测到新版本",
       "hasNewVersionLong": "已有新版本等待下载，是否立即下载更新？（继续使用旧版本可能会发生意想不到的错误）",
-      "hasNewVersionLongIOS": "IOS请自行拉去代码编译！（继续使用旧版本可能会发生意想不到的错误）",
+      "hasNewVersionLongIOS": "IOS请自行拉下代码编译！（继续使用旧版本可能会发生意想不到的错误）",
       "newVersionReady": "新版本准备就绪",
       "newVersionReadyLong": "新版本的安装包已经在WIFI环境下载完成，是否立即安装？（该过程不消耗流量）",
       "apkSize": "APK大小：",
@@ -355,6 +357,12 @@ class AppText {
   String get gankFail => _localizedValues[locale.languageCode]["gankFail"];
 
   String get eggFail => _localizedValues[locale.languageCode]["eggFail"];
+
+  String get setAsWallpaper =>
+      _localizedValues[locale.languageCode]["setAsWallpaper"];
+
+  String get canNotSetWallpaper =>
+      _localizedValues[locale.languageCode]["canNotSetWallpaper"];
 
   String get imgSaveSuccess =>
       _localizedValues[locale.languageCode]["imgSaveSuccess"];

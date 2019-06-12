@@ -113,6 +113,6 @@ class NotificationUtil(private val context: Context) {
 
     companion object {
         private const val CHANNEL_ID = "default"
-        private const val CHANNEL_NAME = "scoreAppDefaultChannel"
+        private const val CHANNEL_NAME = "weatherDefaultChannel"
     }
 }

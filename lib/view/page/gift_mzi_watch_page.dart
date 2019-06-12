@@ -148,6 +148,11 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
                                     value: "save",
                                     child: Text(AppText.of(context).imgSave),
                                   ),
+                                  PopupMenuItem(
+                                    value: "wallpaper",
+                                    child: Text(
+                                        AppText.of(context).setAsWallpaper),
+                                  ),
                                 ],
                             onSelected: (value) async {
                               switch (value) {
@@ -155,8 +160,6 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
                                   final file = await DefaultCacheManager()
                                       .getSingleFile(list[_currentPage].url);
 
-                                  await SimplePermissions.requestPermission(
-                                      Permission.ReadExternalStorage);
                                   if (file != null) {
                                     final u8 = Uint8List.fromList(
                                         file.readAsBytesSync());
@@ -168,6 +171,29 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
                                     showSnack(
                                         text: AppText.of(context).imgSaveFail);
                                   }
+
+                                  break;
+                                case "wallpaper":
+                                  final url = list[_currentPage]?.url;
+                                  if (url == null) return;
+
+                                  final file = await DefaultCacheManager()
+                                      .getSingleFile(url);
+                                  if (file != null) {
+                                    if (isIOS) {
+                                      final u8 = Uint8List.fromList(
+                                          file.readAsBytesSync());
+                                      await ImageGallerySaver.save(u8);
+                                    }
+
+                                    ChannelUtil.setWallpaper(
+                                        path: file.absolute.path);
+                                  } else {
+                                    showSnack(
+                                        text: AppText.of(context)
+                                            .canNotSetWallpaper);
+                                  }
+
                                   break;
                               }
                             },

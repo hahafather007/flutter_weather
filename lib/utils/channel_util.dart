@@ -81,6 +81,17 @@ class ChannelUtil {
     return result;
   }
 
+  /// 设置壁纸
+  static Future<Null> setWallpaper({@required String path}) async {
+    try {
+      await _platform.invokeMethod(_ChannelTag.SET_WALLPAPER, {
+        "path": path,
+      });
+    } on PlatformException catch (e) {
+      _doError(e);
+    }
+  }
+
   static void _doError<T extends Exception>(T e) =>
       debugPrint("=====>通道错误：${e.toString()}");
 }
@@ -88,10 +99,10 @@ class ChannelUtil {
 /// 平台通道的名字和方法
 abstract class _ChannelTag {
   static const CHANNEL_NAME = "flutter_weather_channel";
-
   static const START_LOCATION = "weatherStartLocation";
   static const SEND_EMAIL = "weatherSendEmail";
   static const DOWNLOAD_APK = "weatherDownloadApk";
   static const INSTALL_APK = "weatherInstallApk";
   static const IS_DOWNLOADING = "weatherIsDownloading";
+  static const SET_WALLPAPER = "weatherSetWallpaper";
 }
