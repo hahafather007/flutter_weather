@@ -6,6 +6,9 @@
 
 如果喜欢的话记得点一波Star。
 
+### 更新日志 ###
++ 2019-06-13(v1.1.3):优化了查看妹子图时的Hero动画效果；新增了"设为壁纸"选项；修改了直接套用公司项目代码时写错的包名。
+
 ### 部分截图 ###
 <img src="screenshot/1.jpg" width="24%"/><img width="1%"/><img src="screenshot/2.jpg" width="24%"/><img width="1%"/><img src="screenshot/3.jpg" width="24%"/><img width="1%"/><img src="screenshot/4.jpg" width="24%"/>
 <img src="screenshot/5.jpg" width="24%"/><img width="1%"/><img src="screenshot/6.jpg" width="24%"/><img width="1%"/><img src="screenshot/7.jpg" width="24%"/><img width="1%"/><img src="screenshot/8.jpg" width="24%"/>
@@ -16,9 +19,8 @@ Android:<img src="qrcode/android.png"/>
 IOS:没有开发者账号，暂时只能自己编译
 
 ### 编译环境 ###
-~~注意！目前该项目所用到的部分第三方库与Flutter v1.4.5-pre10以上版本不兼容，所以编译时请使用v1.4.5-pre.9及其以下版本编译！！！~~
-+ 已适配Flutter新版本
-+ 由于Flutter v1.4.5-pre10以上版本修改了部分api参数，故老版本Flutter可能无法正常编译，请升级至pre10及其以上版本！
++ 目前公司项目所用的Flutter版本已固定在dev v1.4.5-pre.11，故为了开发方便以后所有更新都将适配该版本。（短期内应该不会再主动升级Flutter版本）
++ 由于Flutter v1.4.5-pre11以上版本修改了部分api参数，故老版本Flutter可能无法正常编译，请升级至pre11版本！
  ```
 [✓] Flutter (Channel dev, v1.4.5-pre.11, on Mac OS X 10.14.3 18D109, locale zh-Hans-CN)
 [✓] Android toolchain - develop for Android devices (Android SDK version 28.0.3)
