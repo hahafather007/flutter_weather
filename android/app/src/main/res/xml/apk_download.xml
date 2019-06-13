@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
     <files-path
-        name="."
+        name="apkDownload"
         path="apk_download/" />
     <cache-path
-        name="."
-        path="." />
+        name="imageCache"
+        path="libCachedImageData/" />
 </paths>
