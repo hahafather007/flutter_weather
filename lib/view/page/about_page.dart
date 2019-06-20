@@ -219,7 +219,8 @@ class AboutState extends PageState<AboutPage> {
               _buildOverviewItem(
                 icon: Icons.share,
                 text: AppText.of(context).shareApp,
-                onTap: () => Share.share(AppText.of(context).shareAppUrl),
+                onTap: () => EsysFlutterShare.shareText(
+                    AppText.of(context).shareAppUrl, AppText.of(context).share),
               ),
 
               Padding(

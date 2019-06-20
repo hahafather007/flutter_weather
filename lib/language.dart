@@ -15,6 +15,7 @@ class AppText {
       // 通用
       "yes": "是",
       "no": "否",
+      "close": "关闭",
       "netError": "网络开小差了哦~",
       "refresh": "刷新",
       "addFav": "收藏",
@@ -143,6 +144,7 @@ class AppText {
       "caculating": "正在计算...",
       "shareType": "分享形式",
       "likeHammer": "仿锤子便签",
+      "textOnly": "纯文本",
       "commonUse": "通用",
       "themeColor": "主题色",
       "chooseTheme": "选择主题色",
@@ -192,6 +194,8 @@ class AppText {
   String get yes => _localizedValues[locale.languageCode]["yes"];
 
   String get no => _localizedValues[locale.languageCode]["no"];
+
+  String get close => _localizedValues[locale.languageCode]["close"];
 
   String get netError => _localizedValues[locale.languageCode]["netError"];
 
@@ -462,6 +466,8 @@ class AppText {
   String get shareType => _localizedValues[locale.languageCode]["shareType"];
 
   String get likeHammer => _localizedValues[locale.languageCode]["likeHammer"];
+
+  String get textOnly => _localizedValues[locale.languageCode]["textOnly"];
 
   String get commonUse => _localizedValues[locale.languageCode]["commonUse"];
 

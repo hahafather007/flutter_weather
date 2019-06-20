@@ -104,6 +104,12 @@ class SharedDepository {
   Future<bool> setPageModules(List<PageModule> modules) async =>
       await _prefs.setString("pageModules2", jsonEncode(modules));
 
+  /// 天气分享形式是否为锤子分享
+  bool get hammerShare => _getBool("hammerShare", defaultValue: true);
+
+  Future<bool> setHammerShare(bool value) async =>
+      await _prefs.setBool("hammerShare", value);
+
   /// ==============================================
   ///                     分界线
   /// ==============================================

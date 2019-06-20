@@ -1,4 +1,5 @@
 import 'package:flutter_weather/commom_import.dart';
+import 'dart:typed_data' show Uint8List;
 
 class WeatherSharePicker extends StatefulWidget {
   final Weather weather;
@@ -25,8 +26,92 @@ class WeatherSharePicker extends StatefulWidget {
 }
 
 class _WeatherPickState extends PageState<WeatherSharePicker> {
+  Timer _screenTimer;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _screenTimer = Timer(const Duration(milliseconds: 100), () {
+      if (SharedDepository().hammerShare) {
+        takeScreenshot().then((file) {
+          if (file != null) {
+            final u8 = Uint8List.fromList(file.readAsBytesSync());
+            EsysFlutterShare.shareImage("${widget.city}_${DateTime.now()}.png",
+                u8.buffer.asByteData(), AppText.of(context).share);
+            pop(context);
+          }
+        });
+      } else {
+        EsysFlutterShare.shareText(_getShareText(), AppText.of(context).share);
+        pop(context);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _screenTimer?.cancel();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      // 这玩意的实际表现跟Android的.9.png不太一样
+      // Android的是中间拉伸，四周不变形
+      // 这玩意是中间不变形，四周拉伸。。。无语
+      // 所以只能暂时用三段图片合成
+      body: Stack(
+        children: <Widget>[
+          Positioned(
+            child: RepaintBoundary(
+              key: boundaryKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Image.asset(
+                    "images/hammer_share1.jpg",
+                    width: getScreenWidth(context),
+                  ),
+                  Stack(
+                    children: <Widget>[
+                      Image.asset(
+                        "images/hammer_share2.jpg",
+                        height: 200,
+                        fit: BoxFit.fill,
+                        width: getScreenWidth(context),
+                      ),
+                      Positioned.fill(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.only(left: 24, top: 6),
+                          child: Text(
+                            _getShareText(),
+                            style: TextStyle(
+                                fontSize: 13, color: AppColor.colorText2),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Image.asset(
+                    "images/hammer_share3.jpg",
+                    width: getScreenWidth(context),
+                  ),
+                ],
+              ),
+            ),
+            left: getScreenWidth(context),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _getShareText() {
     final now = widget.weather?.now;
     WeatherDailyForecast today;
     WeatherDailyForecast tomorrow;
@@ -37,57 +122,18 @@ class _WeatherPickState extends PageState<WeatherSharePicker> {
       }
     }
 
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      // 这玩意的实际表现跟Android的.9.png不太一样
-      // Android的是中间拉伸，四周不变形
-      // 这玩意是中间不变形，四周拉伸。。。无语
-      // 所以只能暂时用三段图片合成
-      body: Center(
-        child: RepaintBoundary(
-          key: boundaryKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Image.asset(
-                "images/hammer_share1.jpg",
-                width: getScreenWidth(context),
-              ),
-              Stack(
-                children: <Widget>[
-                  Image.asset(
-                    "images/hammer_share2.jpg",
-                    height: 200,
-                    fit: BoxFit.fill,
-                    width: getScreenWidth(context),
-                  ),
-                  Positioned.fill(
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      padding: const EdgeInsets.only(left: 24, top: 6),
-                      child: Text(
-                        '''${widget.city}天气：
-                        \n${widget.weather?.update?.loc} 发布：
-                        \n${now?.condTxt}，${now?.tmp}℃
-                        \nPM2.5：${widget.air?.pm25}，${widget.air?.qlty}
-                        \n今天：${today?.tmpMin}℃ ~ ${today?.tmpMax}℃，${today?.condTxtD}
-                        \n明天：${tomorrow?.tmpMin}℃ ~ ${tomorrow?.tmpMax}℃，${tomorrow?.condTxtD}
-                        ''',
-                        style:
-                            TextStyle(fontSize: 13, color: AppColor.colorText2),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Image.asset(
-                "images/hammer_share3.jpg",
-                width: getScreenWidth(context),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+    return SharedDepository().hammerShare
+        ? "${widget.city}天气："
+            "\n\n${widget.weather?.update?.loc} 发布："
+            "\n\n${now?.condTxt}，${now?.tmp}℃"
+            "\n\nPM2.5：${widget.air?.pm25}，${widget.air?.qlty}"
+            "\n\n今天：${today?.tmpMin}℃ ~ ${today?.tmpMax}℃，${today?.condTxtD}"
+            "\n\n明天：${tomorrow?.tmpMin}℃ ~ ${tomorrow?.tmpMax}℃，${tomorrow?.condTxtD}"
+        : "${widget.city}天气："
+            "\n${widget.weather?.update?.loc} 发布："
+            "\n${now?.condTxt}，${now?.tmp}℃"
+            "\nPM2.5：${widget.air?.pm25}，${widget.air?.qlty}"
+            "\n今天：${today?.tmpMin}℃ ~ ${today?.tmpMax}℃，${today?.condTxtD}"
+            "\n明天：${tomorrow?.tmpMin}℃ ~ ${tomorrow?.tmpMax}℃，${tomorrow?.condTxtD}";
   }
 }

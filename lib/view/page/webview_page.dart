@@ -101,7 +101,8 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
                   _controller?.reload();
                   break;
                 case "share":
-                  Share.share("${widget.title}\n${widget.url}");
+                  EsysFlutterShare.shareText("${widget.title}\n${widget.url}",
+                      AppText.of(context).share);
                   break;
                 case "copy":
                   Clipboard.setData(ClipboardData(text: widget.url));

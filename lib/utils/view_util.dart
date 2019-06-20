@@ -8,41 +8,52 @@ void cleanFocus(BuildContext context) =>
 /// 根据Android或IOS显示不同风格dialog
 Future<Null> showDiffDialog(BuildContext context,
     {Widget title,
-      Widget content,
-      String yesText,
-      String noText,
-      @required Function pressed}) async {
+    Widget content,
+    String yesText,
+    String noText,
+    EdgeInsetsGeometry contentPadding =
+        const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0),
+    Function pressed}) async {
   await showDialog(
     context: context,
     builder: (context) => isAndroid
         ? AlertDialog(
-      title: title,
-      content: content,
-      actions: <Widget>[
-        FlatButton(
-          onPressed: () => pop(context),
-          child: Text(noText ?? AppText.of(context).no),
-        ),
-        FlatButton(
-          onPressed: () => pressed(),
-          child: Text(yesText ?? AppText.of(context).yes),
-        ),
-      ],
-    )
+            title: title,
+            content: content,
+            contentPadding: contentPadding,
+            actions: <Widget>[
+              noText != null
+                  ? FlatButton(
+                      onPressed: () => pop(context),
+                      child: Text(noText),
+                    )
+                  : Container(),
+              yesText != null
+                  ? FlatButton(
+                      onPressed: () => pressed(),
+                      child: Text(yesText),
+                    )
+                  : Container(),
+            ],
+          )
         : CupertinoAlertDialog(
-      title: title,
-      content: content,
-      actions: <Widget>[
-        CupertinoDialogAction(
-          onPressed: () => pop(context),
-          child: Text(noText ?? AppText.of(context).no),
-        ),
-        CupertinoDialogAction(
-          onPressed: () => pressed(),
-          child: Text(yesText ?? AppText.of(context).yes),
-        ),
-      ],
-    ),
+            title: title,
+            content: content,
+            actions: <Widget>[
+              noText != null
+                  ? CupertinoDialogAction(
+                      onPressed: () => pop(context),
+                      child: Text(noText),
+                    )
+                  : Container(),
+              yesText != null
+                  ? CupertinoDialogAction(
+                      onPressed: () => pressed(),
+                      child: Text(yesText),
+                    )
+                  : Container(),
+            ],
+          ),
   );
 }
 

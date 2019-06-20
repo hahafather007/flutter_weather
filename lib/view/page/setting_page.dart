@@ -55,8 +55,10 @@ class SettingState extends PageState<SettingPage> {
                 _buildTitle(title: AppText.of(context).weather),
                 _buildItem(
                   title: AppText.of(context).shareType,
-                  content: AppText.of(context).likeHammer,
-                  onTap: () {},
+                  content: SharedDepository().hammerShare
+                      ? AppText.of(context).likeHammer
+                      : AppText.of(context).textOnly,
+                  onTap: _typeDialogFunc,
                 ),
 
                 // 通用
@@ -200,4 +202,91 @@ class SettingState extends PageState<SettingPage> {
       return AppText.of(context).colorNone;
     }
   }
+
+  /// 天气分享形式的弹窗
+  Function get _typeDialogFunc => () async {
+        await showDiffDialog(
+          context,
+          contentPadding: const EdgeInsets.only(),
+          title: Text(
+              "${AppText.of(context).weather}${AppText.of(context).shareType}"),
+          noText: AppText.of(context).close,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Material(
+                color: Colors.white,
+                child: InkWell(
+                  onTap: () async {
+                    await SharedDepository().setHammerShare(false);
+                    pop(context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 24),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          SharedDepository().hammerShare
+                              ? Icons.radio_button_unchecked
+                              : Icons.radio_button_checked,
+                          size: 22,
+                          color: SharedDepository().hammerShare
+                              ? AppColor.colorText2
+                              : Theme.of(context).accentColor,
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 4, top: 6, bottom: 6),
+                          child: Text(
+                            AppText.of(context).textOnly,
+                            style: TextStyle(
+                                fontSize: 16, color: AppColor.colorText1),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Material(
+                color: Colors.white,
+                child: InkWell(
+                  onTap: () async {
+                    await SharedDepository().setHammerShare(true);
+                    pop(context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 24),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          SharedDepository().hammerShare
+                              ? Icons.radio_button_checked
+                              : Icons.radio_button_unchecked,
+                          size: 22,
+                          color: SharedDepository().hammerShare
+                              ? Theme.of(context).accentColor
+                              : AppColor.colorText2,
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 4, top: 6, bottom: 6),
+                          child: Text(
+                            AppText.of(context).likeHammer,
+                            style: TextStyle(
+                                fontSize: 16, color: AppColor.colorText1),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+        setState(() {});
+      };
 }
