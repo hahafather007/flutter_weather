@@ -87,7 +87,7 @@ class _WeatherPickState extends PageState<WeatherSharePicker> {
                       Positioned.fill(
                         child: Container(
                           alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.only(left: 24, top: 6),
+                          padding: const EdgeInsets.only(left: 24, top: 4),
                           child: Text(
                             _getShareText(),
                             style: TextStyle(

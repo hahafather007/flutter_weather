@@ -9,7 +9,8 @@
 如果喜欢的话记得点一波Star。
 
 ### 更新日志 ###
-+ 2019-06-13(v1.1.3):优化了查看妹子图时的Hero动画效果；新增了"设为壁纸"选项；修改了直接套用公司项目代码时写错的包名。
++ 2019-06-20(v1.2.0)：天气分享功能已可正常使用（仿锤子便签/纯文本）；其他细节优化。
++ 2019-06-13(v1.1.3)：优化了查看妹子图时的Hero动画效果；新增了"设为壁纸"选项。
 
 ### 部分截图 ###
 <img src="screenshot/1.jpg" width="24%"/><img width="1%"/><img src="screenshot/2.jpg" width="24%"/><img width="1%"/><img src="screenshot/3.jpg" width="24%"/><img width="1%"/><img src="screenshot/4.jpg" width="24%"/>

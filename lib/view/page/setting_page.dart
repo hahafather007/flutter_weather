@@ -210,12 +210,13 @@ class SettingState extends PageState<SettingPage> {
           contentPadding: const EdgeInsets.only(),
           title: Text(
               "${AppText.of(context).weather}${AppText.of(context).shareType}"),
-          noText: AppText.of(context).close,
+          yesText: AppText.of(context).close,
+          pressed: () => pop(context),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Material(
-                color: Colors.white,
+                color: Colors.transparent,
                 child: InkWell(
                   onTap: () async {
                     await SharedDepository().setHammerShare(false);
@@ -250,7 +251,7 @@ class SettingState extends PageState<SettingPage> {
                 ),
               ),
               Material(
-                color: Colors.white,
+                color: Colors.transparent,
                 child: InkWell(
                   onTap: () async {
                     await SharedDepository().setHammerShare(true);
