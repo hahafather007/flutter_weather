@@ -4,6 +4,7 @@ export 'package:device_info/device_info.dart';
 export 'package:dio/dio.dart';
 export 'package:flutter/material.dart';
 export 'package:flutter/services.dart';
+export 'package:flutter/rendering.dart';
 export 'package:flutter_localizations/flutter_localizations.dart';
 export 'package:flutter_weather/view/widget/staggered_grid_view/flutter_staggered_grid_view.dart';
 export 'package:flutter_weather/language.dart';
@@ -84,6 +85,8 @@ export 'view/page/gift_egg_page.dart';
 export 'view/page/city_control_page.dart';
 export 'view/page/city_choose_page.dart';
 
+export 'view/picker/weather_share_picker.dart';
+
 export 'view/widget/custom_app_bar.dart';
 export 'view/widget/loading_view.dart';
 export 'view/widget/net_image.dart';
@@ -120,3 +123,4 @@ export 'dart:async';
 export 'dart:convert';
 export 'dart:io';
 export 'dart:math';
+export 'dart:typed_data';

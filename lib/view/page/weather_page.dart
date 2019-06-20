@@ -29,9 +29,10 @@ class WeatherState extends PageState<WeatherPage> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: _viewModel.weatherType.stream,
+      stream: _viewModel.weather.stream,
       builder: (context, snapshot) {
-        final type = snapshot.data ?? "";
+        final Pair<Weather, AirNowCity> pair = snapshot.data;
+        final type = pair?.a?.now?.condTxt ?? "";
 
         return StreamBuilder(
           stream: _viewModel.cities.stream,
@@ -42,14 +43,15 @@ class WeatherState extends PageState<WeatherPage> {
               stream: _pageStream.stream,
               builder: (context, snapshot) {
                 final double pageValue = snapshot.data ?? 0;
+                final location = cities.isNotEmpty
+                    ? cities[min(cities.length - 1, pageValue.round())]
+                    : "";
 
                 return Scaffold(
                   key: scafKey,
                   appBar: CustomAppBar(
                     title: Text(
-                      cities.isNotEmpty
-                          ? cities[min(cities.length - 1, pageValue.round())]
-                          : "",
+                      location,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -88,6 +90,10 @@ class WeatherState extends PageState<WeatherPage> {
                         onSelected: (value) {
                           switch (value) {
                             case "share":
+                              if (pair?.a == null || pair?.b == null) return;
+
+                              WeatherSharePicker.share(context,
+                                  weather: pair.a, air: pair.b, city: location);
                               break;
                             case "cities":
                               push(context, page: CityControlPage());

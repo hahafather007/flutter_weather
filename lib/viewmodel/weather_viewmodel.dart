@@ -4,7 +4,7 @@ class WeatherViewModel extends ViewModel {
   final _service = WeatherService();
 
   final cities = StreamController<List<String>>();
-  final weatherType = StreamController<String>();
+  final weather = StreamController<Pair<Weather, AirNowCity>>();
 
   int _index = 0;
 
@@ -12,26 +12,32 @@ class WeatherViewModel extends ViewModel {
     bindSub(
         WeatherHolder().cityStream.listen((list) => streamAdd(cities, list)));
     bindSub(WeatherHolder()
-        .weatherStream
-        .map((list) => list[min(_index, list.length - 1)])
-        .listen((v) => streamAdd(weatherType, v.now?.condTxt)));
+        .cityStream
+        .map((list) => min(_index, list.length - 1))
+        .listen((index) => streamAdd(
+            weather,
+            Pair(WeatherHolder().weathers[index],
+                WeatherHolder().airs[index]?.airNowCity))));
   }
 
   void indexChange(int index) {
     _index = index;
 
-    streamAdd(weatherType, WeatherHolder().weathers[index].now?.condTxt);
+    streamAdd(
+        weather,
+        Pair(WeatherHolder().weathers[index],
+            WeatherHolder().airs[index]?.airNowCity));
   }
 
   /// 预览其他天气
-  void switchType(String type) => streamAdd(weatherType, type);
+  void switchType(String type) => streamAdd(weather, type);
 
   @override
   void dispose() {
     _service.dispose();
 
     cities.close();
-    weatherType.close();
+    weather.close();
 
     super.dispose();
   }
