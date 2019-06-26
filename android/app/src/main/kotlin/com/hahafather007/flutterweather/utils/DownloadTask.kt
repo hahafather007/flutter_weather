@@ -31,49 +31,54 @@ class DownloadTask(context: Context, private val url: String, private val verCod
         if (file.exists()) {
             return file
         }
-        val conn = URL(url).openConnection() as HttpURLConnection
-        conn.connectTimeout = 10000
-        conn.setRequestProperty("Accept-Encoding", "identity")
-        val inputStream = conn.inputStream
-        val outputStream = FileOutputStream(file)
-        val buff = BufferedInputStream(inputStream)
-        val buffer = ByteArray(1024)
-        var process = 0
-        // 开始写入文件
-        do {
-            try {
-                val len = buff.read(buffer)
-                if (len == -1) {
-                    break
-                } else {
-                    outputStream.write(buffer, 0, len)
-                    process += len
+        try {
+            val conn = URL(url).openConnection() as HttpURLConnection
+            conn.connectTimeout = 10000
+            conn.readTimeout = 10000
+            conn.setRequestProperty("Accept-Encoding", "identity")
+            val inputStream = conn.inputStream
+            val outputStream = FileOutputStream(file)
+            val buff = BufferedInputStream(inputStream)
+            val buffer = ByteArray(1024)
+            var process = 0
+            // 开始写入文件
+            do {
+                try {
+                    val len = buff.read(buffer)
+                    if (len == -1) {
+                        break
+                    } else {
+                        outputStream.write(buffer, 0, len)
+                        process += len
 
-                    val value = process * 100 / conn.contentLength
-                    if (value != currentProcess) {
-                        currentProcess = value
-                        publishProgress(currentProcess)
+                        val value = process * 100 / conn.contentLength
+                        if (value != currentProcess) {
+                            currentProcess = value
+                            publishProgress(currentProcess)
+                        }
                     }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    outputStream.close()
+                    inputStream.close()
+                    buff.close()
+
+                    if (file.exists()) {
+                        file.delete()
+                    }
+
+                    return null
                 }
-            } catch (e: IOException) {
-                e.printStackTrace()
-                outputStream.close()
-                inputStream.close()
-                buff.close()
+            } while (true)
 
-                if (file.exists()) {
-                    file.delete()
-                }
+            outputStream.close()
+            inputStream.close()
+            buff.close()
 
-                return null
-            }
-        } while (true)
-
-        outputStream.close()
-        inputStream.close()
-        buff.close()
-
-        return file
+            return file
+        } catch (e: IOException) {
+            return null
+        }
     }
 
     override fun onProgressUpdate(vararg values: Int?) {
