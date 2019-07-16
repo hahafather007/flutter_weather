@@ -1,7 +1,6 @@
 export 'package:cached_network_image/cached_network_image.dart';
 export 'package:connectivity/connectivity.dart';
 export 'package:device_info/device_info.dart';
-export 'package:dio/dio.dart';
 export 'package:flutter/material.dart';
 export 'package:flutter/services.dart';
 export 'package:flutter/rendering.dart';
@@ -12,9 +11,8 @@ export 'package:html/parser.dart';
 export 'package:esys_flutter_share/esys_flutter_share.dart';
 export 'package:intl/intl_standalone.dart';
 export 'package:shared_preferences/shared_preferences.dart';
-export 'package:simple_permissions/simple_permissions.dart';
+export 'package:permission_handler/permission_handler.dart';
 export 'package:url_launcher/url_launcher.dart';
-export 'package:web_vuw/web_vuw.dart';
 export 'package:flutter_colorpicker/block_picker.dart';
 export 'package:path_provider/path_provider.dart';
 export 'package:flutter_cache_manager/flutter_cache_manager.dart';

@@ -7,9 +7,9 @@ import android.app.PendingIntent
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Build
-import android.support.v4.app.NotificationCompat
-import android.support.v4.app.NotificationCompat.FLAG_ONLY_ALERT_ONCE
-import android.support.v4.app.NotificationCompat.PRIORITY_DEFAULT
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationCompat.FLAG_ONLY_ALERT_ONCE
+import androidx.core.app.NotificationCompat.PRIORITY_DEFAULT
 import com.hahafather007.flutterweather.R
 
 class NotificationUtil(private val context: Context) {

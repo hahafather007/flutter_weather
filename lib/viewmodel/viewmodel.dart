@@ -1,4 +1,5 @@
 import 'package:flutter_weather/commom_import.dart';
+import 'package:dio/dio.dart';
 
 abstract class ViewModel extends StreamSubController {
   final isLoading = StreamController<bool>();

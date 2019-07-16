@@ -1,4 +1,5 @@
 import 'package:flutter_weather/commom_import.dart';
+import 'package:dio/dio.dart';
 
 class GiftMziImageViewModel extends ViewModel {
   final _service = GiftMziImageService();

@@ -36,14 +36,16 @@ class _WeatherPickState extends PageState<WeatherSharePicker> {
       if (SharedDepository().hammerShare) {
         takeScreenshot().then((file) {
           if (file != null) {
-            final u8 = Uint8List.fromList(file.readAsBytesSync());
-            EsysFlutterShare.shareImage("${widget.city}_${DateTime.now()}.png",
-                u8.buffer.asByteData(), AppText.of(context).share);
+            Share.file(
+                AppText.of(context).share,
+                "${widget.city}_${DateTime.now()}.png",
+                file.readAsBytesSync(),
+                "*/*");
             pop(context);
           }
         });
       } else {
-        EsysFlutterShare.shareText(_getShareText(), AppText.of(context).share);
+        Share.text(AppText.of(context).share, _getShareText(), "text/plain");
         pop(context);
       }
     });

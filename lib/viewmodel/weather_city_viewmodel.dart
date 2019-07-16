@@ -1,4 +1,5 @@
 import 'package:flutter_weather/commom_import.dart';
+import 'package:dio/dio.dart';
 
 class WeatherCityViewModel extends ViewModel {
   final int index;
@@ -7,6 +8,7 @@ class WeatherCityViewModel extends ViewModel {
 
   final weather = StreamController<Weather>();
   final air = StreamController<WeatherAir>();
+  final perStatus = StreamController<PermissionStatus>();
 
   WeatherCityViewModel({@required this.index}) {
     // 首先将缓存的数据作为第一数据显示，再判断请求逻辑
@@ -29,9 +31,17 @@ class WeatherCityViewModel extends ViewModel {
     String mCity;
     if (index == 0) {
       // 请求定位权限
-      await SimplePermissions.requestPermission(Permission.AlwaysLocation);
+      final status = (await PermissionHandler().requestPermissions([
+        PermissionGroup.locationWhenInUse
+      ]))[PermissionGroup.locationWhenInUse];
+      streamAdd(perStatus, status);
 
-      mCity = await ChannelUtil.getLocation() ?? WeatherHolder().cities[index];
+      if (status != PermissionStatus.denied) {
+        mCity =
+            await ChannelUtil.getLocation() ?? WeatherHolder().cities[index];
+      } else {
+        mCity = WeatherHolder().cities[index];
+      }
     } else {
       mCity = WeatherHolder().cities[index];
     }
@@ -70,6 +80,7 @@ class WeatherCityViewModel extends ViewModel {
 
     weather.close();
     air.close();
+    perStatus.close();
 
     super.dispose();
   }

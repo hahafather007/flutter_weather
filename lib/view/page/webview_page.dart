@@ -16,7 +16,6 @@ class CustomWebViewPage<T> extends StatefulWidget {
 
 class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
   WebViewModel _viewModel;
-  WebVuwController _controller;
 
   @override
   void initState() {
@@ -27,7 +26,6 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
 
   @override
   void dispose() {
-    _controller.stopLoading();
     _viewModel.dispose();
 
     super.dispose();
@@ -78,31 +76,31 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
               color: Colors.white,
             ),
             itemBuilder: (context) => [
-                  PopupMenuItem(
-                    value: "refresh",
-                    child: Text(AppText.of(context).refresh),
-                  ),
-                  PopupMenuItem(
-                    value: "share",
-                    child: Text(AppText.of(context).share),
-                  ),
-                  PopupMenuItem(
-                    value: "copy",
-                    child: Text(AppText.of(context).copyUrl),
-                  ),
-                  PopupMenuItem(
-                    value: "openByOther",
-                    child: Text(AppText.of(context).openByOther),
-                  ),
-                ],
+              PopupMenuItem(
+                value: "refresh",
+                child: Text(AppText.of(context).refresh),
+              ),
+              PopupMenuItem(
+                value: "share",
+                child: Text(AppText.of(context).share),
+              ),
+              PopupMenuItem(
+                value: "copy",
+                child: Text(AppText.of(context).copyUrl),
+              ),
+              PopupMenuItem(
+                value: "openByOther",
+                child: Text(AppText.of(context).openByOther),
+              ),
+            ],
             onSelected: (value) {
               switch (value) {
                 case "refresh":
-                  _controller?.reload();
+//                  _controller?.reload();
                   break;
                 case "share":
-                  EsysFlutterShare.shareText("${widget.title}\n${widget.url}",
-                      AppText.of(context).share);
+                  Share.text(AppText.of(context).share,
+                      "${widget.title}\n${widget.url}", "text/plain");
                   break;
                 case "copy":
                   Clipboard.setData(ClipboardData(text: widget.url));
@@ -118,16 +116,7 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
       ),
       body: LoadingView(
         loadingStream: _viewModel.isLoading.stream,
-        child: WebVuw(
-          initialUrl: widget.url,
-          pullToRefresh: false,
-          enableJavascript: true,
-          enableLocalStorage: true,
-          onWebViewCreated: (controller) {
-            _controller = controller;
-            _viewModel.bindEvent(controller.onEvents());
-          },
-        ),
+        child: Container(),
       ),
     );
   }
