@@ -22,16 +22,18 @@ Android:<img src="qrcode/android.png"/>
 IOS:没有开发者账号，暂时只能自己编译
 
 ### 编译环境 ###
-+ 目前公司项目所用的Flutter版本已固定在dev v1.4.5-pre.11，故为了开发方便以后所有更新都将适配该版本。（短期内应该不会再主动升级Flutter版本）
-+ 由于Flutter v1.4.5-pre11以上版本修改了部分api参数，故老版本Flutter可能无法正常编译，请升级至pre11版本！
- ```
-[✓] Flutter (Channel dev, v1.4.5-pre.11, on Mac OS X 10.14.3 18D109, locale zh-Hans-CN)
+~~目前公司项目所用的Flutter版本已固定在dev v1.4.5-pre.11，故为了开发方便以后所有更新都将适配该版本。（短期内应该不会再主动升级Flutter版本）~~
+~~由于Flutter v1.4.5-pre11以上版本修改了部分api参数，故老版本Flutter可能无法正常编译，请升级至pre11版本！~~
+目前已将项目迁移至AndroidX，Flutter版本信息如下
+```
+[✓] Flutter (Channel beta, v1.7.8+hotfix.4-pre.1, on Mac OS X 10.14.5 18F132, locale zh-Hans-CN)
 [✓] Android toolchain - develop for Android devices (Android SDK version 28.0.3)
-[✓] iOS toolchain - develop for iOS devices (Xcode 10.2.1)
+[✓] Xcode - develop for iOS and macOS (Xcode 10.2.1)
+[✓] iOS tools - develop for iOS devices
 [✓] Android Studio (version 3.4)
 [!] IntelliJ IDEA Community Edition (version 2018.2.1)
     ✗ Flutter plugin not installed; this adds Flutter specific functionality.
-[✓] Connected device (2 available)
+[✓] Connected device (1 available)
 ```
 
 ### 免责声明 ###
