@@ -1,4 +1,5 @@
 import 'package:flutter_weather/commom_import.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class CustomWebViewPage<T> extends StatefulWidget {
   final String title;
@@ -16,6 +17,7 @@ class CustomWebViewPage<T> extends StatefulWidget {
 
 class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
   WebViewModel _viewModel;
+  WebViewController _controller;
 
   @override
   void initState() {
@@ -48,10 +50,16 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
         color: Theme.of(context).accentColor,
         leftBtn: IconButton(
           icon: Icon(
-            Icons.clear,
+            Icons.arrow_back,
             color: Colors.white,
           ),
-          onPressed: () => pop(context),
+          onPressed: () async {
+            if (_controller != null && await _controller.canGoBack()) {
+              _controller.goBack();
+            } else {
+              pop(context);
+            }
+          },
         ),
         rightBtns: [
           widget.favData != null
@@ -96,7 +104,7 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
             onSelected: (value) {
               switch (value) {
                 case "refresh":
-//                  _controller?.reload();
+                  _controller?.reload();
                   break;
                 case "share":
                   Share.text(AppText.of(context).share,
@@ -116,7 +124,12 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
       ),
       body: LoadingView(
         loadingStream: _viewModel.isLoading.stream,
-        child: Container(),
+        child: WebView(
+          initialUrl: "${widget.url}",
+          onWebViewCreated: (controller) => _controller = controller,
+          onPageFinished: (_) => _viewModel.setLoading(false),
+          javascriptMode: JavascriptMode.unrestricted,
+        ),
       ),
     );
   }

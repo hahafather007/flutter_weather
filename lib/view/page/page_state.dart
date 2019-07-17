@@ -52,10 +52,16 @@ abstract class PageState<T extends StatefulWidget> extends State<T>
     ));
   }
 
-  void showSnack({@required String text}) {
+  void showSnack(
+      {@required String text,
+      Duration duration = const Duration(milliseconds: 2000),
+      SnackBarAction action}) {
     scafKey.currentState.removeCurrentSnackBar();
     scafKey.currentState.showSnackBar(SnackBar(
-        content: Text(text), duration: const Duration(milliseconds: 2000)));
+      content: Text(text),
+      duration: duration,
+      action: action,
+    ));
   }
 
   @override

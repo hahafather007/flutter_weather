@@ -24,6 +24,7 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
 
   int _currentPage = 0;
   bool _showAppBar = false;
+  bool _canScroll = true;
 
   @override
   void initState() {
@@ -71,6 +72,9 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                     PageView.builder(
                       itemCount: list.length,
                       controller: _pageController,
+                      physics: _canScroll
+                          ? const ClampingScrollPhysics()
+                          : const NeverScrollableScrollPhysics(),
                       onPageChanged: (index) {
                         setState(() => _currentPage = index);
                         if (list[index] == null && widget.loadDataFun != null) {
@@ -87,7 +91,7 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                         } else {
                           final zoomImg = ZoomableWidget(
                             maxScale: 5,
-                            minScale: 0.1,
+                            minScale: 1,
                             child: NetImage(
                               url: data.url,
                               placeholder: Center(
@@ -95,6 +99,14 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                               ),
                               fit: BoxFit.contain,
                             ),
+                            onZoomChanged: (scale) {
+                              if (index != _currentPage) return;
+
+                              final scroll = scale == 1;
+                              if (scroll != _canScroll) {
+                                setState(() => _canScroll = scroll);
+                              }
+                            },
                           );
 
                           return index == _currentPage
@@ -145,16 +157,15 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                               color: Colors.white,
                             ),
                             itemBuilder: (context) => [
-                                  PopupMenuItem(
-                                    value: "save",
-                                    child: Text(AppText.of(context).imgSave),
-                                  ),
-                                  PopupMenuItem(
-                                    value: "wallpaper",
-                                    child: Text(
-                                        AppText.of(context).setAsWallpaper),
-                                  ),
-                                ],
+                              PopupMenuItem(
+                                value: "save",
+                                child: Text(AppText.of(context).imgSave),
+                              ),
+                              PopupMenuItem(
+                                value: "wallpaper",
+                                child: Text(AppText.of(context).setAsWallpaper),
+                              ),
+                            ],
                             onSelected: (value) async {
                               switch (value) {
                                 case "save":
