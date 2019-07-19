@@ -32,10 +32,10 @@ class DownloadTask(context: Context, private val url: String, private val verCod
             return file
         }
         try {
-            val conn = URL(url).openConnection() as HttpURLConnection
-            conn.connectTimeout = 10000
-            conn.readTimeout = 10000
-            conn.setRequestProperty("Accept-Encoding", "identity")
+            var conn = getConnect(url)
+            if (conn.responseCode == 302) {
+                conn = getConnect(conn.headerFields["Location"]!!.first())
+            }
             val inputStream = conn.inputStream
             val outputStream = FileOutputStream(file)
             val buff = BufferedInputStream(inputStream)
@@ -79,6 +79,15 @@ class DownloadTask(context: Context, private val url: String, private val verCod
         } catch (e: IOException) {
             return null
         }
+    }
+
+    private fun getConnect(url: String): HttpURLConnection {
+        val conn = URL(url).openConnection() as HttpURLConnection
+        conn.connectTimeout = 10000
+        conn.readTimeout = 10000
+        conn.setRequestProperty("Accept-Encoding", "identity")
+
+        return conn
     }
 
     override fun onProgressUpdate(vararg values: Int?) {

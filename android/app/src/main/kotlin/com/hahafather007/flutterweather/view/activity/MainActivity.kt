@@ -1,6 +1,7 @@
 package com.hahafather007.flutterweather.view.activity
 
 import android.app.PendingIntent
+import android.content.SharedPreferences
 import android.os.Bundle
 import cc.shinichi.wallpaperlib.SetWallpaper
 import com.hahafather007.flutterweather.utils.*
@@ -10,16 +11,21 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
+import java.io.File
 
 class MainActivity : FlutterActivity(), RxController {
     override val rxComposite = CompositeDisposable()
+
+    private lateinit var sharePre: SharedPreferences
 
     private val viewModel = MainViewModel()
     private var isDownloading = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         GeneratedPluginRegistrant.registerWith(this)
+        sharePre = getPreferences(MODE_PRIVATE)
 
         initChannel()
         deleteOldApk()
@@ -77,14 +83,19 @@ class MainActivity : FlutterActivity(), RxController {
                 UpdateUtil.getInstallIntent(this, verCode), PendingIntent.FLAG_CANCEL_CURRENT)
 
 
-        if (UpdateUtil.isApkExist(this, verCode)) {
-            result.success(true)
+        if (sharePre.getBoolean("appVer$verCode", false)) {
             notifyUtil.sendNotificationProgress(
                     "APK下载完成", "点击安装", 100, pi)
             if (!isWifi) {
                 UpdateUtil.installApk(this@MainActivity, verCode)
             }
+            result.success(true)
         } else {
+            val file = File("${filesDir.absolutePath}/apk_download/$verCode.apk")
+            if (file.exists()) {
+                file.delete()
+            }
+
             UpdateUtil.downloadApk(this, url, verCode, isWifi, object : DownloadListener {
                 override fun onStart() {
                     isDownloading = true
@@ -98,6 +109,9 @@ class MainActivity : FlutterActivity(), RxController {
                     if (!isWifi) {
                         UpdateUtil.installApk(this@MainActivity, verCode)
                     }
+                    val edit = sharePre.edit()
+                    edit.putBoolean("appVer$verCode", true)
+                    edit.apply()
                 }
 
                 override fun onFail() {

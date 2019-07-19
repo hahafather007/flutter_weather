@@ -42,15 +42,15 @@ object UpdateUtil {
         intent.action = Intent.ACTION_VIEW
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        val uri: Uri
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            uri = FileProvider.getUriForFile(context,
-                    "com.hahafather007.flutterweather.fileProvider", file)
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        val uri =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    FileProvider.getUriForFile(context,
+                            "com.hahafather007.flutterweather.fileProvider", file)
 
-        } else {
-            uri = Uri.fromFile(file)
-        }
+                } else {
+                    Uri.fromFile(file)
+                }
 
         intent.setDataAndType(uri, "application/vnd.android.package-archive")
 
