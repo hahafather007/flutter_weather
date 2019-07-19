@@ -50,12 +50,14 @@ class AboutState extends PageState<AboutPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(AppText.of(context).hasNewVersionLong),
-                Padding(
-                  padding: const EdgeInsets.only(top: 12),
-                  child: Text(
-                    "${AppText.of(context).apkSize}${version.size}",
-                    style: TextStyle(fontSize: 14, color: AppColor.colorText2),
-                  ),
+                Container(height: 12),
+                Text(
+                  "${AppText.of(context).updateTime}${version.time}",
+                  style: TextStyle(fontSize: 14, color: AppColor.colorText2),
+                ),
+                Text(
+                  "${AppText.of(context).apkSize}${version.size}",
+                  style: TextStyle(fontSize: 14, color: AppColor.colorText2),
                 ),
               ],
             ),
@@ -71,7 +73,18 @@ class AboutState extends PageState<AboutPage> {
         } else {
           await showDiffDialog(context,
               title: Text(AppText.of(context).hasNewVersion),
-              content: Text(AppText.of(context).hasNewVersionLongIOS),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(AppText.of(context).hasNewVersionLongIOS),
+                  Container(height: 12),
+                  Text(
+                    "${AppText.of(context).updateTime}${version.time}",
+                    style: TextStyle(fontSize: 14, color: AppColor.colorText2),
+                  ),
+                ],
+              ),
               yesText: AppText.of(context).certain,
               noText: AppText.of(context).wait,
               pressed: () => pop(context));

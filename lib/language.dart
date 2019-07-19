@@ -168,6 +168,7 @@ class AppText {
       "newVersionReady": "新版本准备就绪",
       "newVersionReadyLong": "新版本的安装包已经在WIFI环境下载完成，是否立即安装？（该过程不消耗流量）",
       "apkSize": "APK大小：",
+      "updateTime": "更新时间：",
       "apkPleaseInstall": "APK下载成功！请安装",
       "apkFail": "APK下载失败！",
       "apkDownloading": "应用正在更新中！",
@@ -552,6 +553,8 @@ class AppText {
       _localizedValues[locale.languageCode]["newVersionReadyLong"];
 
   String get apkSize => _localizedValues[locale.languageCode]["apkSize"];
+
+  String get updateTime => _localizedValues[locale.languageCode]["updateTime"];
 
   String get apkPleaseInstall =>
       _localizedValues[locale.languageCode]["apkPleaseInstall"];

@@ -78,10 +78,12 @@ class MainActivity : FlutterActivity(), RxController {
 
 
         if (UpdateUtil.isApkExist(this, verCode)) {
+            result.success(true)
             notifyUtil.sendNotificationProgress(
                     "APK下载完成", "点击安装", 100, pi)
-
-            result.success(true)
+            if (!isWifi) {
+                UpdateUtil.installApk(this@MainActivity, verCode)
+            }
         } else {
             UpdateUtil.downloadApk(this, url, verCode, isWifi, object : DownloadListener {
                 override fun onStart() {
