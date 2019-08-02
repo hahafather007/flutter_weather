@@ -11,7 +11,7 @@ class WeatherCloud extends StatefulWidget {
   State createState() => WeatherCloudState();
 }
 
-class WeatherCloudState extends PageState<WeatherCloud>
+class WeatherCloudState extends State<WeatherCloud>
     with TickerProviderStateMixin {
   /// 白云移动动画
   AnimationController _cloudController;

@@ -95,7 +95,7 @@ class ToastView extends StatefulWidget {
   State createState() => ToastState(msg: msg);
 }
 
-class ToastState extends PageState<ToastView> with TickerProviderStateMixin {
+class ToastState extends State<ToastView> with TickerProviderStateMixin {
   final String msg;
 
   AnimationController _controller;

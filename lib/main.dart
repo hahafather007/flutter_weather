@@ -27,7 +27,7 @@ class MyApp extends StatefulWidget {
   State createState() => MyAppState();
 }
 
-class MyAppState extends PageState<MyApp> {
+class MyAppState extends State<MyApp> with StreamSubController {
   ThemeData theme = ThemeData();
 
   @override
@@ -39,6 +39,13 @@ class MyAppState extends PageState<MyApp> {
         .where((pair) => pair.a == "themeChange")
         .listen(
             (pair) => setState(() => theme = ThemeData(accentColor: pair.b))));
+  }
+
+  @override
+  void dispose() {
+    subDispose();
+
+    super.dispose();
   }
 
   @override
