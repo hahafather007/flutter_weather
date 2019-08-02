@@ -22,8 +22,8 @@ class CircleAirView extends StatefulWidget {
   State createState() => _CircleAirState();
 }
 
-class _CircleAirState extends PageState<CircleAirView>
-    with TickerProviderStateMixin {
+class _CircleAirState extends State<CircleAirView>
+    with TickerProviderStateMixin, StreamSubController {
   AnimationController _controller;
   Animation<int> _numAnim;
   Animation<Color> _colorAnim;
@@ -63,6 +63,7 @@ class _CircleAirState extends PageState<CircleAirView>
   @override
   void dispose() {
     _controller?.dispose();
+    subDispose();
 
     super.dispose();
   }

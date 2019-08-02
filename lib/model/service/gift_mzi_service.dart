@@ -2,13 +2,13 @@ import 'package:flutter_weather/commom_import.dart';
 
 class GiftMziService extends Service {
   GiftMziService() {
-    dio.options.baseUrl = "http://www.mzitu.com";
+    dio.options.baseUrl = "https://www.mzitu.com";
   }
 
   Future<List<MziData>> getData(
       {@required String url, @required int page}) async {
-    final response =
-        await dio.get("/$url/page/$page", cancelToken: cancelToken);
+    final response = await dio.get("/$url/page/${page == 1 ? 0 : page}",
+        cancelToken: cancelToken);
 
     // 下面都在解析xml
     final document = parse(response.data);

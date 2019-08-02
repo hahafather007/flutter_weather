@@ -193,6 +193,8 @@ class HomeState extends PageState<HomePage> {
                               })
                           : Container();
                   }
+
+                  return Container();
                 }).toList(),
               ),
 
@@ -217,7 +219,7 @@ class HomeState extends PageState<HomePage> {
         ),
         body: _buildBody(),
       ),
-      onWillPop: () {
+      onWillPop: () async{
         if (_readyExit) {
           exitApp();
         } else {
@@ -226,6 +228,8 @@ class HomeState extends PageState<HomePage> {
               Timer(const Duration(seconds: 2), () => _readyExit = false);
           showSnack(text: AppText.of(context).retryToExit);
         }
+
+        return false;
       },
     );
   }

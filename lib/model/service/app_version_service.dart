@@ -19,7 +19,7 @@ class AppVersionService extends Service {
         .text
         .substring(lis[0].text.indexOf("build") + 6, lis[0].text.indexOf(")"));
     final size = lis[1].text.replaceFirst("大小：", "");
-    final time = lis[2].text.substring(lis[2].text.indexOf("20"));
+    final time = lis[2].text.substring(lis[2].text.indexOf("：") + 1);
     debugPrint("version:$version");
     debugPrint("size:$size");
     debugPrint("time:$time");

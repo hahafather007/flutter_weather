@@ -13,8 +13,8 @@ class LoadingView extends StatefulWidget {
 }
 
 /// 带有圆形加载进度条的Stack
-class LoadingState extends PageState<LoadingView>
-    with TickerProviderStateMixin {
+class LoadingState extends State<LoadingView>
+    with TickerProviderStateMixin,StreamSubController {
   AnimationController _controller;
   Animation<Size> _animation;
 
@@ -40,6 +40,7 @@ class LoadingState extends PageState<LoadingView>
   @override
   void dispose() {
     _controller?.dispose();
+    subDispose();
 
     super.dispose();
   }
