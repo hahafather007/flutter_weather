@@ -19,6 +19,14 @@ class SplashState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return WillPopScope(
+      child: Scaffold(
+        body: Image.asset(
+          "images/splash.png",
+          fit: isAndroid ? BoxFit.fill : BoxFit.fitHeight,
+        ),
+      ),
+      onWillPop: () async => false,
+    );
   }
 }
