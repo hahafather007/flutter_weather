@@ -12,7 +12,7 @@ class ZoomableWidget extends StatefulWidget {
     this.enableRotate: false,
     this.child,
     this.onTap,
-    this.zoomSteps: 0,
+    this.zoomSteps: 2,
     this.autoCenter: false,
     this.bounceBackBoundary: true,
     this.enableFling: true,

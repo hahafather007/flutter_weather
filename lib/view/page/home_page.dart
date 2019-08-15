@@ -8,6 +8,7 @@ class HomePage extends StatefulWidget {
 class HomeState extends PageState<HomePage> {
   /// 标识有效页面
   final _pageTypeMap = Map<PageType, bool>();
+  final _weatherKey = GlobalKey<WeatherState>();
 
   /// 当前显示页面
   var _pageType = PageType.WEATHER;
@@ -136,6 +137,7 @@ class HomeState extends PageState<HomePage> {
                               onTap: () {
                                 if (_pageType == PageType.WEATHER) return;
 
+                                _weatherKey.currentState.changeHideState(false);
                                 setState(() {
                                   _pageType = PageType.WEATHER;
                                   _pageTypeMap[_pageType] = true;
@@ -153,6 +155,7 @@ class HomeState extends PageState<HomePage> {
                               onTap: () {
                                 if (_pageType == PageType.GIFT) return;
 
+                                _weatherKey.currentState.changeHideState(true);
                                 setState(() {
                                   _pageType = PageType.GIFT;
                                   _pageTypeMap[_pageType] = true;
@@ -170,6 +173,7 @@ class HomeState extends PageState<HomePage> {
                               onTap: () {
                                 if (_pageType == PageType.READ) return;
 
+                                _weatherKey.currentState.changeHideState(true);
                                 setState(() {
                                   _pageType = PageType.READ;
                                   _pageTypeMap[_pageType] = true;
@@ -186,6 +190,7 @@ class HomeState extends PageState<HomePage> {
                               onTap: () {
                                 if (_pageType == PageType.COLLECT) return;
 
+                                _weatherKey.currentState.changeHideState(true);
                                 setState(() {
                                   _pageType = PageType.COLLECT;
                                   _pageTypeMap[_pageType] = true;
@@ -206,20 +211,32 @@ class HomeState extends PageState<HomePage> {
                   icon: Icons.settings,
                   title: AppText.of(context).setting,
                   isTarget: false,
-                  onTap: () => push(context, page: SettingPage())),
+                  onTap: () async {
+                    _weatherKey.currentState.changeHideState(true);
+                    await push(context, page: SettingPage());
+                    if (_pageType == PageType.WEATHER) {
+                      _weatherKey.currentState.changeHideState(false);
+                    }
+                  }),
 
               // 关于
               _buildDrawerItem(
                   icon: Icons.error_outline,
                   title: AppText.of(context).about,
                   isTarget: false,
-                  onTap: () => push(context, page: AboutPage())),
+                  onTap: () async {
+                    _weatherKey.currentState.changeHideState(true);
+                    await push(context, page: AboutPage());
+                    if (_pageType == PageType.WEATHER) {
+                      _weatherKey.currentState.changeHideState(false);
+                    }
+                  }),
             ],
           ),
         ),
         body: _buildBody(),
       ),
-      onWillPop: () async{
+      onWillPop: () async {
         if (_readyExit) {
           exitApp();
         } else {
@@ -244,7 +261,9 @@ class HomeState extends PageState<HomePage> {
           offstage: _pageType != PageType.WEATHER,
           child: TickerMode(
             enabled: _pageType == PageType.WEATHER,
-            child: _pageTypeMap[PageType.WEATHER] ? WeatherPage() : Container(),
+            child: _pageTypeMap[PageType.WEATHER]
+                ? WeatherPage(key: _weatherKey)
+                : Container(),
           ),
         ),
 

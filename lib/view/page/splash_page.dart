@@ -6,7 +6,7 @@ class SplashPage extends StatefulWidget {
   State createState() => SplashState();
 }
 
-class SplashState extends State<SplashPage> with StreamSubController {
+class SplashState extends PageState<SplashPage> {
   @override
   void initState() {
     super.initState();
@@ -23,21 +23,12 @@ class SplashState extends State<SplashPage> with StreamSubController {
   }
 
   @override
-  void dispose() {
-    subDispose();
-
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return WillPopScope(
       child: Scaffold(
         body: Image.asset(
           "images/splash.png",
           fit: isAndroid ? BoxFit.fill : BoxFit.fitHeight,
-          height: getScreenHeight(context),
-          width: getScreenWidth(context),
         ),
       ),
       onWillPop: () async => false,

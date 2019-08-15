@@ -1,6 +1,8 @@
 import 'package:flutter_weather/commom_import.dart';
 
 class WeatherPage extends StatefulWidget {
+  WeatherPage({Key key}) : super(key: key);
+
   @override
   State createState() => WeatherState();
 }
@@ -11,10 +13,27 @@ class WeatherState extends PageState<WeatherPage> {
   final _pageStream = StreamController<double>();
 
   @override
+  bool get bindLife => true;
+
+  @override
   void initState() {
     super.initState();
 
     _controller.addListener(() => streamAdd(_pageStream, _controller.page));
+  }
+
+  @override
+  void onPause() {
+    super.onPause();
+
+    _viewModel.changeHideState(true);
+  }
+
+  @override
+  void onResume() {
+    super.onResume();
+
+    _viewModel.changeHideState(false);
   }
 
   @override
@@ -74,19 +93,19 @@ class WeatherState extends PageState<WeatherPage> {
                           color: Colors.white,
                         ),
                         itemBuilder: (context) => [
-                              PopupMenuItem(
-                                value: "share",
-                                child: Text(AppText.of(context).share),
-                              ),
-                              PopupMenuItem(
-                                value: "cities",
-                                child: Text(AppText.of(context).cityControl),
-                              ),
-                              PopupMenuItem(
-                                value: "weathers",
-                                child: Text(AppText.of(context).weathersView),
-                              ),
-                            ],
+                          PopupMenuItem(
+                            value: "share",
+                            child: Text(AppText.of(context).share),
+                          ),
+                          PopupMenuItem(
+                            value: "cities",
+                            child: Text(AppText.of(context).cityControl),
+                          ),
+                          PopupMenuItem(
+                            value: "weathers",
+                            child: Text(AppText.of(context).weathersView),
+                          ),
+                        ],
                         onSelected: (value) {
                           switch (value) {
                             case "share":
@@ -106,24 +125,34 @@ class WeatherState extends PageState<WeatherPage> {
                       ),
                     ],
                   ),
-                  body: WeatherView(
-                    type: type,
-                    color: _getAppBarColor(type: type),
-                    child: PageView.builder(
-                      itemCount: cities.length,
-                      controller: _controller,
-                      physics: const ClampingScrollPhysics(),
-                      onPageChanged: (index) => _viewModel.indexChange(index),
-                      itemBuilder: (context, index) {
-                        return Opacity(
-                          opacity: 1 - (pageValue - index).abs() % 1,
-                          child: WeatherCityPage(
-                            key: Key("WeatherCityPage${cities[index]}"),
-                            index: index,
-                          ),
-                        );
-                      },
-                    ),
+                  body: StreamBuilder(
+                    stream: _viewModel.hideWeather.stream,
+                    initialData: false,
+                    builder: (context, snapshot) {
+                      final hideWeather = snapshot.data;
+
+                      return WeatherView(
+                        type: type,
+                        color: _getAppBarColor(type: type),
+                        hide: hideWeather,
+                        child: PageView.builder(
+                          itemCount: cities.length,
+                          controller: _controller,
+                          physics: const ClampingScrollPhysics(),
+                          onPageChanged: (index) =>
+                              _viewModel.indexChange(index),
+                          itemBuilder: (context, index) {
+                            return Opacity(
+                              opacity: 1 - (pageValue - index).abs() % 1,
+                              child: WeatherCityPage(
+                                key: Key("WeatherCityPage${cities[index]}"),
+                                index: index,
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
                 );
               },
@@ -168,34 +197,34 @@ class WeatherState extends PageState<WeatherPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-            title: Text(
-              AppText.of(context).weathersView,
-              style: TextStyle(fontSize: 20, color: Colors.black),
-            ),
-            contentPadding: const EdgeInsets.only(),
-            titlePadding: const EdgeInsets.fromLTRB(20, 18, 0, 10),
-            content: Container(
-              height: double.maxFinite,
-              width: double.maxFinite,
-              child: ListView(
-                physics: const ClampingScrollPhysics(),
-                padding: const EdgeInsets.only(),
-                children: <Widget>[
-                  _buildDialogItem(title: AppText.of(context).sunny),
-                  _buildDialogItem(title: AppText.of(context).cloudy),
-                  _buildDialogItem(title: AppText.of(context).overcast),
-                  _buildDialogItem(title: AppText.of(context).rain),
-                  _buildDialogItem(title: AppText.of(context).flashRain),
-                  _buildDialogItem(title: AppText.of(context).snowRain),
-                  _buildDialogItem(title: AppText.of(context).snow),
-                  _buildDialogItem(title: AppText.of(context).hail),
-                  _buildDialogItem(title: AppText.of(context).fog),
-                  _buildDialogItem(title: AppText.of(context).smog),
-                  _buildDialogItem(title: AppText.of(context).sandstorm),
-                ],
-              ),
-            ),
+        title: Text(
+          AppText.of(context).weathersView,
+          style: TextStyle(fontSize: 20, color: Colors.black),
+        ),
+        contentPadding: const EdgeInsets.only(),
+        titlePadding: const EdgeInsets.fromLTRB(20, 18, 0, 10),
+        content: Container(
+          height: double.maxFinite,
+          width: double.maxFinite,
+          child: ListView(
+            physics: const ClampingScrollPhysics(),
+            padding: const EdgeInsets.only(),
+            children: <Widget>[
+              _buildDialogItem(title: AppText.of(context).sunny),
+              _buildDialogItem(title: AppText.of(context).cloudy),
+              _buildDialogItem(title: AppText.of(context).overcast),
+              _buildDialogItem(title: AppText.of(context).rain),
+              _buildDialogItem(title: AppText.of(context).flashRain),
+              _buildDialogItem(title: AppText.of(context).snowRain),
+              _buildDialogItem(title: AppText.of(context).snow),
+              _buildDialogItem(title: AppText.of(context).hail),
+              _buildDialogItem(title: AppText.of(context).fog),
+              _buildDialogItem(title: AppText.of(context).smog),
+              _buildDialogItem(title: AppText.of(context).sandstorm),
+            ],
           ),
+        ),
+      ),
     );
   }
 
@@ -230,5 +259,9 @@ class WeatherState extends PageState<WeatherPage> {
         ),
       ),
     );
+  }
+
+  void changeHideState(bool hide) {
+    _viewModel.changeHideState(hide);
   }
 }

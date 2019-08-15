@@ -2,13 +2,24 @@ import 'package:flutter_weather/commom_import.dart';
 import 'dart:ui' as Ui;
 
 abstract class PageState<T extends StatefulWidget> extends State<T>
-    with StreamSubController {
+    with StreamSubController, WidgetsBindingObserver {
   @protected
   final scafKey = GlobalKey<ScaffoldState>();
   @protected
   final boundaryKey = GlobalKey();
 
   bool _bindError = false;
+
+  bool get bindLife => false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (bindLife) {
+      WidgetsBinding.instance.addObserver(this);
+    }
+  }
 
   /// 获取屏幕截图
   @protected
@@ -64,9 +75,29 @@ abstract class PageState<T extends StatefulWidget> extends State<T>
     ));
   }
 
+  @protected
+  void onResume() {}
+
+  @protected
+  void onPause() {}
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.resumed) {
+      onResume();
+    } else if (state == AppLifecycleState.paused) {
+      onPause();
+    }
+  }
+
   @override
   void dispose() {
     subDispose();
+    if (bindLife) {
+      WidgetsBinding.instance.removeObserver(this);
+    }
 
     super.dispose();
   }

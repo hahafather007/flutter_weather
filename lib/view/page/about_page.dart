@@ -187,7 +187,7 @@ class AboutState extends PageState<AboutPage> {
           },
           body: ListView(
             padding: const EdgeInsets.only(),
-            physics: const NeverScrollableScrollPhysics(),
+            physics: const ClampingScrollPhysics(),
             children: <Widget>[
               // 版本和名称
               _buildAppName(),
