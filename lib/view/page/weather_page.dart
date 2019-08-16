@@ -16,8 +16,6 @@ class WeatherState extends PageState<WeatherPage> {
   @override
   bool get bindLife => true;
 
-  double _currentOffset;
-
   @override
   void initState() {
     super.initState();
@@ -175,10 +173,8 @@ class WeatherState extends PageState<WeatherPage> {
                           itemCount: cities.length,
                           controller: _controller,
                           physics: const ClampingScrollPhysics(),
-                          onPageChanged: (index) {
-                            _viewModel.indexChange(index);
-                            _currentOffset = null;
-                          },
+                          onPageChanged: (index) =>
+                              _viewModel.indexChange(index),
                           itemBuilder: (context, index) {
                             return Opacity(
                               opacity: 1 - (pageValue - index).abs() % 1,
@@ -328,32 +324,34 @@ class WeatherState extends PageState<WeatherPage> {
           ),
 
           // 指示的小点
-          Stack(
-            children: <Widget>[
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: cities.map((city) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 3),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.white54),
-                    width: 5,
-                    height: 5,
-                  );
-                }).toList(),
-              ),
-              Positioned(
-                left: 11 * pageValue,
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 3),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle, color: Colors.white),
-                  width: 5,
-                  height: 5,
-                ),
-              ),
-            ],
-          ),
+          cities.length > 1
+              ? Stack(
+                  children: <Widget>[
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: cities.map((city) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 3),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.white54),
+                          width: 5,
+                          height: 5,
+                        );
+                      }).toList(),
+                    ),
+                    Positioned(
+                      left: 11 * pageValue,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 3),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.white),
+                        width: 5,
+                        height: 5,
+                      ),
+                    ),
+                  ],
+                )
+              : Container(),
         ],
       ),
     );

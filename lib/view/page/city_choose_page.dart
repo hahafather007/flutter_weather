@@ -6,8 +6,17 @@ class CityChoosePage extends StatefulWidget {
 }
 
 class CityChooseState extends PageState<CityChoosePage> {
-  String _provinceId;
-  String _cityId;
+  final List<List<dynamic>> _csvList = [];
+
+  String _province;
+  String _city;
+
+  @override
+  void dispose() {
+    _csvList.clear();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +45,7 @@ class CityChooseState extends PageState<CityChoosePage> {
             child: FutureBuilder(
               future: _getProvinces(),
               builder: (context, snapshot) {
-                final List<Province> provinces = snapshot.data ?? List();
+                final List<String> provinces = snapshot.data ?? [];
 
                 return ListView.builder(
                   itemCount: provinces.length,
@@ -46,14 +55,14 @@ class CityChooseState extends PageState<CityChoosePage> {
                     final province = provinces[index];
 
                     return _buildItem(
-                      name: province.name,
-                      isSelect: province.id == _provinceId,
+                      name: province,
+                      isSelect: province == _province,
                       onTap: () => setState(() {
-                            if (province.id != _provinceId) {
-                              _provinceId = province.id;
-                              _cityId = null;
-                            }
-                          }),
+                        if (province != _province) {
+                          _province = province;
+                          _city = null;
+                        }
+                      }),
                     );
                   },
                 );
@@ -67,7 +76,7 @@ class CityChooseState extends PageState<CityChoosePage> {
             child: FutureBuilder(
               future: _getCities(),
               builder: (context, snapshot) {
-                final List<City> cities = snapshot.data ?? List();
+                final List<String> cities = snapshot.data ?? [];
 
                 return ListView.builder(
                   itemCount: cities.length,
@@ -77,11 +86,11 @@ class CityChooseState extends PageState<CityChoosePage> {
                     final city = cities[index];
 
                     return _buildItem(
-                      name: city.name,
-                      isSelect: city.id == _cityId,
+                      name: city,
+                      isSelect: city == _city,
                       onTap: () => setState(() {
-                            _cityId = city.id;
-                          }),
+                        _city = city;
+                      }),
                     );
                   },
                 );
@@ -107,7 +116,7 @@ class CityChooseState extends PageState<CityChoosePage> {
                     return _buildItem(
                       name: district.name,
                       isSelect: false,
-                      onTap: () => pop(context, extraData: district.name),
+                      onTap: () => pop(context, extraData: district),
                     );
                   },
                 );
@@ -153,31 +162,62 @@ class CityChooseState extends PageState<CityChoosePage> {
   }
 
   /// 获取省列表
-  Future<List<Province>> _getProvinces() async {
-    final str =
-        await DefaultAssetBundle.of(context).loadString("jsons/province.json");
-    return (jsonDecode(str) as List).map((v) => Province.fromJson(v)).toList();
+  Future<List<String>> _getProvinces() async {
+    final provinces = List<String>();
+    if (_csvList.isEmpty) {
+      final csv = await DefaultAssetBundle.of(context)
+          .loadString("assets/china-city-list.csv");
+      _csvList.addAll(const CsvToListConverter().convert(csv));
+    }
+    for (int i = 2; i < _csvList.length; i++) {
+      final list = _csvList[i];
+      final name = list[7];
+      if (!provinces.contains(name)) {
+        provinces.add(name);
+      }
+    }
+
+    return provinces;
   }
 
   /// 获取市列表
-  Future<List<City>> _getCities() async {
-    if (_provinceId == null) return null;
+  Future<List<String>> _getCities() async {
+    if (_province == null) {
+      return [];
+    }
 
-    final str =
-        await DefaultAssetBundle.of(context).loadString("jsons/city.json");
-    return (jsonDecode(str)[_provinceId] as List)
-        .map((v) => City.fromJson(v))
-        .toList();
+    final cities = List<String>();
+    for (int i = 2; i < _csvList.length; i++) {
+      final list = _csvList[i];
+      if (list[7] == _province) {
+        final name = list[9];
+        if (!cities.contains(name)) {
+          cities.add(name);
+        }
+      } else if (cities.isNotEmpty) {
+        break;
+      }
+    }
+
+    return cities;
   }
 
   /// 获取区列表
   Future<List<District>> _getDistricts() async {
-    if (_cityId == null) return null;
+    if (_city == null) {
+      return [];
+    }
 
-    final str =
-        await DefaultAssetBundle.of(context).loadString("jsons/district.json");
-    return (jsonDecode(str)[_cityId] as List)
-        .map((v) => District.fromJson(v))
-        .toList();
+    final districts = List<District>();
+    for (int i = 2; i < _csvList.length; i++) {
+      final list = _csvList[i];
+      if (list[7] == _province && list[9] == _city) {
+        districts.add(District(name: list[2], id: list[0]));
+      } else if (districts.isNotEmpty) {
+        break;
+      }
+    }
+
+    return districts;
   }
 }

@@ -28,6 +28,7 @@ dependencies:
   flutter_linkify: 2.1.0
   image_gallery_saver: 1.1.0
   esys_flutter_share: 1.0.2
+  csv: 4.0.3
 
 dev_dependencies:
   flutter_test:
@@ -114,8 +115,5 @@ flutter:
     - images/hammer_share1.jpg
     - images/hammer_share2.jpg
     - images/hammer_share3.jpg
-
-    # json
-    - jsons/province.json
-    - jsons/city.json
-    - jsons/district.json
+    # assets
+    - assets/china-city-list.csv

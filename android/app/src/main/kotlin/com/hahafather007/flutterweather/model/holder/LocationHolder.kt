@@ -24,7 +24,7 @@ class LocationHolder {
             if (it != null) {
                 // 0表示定位成功
                 if (it.errorCode == 0) {
-                    location.onNext(it.district)
+                    location.onNext("{\"district\":\"${it.district}\",\"province\":\"${it.province}\"}")
 
                     "定位信息：$it".logInfo()
                 } else {

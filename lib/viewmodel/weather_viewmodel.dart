@@ -11,8 +11,10 @@ class WeatherViewModel extends ViewModel {
   Pair<Weather, AirNowCity> _catchWeather;
 
   WeatherViewModel() {
-    bindSub(
-        WeatherHolder().cityStream.listen((list) => streamAdd(cities, list)));
+    bindSub(WeatherHolder()
+        .cityStream
+        .map((list) => list.map((v) => v.name).toList())
+        .listen((list) => streamAdd(cities, list)));
     bindSub(WeatherHolder()
         .cityStream
         .map((list) => min(_index, list.length - 1))

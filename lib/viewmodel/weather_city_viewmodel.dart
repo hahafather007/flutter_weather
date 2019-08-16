@@ -28,7 +28,7 @@ class WeatherCityViewModel extends ViewModel {
       streamAdd(isLoading, true);
     }
 
-    String mCity;
+    District mCity;
     if (index == 0) {
       // 请求定位权限
       final status = (await PermissionHandler().requestPermissions([
@@ -37,8 +37,20 @@ class WeatherCityViewModel extends ViewModel {
       streamAdd(perStatus, status);
 
       if (status != PermissionStatus.denied) {
-        mCity =
-            await ChannelUtil.getLocation() ?? WeatherHolder().cities[index];
+        final result = await ChannelUtil.getLocation();
+        if (result != null) {
+          final csv = await rootBundle.loadString("assets/china-city-list.csv");
+          final csvList = const CsvToListConverter().convert(csv);
+          for (int i = 2; i < csvList.length; i++) {
+            final list = csvList[i];
+            if (list[2] == result.district && list[7] == result.province) {
+              mCity = District(name: result.district, id: list[0]);
+              break;
+            }
+          }
+        } else {
+          mCity = WeatherHolder().cities[index];
+        }
       } else {
         mCity = WeatherHolder().cities[index];
       }
@@ -47,7 +59,7 @@ class WeatherCityViewModel extends ViewModel {
     }
 
     try {
-      final weatherData = await _service.getWeather(city: mCity);
+      final weatherData = await _service.getWeather(city: mCity.id);
       // 储存本次天气结果
       if (weatherData?.weathers?.isNotEmpty ?? false) {
         final mWeather = weatherData.weathers.first;

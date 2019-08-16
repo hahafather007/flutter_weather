@@ -5,14 +5,19 @@ class ChannelUtil {
   static final _platform = MethodChannel(_ChannelTag.CHANNEL_NAME);
 
   /// 获取位置
-  static Future<String> getLocation() async {
-    String city;
+  static Future<City> getLocation() async {
+    City city;
 
     try {
       final String result =
           await _platform.invokeMethod(_ChannelTag.START_LOCATION);
-      if (result?.isNotEmpty ?? false) {
-        city = result;
+      if (result?.isNotEmpty == true) {
+        final str = result
+            .replaceFirst("区", "")
+            .replaceFirst("县", "")
+            .replaceFirst("市", "")
+            .replaceFirst("省", "");
+        city = City.fromJson(jsonDecode(str));
       }
     } on PlatformException catch (e) {
       _doError(e);
