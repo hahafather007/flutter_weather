@@ -5,14 +5,14 @@ class WeatherHolder {
 
   factory WeatherHolder() => _holder;
 
-  final _citiesBroadcast = StreamController<List<String>>();
+  final _citiesBroadcast = StreamController<List<District>>();
   final _weathersBroadcast = StreamController<List<Weather>>();
   final _airsBroadcast = StreamController<List<WeatherAir>>();
 
-  Stream<List<String>> cityStream;
+  Stream<List<District>> cityStream;
   Stream<List<Weather>> weatherStream;
   Stream<List<WeatherAir>> airStream;
-  List<String> _cacheCities;
+  List<District> _cacheCities;
   List<Weather> _cacheWeathers;
   List<WeatherAir> _cacheAirs;
 
@@ -21,7 +21,7 @@ class WeatherHolder {
     weatherStream = _weathersBroadcast.stream.asBroadcastStream();
     airStream = _airsBroadcast.stream.asBroadcastStream();
 
-    _cacheCities = SharedDepository().cities;
+    _cacheCities = SharedDepository().districts;
     _cacheWeathers = SharedDepository().weathers;
     _cacheAirs = SharedDepository().airs;
 
@@ -30,16 +30,16 @@ class WeatherHolder {
     streamAdd(_airsBroadcast, _cacheAirs);
   }
 
-  List<String> get cities => _cacheCities;
+  List<District> get cities => _cacheCities;
 
-  Future<Null> addCity(String city, {int updateIndex}) async {
+  Future<Null> addCity(District city, {int updateIndex}) async {
     if (updateIndex == null) {
       _cacheCities.add(city);
     } else {
       _cacheCities.removeAt(updateIndex);
       _cacheCities.insert(updateIndex, city);
     }
-    await SharedDepository().setCities(_cacheCities);
+    await SharedDepository().setDistricts(_cacheCities);
     streamAdd(_citiesBroadcast, _cacheCities);
   }
 
@@ -47,13 +47,13 @@ class WeatherHolder {
     final mCity = _cacheCities[before];
     _cacheCities.removeAt(before);
     _cacheCities.insert(after, mCity);
-    await SharedDepository().setCities(_cacheCities);
+    await SharedDepository().setDistricts(_cacheCities);
     streamAdd(_citiesBroadcast, _cacheCities);
   }
 
   Future<Null> removeCity(int index) async {
     _cacheCities.removeAt(index);
-    await SharedDepository().setCities(_cacheCities);
+    await SharedDepository().setDistricts(_cacheCities);
     streamAdd(_citiesBroadcast, _cacheCities);
   }
 

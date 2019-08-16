@@ -2,8 +2,10 @@ import 'package:flutter_weather/commom_import.dart';
 
 class WeatherCityPage extends StatefulWidget {
   final int index;
+  final Function(double) onScroll;
 
-  WeatherCityPage({Key key, @required this.index}) : super(key: key);
+  WeatherCityPage({Key key, @required this.index, @required this.onScroll})
+      : super(key: key);
 
   @override
   State createState() => WeatherCityState();
@@ -21,6 +23,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
 
     _viewModel = WeatherCityViewModel(index: widget.index);
     _scrollController.addListener(() {
+      widget.onScroll(_scrollController.offset);
       if (_scrollController.offset >= 320) {
         EventSendHolder().sendEvent(
             tag: "CircleAirViewAnimation${widget.index}", event: null);

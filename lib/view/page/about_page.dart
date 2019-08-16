@@ -157,8 +157,6 @@ class AboutState extends PageState<AboutPage> {
                           color: Colors.white
                               .withOpacity((snapshot.data ?? 0.0) / 72),
                           fontSize: 20,
-
-                          //
                         ),
                       ),
                       background: Stack(
@@ -187,7 +185,7 @@ class AboutState extends PageState<AboutPage> {
           },
           body: ListView(
             padding: const EdgeInsets.only(),
-            physics: const NeverScrollableScrollPhysics(),
+            physics: const ClampingScrollPhysics(),
             children: <Widget>[
               // 版本和名称
               _buildAppName(),

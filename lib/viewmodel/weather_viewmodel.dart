@@ -5,13 +5,16 @@ class WeatherViewModel extends ViewModel {
 
   final cities = StreamController<List<String>>();
   final weather = StreamController<Pair<Weather, AirNowCity>>();
+  final hideWeather = StreamController<bool>();
 
   int _index = 0;
   Pair<Weather, AirNowCity> _catchWeather;
 
   WeatherViewModel() {
-    bindSub(
-        WeatherHolder().cityStream.listen((list) => streamAdd(cities, list)));
+    bindSub(WeatherHolder()
+        .cityStream
+        .map((list) => list.map((v) => v.name).toList())
+        .listen((list) => streamAdd(cities, list)));
     bindSub(WeatherHolder()
         .cityStream
         .map((list) => min(_index, list.length - 1))
@@ -36,10 +39,15 @@ class WeatherViewModel extends ViewModel {
     streamAdd(weather, _catchWeather);
   }
 
+  void changeHideState(bool hide) {
+    streamAdd(hideWeather, hide);
+  }
+
   @override
   void dispose() {
     _service.dispose();
 
+    hideWeather.close();
     cities.close();
     weather.close();
 

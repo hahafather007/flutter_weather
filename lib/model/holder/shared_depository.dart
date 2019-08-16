@@ -22,10 +22,19 @@ class SharedDepository {
   }
 
   /// 获取所有城市定位
-  List<String> get cities => _getStringList("cities", defaultValue: ["成都"]);
+  List<District> get districts {
+    final list = _getStringList("districts");
+    if (list == null || list.isEmpty) {
+      return [District(name: "成都", id: "CN101270101")];
+    }
+    return list
+        .map((v) => jsonDecode(v))
+        .map((v) => District.fromJson(v))
+        .toList();
+  }
 
-  Future<bool> setCities(List<String> value) async =>
-      await _prefs.setStringList("cities", value);
+  Future<bool> setDistricts(List<District> value) async => await _prefs
+      .setStringList("districts", value.map((v) => jsonEncode(v)).toList());
 
   /// 所有城市天气情况
   List<Weather> get weathers {

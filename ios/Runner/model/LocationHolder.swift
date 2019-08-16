@@ -37,13 +37,13 @@ class LocationHolder {
             }
             
             if let location = location {
-                debugPrint("location:%@", location)
+                debugPrint("location:\(location)")
             }
             
             if let reGeocode = reGeocode {
-                debugPrint("reGeocode:%@", reGeocode)
+                debugPrint("reGeocode:\(reGeocode)")
                 if (reGeocode.district != nil) {
-                    result?(reGeocode.district!)
+                    result?("{\"district\":\"\(reGeocode.district!)\",\"province\":\"\(reGeocode.province!)\"}")
                 } else {
                     result?(FlutterMethodNotImplemented)
                 }

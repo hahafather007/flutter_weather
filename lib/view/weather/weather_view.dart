@@ -10,9 +10,13 @@ class WeatherView extends StatefulWidget {
   final String type;
   final Widget child;
   final Color color;
+  final bool hide;
 
   WeatherView(
-      {@required this.type, @required this.child, @required this.color});
+      {@required this.type,
+      @required this.child,
+      @required this.color,
+      this.hide = false});
 
   @override
   State createState() => WeatherViewState();
@@ -57,57 +61,61 @@ class WeatherViewState extends State<WeatherView>
   Widget build(BuildContext context) {
     Widget weather;
 
-    final type = widget.type;
-    if (type.contains("晴")) {
-      weather = AnimatedBuilder(
-        animation: _anim,
-        builder: (context, child) {
-          return WeatherSunny(
-            key: Key("晴"),
-            color: _anim.value,
-          );
-        },
-      );
-    } else if (type.contains("多云")) {
-      weather = AnimatedBuilder(
-        animation: _anim,
-        builder: (context, child) {
-          return WeatherCloud(
-            key: Key("多云"),
-            color: _anim.value,
-          );
-        },
-      );
-    } else if (type.contains("雷")) {
-      weather = WeatherRain(key: Key("雷"), rain: true, flash: true);
-    } else if (type.contains("雨")) {
-      if (type.contains("雪")) {
-        weather = WeatherRain(key: Key("雨夹雪"), rain: true, snow: true);
+    if (!widget.hide) {
+      final type = widget.type;
+      if (type.contains("晴")) {
+        weather = AnimatedBuilder(
+          animation: _anim,
+          builder: (context, child) {
+            return WeatherSunny(
+              key: Key("晴"),
+              color: _anim.value,
+            );
+          },
+        );
+      } else if (type.contains("多云")) {
+        weather = AnimatedBuilder(
+          animation: _anim,
+          builder: (context, child) {
+            return WeatherCloud(
+              key: Key("多云"),
+              color: _anim.value,
+            );
+          },
+        );
+      } else if (type.contains("雷")) {
+        weather = WeatherRain(key: Key("雷"), rain: true, flash: true);
+      } else if (type.contains("雨")) {
+        if (type.contains("雪")) {
+          weather = WeatherRain(key: Key("雨夹雪"), rain: true, snow: true);
+        } else {
+          weather = WeatherRain(key: Key("雨"), rain: true);
+        }
+      } else if (type.contains("冰雹")) {
+        weather = WeatherRain(key: Key("冰雹"), hail: true);
+      } else if (type.contains("雪")) {
+        weather = WeatherRain(key: Key("雪"), snow: true);
+      } else if (type.contains("霾")) {
+        weather = WeatherSandstorm(key: Key("霾"), isSmog: true);
+      } else if (type.contains("雾")) {
+        weather = WeatherRain(key: Key("雾"), fog: true);
+      } else if (type.contains("沙")) {
+        weather = WeatherSandstorm(key: Key("沙"), isSmog: false);
+      } else if (type.contains("阴")) {
+        weather = WeatherOvercast(key: Key("阴"));
       } else {
-        weather = WeatherRain(key: Key("雨"), rain: true);
+        weather = AnimatedBuilder(
+          animation: _anim,
+          builder: (context, child) {
+            return WeatherCloud(
+              key: Key("多云"),
+              color: _anim.value,
+            );
+          },
+        );
       }
-    } else if (type.contains("冰雹")) {
-      weather = WeatherRain(key: Key("冰雹"), hail: true);
-    } else if (type.contains("雪")) {
-      weather = WeatherRain(key: Key("雪"), snow: true);
-    } else if (type.contains("霾")) {
-      weather = WeatherSandstorm(key: Key("霾"), isSmog: true);
-    } else if (type.contains("雾")) {
-      weather = WeatherRain(key: Key("雾"), fog: true);
-    } else if (type.contains("沙")) {
-      weather = WeatherSandstorm(key: Key("沙"), isSmog: false);
-    } else if (type.contains("阴")) {
-      weather = WeatherOvercast(key: Key("阴"));
     } else {
-      weather = AnimatedBuilder(
-        animation: _anim,
-        builder: (context, child) {
-          return WeatherCloud(
-            key: Key("多云"),
-            color: _anim.value,
-          );
-        },
-      );
+      weather = Container();
     }
 
     return Stack(

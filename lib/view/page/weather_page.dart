@@ -1,6 +1,8 @@
 import 'package:flutter_weather/commom_import.dart';
 
 class WeatherPage extends StatefulWidget {
+  WeatherPage({Key key}) : super(key: key);
+
   @override
   State createState() => WeatherState();
 }
@@ -9,12 +11,32 @@ class WeatherState extends PageState<WeatherPage> {
   final _viewModel = WeatherViewModel();
   final _controller = PageController();
   final _pageStream = StreamController<double>();
+  final _titleAlpha = StreamController<double>();
+
+  @override
+  bool get bindLife => true;
 
   @override
   void initState() {
     super.initState();
 
-    _controller.addListener(() => streamAdd(_pageStream, _controller.page));
+    _controller.addListener(() {
+      streamAdd(_pageStream, _controller.page);
+    });
+  }
+
+  @override
+  void onPause() {
+    super.onPause();
+
+    _viewModel.changeHideState(true);
+  }
+
+  @override
+  void onResume() {
+    super.onResume();
+
+    _viewModel.changeHideState(false);
   }
 
   @override
@@ -22,6 +44,7 @@ class WeatherState extends PageState<WeatherPage> {
     _viewModel.dispose();
     _controller.dispose();
     _pageStream.close();
+    _titleAlpha.close();
 
     super.dispose();
   }
@@ -49,81 +72,130 @@ class WeatherState extends PageState<WeatherPage> {
 
                 return Scaffold(
                   key: scafKey,
-                  appBar: CustomAppBar(
-                    title: Text(
-                      location,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                    ),
-                    color: _getAppBarColor(type: type),
-                    showShadow: false,
-                    leftBtn: IconButton(
-                      icon: Icon(
-                        Icons.menu,
-                        color: Colors.white,
-                      ),
-                      onPressed: () => EventSendHolder()
-                          .sendEvent(tag: "homeDrawerOpen", event: true),
-                    ),
-                    rightBtns: [
-                      PopupMenuButton(
-                        icon: Icon(
-                          Icons.more_vert,
-                          color: Colors.white,
-                        ),
-                        itemBuilder: (context) => [
-                              PopupMenuItem(
-                                value: "share",
-                                child: Text(AppText.of(context).share),
-                              ),
-                              PopupMenuItem(
-                                value: "cities",
-                                child: Text(AppText.of(context).cityControl),
-                              ),
-                              PopupMenuItem(
-                                value: "weathers",
-                                child: Text(AppText.of(context).weathersView),
-                              ),
-                            ],
-                        onSelected: (value) {
-                          switch (value) {
-                            case "share":
-                              if (pair?.a == null || pair?.b == null) return;
+                  appBar: PreferredSize(
+                    child: StreamBuilder(
+                      stream: _titleAlpha.stream,
+                      initialData: 0.0,
+                      builder: (context, snapshot) {
+                        final alpha = snapshot.data;
 
-                              WeatherSharePicker.share(context,
-                                  weather: pair.a, air: pair.b, city: location);
-                              break;
-                            case "cities":
-                              push(context, page: CityControlPage());
-                              break;
-                            case "weathers":
-                              _showWeathersDialog();
-                              break;
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                  body: WeatherView(
-                    type: type,
-                    color: _getAppBarColor(type: type),
-                    child: PageView.builder(
-                      itemCount: cities.length,
-                      controller: _controller,
-                      physics: const ClampingScrollPhysics(),
-                      onPageChanged: (index) => _viewModel.indexChange(index),
-                      itemBuilder: (context, index) {
-                        return Opacity(
-                          opacity: 1 - (pageValue - index).abs() % 1,
-                          child: WeatherCityPage(
-                            key: Key("WeatherCityPage${cities[index]}"),
-                            index: index,
-                          ),
+                        return Stack(
+                          children: <Widget>[
+                            // 标题栏
+                            CustomAppBar(
+                              title: Text(
+                                location,
+                                style: TextStyle(
+                                  color: Colors.white.withOpacity(alpha),
+                                  fontSize: 20,
+                                ),
+                              ),
+                              color: _getAppBarColor(type: type),
+                              showShadow: false,
+                              leftBtn: IconButton(
+                                icon: Icon(
+                                  Icons.menu,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () => EventSendHolder().sendEvent(
+                                    tag: "homeDrawerOpen", event: true),
+                              ),
+                              rightBtns: [
+                                PopupMenuButton(
+                                  icon: Icon(
+                                    Icons.more_vert,
+                                    color: Colors.white,
+                                  ),
+                                  itemBuilder: (context) => [
+                                    PopupMenuItem(
+                                      value: "share",
+                                      child: Text(AppText.of(context).share),
+                                    ),
+                                    PopupMenuItem(
+                                      value: "cities",
+                                      child:
+                                          Text(AppText.of(context).cityControl),
+                                    ),
+                                    PopupMenuItem(
+                                      value: "weathers",
+                                      child: Text(
+                                          AppText.of(context).weathersView),
+                                    ),
+                                  ],
+                                  onSelected: (value) {
+                                    switch (value) {
+                                      case "share":
+                                        if (pair?.a == null || pair?.b == null)
+                                          return;
+
+                                        WeatherSharePicker.share(context,
+                                            weather: pair.a,
+                                            air: pair.b,
+                                            city: location);
+                                        break;
+                                      case "cities":
+                                        push(context, page: CityControlPage());
+                                        break;
+                                      case "weathers":
+                                        _showWeathersDialog();
+                                        break;
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+
+                            // 指示条
+                            Opacity(
+                              opacity: 1 - alpha,
+                              child: _buildScrollTitle(
+                                cities: cities,
+                                pageValue: pageValue,
+                              ),
+                            ),
+                          ],
                         );
                       },
                     ),
+                    preferredSize: Size.fromHeight(getAppBarHeight()),
+                  ),
+                  body: StreamBuilder(
+                    stream: _viewModel.hideWeather.stream,
+                    initialData: false,
+                    builder: (context, snapshot) {
+                      final hideWeather = snapshot.data;
+
+                      return WeatherView(
+                        type: type,
+                        color: _getAppBarColor(type: type),
+                        hide: hideWeather,
+                        child: PageView.builder(
+                          itemCount: cities.length,
+                          controller: _controller,
+                          physics: const ClampingScrollPhysics(),
+                          onPageChanged: (index) =>
+                              _viewModel.indexChange(index),
+                          itemBuilder: (context, index) {
+                            return Opacity(
+                              opacity: 1 - (pageValue - index).abs() % 1,
+                              child: WeatherCityPage(
+                                key: Key("WeatherCityPage${cities[index]}"),
+                                index: index,
+                                onScroll: (offset) {
+                                  final height = getStatusHeight(context) +
+                                      getAppBarHeight();
+                                  if (offset <= height) {
+                                    streamAdd(_titleAlpha, offset / height);
+                                  } else {
+                                    streamAdd(_titleAlpha, 1.0);
+                                  }
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
                 );
               },
@@ -168,34 +240,34 @@ class WeatherState extends PageState<WeatherPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-            title: Text(
-              AppText.of(context).weathersView,
-              style: TextStyle(fontSize: 20, color: Colors.black),
-            ),
-            contentPadding: const EdgeInsets.only(),
-            titlePadding: const EdgeInsets.fromLTRB(20, 18, 0, 10),
-            content: Container(
-              height: double.maxFinite,
-              width: double.maxFinite,
-              child: ListView(
-                physics: const ClampingScrollPhysics(),
-                padding: const EdgeInsets.only(),
-                children: <Widget>[
-                  _buildDialogItem(title: AppText.of(context).sunny),
-                  _buildDialogItem(title: AppText.of(context).cloudy),
-                  _buildDialogItem(title: AppText.of(context).overcast),
-                  _buildDialogItem(title: AppText.of(context).rain),
-                  _buildDialogItem(title: AppText.of(context).flashRain),
-                  _buildDialogItem(title: AppText.of(context).snowRain),
-                  _buildDialogItem(title: AppText.of(context).snow),
-                  _buildDialogItem(title: AppText.of(context).hail),
-                  _buildDialogItem(title: AppText.of(context).fog),
-                  _buildDialogItem(title: AppText.of(context).smog),
-                  _buildDialogItem(title: AppText.of(context).sandstorm),
-                ],
-              ),
-            ),
+        title: Text(
+          AppText.of(context).weathersView,
+          style: TextStyle(fontSize: 20, color: Colors.black),
+        ),
+        contentPadding: const EdgeInsets.only(),
+        titlePadding: const EdgeInsets.fromLTRB(20, 18, 0, 10),
+        content: Container(
+          height: double.maxFinite,
+          width: double.maxFinite,
+          child: ListView(
+            physics: const ClampingScrollPhysics(),
+            padding: const EdgeInsets.only(),
+            children: <Widget>[
+              _buildDialogItem(title: AppText.of(context).sunny),
+              _buildDialogItem(title: AppText.of(context).cloudy),
+              _buildDialogItem(title: AppText.of(context).overcast),
+              _buildDialogItem(title: AppText.of(context).rain),
+              _buildDialogItem(title: AppText.of(context).flashRain),
+              _buildDialogItem(title: AppText.of(context).snowRain),
+              _buildDialogItem(title: AppText.of(context).snow),
+              _buildDialogItem(title: AppText.of(context).hail),
+              _buildDialogItem(title: AppText.of(context).fog),
+              _buildDialogItem(title: AppText.of(context).smog),
+              _buildDialogItem(title: AppText.of(context).sandstorm),
+            ],
           ),
+        ),
+      ),
     );
   }
 
@@ -230,5 +302,63 @@ class WeatherState extends PageState<WeatherPage> {
         ),
       ),
     );
+  }
+
+  /// 上方滚动的标题
+  Widget _buildScrollTitle(
+      {@required List<String> cities, @required double pageValue}) {
+    final location = cities.isNotEmpty
+        ? cities[min(cities.length - 1, pageValue.round())]
+        : "";
+
+    return Container(
+      padding: EdgeInsets.only(top: getStatusHeight(context)),
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          // 当前城市
+          Text(
+            "$location",
+            style: TextStyle(fontSize: 18, color: Colors.white),
+          ),
+
+          // 指示的小点
+          cities.length > 1
+              ? Stack(
+                  children: <Widget>[
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: cities.map((city) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 3),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.white54),
+                          width: 5,
+                          height: 5,
+                        );
+                      }).toList(),
+                    ),
+                    Positioned(
+                      left: 11 * pageValue,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 3),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.white),
+                        width: 5,
+                        height: 5,
+                      ),
+                    ),
+                  ],
+                )
+              : Container(),
+        ],
+      ),
+    );
+  }
+
+  /// 改变天气动画显示状态
+  void changeHideState(bool hide) {
+    _viewModel.changeHideState(hide);
   }
 }

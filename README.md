@@ -6,6 +6,7 @@
 如果喜欢的话记得点一波Star，使用中遇到任何BUG也欢迎提Issue
 
 ### 更新日志 ###
++ 2019-08-16(v1.3.0)：天气界面增加顶部多城市指示；妹子图看图优化；城市列表重写，使用了和风天气提供的城市；其他优化。
 + 2019-08-02(v1.2.2)：修复了妹子图部分分类网络请求失败问题（「妹子图」网站屏蔽了page为1的url...无语）；修复了获取更新时对时间的处理BUG。
 + 2019-07-19(v1.2.1)：优化妹子图看图体验，修复动态天气无法预览的BUG。Android项目迁移至AndroidX，并且寻找到了一个稳定的更新方案（app_version_service.dart中可查看）
 + 2019-06-20(v1.2.0)：天气分享功能已可正常使用（仿锤子便签/纯文本）；其他细节优化。
@@ -21,13 +22,9 @@ Android:<img src="qrcode/android.png"/>
 IOS:没有开发者账号，暂时只能自己编译
 
 ### 编译环境 ###
-~~目前公司项目所用的Flutter版本已固定在dev v1.4.5-pre.11，故为了开发方便以后所有更新都将适配该版本。（短期内应该不会再主动升级Flutter版本）~~
-
-~~由于Flutter v1.4.5-pre11以上版本修改了部分api参数，故老版本Flutter可能无法正常编译，请升级至pre11版本！~~
-
 目前已将项目迁移至AndroidX，Flutter版本信息如下：
 ```
-[✓] Flutter (Channel beta, v1.7.8+hotfix.4-pre.1, on Mac OS X 10.14.5 18F132, locale zh-Hans-CN)
+[✓] Flutter (Channel beta, v1.7.8+hotfix.4-pre.5, on Mac OS X 10.14.5 18F132, locale zh-Hans-CN)
 [✓] Android toolchain - develop for Android devices (Android SDK version 28.0.3)
 [✓] Xcode - develop for iOS and macOS (Xcode 10.2.1)
 [✓] iOS tools - develop for iOS devices

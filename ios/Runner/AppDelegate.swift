@@ -19,7 +19,7 @@ import Flutter
     }
     
     func initMethodChannel() {
-        let controller = window?.rootViewController as! FlutterViewController;
+        let controller = window?.rootViewController as! FlutterBinaryMessenger;
         let channel = FlutterMethodChannel.init(name: CHANNEL_NAME, binaryMessenger: controller);
         
         channel.setMethodCallHandler({ (call, result) -> Void in

@@ -8,15 +8,18 @@ class CityControlViewModel extends ViewModel {
   final weathers = StreamController<List<Weather>>();
 
   CityControlViewModel() {
-    streamAdd(cities, WeatherHolder().cities);
+    streamAdd(cities, WeatherHolder().cities.map((v) => v.name).toList());
     streamAdd(weathers, WeatherHolder().weathers);
     bindSub(
         WeatherHolder().weatherStream.listen((v) => streamAdd(weathers, v)));
-    bindSub(WeatherHolder().cityStream.listen((v) => streamAdd(cities, v)));
+    bindSub(WeatherHolder()
+        .cityStream
+        .map((list) => list.map((v) => v.name).toList())
+        .listen((v) => streamAdd(cities, v)));
   }
 
   /// 添加城市
-  Future<bool> addCity(String city) async {
+  Future<bool> addCity(District city) async {
     // 排除重复城市
     if (WeatherHolder().cities.contains(city)) return false;
 
@@ -50,9 +53,9 @@ class CityControlViewModel extends ViewModel {
   }
 
   /// 获取天气
-  Future<WeatherData> _loadWeather({@required String city}) async {
+  Future<WeatherData> _loadWeather({@required District city}) async {
     try {
-      final data = await _service.getWeather(city: city);
+      final data = await _service.getWeather(city: city.id);
 
       return data;
     } on DioError catch (e) {
