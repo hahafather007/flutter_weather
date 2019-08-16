@@ -29,6 +29,8 @@ class SplashState extends PageState<SplashPage> {
         body: Image.asset(
           "images/splash.png",
           fit: isAndroid ? BoxFit.fill : BoxFit.fitHeight,
+          width: getScreenWidth(context),
+          height: getScreenHeight(context),
         ),
       ),
       onWillPop: () async => false,

@@ -157,8 +157,6 @@ class AboutState extends PageState<AboutPage> {
                           color: Colors.white
                               .withOpacity((snapshot.data ?? 0.0) / 72),
                           fontSize: 20,
-
-                          //
                         ),
                       ),
                       background: Stack(
