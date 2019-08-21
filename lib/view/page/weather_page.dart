@@ -1,4 +1,5 @@
 import 'package:flutter_weather/commom_import.dart';
+import 'package:rxdart/rxdart.dart';
 
 class WeatherPage extends StatefulWidget {
   WeatherPage({Key key}) : super(key: key);
@@ -10,6 +11,7 @@ class WeatherPage extends StatefulWidget {
 class WeatherState extends PageState<WeatherPage> {
   final _viewModel = WeatherViewModel();
   final _controller = PageController();
+  final _titleController = PageController();
   final _pageStream = StreamController<double>();
   final _titleAlpha = StreamController<double>();
 
@@ -43,6 +45,7 @@ class WeatherState extends PageState<WeatherPage> {
   void dispose() {
     _viewModel.dispose();
     _controller.dispose();
+    _titleController.dispose();
     _pageStream.close();
     _titleAlpha.close();
 
@@ -148,7 +151,7 @@ class WeatherState extends PageState<WeatherPage> {
                             // 指示条
                             Opacity(
                               opacity: 1 - alpha,
-                              child: _buildScrollTitle(
+                              child: WeatherTitleView(
                                 cities: cities,
                                 pageValue: pageValue,
                               ),
@@ -176,8 +179,10 @@ class WeatherState extends PageState<WeatherPage> {
                           onPageChanged: (index) =>
                               _viewModel.indexChange(index),
                           itemBuilder: (context, index) {
+                            final value = 1 - (pageValue - index).abs();
+
                             return Opacity(
-                              opacity: 1 - (pageValue - index).abs() % 1,
+                              opacity: value >= 0 && value <= 1 ? value : 0,
                               child: WeatherCityPage(
                                 key: Key("WeatherCityPage${cities[index]}"),
                                 index: index,
@@ -300,59 +305,6 @@ class WeatherState extends PageState<WeatherPage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  /// 上方滚动的标题
-  Widget _buildScrollTitle(
-      {@required List<String> cities, @required double pageValue}) {
-    final location = cities.isNotEmpty
-        ? cities[min(cities.length - 1, pageValue.round())]
-        : "";
-
-    return Container(
-      padding: EdgeInsets.only(top: getStatusHeight(context)),
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          // 当前城市
-          Text(
-            "$location",
-            style: TextStyle(fontSize: 18, color: Colors.white),
-          ),
-
-          // 指示的小点
-          cities.length > 1
-              ? Stack(
-                  children: <Widget>[
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: cities.map((city) {
-                        return Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 3),
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle, color: Colors.white54),
-                          width: 5,
-                          height: 5,
-                        );
-                      }).toList(),
-                    ),
-                    Positioned(
-                      left: 11 * pageValue,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 3),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.white),
-                        width: 5,
-                        height: 5,
-                      ),
-                    ),
-                  ],
-                )
-              : Container(),
-        ],
       ),
     );
   }
