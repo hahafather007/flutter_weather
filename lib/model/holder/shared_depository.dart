@@ -119,6 +119,14 @@ class SharedDepository {
   Future<bool> setHammerShare(bool value) async =>
       await _prefs.setBool("hammerShare", value);
 
+  /// 获取已保存的图片
+  List<String> get savedImages {
+    return _getStringList("savedImages", defaultValue: []);
+  }
+
+  Future<bool> setSavedImages(List<String> images) async =>
+      await _prefs.setString("savedImages", jsonEncode(images));
+
   /// ==============================================
   ///                     分界线
   /// ==============================================
