@@ -7,15 +7,27 @@ class CityControlViewModel extends ViewModel {
   final cities = StreamController<List<String>>();
   final weathers = StreamController<List<Weather>>();
 
+  List<String> _cacheCities = [];
+  List<Weather> _cacheWeathers = [];
+
   CityControlViewModel() {
-    streamAdd(cities, WeatherHolder().cities.map((v) => v.name).toList());
-    streamAdd(weathers, WeatherHolder().weathers);
-    bindSub(
-        WeatherHolder().weatherStream.listen((v) => streamAdd(weathers, v)));
+    _cacheCities.addAll(WeatherHolder().cities.map((v) => v.name));
+    _cacheWeathers.addAll(WeatherHolder().weathers);
+    streamAdd(cities, _cacheCities);
+    streamAdd(weathers, _cacheWeathers);
+    bindSub(WeatherHolder().weatherStream.listen((v) {
+      _cacheWeathers.clear();
+      _cacheWeathers.addAll(v);
+      streamAdd(weathers, _cacheWeathers);
+    }));
     bindSub(WeatherHolder()
         .cityStream
         .map((list) => list.map((v) => v.name).toList())
-        .listen((v) => streamAdd(cities, v)));
+        .listen((v) {
+      _cacheCities.clear();
+      _cacheCities.addAll(v);
+      streamAdd(cities, _cacheCities);
+    }));
   }
 
   /// 添加城市
@@ -47,8 +59,17 @@ class CityControlViewModel extends ViewModel {
   void cityIndexChange(int before, int after) async {
     if (before == 0 || after == 0) return;
 
-    await WeatherHolder().updateWeather(before, after);
+    final beforeCity = _cacheCities[before];
+    _cacheCities.removeAt(before);
+    _cacheCities.insert(after, beforeCity);
+    final beforeWeather = _cacheWeathers[before];
+    _cacheWeathers.removeAt(before);
+    _cacheWeathers.insert(after, beforeWeather);
+    streamAdd(cities, _cacheCities);
+    streamAdd(weathers, _cacheWeathers);
+
     await WeatherHolder().updateAir(before, after);
+    await WeatherHolder().updateWeather(before, after);
     await WeatherHolder().updateCity(before, after);
   }
 
@@ -71,6 +92,8 @@ class CityControlViewModel extends ViewModel {
 
     cities.close();
     weathers.close();
+    _cacheCities.clear();
+    _cacheWeathers.clear();
 
     super.dispose();
   }
