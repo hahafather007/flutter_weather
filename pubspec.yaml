@@ -26,7 +26,7 @@ dependencies:
   flutter_colorpicker: 0.2.5
   dragable_flutter_list: 1.0.2
   flutter_linkify: 2.1.0
-  image_gallery_saver: 1.1.0
+  image_gallery_saver: 1.2.0
   esys_flutter_share: 1.0.2
   csv: 4.0.3
 

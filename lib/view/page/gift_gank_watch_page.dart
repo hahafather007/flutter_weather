@@ -177,7 +177,7 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                                   if (file != null) {
                                     final u8 = Uint8List.fromList(
                                         file.readAsBytesSync());
-                                    await ImageGallerySaver.save(u8);
+                                    await ImageGallerySaver.saveImage(u8);
                                     showSnack(
                                         text:
                                             AppText.of(context).imgSaveSuccess);
@@ -196,7 +196,7 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                                     if (isIOS) {
                                       final u8 = Uint8List.fromList(
                                           file.readAsBytesSync());
-                                      await ImageGallerySaver.save(u8);
+                                      await ImageGallerySaver.saveImage(u8);
                                     }
 
                                     ChannelUtil.setWallpaper(
