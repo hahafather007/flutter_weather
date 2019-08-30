@@ -151,64 +151,10 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                               FavHolder().autoFav(list[_currentPage]);
                             },
                           ),
-                          PopupMenuButton(
-                            icon: Icon(
-                              Icons.more_vert,
-                              color: Colors.white,
-                            ),
-                            itemBuilder: (context) => [
-                              PopupMenuItem(
-                                value: "save",
-                                child: Text(AppText.of(context).imgSave),
-                              ),
-                              PopupMenuItem(
-                                value: "wallpaper",
-                                child: Text(AppText.of(context).setAsWallpaper),
-                              ),
-                            ],
-                            onSelected: (value) async {
-                              switch (value) {
-                                case "save":
-                                  final url = list[_currentPage]?.url;
-                                  if (url == null) return;
-
-                                  final file = await DefaultCacheManager()
-                                      .getSingleFile(url);
-                                  if (file != null) {
-                                    final u8 = Uint8List.fromList(
-                                        file.readAsBytesSync());
-                                    await ImageGallerySaver.saveImage(u8);
-                                    showSnack(
-                                        text:
-                                            AppText.of(context).imgSaveSuccess);
-                                  } else {
-                                    showSnack(
-                                        text: AppText.of(context).imgSaveFail);
-                                  }
-
-                                  break;
-                                case "wallpaper":
-                                  final file = await DefaultCacheManager()
-                                      .getSingleFile(
-                                          "${list[_currentPage].url}");
-
-                                  if (file != null) {
-                                    if (isIOS) {
-                                      final u8 = Uint8List.fromList(
-                                          file.readAsBytesSync());
-                                      await ImageGallerySaver.saveImage(u8);
-                                    }
-
-                                    ChannelUtil.setWallpaper(
-                                        path: file.absolute.path);
-                                  } else {
-                                    showSnack(
-                                        text: AppText.of(context)
-                                            .canNotSetWallpaper);
-                                  }
-
-                                  break;
-                              }
+                          WatcherPopupBtn(
+                            url: list[_currentPage]?.url,
+                            onSnackShow: (text) {
+                              showSnack(text: text);
                             },
                           ),
                         ],

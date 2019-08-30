@@ -23,7 +23,7 @@ dependencies:
   rxdart:  0.22.0
   html: 0.14.0+2
   webview_flutter: 0.3.10+3
-  flutter_colorpicker: 0.2.5
+  flutter_colorpicker: 0.2.6
   dragable_flutter_list: 1.0.2
   flutter_linkify: 2.1.0
   image_gallery_saver: 1.2.0
