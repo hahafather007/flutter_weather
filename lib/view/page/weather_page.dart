@@ -76,89 +76,93 @@ class WeatherState extends PageState<WeatherPage> {
                 return Scaffold(
                   key: scafKey,
                   appBar: PreferredSize(
-                    child: StreamBuilder(
-                      stream: _titleAlpha.stream,
-                      initialData: 0.0,
-                      builder: (context, snapshot) {
-                        final alpha = snapshot.data;
+                    child: AnimatedContainer(
+                      color:_getAppBarColor(type: type),
+                      duration: const Duration(seconds: 2),
+                      child: StreamBuilder(
+                        stream: _titleAlpha.stream,
+                        initialData: 0.0,
+                        builder: (context, snapshot) {
+                          final alpha = snapshot.data;
 
-                        return Stack(
-                          children: <Widget>[
-                            // 标题栏
-                            CustomAppBar(
-                              title: Text(
-                                location,
-                                style: TextStyle(
-                                  color: Colors.white.withOpacity(alpha),
-                                  fontSize: 20,
+                          return Stack(
+                            children: <Widget>[
+                              // 指示条
+                              Opacity(
+                                opacity: 1 - alpha,
+                                child: WeatherTitleView(
+                                  cities: cities,
+                                  pageValue: pageValue,
                                 ),
                               ),
-                              color: _getAppBarColor(type: type),
-                              showShadow: false,
-                              leftBtn: IconButton(
-                                icon: Icon(
-                                  Icons.menu,
-                                  color: Colors.white,
+
+                              // 标题栏
+                              CustomAppBar(
+                                title: Text(
+                                  location,
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(alpha),
+                                    fontSize: 20,
+                                  ),
                                 ),
-                                onPressed: () => EventSendHolder().sendEvent(
-                                    tag: "homeDrawerOpen", event: true),
-                              ),
-                              rightBtns: [
-                                PopupMenuButton(
+                                color: Colors.transparent,
+                                showShadow: false,
+                                leftBtn: IconButton(
                                   icon: Icon(
-                                    Icons.more_vert,
+                                    Icons.menu,
                                     color: Colors.white,
                                   ),
-                                  itemBuilder: (context) => [
-                                    PopupMenuItem(
-                                      value: "share",
-                                      child: Text(AppText.of(context).share),
-                                    ),
-                                    PopupMenuItem(
-                                      value: "cities",
-                                      child:
-                                          Text(AppText.of(context).cityControl),
-                                    ),
-                                    PopupMenuItem(
-                                      value: "weathers",
-                                      child: Text(
-                                          AppText.of(context).weathersView),
-                                    ),
-                                  ],
-                                  onSelected: (value) {
-                                    switch (value) {
-                                      case "share":
-                                        if (pair?.a == null || pair?.b == null)
-                                          return;
-
-                                        WeatherSharePicker.share(context,
-                                            weather: pair.a,
-                                            air: pair.b,
-                                            city: location);
-                                        break;
-                                      case "cities":
-                                        push(context, page: CityControlPage());
-                                        break;
-                                      case "weathers":
-                                        _showWeathersDialog();
-                                        break;
-                                    }
-                                  },
+                                  onPressed: () => EventSendHolder().sendEvent(
+                                      tag: "homeDrawerOpen", event: true),
                                 ),
-                              ],
-                            ),
+                                rightBtns: [
+                                  PopupMenuButton(
+                                    icon: Icon(
+                                      Icons.more_vert,
+                                      color: Colors.white,
+                                    ),
+                                    itemBuilder: (context) => [
+                                      PopupMenuItem(
+                                        value: "share",
+                                        child: Text(AppText.of(context).share),
+                                      ),
+                                      PopupMenuItem(
+                                        value: "cities",
+                                        child:
+                                        Text(AppText.of(context).cityControl),
+                                      ),
+                                      PopupMenuItem(
+                                        value: "weathers",
+                                        child: Text(
+                                            AppText.of(context).weathersView),
+                                      ),
+                                    ],
+                                    onSelected: (value) {
+                                      switch (value) {
+                                        case "share":
+                                          if (pair?.a == null || pair?.b == null)
+                                            return;
 
-                            // 指示条
-                            Opacity(
-                              opacity: 1 - alpha,
-                              child: WeatherTitleView(
-                                cities: cities,
-                                pageValue: pageValue,
+                                          WeatherSharePicker.share(context,
+                                              weather: pair.a,
+                                              air: pair.b,
+                                              city: location);
+                                          break;
+                                        case "cities":
+                                          push(context, page: CityControlPage());
+                                          break;
+                                        case "weathers":
+                                          _showWeathersDialog();
+                                          break;
+                                      }
+                                    },
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        );
-                      },
+                            ],
+                          );
+                        },
+                      ),
                     ),
                     preferredSize: Size.fromHeight(getAppBarHeight()),
                   ),
