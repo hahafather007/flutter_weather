@@ -50,28 +50,30 @@ class FavGiftsState extends PageState<FavGiftsPage> with MustKeepAliveMixin {
                       final headers = Map<String, String>();
                       headers["Referer"] = data.refer;
 
-                      return GestureDetector(
-                        onTap: () =>
-                            push(context, page: GiftMziImagePage(data: data)),
-                        child: Stack(
-                          alignment: Alignment.bottomRight,
-                          children: <Widget>[
-                            AspectRatio(
-                              aspectRatio: data.width / data.height,
-                              child: NetImage(
-                                headers: headers,
-                                url: data.url,
+                      return RepaintBoundary(
+                        child: GestureDetector(
+                          onTap: () =>
+                              push(context, page: GiftMziImagePage(data: data)),
+                          child: Stack(
+                            alignment: Alignment.bottomRight,
+                            children: <Widget>[
+                              AspectRatio(
+                                aspectRatio: data.width / data.height,
+                                child: NetImage(
+                                  headers: headers,
+                                  url: data.url,
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(right: 6, bottom: 6),
-                              child: Icon(
-                                Icons.photo_library,
-                                color: Colors.white70,
+                              Padding(
+                                padding:
+                                const EdgeInsets.only(right: 6, bottom: 6),
+                                child: Icon(
+                                  Icons.photo_library,
+                                  color: Colors.white70,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     },

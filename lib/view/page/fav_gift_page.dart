@@ -48,15 +48,17 @@ class FavGiftState extends PageState<FavGiftPage> with MustKeepAliveMixin {
                     itemBuilder: (context, index) {
                       final data = datas[index];
 
-                      return GestureDetector(
-                        onTap: () => push(context,
-                            page:
-                                GiftGankWatchPage(index: index, photos: datas)),
-                        child: AspectRatio(
-                          aspectRatio: data.width / data.height,
-                          child: Hero(
-                            tag: "${data.url}${index}false",
-                            child: NetImage(url: data.url),
+                      return RepaintBoundary(
+                        child: GestureDetector(
+                          onTap: () => push(context,
+                              page: GiftGankWatchPage(
+                                  index: index, photos: datas)),
+                          child: AspectRatio(
+                            aspectRatio: data.width / data.height,
+                            child: Hero(
+                              tag: "${data.url}${index}false",
+                              child: NetImage(url: data.url),
+                            ),
                           ),
                         ),
                       );

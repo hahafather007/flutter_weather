@@ -70,18 +70,20 @@ class GiftEggState extends PageState<GiftEggPage> with MustKeepAliveMixin {
                 itemBuilder: (context, index) {
                   final data = list[index];
 
-                  return GestureDetector(
-                    onTap: () => push(context,
-                        page: GiftGankWatchPage(
-                            index: index,
-                            photos: list,
-                            photoStream: _viewModel.photoStream,
-                            loadDataFun: () => _viewModel.loadMore())),
-                    child: AspectRatio(
-                      aspectRatio: data.width / data.height,
-                      child: Hero(
-                        tag: "${data.url}${index}true",
-                        child: NetImage(url: data.url),
+                  return RepaintBoundary(
+                    child: GestureDetector(
+                      onTap: () => push(context,
+                          page: GiftGankWatchPage(
+                              index: index,
+                              photos: list,
+                              photoStream: _viewModel.photoStream,
+                              loadDataFun: () => _viewModel.loadMore())),
+                      child: AspectRatio(
+                        aspectRatio: data.width / data.height,
+                        child: Hero(
+                          tag: "${data.url}${index}true",
+                          child: NetImage(url: data.url),
+                        ),
                       ),
                     ),
                   );
