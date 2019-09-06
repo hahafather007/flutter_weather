@@ -11,15 +11,16 @@ class SplashState extends PageState<SplashPage> {
   void initState() {
     super.initState();
 
-    bindSub(Observable.zip2(
-            Stream.fromFuture(Future.delayed(const Duration(seconds: 1))),
-            Stream.fromFuture(SharedDepository().initShared()),
-            (a, b) => true)
-        .map((_) => SharedDepository().themeColor)
-        .doOnData((color) {
-      EventSendHolder().sendEvent(tag: "themeChange", event: color);
-      push(context, page: HomePage(), replace: true);
-    }).listen(null));
+    bindSub(
+        Observable.zip2(
+                Stream.fromFuture(
+                    Future.delayed(const Duration(milliseconds: 500))),
+                Stream.fromFuture(SharedDepository().initShared()),
+                (a, b) => b)
+            .map((shared) => shared.themeColor)
+            .map((color) =>
+                EventSendHolder().sendEvent(tag: "themeChange", event: color))
+            .listen((_) => push(context, page: HomePage(), replace: true)));
   }
 
   @override
@@ -29,8 +30,8 @@ class SplashState extends PageState<SplashPage> {
         body: Image.asset(
           "images/splash.png",
           fit: isAndroid ? BoxFit.fill : BoxFit.fitHeight,
-          width: getScreenWidth(context),
-          height: getScreenHeight(context),
+          width: double.infinity,
+          height: double.infinity,
         ),
       ),
       onWillPop: () async => false,
