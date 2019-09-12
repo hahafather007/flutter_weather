@@ -212,7 +212,7 @@ class _WavePainter extends CustomPainter {
     _centerY = amplitude;
 
     final paint = Paint()
-      ..strokeWidth = 1
+      ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 
     final _waveOffset = (waveIndex / waveNum / 2 * size.width).roundToDouble();
@@ -220,7 +220,7 @@ class _WavePainter extends CustomPainter {
     for (double i = 1; i <= size.width; i++) {
       // 缓存线条透明度计算结果
       if (_opacityCache[i] == null) {
-        _opacityCache[i] = (i / size.width) * 0.8 + 0.1;
+        _opacityCache[i] = (i / size.width) * 0.4 + 0.05;
       }
       paint.color = color.withOpacity(_opacityCache[i]);
 

@@ -247,7 +247,7 @@ class _MountainPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..strokeWidth = 1
+      ..strokeWidth = 2
       ..color = color
       ..style = PaintingStyle.stroke;
 
