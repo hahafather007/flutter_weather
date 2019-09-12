@@ -42,7 +42,7 @@
         </activity>
 
         <provider
-            android:name="androidx.core.content.FileProvider"
+            android:name=".provider.WeatherFileProvider"
             android:authorities="com.hahafather007.flutterweather.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
