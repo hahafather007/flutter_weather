@@ -1,25 +1,23 @@
 import 'package:flutter/rendering.dart';
-
+import 'package:rxdart/rxdart.dart';
 import 'commom_import.dart';
 
 void main() {
-  // 显示布局边框
-  debugPaintSizeEnabled = false;
-
-  // 设置状态栏字体颜色
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: Color(0xFF000000),
-      systemNavigationBarDividerColor: null,
-      statusBarColor: Colors.transparent,
-      systemNavigationBarIconBrightness: Brightness.light,
-      statusBarIconBrightness: Brightness.light,
-      statusBarBrightness: Brightness.dark));
-
-  // 强制竖屏
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]).then((_) => runApp(MyApp()));
+  Observable.just(WidgetsFlutterBinding.ensureInitialized())
+      // 显示布局边框
+      .map((_) => debugPaintSizeEnabled = false)
+      // 设置状态栏字体颜色
+      .map((_) => SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+          systemNavigationBarColor: Color(0xFF000000),
+          systemNavigationBarDividerColor: null,
+          statusBarColor: Colors.transparent,
+          systemNavigationBarIconBrightness: Brightness.light,
+          statusBarIconBrightness: Brightness.light,
+          statusBarBrightness: Brightness.dark)))
+      // 强制竖屏
+      .asyncMap((_) => SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]))
+      .listen((_) => runApp(MyApp()));
 }
 
 class MyApp extends StatefulWidget {
