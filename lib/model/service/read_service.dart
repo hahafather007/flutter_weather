@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/model/data/read_data.dart';
 import 'package:flutter_weather/model/service/service.dart';

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_weather/model/data/version_data.dart';
 import 'package:flutter_weather/model/service/service.dart';
