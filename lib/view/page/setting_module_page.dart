@@ -1,4 +1,12 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'package:dragable_flutter_list/dragable_flutter_list.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/common/colors.dart';
+import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/model/data/page_module_data.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+import 'package:flutter_weather/view/page/page_state.dart';
+import 'package:flutter_weather/view/widget/custom_app_bar.dart';
+import 'package:flutter_weather/viewmodel/setting_module_viewmodel.dart';
 
 class SettingModulePage extends StatefulWidget {
   @override
@@ -81,6 +89,8 @@ class SettingModuleState extends PageState<SettingModulePage> {
                         _viewModel.valueChange(b, module: module.module),
                   );
               }
+
+              return Container();
             },
             onDragFinish: (before, after) =>
                 _viewModel.indexChange(before, after),

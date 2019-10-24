@@ -1,4 +1,15 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/model/data/mzi_data.dart';
+import 'package:flutter_weather/model/holder/fav_holder.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+import 'package:flutter_weather/view/page/gift_mzi_watch_page.dart';
+import 'package:flutter_weather/view/page/page_state.dart';
+import 'package:flutter_weather/view/widget/custom_app_bar.dart';
+import 'package:flutter_weather/view/widget/loading_view.dart';
+import 'package:flutter_weather/view/widget/net_image.dart';
+import 'package:flutter_weather/viewmodel/gift_mzi_image_viewmodel.dart';
 
 class GiftMziImagePage extends StatefulWidget {
   final MziData data;

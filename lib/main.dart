@@ -1,6 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:rxdart/rxdart.dart';
-import 'commom_import.dart';
+
+import 'common/streams.dart';
+import 'language.dart';
+import 'model/holder/event_send_holder.dart';
+import 'view/page/splash_page.dart';
 
 void main() {
   Observable.just(WidgetsFlutterBinding.ensureInitialized())
@@ -8,7 +15,7 @@ void main() {
       .map((_) => debugPaintSizeEnabled = false)
       // 设置状态栏字体颜色
       .map((_) => SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-          systemNavigationBarColor: Color(0xFF000000),
+          systemNavigationBarColor: Colors.black,
           systemNavigationBarDividerColor: null,
           statusBarColor: Colors.transparent,
           systemNavigationBarIconBrightness: Brightness.light,

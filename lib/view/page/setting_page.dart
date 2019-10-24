@@ -1,4 +1,16 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/block_picker.dart';
+import 'package:flutter_weather/common/colors.dart';
+import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/model/holder/event_send_holder.dart';
+import 'package:flutter_weather/model/holder/shared_depository.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+import 'package:flutter_weather/utils/view_util.dart';
+import 'package:flutter_weather/view/page/page_state.dart';
+import 'package:flutter_weather/view/page/setting_module_page.dart';
+import 'package:flutter_weather/view/widget/custom_app_bar.dart';
+import 'package:flutter_weather/view/widget/loading_view.dart';
+import 'package:flutter_weather/viewmodel/setting_viewmodel.dart';
 
 class SettingPage extends StatefulWidget {
   @override

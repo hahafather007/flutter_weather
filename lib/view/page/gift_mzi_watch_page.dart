@@ -1,6 +1,14 @@
-import 'package:flutter_weather/commom_import.dart';
-import 'package:flutter/cupertino.dart' show CupertinoActivityIndicator;
-import 'dart:typed_data' show Uint8List;
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/model/data/mzi_data.dart';
+import 'package:flutter_weather/model/holder/fav_holder.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+import 'package:flutter_weather/view/page/page_state.dart';
+import 'package:flutter_weather/view/widget/custom_app_bar.dart';
+import 'package:flutter_weather/view/widget/net_image.dart';
+import 'package:flutter_weather/view/widget/watcher_popup_btn.dart';
+import 'package:flutter_weather/view/widget/zoomable_widget.dart';
+import 'package:flutter_weather/viewmodel/photo_watch_viewmodel.dart';
 
 class GiftMziWatchPage extends StatefulWidget {
   final int index;

@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_weather/common/colors.dart';
 import 'package:flutter_weather/common/keep_alive_mixin.dart';
+import 'package:flutter_weather/language.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+import 'package:flutter_weather/view/page/gift_mzi_image_page.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
+import 'package:flutter_weather/view/widget/net_image.dart';
 import 'package:flutter_weather/viewmodel/fav_gifts_viewmodel.dart';
 
 class FavGiftsPage extends StatefulWidget {
