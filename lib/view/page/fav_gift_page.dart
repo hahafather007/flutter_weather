@@ -1,4 +1,8 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/common/keep_alive_mixin.dart';
+import 'package:flutter_weather/model/data/mzi_data.dart';
+import 'package:flutter_weather/view/page/page_state.dart';
+import 'package:flutter_weather/viewmodel/fav_gift_viewmodel.dart';
 
 class FavGiftPage extends StatefulWidget {
   FavGiftPage({Key key}) : super(key: key);

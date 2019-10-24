@@ -1,4 +1,6 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+
 import 'weather_sunny.dart';
 
 /// 多云

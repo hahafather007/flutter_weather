@@ -1,4 +1,6 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:math';
+
+import 'package:flutter/material.dart';
 
 class ZoomableWidget extends StatefulWidget {
   ZoomableWidget({

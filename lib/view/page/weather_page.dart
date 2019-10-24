@@ -1,5 +1,22 @@
-import 'package:flutter_weather/commom_import.dart';
-import 'package:rxdart/rxdart.dart';
+import 'dart:async';
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/common/streams.dart';
+import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/model/data/mixing.dart';
+import 'package:flutter_weather/model/data/weather_air_data.dart';
+import 'package:flutter_weather/model/data/weather_data.dart';
+import 'package:flutter_weather/model/holder/event_send_holder.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+import 'package:flutter_weather/view/page/city_control_page.dart';
+import 'package:flutter_weather/view/page/page_state.dart';
+import 'package:flutter_weather/view/page/weather_city_page.dart';
+import 'package:flutter_weather/view/picker/weather_share_picker.dart';
+import 'package:flutter_weather/view/weather/weather_view.dart';
+import 'package:flutter_weather/view/widget/custom_app_bar.dart';
+import 'package:flutter_weather/view/widget/weather_title_view.dart';
+import 'package:flutter_weather/viewmodel/weather_viewmodel.dart';
 
 class WeatherPage extends StatefulWidget {
   WeatherPage({Key key}) : super(key: key);

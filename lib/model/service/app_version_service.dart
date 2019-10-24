@@ -1,4 +1,9 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_weather/model/data/version_data.dart';
+import 'package:flutter_weather/model/service/service.dart';
+import 'package:html/parser.dart';
 
 class AppVersionService extends Service {
   Future<VersionData> getVersion() async {

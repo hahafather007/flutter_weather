@@ -1,4 +1,10 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:async';
+
+import 'package:flutter_weather/common/streams.dart';
+import 'package:flutter_weather/model/data/city_data.dart';
+import 'package:flutter_weather/model/data/weather_air_data.dart';
+import 'package:flutter_weather/model/data/weather_data.dart';
+import 'package:flutter_weather/model/holder/shared_depository.dart';
 
 class WeatherHolder {
   static final WeatherHolder _holder = WeatherHolder._internal();

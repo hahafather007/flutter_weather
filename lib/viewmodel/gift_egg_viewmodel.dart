@@ -1,5 +1,11 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:async';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/common/streams.dart';
+import 'package:flutter_weather/model/data/mzi_data.dart';
+import 'package:flutter_weather/model/service/gift_egg_service.dart';
+import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class GiftEggViewModel extends ViewModel {
   final _service = GiftEggService();

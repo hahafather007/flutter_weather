@@ -1,4 +1,8 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/common/streams.dart';
+import 'package:flutter_weather/utils/system_util.dart';
 
 /// 天气界面的滚动标题
 class WeatherTitleView extends StatefulWidget {

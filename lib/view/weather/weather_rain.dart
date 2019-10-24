@@ -1,4 +1,11 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+import 'package:flutter_weather/view/widget/flash_view.dart';
+import 'package:flutter_weather/view/widget/fog_view.dart';
+import 'package:flutter_weather/view/widget/hail_view.dart';
+import 'package:flutter_weather/view/widget/rain_view.dart';
+import 'package:flutter_weather/view/widget/snow_view.dart';
+
 import 'weather_base.dart';
 
 /// 雨天、雪天、雾天和冰雹

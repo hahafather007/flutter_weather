@@ -1,4 +1,9 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/model/holder/shared_depository.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_weather/utils/channel_util.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 class WatcherPopupBtn extends StatelessWidget {
   final String url;

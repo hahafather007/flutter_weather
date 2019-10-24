@@ -1,4 +1,12 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/model/data/city_data.dart';
+import 'package:flutter_weather/model/data/page_module_data.dart';
+import 'package:flutter_weather/model/data/weather_air_data.dart';
+import 'package:flutter_weather/model/data/weather_data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// SharedPreference的管理仓库
 class SharedDepository {

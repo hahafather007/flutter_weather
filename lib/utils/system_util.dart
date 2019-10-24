@@ -1,4 +1,9 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:async';
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// 获取运行平台是Android还是IOS
 bool get isAndroid => Platform.isAndroid;

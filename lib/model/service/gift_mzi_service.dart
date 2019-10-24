@@ -1,4 +1,9 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/model/data/mzi_data.dart';
+import 'package:flutter_weather/model/service/service.dart';
+import 'package:html/parser.dart';
 
 class GiftMziService extends Service {
   GiftMziService() {

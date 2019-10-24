@@ -1,4 +1,8 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+
 import 'weather_base.dart';
 
 class WeatherOvercast extends StatefulWidget {

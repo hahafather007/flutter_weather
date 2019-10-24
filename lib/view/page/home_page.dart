@@ -1,4 +1,13 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/model/holder/app_version_holder.dart';
+import 'package:flutter_weather/model/holder/event_send_holder.dart';
+import 'package:flutter_weather/model/holder/shared_depository.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+import 'package:flutter_weather/utils/view_util.dart';
+import 'package:flutter_weather/view/page/page_state.dart';
+import 'package:flutter_weather/view/page/weather_page.dart';
 
 class HomePage extends StatefulWidget {
   @override

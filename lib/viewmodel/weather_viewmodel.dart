@@ -1,4 +1,13 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:async';
+import 'dart:math';
+
+import 'package:flutter_weather/common/streams.dart';
+import 'package:flutter_weather/model/data/mixing.dart';
+import 'package:flutter_weather/model/data/weather_air_data.dart';
+import 'package:flutter_weather/model/data/weather_data.dart';
+import 'package:flutter_weather/model/holder/weather_holder.dart';
+import 'package:flutter_weather/model/service/weather_service.dart';
+import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class WeatherViewModel extends ViewModel {
   final _service = WeatherService();

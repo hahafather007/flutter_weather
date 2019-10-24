@@ -1,6 +1,7 @@
-import 'package:flutter_weather/commom_import.dart';
 import 'dart:math';
-import 'dart:ui';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/utils/system_util.dart';
 
 /// 波浪控件
 class WaveView extends StatefulWidget {

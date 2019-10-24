@@ -1,4 +1,4 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'package:flutter/material.dart';
 
 abstract class AppColor {
   /// app界面背景色

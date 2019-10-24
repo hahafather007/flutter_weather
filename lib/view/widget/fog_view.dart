@@ -1,4 +1,7 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/utils/system_util.dart';
 
 /// 雾天的控件
 class FogView extends StatefulWidget {
