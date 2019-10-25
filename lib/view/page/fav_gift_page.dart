@@ -1,4 +1,14 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_weather/common/colors.dart';
+import 'package:flutter_weather/common/keep_alive_mixin.dart';
+import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/model/data/mzi_data.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+import 'package:flutter_weather/view/page/gift_gank_watch_page.dart';
+import 'package:flutter_weather/view/page/page_state.dart';
+import 'package:flutter_weather/view/widget/net_image.dart';
+import 'package:flutter_weather/viewmodel/fav_gift_viewmodel.dart';
 
 class FavGiftPage extends StatefulWidget {
   FavGiftPage({Key key}) : super(key: key);
@@ -48,15 +58,17 @@ class FavGiftState extends PageState<FavGiftPage> with MustKeepAliveMixin {
                     itemBuilder: (context, index) {
                       final data = datas[index];
 
-                      return GestureDetector(
-                        onTap: () => push(context,
-                            page:
-                                GiftGankWatchPage(index: index, photos: datas)),
-                        child: AspectRatio(
-                          aspectRatio: data.width / data.height,
-                          child: Hero(
-                            tag: "${data.url}${index}false",
-                            child: NetImage(url: data.url),
+                      return RepaintBoundary(
+                        child: GestureDetector(
+                          onTap: () => push(context,
+                              page: GiftGankWatchPage(
+                                  index: index, photos: datas)),
+                          child: AspectRatio(
+                            aspectRatio: data.width / data.height,
+                            child: Hero(
+                              tag: "${data.url}${index}false",
+                              child: NetImage(url: data.url),
+                            ),
                           ),
                         ),
                       );

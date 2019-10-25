@@ -1,4 +1,11 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/common/colors.dart';
+import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/model/holder/event_send_holder.dart';
+import 'package:flutter_weather/view/page/gift_egg_page.dart';
+import 'package:flutter_weather/view/page/gift_gank_page.dart';
+import 'package:flutter_weather/view/page/gift_mzi_page.dart';
+import 'package:flutter_weather/view/widget/custom_app_bar.dart';
 
 class GiftPage extends StatelessWidget {
   @override

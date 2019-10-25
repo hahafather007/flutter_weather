@@ -1,4 +1,13 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/common/colors.dart';
+import 'package:flutter_weather/common/keep_alive_mixin.dart';
+import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/model/data/read_data.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+import 'package:flutter_weather/view/page/page_state.dart';
+import 'package:flutter_weather/view/page/webview_page.dart';
+import 'package:flutter_weather/view/widget/net_image.dart';
+import 'package:flutter_weather/viewmodel/fav_read_viewmodel.dart';
 
 class FavReadPage extends StatefulWidget {
   FavReadPage({Key key}) : super(key: key);

@@ -1,4 +1,7 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/model/data/mixing.dart';
 
 /// 事件分发工具
 class EventSendHolder {

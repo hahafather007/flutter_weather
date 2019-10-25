@@ -1,4 +1,14 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_weather/common/colors.dart';
+import 'package:flutter_weather/common/keep_alive_mixin.dart';
+import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/model/data/mzi_data.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+import 'package:flutter_weather/view/page/gift_mzi_image_page.dart';
+import 'package:flutter_weather/view/page/page_state.dart';
+import 'package:flutter_weather/view/widget/net_image.dart';
+import 'package:flutter_weather/viewmodel/fav_gifts_viewmodel.dart';
 
 class FavGiftsPage extends StatefulWidget {
   FavGiftsPage({Key key}) : super(key: key);
@@ -50,28 +60,30 @@ class FavGiftsState extends PageState<FavGiftsPage> with MustKeepAliveMixin {
                       final headers = Map<String, String>();
                       headers["Referer"] = data.refer;
 
-                      return GestureDetector(
-                        onTap: () =>
-                            push(context, page: GiftMziImagePage(data: data)),
-                        child: Stack(
-                          alignment: Alignment.bottomRight,
-                          children: <Widget>[
-                            AspectRatio(
-                              aspectRatio: data.width / data.height,
-                              child: NetImage(
-                                headers: headers,
-                                url: data.url,
+                      return RepaintBoundary(
+                        child: GestureDetector(
+                          onTap: () =>
+                              push(context, page: GiftMziImagePage(data: data)),
+                          child: Stack(
+                            alignment: Alignment.bottomRight,
+                            children: <Widget>[
+                              AspectRatio(
+                                aspectRatio: data.width / data.height,
+                                child: NetImage(
+                                  headers: headers,
+                                  url: data.url,
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(right: 6, bottom: 6),
-                              child: Icon(
-                                Icons.photo_library,
-                                color: Colors.white70,
+                              Padding(
+                                padding:
+                                const EdgeInsets.only(right: 6, bottom: 6),
+                                child: Icon(
+                                  Icons.photo_library,
+                                  color: Colors.white70,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     },

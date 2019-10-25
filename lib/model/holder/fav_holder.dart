@@ -1,4 +1,10 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:flutter_weather/common/streams.dart';
+import 'package:flutter_weather/model/data/mzi_data.dart';
+import 'package:flutter_weather/model/data/read_data.dart';
+import 'package:flutter_weather/model/holder/shared_depository.dart';
 
 class FavHolder<T> {
   static final FavHolder _holder = FavHolder._internal();
@@ -23,7 +29,7 @@ class FavHolder<T> {
     final readValue = SharedDepository().favReadData;
     if (readValue != null) {
       final list =
-          (json.decode(readValue) as List).map((v) => ReadData.fromJson(v));
+          (jsonDecode(readValue) as List).map((v) => ReadData.fromJson(v));
       _cacheReads.addAll(list);
     }
     streamAdd(_favReadBroadcast, _cacheReads);

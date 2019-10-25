@@ -1,4 +1,6 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/common/colors.dart';
 
 /// 加载网络图片
 class NetImage extends StatelessWidget {

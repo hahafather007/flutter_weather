@@ -1,4 +1,22 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:async';
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/common/streams.dart';
+import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/model/data/mixing.dart';
+import 'package:flutter_weather/model/data/weather_air_data.dart';
+import 'package:flutter_weather/model/data/weather_data.dart';
+import 'package:flutter_weather/model/holder/event_send_holder.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+import 'package:flutter_weather/view/page/city_control_page.dart';
+import 'package:flutter_weather/view/page/page_state.dart';
+import 'package:flutter_weather/view/page/weather_city_page.dart';
+import 'package:flutter_weather/view/picker/weather_share_picker.dart';
+import 'package:flutter_weather/view/weather/weather_view.dart';
+import 'package:flutter_weather/view/widget/custom_app_bar.dart';
+import 'package:flutter_weather/view/widget/weather_title_view.dart';
+import 'package:flutter_weather/viewmodel/weather_viewmodel.dart';
 
 class WeatherPage extends StatefulWidget {
   WeatherPage({Key key}) : super(key: key);
@@ -10,6 +28,7 @@ class WeatherPage extends StatefulWidget {
 class WeatherState extends PageState<WeatherPage> {
   final _viewModel = WeatherViewModel();
   final _controller = PageController();
+  final _titleController = PageController();
   final _pageStream = StreamController<double>();
   final _titleAlpha = StreamController<double>();
 
@@ -43,6 +62,7 @@ class WeatherState extends PageState<WeatherPage> {
   void dispose() {
     _viewModel.dispose();
     _controller.dispose();
+    _titleController.dispose();
     _pageStream.close();
     _titleAlpha.close();
 
@@ -73,89 +93,93 @@ class WeatherState extends PageState<WeatherPage> {
                 return Scaffold(
                   key: scafKey,
                   appBar: PreferredSize(
-                    child: StreamBuilder(
-                      stream: _titleAlpha.stream,
-                      initialData: 0.0,
-                      builder: (context, snapshot) {
-                        final alpha = snapshot.data;
+                    child: AnimatedContainer(
+                      color:_getAppBarColor(type: type),
+                      duration: const Duration(seconds: 2),
+                      child: StreamBuilder(
+                        stream: _titleAlpha.stream,
+                        initialData: 0.0,
+                        builder: (context, snapshot) {
+                          final alpha = snapshot.data;
 
-                        return Stack(
-                          children: <Widget>[
-                            // 标题栏
-                            CustomAppBar(
-                              title: Text(
-                                location,
-                                style: TextStyle(
-                                  color: Colors.white.withOpacity(alpha),
-                                  fontSize: 20,
+                          return Stack(
+                            children: <Widget>[
+                              // 指示条
+                              Opacity(
+                                opacity: 1 - alpha,
+                                child: WeatherTitleView(
+                                  cities: cities,
+                                  pageValue: pageValue,
                                 ),
                               ),
-                              color: _getAppBarColor(type: type),
-                              showShadow: false,
-                              leftBtn: IconButton(
-                                icon: Icon(
-                                  Icons.menu,
-                                  color: Colors.white,
+
+                              // 标题栏
+                              CustomAppBar(
+                                title: Text(
+                                  location,
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(alpha),
+                                    fontSize: 20,
+                                  ),
                                 ),
-                                onPressed: () => EventSendHolder().sendEvent(
-                                    tag: "homeDrawerOpen", event: true),
-                              ),
-                              rightBtns: [
-                                PopupMenuButton(
+                                color: Colors.transparent,
+                                showShadow: false,
+                                leftBtn: IconButton(
                                   icon: Icon(
-                                    Icons.more_vert,
+                                    Icons.menu,
                                     color: Colors.white,
                                   ),
-                                  itemBuilder: (context) => [
-                                    PopupMenuItem(
-                                      value: "share",
-                                      child: Text(AppText.of(context).share),
-                                    ),
-                                    PopupMenuItem(
-                                      value: "cities",
-                                      child:
-                                          Text(AppText.of(context).cityControl),
-                                    ),
-                                    PopupMenuItem(
-                                      value: "weathers",
-                                      child: Text(
-                                          AppText.of(context).weathersView),
-                                    ),
-                                  ],
-                                  onSelected: (value) {
-                                    switch (value) {
-                                      case "share":
-                                        if (pair?.a == null || pair?.b == null)
-                                          return;
-
-                                        WeatherSharePicker.share(context,
-                                            weather: pair.a,
-                                            air: pair.b,
-                                            city: location);
-                                        break;
-                                      case "cities":
-                                        push(context, page: CityControlPage());
-                                        break;
-                                      case "weathers":
-                                        _showWeathersDialog();
-                                        break;
-                                    }
-                                  },
+                                  onPressed: () => EventSendHolder().sendEvent(
+                                      tag: "homeDrawerOpen", event: true),
                                 ),
-                              ],
-                            ),
+                                rightBtns: [
+                                  PopupMenuButton(
+                                    icon: Icon(
+                                      Icons.more_vert,
+                                      color: Colors.white,
+                                    ),
+                                    itemBuilder: (context) => [
+                                      PopupMenuItem(
+                                        value: "share",
+                                        child: Text(AppText.of(context).share),
+                                      ),
+                                      PopupMenuItem(
+                                        value: "cities",
+                                        child:
+                                        Text(AppText.of(context).cityControl),
+                                      ),
+                                      PopupMenuItem(
+                                        value: "weathers",
+                                        child: Text(
+                                            AppText.of(context).weathersView),
+                                      ),
+                                    ],
+                                    onSelected: (value) {
+                                      switch (value) {
+                                        case "share":
+                                          if (pair?.a == null || pair?.b == null)
+                                            return;
 
-                            // 指示条
-                            Opacity(
-                              opacity: 1 - alpha,
-                              child: _buildScrollTitle(
-                                cities: cities,
-                                pageValue: pageValue,
+                                          WeatherSharePicker.share(context,
+                                              weather: pair.a,
+                                              air: pair.b,
+                                              city: location);
+                                          break;
+                                        case "cities":
+                                          push(context, page: CityControlPage());
+                                          break;
+                                        case "weathers":
+                                          _showWeathersDialog();
+                                          break;
+                                      }
+                                    },
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        );
-                      },
+                            ],
+                          );
+                        },
+                      ),
                     ),
                     preferredSize: Size.fromHeight(getAppBarHeight()),
                   ),
@@ -176,8 +200,10 @@ class WeatherState extends PageState<WeatherPage> {
                           onPageChanged: (index) =>
                               _viewModel.indexChange(index),
                           itemBuilder: (context, index) {
+                            final value = 1 - (pageValue - index).abs();
+
                             return Opacity(
-                              opacity: 1 - (pageValue - index).abs() % 1,
+                              opacity: value >= 0 && value <= 1 ? value : 0,
                               child: WeatherCityPage(
                                 key: Key("WeatherCityPage${cities[index]}"),
                                 index: index,
@@ -300,59 +326,6 @@ class WeatherState extends PageState<WeatherPage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  /// 上方滚动的标题
-  Widget _buildScrollTitle(
-      {@required List<String> cities, @required double pageValue}) {
-    final location = cities.isNotEmpty
-        ? cities[min(cities.length - 1, pageValue.round())]
-        : "";
-
-    return Container(
-      padding: EdgeInsets.only(top: getStatusHeight(context)),
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          // 当前城市
-          Text(
-            "$location",
-            style: TextStyle(fontSize: 18, color: Colors.white),
-          ),
-
-          // 指示的小点
-          cities.length > 1
-              ? Stack(
-                  children: <Widget>[
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: cities.map((city) {
-                        return Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 3),
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle, color: Colors.white54),
-                          width: 5,
-                          height: 5,
-                        );
-                      }).toList(),
-                    ),
-                    Positioned(
-                      left: 11 * pageValue,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 3),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.white),
-                        width: 5,
-                        height: 5,
-                      ),
-                    ),
-                  ],
-                )
-              : Container(),
-        ],
       ),
     );
   }

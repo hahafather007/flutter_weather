@@ -1,4 +1,9 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/model/holder/event_send_holder.dart';
+import 'package:flutter_weather/model/holder/shared_depository.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+import 'package:flutter_weather/view/page/home_page.dart';
+import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:rxdart/rxdart.dart';
 
 class SplashPage extends StatefulWidget {
@@ -11,15 +16,16 @@ class SplashState extends PageState<SplashPage> {
   void initState() {
     super.initState();
 
-    bindSub(Observable.zip2(
-            Stream.fromFuture(Future.delayed(const Duration(seconds: 1))),
-            Stream.fromFuture(SharedDepository().initShared()),
-            (a, b) => true)
-        .map((_) => SharedDepository().themeColor)
-        .doOnData((color) {
-      EventSendHolder().sendEvent(tag: "themeChange", event: color);
-      push(context, page: HomePage(), replace: true);
-    }).listen(null));
+    bindSub(
+        Observable.zip2(
+                Stream.fromFuture(
+                    Future.delayed(const Duration(milliseconds: 500))),
+                Stream.fromFuture(SharedDepository().initShared()),
+                (a, b) => b)
+            .map((shared) => shared.themeColor)
+            .map((color) =>
+                EventSendHolder().sendEvent(tag: "themeChange", event: color))
+            .listen((_) => push(context, page: HomePage(), replace: true)));
   }
 
   @override
@@ -29,8 +35,8 @@ class SplashState extends PageState<SplashPage> {
         body: Image.asset(
           "images/splash.png",
           fit: isAndroid ? BoxFit.fill : BoxFit.fitHeight,
-          width: getScreenWidth(context),
-          height: getScreenHeight(context),
+          width: double.infinity,
+          height: double.infinity,
         ),
       ),
       onWillPop: () async => false,

@@ -1,6 +1,7 @@
-import 'package:flutter_weather/commom_import.dart';
 import 'dart:math';
-import 'dart:ui';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/utils/system_util.dart';
 
 /// 波浪控件
 class WaveView extends StatefulWidget {
@@ -198,9 +199,6 @@ class _WavePainter extends CustomPainter {
   /// 第几条波浪
   final int waveIndex;
 
-  /// 每个绘制线条的透明度
-  final _opacityCache = Map<double, double>();
-
   /// y轴的中心点
   double _centerY;
 
@@ -212,25 +210,26 @@ class _WavePainter extends CustomPainter {
     _centerY = amplitude;
 
     final paint = Paint()
-      ..strokeWidth = 1
-      ..style = PaintingStyle.stroke;
+      ..style = PaintingStyle.fill
+      ..shader = LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [color.withOpacity(0.12), color.withOpacity(0.6)])
+          .createShader(Rect.fromLTWH(0, 0, size.width, size.height));
+    final path = Path()..moveTo(0, size.height);
+    final waveOffset = (waveIndex / waveNum / 2 * size.width).roundToDouble();
 
-    final _waveOffset = (waveIndex / waveNum / 2 * size.width).roundToDouble();
-
-    for (double i = 1; i <= size.width; i++) {
-      // 缓存线条透明度计算结果
-      if (_opacityCache[i] == null) {
-        _opacityCache[i] = (i / size.width) * 0.8 + 0.1;
-      }
-      paint.color = color.withOpacity(_opacityCache[i]);
-
+    for (double i = 0; i <= size.width; i++) {
       final sinY = amplitude *
           amplitudePercent *
-          _getSinY(i + _waveOffset, size.width, offsetX);
+          _getSinY(i + waveOffset, size.width, offsetX);
 
-      canvas.drawLine(
-          Offset(i, size.height), Offset(i, sinY + _centerY), paint);
+      path.lineTo(i, sinY + _centerY);
     }
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, size.height);
+
+    canvas.drawPath(path, paint);
   }
 
   @override

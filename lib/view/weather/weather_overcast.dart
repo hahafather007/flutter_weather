@@ -1,4 +1,8 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+
 import 'weather_base.dart';
 
 class WeatherOvercast extends StatefulWidget {
@@ -63,8 +67,9 @@ class WeatherOvercastState extends WeatherBase<WeatherOvercast> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _cloudAnim = Tween(begin: -120.0, end: getScreenWidth(context) + 20).animate(
-        CurvedAnimation(parent: _cloudController, curve: Curves.linear));
+    _cloudAnim = Tween(begin: -120.0, end: getScreenWidth(context) + 20)
+        .animate(
+            CurvedAnimation(parent: _cloudController, curve: Curves.linear));
   }
 
   @override
@@ -132,7 +137,8 @@ class WeatherOvercastState extends WeatherBase<WeatherOvercast> {
                       ),
                     ),
                     bottom: _getSinY(1 / 7 * width + (width - car2Len), width) *
-                        _mountainAnim.value,
+                            _mountainAnim.value -
+                        2,
                     left: width - car2Len - 20,
                   ),
 
@@ -178,7 +184,8 @@ class WeatherOvercastState extends WeatherBase<WeatherOvercast> {
                       ),
                     ),
                     bottom: _getSinY(6 / 7 * width + car1Len, width) *
-                        _mountainAnim.value,
+                            _mountainAnim.value -
+                        2,
                     left: car1Len - 40,
                   ),
 
@@ -247,16 +254,17 @@ class _MountainPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..strokeWidth = 1
       ..color = color
-      ..style = PaintingStyle.stroke;
+      ..style = PaintingStyle.fill;
+    final path = Path()..moveTo(0, size.height);
 
     for (double i = 0; i <= size.width; i++) {
-      canvas.drawLine(
-          Offset(i, size.height),
-          Offset(i, size.height - height * _getSinY(i + offset, size.width)),
-          paint);
+      path.lineTo(i, size.height - height * _getSinY(i + offset, size.width));
     }
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, size.height);
+
+    canvas.drawPath(path, paint);
   }
 
   @override

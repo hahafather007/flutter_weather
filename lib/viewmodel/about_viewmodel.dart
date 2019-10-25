@@ -1,5 +1,12 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:async';
+
 import 'package:dio/dio.dart';
+import 'package:flutter_weather/common/streams.dart';
+import 'package:flutter_weather/model/data/version_data.dart';
+import 'package:flutter_weather/model/service/app_version_service.dart';
+import 'package:flutter_weather/utils/channel_util.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class AboutViewModel extends ViewModel {
   final _service = AppVersionService();

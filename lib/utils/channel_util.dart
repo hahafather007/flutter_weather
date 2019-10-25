@@ -1,4 +1,10 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_weather/model/data/city_data.dart';
+import 'package:flutter_weather/utils/system_util.dart';
 
 class ChannelUtil {
   /// 平台通道工具

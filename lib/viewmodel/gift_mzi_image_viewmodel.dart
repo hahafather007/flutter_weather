@@ -1,5 +1,12 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:async';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/common/streams.dart';
+import 'package:flutter_weather/model/data/mzi_data.dart';
+import 'package:flutter_weather/model/holder/fav_holder.dart';
+import 'package:flutter_weather/model/service/gift_mzi_image_service.dart';
+import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class GiftMziImageViewModel extends ViewModel {
   final _service = GiftMziImageService();

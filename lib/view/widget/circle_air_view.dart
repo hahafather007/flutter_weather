@@ -1,4 +1,10 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/common/colors.dart';
+import 'package:flutter_weather/common/streams.dart';
+import 'package:flutter_weather/model/holder/event_send_holder.dart';
+import 'package:flutter_weather/utils/aqi_util.dart';
 
 /// 空气质量指数环形图
 class CircleAirView extends StatefulWidget {

@@ -1,4 +1,11 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/model/data/city_data.dart';
+import 'package:flutter_weather/model/data/page_module_data.dart';
+import 'package:flutter_weather/model/data/weather_air_data.dart';
+import 'package:flutter_weather/model/data/weather_data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// SharedPreference的管理仓库
 class SharedDepository {
@@ -118,6 +125,14 @@ class SharedDepository {
 
   Future<bool> setHammerShare(bool value) async =>
       await _prefs.setBool("hammerShare", value);
+
+  /// 获取已保存的图片
+  List<String> get savedImages {
+    return _getStringList("savedImages", defaultValue: []);
+  }
+
+  Future<bool> setSavedImages(List<String> images) async =>
+      await _prefs.setString("savedImages", jsonEncode(images));
 
   /// ==============================================
   ///                     分界线

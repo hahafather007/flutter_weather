@@ -1,4 +1,17 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/common/colors.dart';
+import 'package:flutter_weather/common/keep_alive_mixin.dart';
+import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/model/data/weather_air_data.dart';
+import 'package:flutter_weather/model/data/weather_data.dart';
+import 'package:flutter_weather/model/holder/event_send_holder.dart';
+import 'package:flutter_weather/utils/aqi_util.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+import 'package:flutter_weather/view/page/page_state.dart';
+import 'package:flutter_weather/view/widget/circle_air_view.dart';
+import 'package:flutter_weather/view/widget/loading_view.dart';
+import 'package:flutter_weather/viewmodel/weather_city_viewmodel.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class WeatherCityPage extends StatefulWidget {
   final int index;

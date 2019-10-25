@@ -1,4 +1,15 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_weather/common/keep_alive_mixin.dart';
+import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/model/data/mzi_data.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+import 'package:flutter_weather/view/page/gift_gank_watch_page.dart';
+import 'package:flutter_weather/view/page/page_state.dart';
+import 'package:flutter_weather/view/widget/loading_view.dart';
+import 'package:flutter_weather/view/widget/net_image.dart';
+import 'package:flutter_weather/viewmodel/gift_gank_viewmodel.dart';
+import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class GiftGankPage extends StatefulWidget {
   GiftGankPage({Key key}) : super(key: key);
@@ -70,18 +81,20 @@ class GiftGankState extends PageState<GiftGankPage> with MustKeepAliveMixin {
                 itemBuilder: (context, index) {
                   final data = list[index];
 
-                  return GestureDetector(
-                    onTap: () => push(context,
-                        page: GiftGankWatchPage(
-                            index: index,
-                            photos: list,
-                            photoStream: _viewModel.photoStream,
-                            loadDataFun: () => _viewModel.loadMore())),
-                    child: AspectRatio(
-                      aspectRatio: data.width / data.height,
-                      child: Hero(
-                        tag: "${data.url}${index}true",
-                        child: NetImage(url: data.url),
+                  return RepaintBoundary(
+                    child: GestureDetector(
+                      onTap: () => push(context,
+                          page: GiftGankWatchPage(
+                              index: index,
+                              photos: list,
+                              photoStream: _viewModel.photoStream,
+                              loadDataFun: () => _viewModel.loadMore())),
+                      child: AspectRatio(
+                        aspectRatio: data.width / data.height,
+                        child: Hero(
+                          tag: "${data.url}${index}true",
+                          child: NetImage(url: data.url),
+                        ),
                       ),
                     ),
                   );

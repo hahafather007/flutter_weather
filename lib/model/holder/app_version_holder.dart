@@ -1,5 +1,13 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/common/colors.dart';
+import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/model/service/app_version_service.dart';
+import 'package:flutter_weather/utils/channel_util.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+import 'package:flutter_weather/utils/view_util.dart';
+import 'package:package_info/package_info.dart';
 
 class AppVersionHolder {
   /// 使用单利模式管理

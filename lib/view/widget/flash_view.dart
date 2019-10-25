@@ -1,5 +1,8 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:async';
 import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/model/data/mixing.dart';
 
 /// 打雷动画控件
 class FlashView extends StatefulWidget {

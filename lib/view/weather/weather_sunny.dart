@@ -1,4 +1,9 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+import 'package:flutter_weather/view/widget/wave_view.dart';
+
 import 'weather_base.dart';
 
 /// 晴天

@@ -1,5 +1,8 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_weather/utils/system_util.dart';
 
 /// 清除焦点
 void cleanFocus(BuildContext context) =>

@@ -1,4 +1,4 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'package:flutter/material.dart';
 
 class AqiUtil {
   /// 根据空气指数获得颜色

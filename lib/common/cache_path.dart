@@ -1,4 +1,4 @@
-import 'package:flutter_weather/commom_import.dart';
+import 'package:flutter_weather/utils/system_util.dart' show isIOS;
 
 /// 网络图片的缓存目录
 abstract class CachePath {

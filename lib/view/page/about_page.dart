@@ -1,6 +1,22 @@
-import 'package:flutter_weather/commom_import.dart';
-import 'dart:ui' show ImageFilter;
-import 'dart:math' show Random;
+import 'dart:async';
+import 'dart:math';
+import 'dart:ui';
+
+import 'package:esys_flutter_share/esys_flutter_share.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:flutter_weather/common/colors.dart';
+import 'package:flutter_weather/common/streams.dart';
+import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/utils/channel_util.dart';
+import 'package:flutter_weather/utils/system_util.dart';
+import 'package:flutter_weather/utils/view_util.dart';
+import 'package:flutter_weather/view/page/page_state.dart';
+import 'package:flutter_weather/view/page/webview_page.dart';
+import 'package:flutter_weather/view/widget/loading_view.dart';
+import 'package:flutter_weather/view/widget/net_image.dart';
+import 'package:flutter_weather/viewmodel/about_viewmodel.dart';
+import 'package:package_info/package_info.dart';
 
 class AboutPage extends StatefulWidget {
   static const photoUrls = [
