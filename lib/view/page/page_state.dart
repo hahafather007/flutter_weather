@@ -1,12 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_weather/common/streams.dart';
 import 'package:flutter_weather/language.dart';
-import 'package:path_provider/path_provider.dart';
 
 abstract class PageState<T extends StatefulWidget> extends State<T>
     with StreamSubController, WidgetsBindingObserver {
@@ -26,23 +23,6 @@ abstract class PageState<T extends StatefulWidget> extends State<T>
     if (bindLife) {
       WidgetsBinding.instance.addObserver(this);
     }
-  }
-
-  /// 获取屏幕截图
-  @protected
-  Future<File> takeScreenshot() async {
-    final boundary =
-        boundaryKey.currentContext.findRenderObject() as RenderRepaintBoundary;
-    final image = await boundary.toImage(
-        pixelRatio: MediaQuery.of(context).devicePixelRatio);
-    final directory = (await getApplicationDocumentsDirectory()).path;
-    final byteData = await image.toByteData(format: ImageByteFormat.png);
-    final pngBytes = byteData.buffer.asUint8List();
-    final file = await File(
-            "$directory/weather_${DateTime.now().millisecondsSinceEpoch}.png")
-        .writeAsBytes(pngBytes);
-
-    return file;
   }
 
   /// 绑定viewModel中通用的stream

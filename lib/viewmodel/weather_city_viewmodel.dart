@@ -1,18 +1,14 @@
 import 'dart:async';
 
-import 'package:csv/csv.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_weather/common/streams.dart';
 import 'package:flutter_weather/model/data/city_data.dart';
 import 'package:flutter_weather/model/data/weather_air_data.dart';
 import 'package:flutter_weather/model/data/weather_data.dart';
 import 'package:flutter_weather/model/holder/weather_holder.dart';
 import 'package:flutter_weather/model/service/weather_service.dart';
-import 'package:flutter_weather/utils/channel_util.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class WeatherCityViewModel extends ViewModel {
   final int index;
@@ -21,7 +17,6 @@ class WeatherCityViewModel extends ViewModel {
 
   final weather = StreamController<Weather>();
   final air = StreamController<WeatherAir>();
-  final perStatus = StreamController<PermissionStatus>();
 
   WeatherCityViewModel({@required this.index}) {
     // 首先将缓存的数据作为第一数据显示，再判断请求逻辑
@@ -43,30 +38,7 @@ class WeatherCityViewModel extends ViewModel {
 
     District mCity;
     if (index == 0) {
-      // 请求定位权限
-      final status = (await PermissionHandler().requestPermissions([
-        PermissionGroup.locationWhenInUse
-      ]))[PermissionGroup.locationWhenInUse];
-      streamAdd(perStatus, status);
-
-      if (status != PermissionStatus.denied) {
-        final result = await ChannelUtil.getLocation();
-        if (result != null) {
-          final csv = await rootBundle.loadString("assets/china-city-list.csv");
-          final csvList = const CsvToListConverter().convert(csv);
-          for (int i = 2; i < csvList.length; i++) {
-            final list = csvList[i];
-            if (list[2] == result.district && list[7] == result.province) {
-              mCity = District(name: result.district, id: list[0]);
-              break;
-            }
-          }
-        } else {
-          mCity = WeatherHolder().cities[index];
-        }
-      } else {
-        mCity = WeatherHolder().cities[index];
-      }
+      mCity = District(name: "成都", id: "CN101270101");
     } else {
       mCity = WeatherHolder().cities[index];
     }
@@ -105,7 +77,6 @@ class WeatherCityViewModel extends ViewModel {
 
     weather.close();
     air.close();
-    perStatus.close();
 
     super.dispose();
   }

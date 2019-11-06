@@ -1,14 +1,6 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-/// 获取运行平台是Android还是IOS
-bool get isAndroid => Platform.isAndroid;
-
-bool get isIOS => Platform.isIOS;
 
 double _screenWidth = 0;
 
@@ -109,16 +101,4 @@ Future push<T extends StatefulWidget>(BuildContext context,
   }
 
   return future;
-}
-
-/// 退出应用
-void exitApp() => SystemNavigator.pop();
-
-/// 打开浏览器
-void openBrowser(String url) async {
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw "不能打开URL---->$url";
-  }
 }

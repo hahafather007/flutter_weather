@@ -6,7 +6,6 @@ import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:flutter_weather/view/widget/custom_app_bar.dart';
 import 'package:flutter_weather/view/widget/net_image.dart';
-import 'package:flutter_weather/view/widget/watcher_popup_btn.dart';
 import 'package:flutter_weather/view/widget/zoomable_widget.dart';
 import 'package:flutter_weather/viewmodel/photo_watch_viewmodel.dart';
 
@@ -157,12 +156,6 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
                               if (!_showAppBar) return;
 
                               FavHolder().autoFav(list[_currentPage]);
-                            },
-                          ),
-                          WatcherPopupBtn(
-                            url: list[_currentPage]?.url,
-                            onSnackShow: (text) {
-                              showSnack(text: text);
                             },
                           ),
                         ],

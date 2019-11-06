@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
 
@@ -31,21 +30,13 @@ class NetImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final img = CachedNetworkImage(
-      httpHeaders: headers,
-      imageUrl: url,
+    final img = Image.network(
+      url,
+      headers: headers,
       height: height,
       width: width,
-      fadeInDuration: const Duration(milliseconds: 300),
       fit: fit,
-      placeholder: (context, url) =>
-          placeholder ??
-          Container(
-            height: height,
-            width: width,
-            color: AppColor.colorHolder,
-          ),
-      errorWidget: (context, url, error) =>
+      loadingBuilder: (context, child, url) =>
           placeholder ??
           Container(
             height: height,

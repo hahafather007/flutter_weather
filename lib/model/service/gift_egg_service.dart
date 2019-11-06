@@ -17,7 +17,7 @@ class GiftEggService extends Service {
 
     final egg = EggData.fromJson(response.data);
     if (egg.status != "ok") {
-      throw DioError(message: "我也不知为什么，它就是出错了");
+      throw DioError(error: "我也不知为什么，它就是出错了");
     } else {
       return egg;
     }

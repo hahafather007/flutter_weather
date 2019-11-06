@@ -16,47 +16,30 @@ Future<Null> showDiffDialog(BuildContext context,
     String noText,
     EdgeInsetsGeometry contentPadding =
         const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0),
-    Function pressed}) async {
-  await showDialog(
+    Function pressed}) {
+  return showDialog(
     context: context,
-    builder: (context) => isAndroid
-        ? AlertDialog(
-            title: title,
-            content: content,
-            contentPadding: contentPadding,
-            actions: <Widget>[
-              noText != null
-                  ? FlatButton(
-                      onPressed: () => pop(context),
-                      child: Text(noText),
-                    )
-                  : Container(),
-              yesText != null
-                  ? FlatButton(
-                      onPressed: () => pressed(),
-                      child: Text(yesText),
-                    )
-                  : Container(),
-            ],
-          )
-        : CupertinoAlertDialog(
-            title: title,
-            content: content,
-            actions: <Widget>[
-              noText != null
-                  ? CupertinoDialogAction(
-                      onPressed: () => pop(context),
-                      child: Text(noText),
-                    )
-                  : Container(),
-              yesText != null
-                  ? CupertinoDialogAction(
-                      onPressed: () => pressed(),
-                      child: Text(yesText),
-                    )
-                  : Container(),
-            ],
-          ),
+    builder: (context) {
+      return AlertDialog(
+        title: title,
+        content: content,
+        contentPadding: contentPadding,
+        actions: <Widget>[
+          noText != null
+              ? FlatButton(
+                  onPressed: () => pop(context),
+                  child: Text(noText),
+                )
+              : Container(),
+          yesText != null
+              ? FlatButton(
+                  onPressed: () => pressed(),
+                  child: Text(yesText),
+                )
+              : Container(),
+        ],
+      );
+    },
   );
 }
 

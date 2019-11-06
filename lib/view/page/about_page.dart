@@ -2,21 +2,17 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_weather/common/colors.dart';
 import 'package:flutter_weather/common/streams.dart';
 import 'package:flutter_weather/language.dart';
-import 'package:flutter_weather/utils/channel_util.dart';
 import 'package:flutter_weather/utils/system_util.dart';
-import 'package:flutter_weather/utils/view_util.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:flutter_weather/view/page/webview_page.dart';
 import 'package:flutter_weather/view/widget/loading_view.dart';
 import 'package:flutter_weather/view/widget/net_image.dart';
 import 'package:flutter_weather/viewmodel/about_viewmodel.dart';
-import 'package:package_info/package_info.dart';
 
 class AboutPage extends StatefulWidget {
   static const photoUrls = [
@@ -51,80 +47,6 @@ class AboutState extends PageState<AboutPage> {
 
       streamAdd(_paddingStream, offset / 2);
     });
-
-    bindSub(_viewModel.version.stream.listen((version) async {
-      final packageInfo = await PackageInfo.fromPlatform();
-      final needUpdate = int.parse(packageInfo.buildNumber) < version.version;
-
-      if (needUpdate) {
-        if (isAndroid) {
-          showDiffDialog(
-            context,
-            title: Text(AppText.of(context).hasNewVersion),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(AppText.of(context).hasNewVersionLong),
-                Container(height: 12),
-                Text(
-                  "${AppText.of(context).updateTime}${version.time}",
-                  style: TextStyle(fontSize: 14, color: AppColor.colorText2),
-                ),
-                Text(
-                  "${AppText.of(context).apkSize}${version.size}",
-                  style: TextStyle(fontSize: 14, color: AppColor.colorText2),
-                ),
-              ],
-            ),
-            yesText: AppText.of(context).download,
-            noText: AppText.of(context).wait,
-            pressed: () {
-              pop(context);
-
-              ToastUtil.showToast(AppText.of(context).apkStartDownload);
-              _viewModel.updateApp(version.url, version.version);
-            },
-          );
-        } else {
-          await showDiffDialog(context,
-              title: Text(AppText.of(context).hasNewVersion),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(AppText.of(context).hasNewVersionLongIOS),
-                  Container(height: 12),
-                  Text(
-                    "${AppText.of(context).updateTime}${version.time}",
-                    style: TextStyle(fontSize: 14, color: AppColor.colorText2),
-                  ),
-                ],
-              ),
-              yesText: AppText.of(context).certain,
-              noText: AppText.of(context).wait,
-              pressed: () => pop(context));
-        }
-      } else {
-        showSnack(text: AppText.of(context).alreadyNew);
-      }
-    }));
-    bindSub(_viewModel.updateResult.stream.where((_) => isAndroid).listen((b) {
-      if (b) {
-        showSnack(text: AppText.of(context).apkPleaseInstall);
-      } else {
-        showSnack(text: AppText.of(context).apkFail);
-      }
-    }));
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    bindErrorStream(_viewModel.error.stream,
-        errorText: AppText.of(context).checkUpdateFail,
-        retry: () => _viewModel.checkUpdate());
   }
 
   @override
@@ -226,30 +148,21 @@ class AboutState extends PageState<AboutPage> {
               _buildOverviewItem(
                 icon: Icons.feedback,
                 text: AppText.of(context).feedback,
-                onTap: () => ChannelUtil.sendEmail(email: "965083574@qq.com"),
+                onTap: null,
               ),
 
               // 检查更新
               _buildOverviewItem(
                 icon: Icons.autorenew,
                 text: AppText.of(context).checkUpdate,
-                onTap: () async {
-                  if (await ChannelUtil.isDownloading()) {
-                    showSnack(text: AppText.of(context).apkDownloading);
-                  } else {
-                    _viewModel.checkUpdate();
-                  }
-                },
+                onTap: null,
               ),
 
               // 分享
               _buildOverviewItem(
                 icon: Icons.share,
                 text: AppText.of(context).shareApp,
-                onTap: () {
-                  Share.text(AppText.of(context).share,
-                      AppText.of(context).shareAppUrl, "text/plain");
-                },
+                onTap: null,
               ),
 
               Padding(
@@ -308,19 +221,12 @@ class AboutState extends PageState<AboutPage> {
                   fontWeight: FontWeight.bold),
             ),
           ),
-          FutureBuilder(
-            future: PackageInfo.fromPlatform(),
-            builder: (context, snapshot) {
-              final PackageInfo info = snapshot.data;
-
-              return Text(
-                info != null ? "v${info?.version}" : "",
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black87,
-                    fontWeight: FontWeight.bold),
-              );
-            },
+          Text(
+            "v1.3.1",
+            style: TextStyle(
+                fontSize: 14,
+                color: Colors.black87,
+                fontWeight: FontWeight.bold),
           ),
         ],
       ),

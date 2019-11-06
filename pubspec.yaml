@@ -10,24 +10,13 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  cupertino_icons: 0.1.2
-  dio: 2.1.13
-  shared_preferences: 0.5.3+1
-  device_info: 0.4.0+2
-  intl: 0.15.8
-  url_launcher: 5.0.5
-  cached_network_image: 1.1.0
-  connectivity: 0.4.3+4
-  permission_handler: 3.1.0
-  package_info: 0.4.0+4
+  dio: 3.0.4
+  intl: 0.16.0
   rxdart:  0.22.0
   html: 0.14.0+2
-  webview_flutter: 0.3.15+1
   flutter_colorpicker: 0.2.6
   dragable_flutter_list: 1.0.2
   flutter_linkify: 2.1.0
-  image_gallery_saver: 1.2.0
-  esys_flutter_share: 1.0.2
   csv: 4.0.3
   flutter_staggered_grid_view: 0.3.0
 

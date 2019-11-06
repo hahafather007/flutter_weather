@@ -67,9 +67,7 @@ class SettingState extends PageState<SettingPage> {
                 _buildTitle(title: AppText.of(context).weather),
                 _buildItem(
                   title: AppText.of(context).shareType,
-                  content: SharedDepository().hammerShare
-                      ? AppText.of(context).likeHammer
-                      : AppText.of(context).textOnly,
+                  content: AppText.of(context).likeHammer,
                   onTap: _typeDialogFunc,
                 ),
 
@@ -111,11 +109,9 @@ class SettingState extends PageState<SettingPage> {
                             FlatButton(
                               onPressed: () {
                                 pop(context);
-                                SharedDepository()
-                                    .setThemeColor(selectColor)
-                                    .then((_) => EventSendHolder().sendEvent(
-                                        tag: "themeChange",
-                                        event: selectColor));
+                                SharedDepository().setThemeColor(selectColor);
+                                EventSendHolder().sendEvent(
+                                    tag: "themeChange", event: selectColor);
                               },
                               child: Text(AppText.of(context).certain),
                             ),
@@ -135,7 +131,7 @@ class SettingState extends PageState<SettingPage> {
                 _buildItem(
                   title: AppText.of(context).clearCache,
                   content: cacheSize,
-                  onTap: () => _viewModel.clearCache(),
+                  onTap: null,
                 ),
               ],
             );
@@ -231,7 +227,6 @@ class SettingState extends PageState<SettingPage> {
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: () async {
-                    await SharedDepository().setHammerShare(false);
                     pop(context);
                   },
                   child: Padding(
@@ -239,15 +234,8 @@ class SettingState extends PageState<SettingPage> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Icon(
-                          SharedDepository().hammerShare
-                              ? Icons.radio_button_unchecked
-                              : Icons.radio_button_checked,
-                          size: 22,
-                          color: SharedDepository().hammerShare
-                              ? AppColor.colorText2
-                              : Theme.of(context).accentColor,
-                        ),
+                        Icon(Icons.radio_button_checked,
+                            size: 22, color: AppColor.colorText2),
                         Padding(
                           padding:
                               const EdgeInsets.only(left: 4, top: 6, bottom: 6),
@@ -266,7 +254,6 @@ class SettingState extends PageState<SettingPage> {
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: () async {
-                    await SharedDepository().setHammerShare(true);
                     pop(context);
                   },
                   child: Padding(
@@ -275,13 +262,9 @@ class SettingState extends PageState<SettingPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                          SharedDepository().hammerShare
-                              ? Icons.radio_button_checked
-                              : Icons.radio_button_unchecked,
+                          Icons.radio_button_checked,
                           size: 22,
-                          color: SharedDepository().hammerShare
-                              ? Theme.of(context).accentColor
-                              : AppColor.colorText2,
+                          color: Theme.of(context).accentColor,
                         ),
                         Padding(
                           padding:

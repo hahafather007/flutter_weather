@@ -12,7 +12,6 @@ import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/view/page/city_control_page.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:flutter_weather/view/page/weather_city_page.dart';
-import 'package:flutter_weather/view/picker/weather_share_picker.dart';
 import 'package:flutter_weather/view/weather/weather_view.dart';
 import 'package:flutter_weather/view/widget/custom_app_bar.dart';
 import 'package:flutter_weather/view/widget/weather_title_view.dart';
@@ -94,7 +93,7 @@ class WeatherState extends PageState<WeatherPage> {
                   key: scafKey,
                   appBar: PreferredSize(
                     child: AnimatedContainer(
-                      color:_getAppBarColor(type: type),
+                      color: _getAppBarColor(type: type),
                       duration: const Duration(seconds: 2),
                       child: StreamBuilder(
                         stream: _titleAlpha.stream,
@@ -145,8 +144,8 @@ class WeatherState extends PageState<WeatherPage> {
                                       ),
                                       PopupMenuItem(
                                         value: "cities",
-                                        child:
-                                        Text(AppText.of(context).cityControl),
+                                        child: Text(
+                                            AppText.of(context).cityControl),
                                       ),
                                       PopupMenuItem(
                                         value: "weathers",
@@ -157,16 +156,12 @@ class WeatherState extends PageState<WeatherPage> {
                                     onSelected: (value) {
                                       switch (value) {
                                         case "share":
-                                          if (pair?.a == null || pair?.b == null)
-                                            return;
-
-                                          WeatherSharePicker.share(context,
-                                              weather: pair.a,
-                                              air: pair.b,
-                                              city: location);
+                                          if (pair?.a == null ||
+                                              pair?.b == null) return;
                                           break;
                                         case "cities":
-                                          push(context, page: CityControlPage());
+                                          push(context,
+                                              page: CityControlPage());
                                           break;
                                         case "weathers":
                                           _showWeathersDialog();

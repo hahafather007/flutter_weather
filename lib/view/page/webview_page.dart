@@ -1,14 +1,10 @@
-import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_weather/language.dart';
 import 'package:flutter_weather/model/holder/fav_holder.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:flutter_weather/view/widget/custom_app_bar.dart';
-import 'package:flutter_weather/view/widget/loading_view.dart';
 import 'package:flutter_weather/viewmodel/web_viewmodel.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class CustomWebViewPage<T> extends StatefulWidget {
   final String title;
@@ -26,7 +22,6 @@ class CustomWebViewPage<T> extends StatefulWidget {
 
 class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
   WebViewModel _viewModel;
-  WebViewController _controller;
 
   @override
   void initState() {
@@ -63,13 +58,7 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
               Icons.arrow_back,
               color: Colors.white,
             ),
-            onPressed: () async {
-              if (_controller != null && await _controller.canGoBack()) {
-                _controller.goBack();
-              } else {
-                pop(context);
-              }
-            },
+            onPressed: () => pop(context),
           ),
           rightBtns: [
             widget.favData != null
@@ -114,41 +103,20 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
               onSelected: (value) {
                 switch (value) {
                   case "refresh":
-                    _controller?.reload();
                     break;
                   case "share":
-                    Share.text(AppText.of(context).share,
-                        "${widget.title}\n${widget.url}", "text/plain");
                     break;
                   case "copy":
-                    Clipboard.setData(ClipboardData(text: widget.url));
-                    showSnack(text: AppText.of(context).alreadyCopyUrl);
                     break;
                   case "openByOther":
-                    openBrowser(widget.url);
                     break;
                 }
               },
             ),
           ],
         ),
-        body: LoadingView(
-          loadingStream: _viewModel.isLoading.stream,
-          child: WebView(
-            initialUrl: "${widget.url}",
-            onWebViewCreated: (controller) => _controller = controller,
-            onPageFinished: (_) => _viewModel.setLoading(false),
-            javascriptMode: JavascriptMode.unrestricted,
-          ),
-        ),
       ),
       onWillPop: () async {
-        if (_controller != null && await _controller.canGoBack()) {
-          _controller.goBack();
-        } else {
-          pop(context);
-        }
-
         return false;
       },
     );

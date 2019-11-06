@@ -1,18 +1,18 @@
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/model/data/city_data.dart';
 import 'package:flutter_weather/model/data/page_module_data.dart';
 import 'package:flutter_weather/model/data/weather_air_data.dart';
 import 'package:flutter_weather/model/data/weather_data.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// SharedPreference的管理仓库
 class SharedDepository {
   /// 使用单利模式管理
   static final SharedDepository _depository = SharedDepository._internal();
 
-  SharedPreferences _prefs;
+  final _prefs = window.localStorage;
 
   factory SharedDepository() => _depository;
 
@@ -20,161 +20,93 @@ class SharedDepository {
     debugPrint("SharedDepository初始化完成！");
   }
 
-  Future<SharedDepository> initShared() async {
-    _prefs = await SharedPreferences.getInstance();
-
-    debugPrint("prefs======$_prefs");
-
-    return this;
-  }
-
   /// 获取所有城市定位
   List<District> get districts {
-    final list = _getStringList("districts");
-    if (list == null || list.isEmpty) {
+    final json = _prefs["districts"];
+    if (json == null) {
       return [District(name: "成都", id: "CN101270101")];
     }
-    return list
+    return (jsonDecode(json) as List)
         .map((v) => jsonDecode(v))
         .map((v) => District.fromJson(v))
         .toList();
   }
 
-  Future<bool> setDistricts(List<District> value) async => await _prefs
-      .setStringList("districts", value.map((v) => jsonEncode(v)).toList());
+  void setDistricts(List<District> value) => _prefs["districts"] =
+      jsonEncode(value.map((v) => jsonEncode(v)).toList());
 
   /// 所有城市天气情况
   List<Weather> get weathers {
-    final list = _getStringList("weathersData");
-    if (list == null || list.isEmpty) {
+    final json = _prefs["weathersData"];
+    if (json == null) {
       return [Weather()];
     } else {
-      return list
+      return (jsonDecode(json) as List)
           .map((v) => jsonDecode(v))
           .map((v) => Weather.fromJson(v))
           .toList();
     }
   }
 
-  Future<bool> setWeathers(List<Weather> value) async => await _prefs
-      .setStringList("weathersData", value.map((v) => jsonEncode(v)).toList());
+  void setWeathers(List<Weather> value) => _prefs["weathersData"] =
+      jsonEncode(value.map((v) => jsonEncode(v)).toList());
 
   /// 所有城市空气质量
   List<WeatherAir> get airs {
-    final list = _getStringList("airsData");
-    if (list == null || list.isEmpty) {
+    final json = _prefs["airsData"];
+    if (json == null) {
       return [WeatherAir()];
     } else {
-      return list
+      return (jsonDecode(json) as List)
           .map((v) => jsonDecode(v))
           .map((v) => WeatherAir.fromJson(v))
           .toList();
     }
   }
 
-  Future<bool> setAirs(List<WeatherAir> value) async => await _prefs
-      .setStringList("airsData", value.map((v) => jsonEncode(v)).toList());
+  void setAirs(List<WeatherAir> value) =>
+      _prefs["airsData"] = jsonEncode(value.map((v) => jsonEncode(v)).toList());
 
   /// 收藏的闲读文章
-  String get favReadData => _getString("favReadData");
+  String get favReadData => _prefs["favReadData"];
 
-  Future<bool> setFavReadData(String value) async =>
-      await _prefs.setString("favReadData", value);
+  void setFavReadData(String value) => _prefs["favReadData"] = value;
 
   /// 收藏的妹子图
-  String get favMziData => _getString("favMziData");
+  String get favMziData => _prefs["favMziData"];
 
-  Future<bool> setFavMziData(String value) async =>
-      await _prefs.setString("favMziData", value);
+  void setFavMziData(String value) => _prefs["favMziData"] = value;
 
   /// 当前主题色
-  Color get themeColor =>
-      Color(_getInt("themeColor", defaultValue: 0xff7DA743));
+  Color get themeColor {
+    final json = _prefs["themeColor"];
+    if (json == null) {
+      return const Color(0xff7da743);
+    }
 
-  Future<bool> setThemeColor(Color color) async =>
-      await _prefs.setInt("themeColor", color.value);
+    return Color(int.parse(_prefs["themeColor"]));
+  }
 
-  /// 图片本地缓存目录
-  String get imgCachePath => _getString("imgCachePath");
-
-  Future<bool> setImgCachePath(String path) async =>
-      await _prefs.setString("imgCachePath", path);
+  void setThemeColor(Color color) =>
+      _prefs["themeColor"] = color.value.toString();
 
   /// 页面模块
   List<PageModule> get pageModules {
-    final str = _getString("pageModules2");
-    if (str == null) {
-      return List.from([
+    final json = _prefs["pageModules2"];
+    if (json == null) {
+      return [
         PageModule(module: "weather", open: true),
         PageModule(module: "gift", open: true),
         PageModule(module: "read", open: true),
         PageModule(module: "collect", open: true),
-      ]);
+      ];
     } else {
-      return (jsonDecode(str) as List)
+      return (jsonDecode(json) as List)
           .map((v) => PageModule.fromJson(v))
           .toList();
     }
   }
 
-  Future<bool> setPageModules(List<PageModule> modules) async =>
-      await _prefs.setString("pageModules2", jsonEncode(modules));
-
-  /// 天气分享形式是否为锤子分享
-  bool get hammerShare => _getBool("hammerShare", defaultValue: true);
-
-  Future<bool> setHammerShare(bool value) async =>
-      await _prefs.setBool("hammerShare", value);
-
-  /// 获取已保存的图片
-  List<String> get savedImages {
-    return _getStringList("savedImages", defaultValue: []);
-  }
-
-  Future<bool> setSavedImages(List<String> images) async =>
-      await _prefs.setString("savedImages", jsonEncode(images));
-
-  /// ==============================================
-  ///                     分界线
-  /// ==============================================
-  /// 用带有默认值的形式获取prefs的数据
-  String _getString(String key, {String defaultValue}) {
-    final value = _prefs.getString(key);
-
-    if (value == null) {
-      return defaultValue;
-    }
-
-    return value;
-  }
-
-  List<String> _getStringList(String key, {List<String> defaultValue}) {
-    final list = _prefs.getStringList(key);
-
-    if (list == null) {
-      return defaultValue;
-    }
-
-    return list;
-  }
-
-  int _getInt(String key, {int defaultValue}) {
-    final value = _prefs.getInt(key);
-
-    if (value == null) {
-      return defaultValue;
-    }
-
-    return value;
-  }
-
-  bool _getBool(String key, {bool defaultValue = false}) {
-    final value = _prefs.getBool(key);
-
-    if (value == null) {
-      return defaultValue;
-    }
-
-    return value;
-  }
+  void setPageModules(List<PageModule> modules) => _prefs["pageModules2"] =
+      jsonEncode(modules.map((v) => jsonEncode(v)).toList());
 }

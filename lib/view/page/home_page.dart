@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
 import 'package:flutter_weather/language.dart';
-import 'package:flutter_weather/model/holder/app_version_holder.dart';
 import 'package:flutter_weather/model/holder/event_send_holder.dart';
 import 'package:flutter_weather/model/holder/fav_holder.dart';
 import 'package:flutter_weather/model/holder/shared_depository.dart';
@@ -30,15 +27,11 @@ class HomeState extends PageState<HomePage> {
   /// 当前显示页面
   var _pageType = PageType.WEATHER;
 
-  bool _readyExit = false;
-  Timer _exitTimer;
-
   @override
   void initState() {
     super.initState();
 
     ToastUtil.initToast(context);
-    AppVersionHolder().checkUpdate(context);
 
     bindSub(EventSendHolder()
         .event
@@ -116,7 +109,6 @@ class HomeState extends PageState<HomePage> {
   void dispose() {
     ToastUtil.disposeToast();
     FavHolder().dispose();
-    _exitTimer?.cancel();
 
     super.dispose();
   }
@@ -254,15 +246,6 @@ class HomeState extends PageState<HomePage> {
         body: _buildBody(),
       ),
       onWillPop: () async {
-        if (_readyExit) {
-          exitApp();
-        } else {
-          _readyExit = true;
-          _exitTimer =
-              Timer(const Duration(seconds: 2), () => _readyExit = false);
-          showSnack(text: AppText.of(context).retryToExit);
-        }
-
         return false;
       },
     );

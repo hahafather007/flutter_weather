@@ -16,7 +16,7 @@ class GiftGankService extends Service {
 
     final map = response.data;
     if (map["error"]) {
-      throw DioError(message: "我也不知为什么，它就是出错了");
+      throw DioError(error: "我也不知为什么，它就是出错了");
     } else {
       return (map["results"] as List)
           .map((v) =>
