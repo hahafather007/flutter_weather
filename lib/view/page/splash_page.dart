@@ -7,6 +7,10 @@ import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:rxdart/rxdart.dart';
 
 class SplashPage extends StatefulWidget {
+  final ValueChanged<Color> onThemeChange;
+
+  SplashPage({@required this.onThemeChange});
+
   @override
   State createState() => SplashState();
 }
@@ -18,9 +22,10 @@ class SplashState extends PageState<SplashPage> {
 
     bindSub(Observable.timer(true, const Duration(milliseconds: 500))
         .map((_) => SharedDepository().themeColor)
-        .map((color) =>
-            EventSendHolder().sendEvent(tag: "themeChange", event: color))
-        .listen((_) => push(context, page: HomePage(), replace: true)));
+        .map((color) => widget.onThemeChange(color))
+        .listen((_) => push(context,
+            page: HomePage(onThemeChange: widget.onThemeChange),
+            replace: true)));
   }
 
   @override

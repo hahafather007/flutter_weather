@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 /// 加载网络图片
 class NetImage extends StatelessWidget {
@@ -30,19 +31,23 @@ class NetImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final img = Image.network(
-      url,
-      headers: headers,
-      height: height,
+    final img = Container(
       width: width,
-      fit: fit,
-      loadingBuilder: (context, child, url) =>
-          placeholder ??
-          Container(
-            height: height,
-            width: width,
-            color: AppColor.colorHolder,
+      height: height,
+      child: Stack(
+        children: <Widget>[
+          Positioned.fill(
+            child: placeholder ?? Container(color: AppColor.colorHolder),
           ),
+          Positioned.fill(
+            child: FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: url,
+              fit: fit,
+            ),
+          ),
+        ],
+      ),
     );
 
     return isCircle ? ClipOval(child: img) : img;

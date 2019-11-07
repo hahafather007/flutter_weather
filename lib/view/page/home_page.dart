@@ -15,6 +15,10 @@ import 'package:flutter_weather/view/page/setting_page.dart';
 import 'package:flutter_weather/view/page/weather_page.dart';
 
 class HomePage extends StatefulWidget {
+  final ValueChanged<Color> onThemeChange;
+
+  HomePage({@required this.onThemeChange});
+
   @override
   State createState() => HomeState();
 }
@@ -43,6 +47,10 @@ class HomeState extends PageState<HomePage> {
         pop(context);
       }
     }));
+    bindSub(EventSendHolder()
+        .event
+        .where((pair) => pair.a == "themeChange")
+        .listen((pair) => widget.onThemeChange(pair.b)));
 
     // 让第一个页面生效
     _pageTypeMap[PageType.WEATHER] = true;

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -17,17 +19,11 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> with StreamSubController {
-  ThemeData theme = ThemeData();
+  ThemeData _theme = ThemeData();
 
   @override
   void initState() {
     super.initState();
-
-    bindSub(EventSendHolder()
-        .event
-        .where((pair) => pair.a == "themeChange")
-        .listen(
-            (pair) => setState(() => theme = ThemeData(accentColor: pair.b))));
   }
 
   @override
@@ -40,8 +36,14 @@ class MyAppState extends State<MyApp> with StreamSubController {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SplashPage(),
-      theme: theme,
+      home: SplashPage(
+        onThemeChange: (color) {
+          setState(() {
+            _theme = ThemeData(accentColor: color);
+          });
+        },
+      ),
+      theme: _theme,
 
       // 设置地区信息
       localizationsDelegates: [

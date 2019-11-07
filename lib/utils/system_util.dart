@@ -86,9 +86,7 @@ void pop(BuildContext context, {int count = 1, dynamic extraData}) {
 
 /// 开启一个窗口
 /// [replace] 是否代替当前界面
-/// [nowStyle] 当前界面主题（默认黑色，只针对IOS设置）
-/// [jumpStyle] 跳转界面的主题（同上）
-Future push<T extends StatefulWidget>(BuildContext context,
+Future push<T extends Widget>(BuildContext context,
     {@required T page, bool replace = false}) {
   final route = MaterialPageRoute(builder: (_) => page);
 

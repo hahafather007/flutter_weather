@@ -18,8 +18,9 @@ class EventSendHolder {
 
   /// [tag]表示标识符
   /// [event]表示要发送的事件
-  void sendEvent({@required String tag, @required dynamic event}) =>
-      _eventBroadcast.add(Pair(tag, event));
+  void sendEvent({@required String tag, @required dynamic event}) {
+    _eventBroadcast.add(Pair(tag, event));
+  }
 
   void dispose() {
     _eventBroadcast.close();

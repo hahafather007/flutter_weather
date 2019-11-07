@@ -4,11 +4,11 @@ import 'package:flutter/foundation.dart' show SynchronousFuture;
 import 'package:flutter/material.dart';
 
 class AppText {
-  AppText(this.locale);
+  const AppText(this.locale);
 
   final Locale locale;
 
-  static AppText of(BuildContext context) => Localizations.of(context, AppText);
+  static AppText of(BuildContext context) => const AppText(Locale("zh", "cn"));
 
   static Map<String, Map<String, String>> _localizedValues = {
     "zh": {
