@@ -2,46 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-double _screenWidth = 0;
-
 /// 获取屏幕宽度
 double getScreenWidth(BuildContext context) {
-  if (_screenWidth != 0) {
-    return _screenWidth;
-  } else {
-    final width = MediaQuery.of(context).size.width;
-    _screenWidth = width;
-
-    return _screenWidth;
-  }
+  return MediaQuery.of(context).size.width;
 }
-
-double _screenHeight = 0;
 
 /// 获取屏幕高度
 double getScreenHeight(BuildContext context) {
-  if (_screenHeight != 0) {
-    return _screenHeight;
-  } else {
-    final height = MediaQuery.of(context).size.height;
-    _screenHeight = height;
-
-    return _screenHeight;
-  }
+  return MediaQuery.of(context).size.height;
 }
-
-double _statusHeight = 0;
 
 /// 获取系统状态栏高度
 double getStatusHeight(BuildContext context) {
-  if (_statusHeight != 0) {
-    return _statusHeight;
-  } else {
-    final height = MediaQuery.of(context).padding.top;
-    _statusHeight = height;
-
-    return _statusHeight;
-  }
+  return 0;
 }
 
 double _appBarHeight = 0;
