@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/common/keep_alive_mixin.dart';
 import 'package:flutter_weather/language.dart';
 import 'package:flutter_weather/model/data/weather_air_data.dart';
 import 'package:flutter_weather/model/data/weather_data.dart';
@@ -25,10 +24,13 @@ class WeatherCityPage extends StatefulWidget {
 }
 
 class WeatherCityState extends PageState<WeatherCityPage>
-    with MustKeepAliveMixin {
+    with AutomaticKeepAliveClientMixin {
   final _scrollController = ScrollController();
 
   WeatherCityViewModel _viewModel;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
