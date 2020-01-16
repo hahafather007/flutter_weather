@@ -11,12 +11,17 @@ class FavHolder<T> {
 
   factory FavHolder() => _holder;
 
-  final List<ReadData> _cacheReads = List();
-  final List<MziData> _cacheMzis = List();
   final _favReadBroadcast = StreamController<List<ReadData>>();
   final _favMziBroadcast = StreamController<List<MziData>>();
+  final List<ReadData> _cacheReads = [];
+  final List<MziData> _cacheMzis = [];
+
   Stream<List<ReadData>> favReadStream;
   Stream<List<MziData>> favMziStream;
+
+  List<MziData> get favMzis => _cacheMzis;
+
+  List<ReadData> get favReads => _cacheReads;
 
   FavHolder._internal() {
     favReadStream = _favReadBroadcast.stream.asBroadcastStream();
@@ -25,7 +30,7 @@ class FavHolder<T> {
     _init();
   }
 
-  void _init() async {
+  void _init() {
     final readValue = SharedDepository().favReadData;
     if (readValue != null) {
       final list =
@@ -68,10 +73,6 @@ class FavHolder<T> {
       await SharedDepository().setFavMziData(json.encode(_cacheMzis));
     }
   }
-
-  List<MziData> get favMzis => _cacheMzis;
-
-  List<ReadData> get favReads => _cacheReads;
 
   /// 判断[t]是否被收藏
   bool isFavorite(T t) {

@@ -48,12 +48,12 @@ class AppVersionHolder {
                       Text(
                         "${AppText.of(context).updateTime}${version.time}",
                         style:
-                            TextStyle(fontSize: 14, color: AppColor.colorText2),
+                            TextStyle(fontSize: 14, color: AppColor.text2),
                       ),
                       Text(
                         "${AppText.of(context).apkSize}${version.size}",
                         style:
-                            TextStyle(fontSize: 14, color: AppColor.colorText2),
+                            TextStyle(fontSize: 14, color: AppColor.text2),
                       ),
                     ],
                   ),
@@ -74,11 +74,11 @@ class AppVersionHolder {
                   Container(height: 12),
                   Text(
                     "${AppText.of(context).updateTime}${version.time}",
-                    style: TextStyle(fontSize: 14, color: AppColor.colorText2),
+                    style: TextStyle(fontSize: 14, color: AppColor.text2),
                   ),
                   Text(
                     "${AppText.of(context).apkSize}${version.size}",
-                    style: TextStyle(fontSize: 14, color: AppColor.colorText2),
+                    style: TextStyle(fontSize: 14, color: AppColor.text2),
                   ),
                 ],
               ),
@@ -110,7 +110,7 @@ class AppVersionHolder {
                   Container(height: 12),
                   Text(
                     "${AppText.of(context).updateTime}${version.time}",
-                    style: TextStyle(fontSize: 14, color: AppColor.colorText2),
+                    style: TextStyle(fontSize: 14, color: AppColor.text2),
                   ),
                 ],
               ),

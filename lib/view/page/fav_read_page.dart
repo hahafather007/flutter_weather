@@ -41,36 +41,35 @@ class FavReadState extends PageState<FavReadPage>
     return StreamBuilder(
       stream: _viewModel.data.stream,
       builder: (context, snapshot) {
-        final List<ReadData> datas = snapshot.data ?? [];
+        final List<ReadData> list = snapshot.data ?? [];
 
         return Stack(
           children: <Widget>[
             // 有内容时的显示
-            datas.isNotEmpty
-                ? ListView.builder(
-                    physics: const AlwaysScrollableScrollPhysics(
-                        parent: const ClampingScrollPhysics()),
-                    padding: const EdgeInsets.only(),
-                    itemCount: datas.length,
-                    itemBuilder: (context, index) {
-                      return Dismissible(
-                        key: Key("Dismissible${datas[index].url}"),
-                        child: _buildReadItem(
-                            data: datas[index], index: index + 1),
-                        onDismissed: (_) => _viewModel.removeRead(datas[index]),
-                      );
-                    },
-                  )
-                : Container(),
+            ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(
+                  parent: const ClampingScrollPhysics()),
+              padding: const EdgeInsets.only(),
+              itemCount: list.length,
+              itemBuilder: (context, index) {
+                return Dismissible(
+                  key: Key("Dismissible${list[index].url}"),
+                  child: _buildReadItem(data: list[index], index: index + 1),
+                  onDismissed: (_) => _viewModel.removeRead(list[index]),
+                );
+              },
+            ),
 
             // 占位
-            datas.isEmpty
+            list.isEmpty
                 ? Container(
                     alignment: Alignment.center,
                     child: Text(
                       AppText.of(context).listEmpty,
-                      style:
-                          TextStyle(fontSize: 16, color: AppColor.colorText3),
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: AppColor.text3,
+                      ),
                     ),
                   )
                 : Container()
@@ -102,7 +101,7 @@ class FavReadState extends PageState<FavReadPage>
                       "$index. ${data.name}",
                       textAlign: TextAlign.start,
                       style:
-                          TextStyle(fontSize: 16, color: AppColor.colorText1),
+                          TextStyle(fontSize: 16, color: AppColor.text1),
                     ),
                     RichText(
                       text: TextSpan(
@@ -114,7 +113,7 @@ class FavReadState extends PageState<FavReadPage>
                           TextSpan(text: data.from),
                         ],
                         style:
-                            TextStyle(fontSize: 12, color: AppColor.colorText2),
+                            TextStyle(fontSize: 12, color: AppColor.text2),
                       ),
                     ),
                   ],

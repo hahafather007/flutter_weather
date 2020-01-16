@@ -90,7 +90,7 @@ class ReadContentState extends PageState<ReadContentPage>
         child: StreamBuilder(
           stream: _viewModel.data.stream,
           builder: (context, snapshot) {
-            final List<ReadData> datas = snapshot.data ?? List();
+            final List<ReadData> list = snapshot.data ?? [];
 
             return RefreshIndicator(
               onRefresh: () => _viewModel.loadData(type: LoadType.REFRESH),
@@ -98,14 +98,17 @@ class ReadContentState extends PageState<ReadContentPage>
                 physics: const AlwaysScrollableScrollPhysics(
                     parent: const ClampingScrollPhysics()),
                 padding: const EdgeInsets.only(),
-                itemCount: datas.length,
+                itemCount: list.length,
                 itemBuilder: (context, index) {
                   // 在倒数第5个item显示时就加载下一页
-                  if (index + 1 >= datas.length - 5) {
+                  if (index + 1 >= list.length - 5) {
                     _viewModel.loadMore();
                   }
 
-                  return _buildReadItem(data: datas[index], index: index + 1);
+                  return _buildReadItem(
+                    data: list[index],
+                    index: index + 1,
+                  );
                 },
               ),
             );
@@ -137,7 +140,7 @@ class ReadContentState extends PageState<ReadContentPage>
                       "$index. ${data.name}",
                       textAlign: TextAlign.start,
                       style:
-                          TextStyle(fontSize: 16, color: AppColor.colorText1),
+                          TextStyle(fontSize: 16, color: AppColor.text1),
                     ),
                     RichText(
                       text: TextSpan(
@@ -149,7 +152,7 @@ class ReadContentState extends PageState<ReadContentPage>
                           TextSpan(text: data.from),
                         ],
                         style:
-                            TextStyle(fontSize: 12, color: AppColor.colorText2),
+                            TextStyle(fontSize: 12, color: AppColor.text2),
                       ),
                     ),
                   ],

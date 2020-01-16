@@ -7,11 +7,11 @@ import 'package:flutter_weather/model/service/gift_mzi_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class GiftMziViewModel extends ViewModel {
-  final _service = GiftMziService();
-
   final data = StreamController<List<MziData>>();
 
-  List<MziData> _cacheData = List();
+  final _service = GiftMziService();
+  final List<MziData> _cacheData = [];
+
   int _page = 1;
   String _typeUrl;
   LoadType _reloadType = LoadType.NEW_LOAD;

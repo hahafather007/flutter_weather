@@ -10,13 +10,12 @@ import 'package:flutter_weather/model/service/weather_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class CityControlViewModel extends ViewModel {
-  final _service = WeatherService();
-
   final cities = StreamController<List<String>>();
   final weathers = StreamController<List<Weather>>();
 
-  List<String> _cacheCities = [];
-  List<Weather> _cacheWeathers = [];
+  final _service = WeatherService();
+  final List<String> _cacheCities = [];
+  final List<Weather> _cacheWeathers = [];
 
   CityControlViewModel() {
     _cacheCities.addAll(WeatherHolder().cities.map((v) => v.name));

@@ -43,6 +43,7 @@ class AppText {
       "retryToExit": "再按一次退出App！",
 
       // 天气
+      "locationError": "定位失败，请给与定位权限",
       "cityControl": "城市管理",
       "cityChoose": "城市选择",
       "repeatCity": "重复的城市！",
@@ -196,6 +197,8 @@ class AppText {
 
   String get no => _localizedValues[locale.languageCode]["no"];
 
+  String get share => _localizedValues[locale.languageCode]["share"];
+
   String get close => _localizedValues[locale.languageCode]["close"];
 
   String get netError => _localizedValues[locale.languageCode]["netError"];
@@ -247,7 +250,8 @@ class AppText {
       _localizedValues[locale.languageCode]["retryToExit"];
 
   /// 天气
-  String get share => _localizedValues[locale.languageCode]["share"];
+  String get locationError =>
+      _localizedValues[locale.languageCode]["locationError"];
 
   String get cityChoose => _localizedValues[locale.languageCode]["cityChoose"];
 

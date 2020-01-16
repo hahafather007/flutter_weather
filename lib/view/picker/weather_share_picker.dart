@@ -102,7 +102,7 @@ class _WeatherPickState extends PageState<WeatherSharePicker> {
                           child: Text(
                             _getShareText(),
                             style: TextStyle(
-                                fontSize: 13, color: AppColor.colorText2),
+                                fontSize: 13, color: AppColor.text2),
                           ),
                         ),
                       ),

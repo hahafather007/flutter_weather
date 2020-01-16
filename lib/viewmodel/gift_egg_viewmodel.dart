@@ -7,13 +7,13 @@ import 'package:flutter_weather/model/service/gift_egg_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class GiftEggViewModel extends ViewModel {
-  final _service = GiftEggService();
-
   final data = StreamController<List<MziData>>();
+
+  final _service = GiftEggService();
   final _photoData = StreamController<List<MziData>>();
+  final List<MziData> _cacheData = [];
 
   Stream<List<MziData>> photoStream;
-  List<MziData> _cacheData = List();
   int _page = 1;
 
   GiftEggViewModel() {

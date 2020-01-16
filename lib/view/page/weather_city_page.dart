@@ -47,7 +47,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
     _viewModel.perStatus.stream
         .where((status) => status == PermissionStatus.denied)
         .listen((_) => showSnack(
-            text: "定位失败，请给与定位权限",
+            text: AppText.of(context).locationError,
             duration: const Duration(hours: 1),
             action: SnackBarAction(
                 label: AppText.of(context).setting,
@@ -130,7 +130,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
                               ),
                             ),
 
-                            Divider(color: AppColor.colorLine),
+                            Divider(color: AppColor.line),
 
                             // 一周天气预测
                             Container(
@@ -139,7 +139,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
                               child: _buildWeekWeather(data: data),
                             ),
 
-                            Divider(color: AppColor.colorLine),
+                            Divider(color: AppColor.line),
 
                             // 中间显示pm2.5等情况的区域
                             Container(
@@ -221,7 +221,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
                               ),
                             ),
 
-                            Divider(color: AppColor.colorLine),
+                            Divider(color: AppColor.line),
 
                             // 最下面两排空气舒适度
                             // 第一排
@@ -294,14 +294,14 @@ class WeatherCityState extends PageState<WeatherCityPage>
 
                             // 最下面"数据来源说明"
                             Container(
-                              color: AppColor.colorShadow,
+                              color: AppColor.shadow,
                               alignment: Alignment.center,
                               padding: const EdgeInsets.only(top: 6, bottom: 6),
                               child: Text(
                                 AppText.of(context).dataSource,
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: AppColor.colorText2,
+                                  color: AppColor.text2,
                                 ),
                               ),
                             ),
@@ -537,7 +537,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
           "${hourly?.tmp ?? 0}°",
           style: TextStyle(
               fontSize: 14,
-              color: AppColor.colorText2,
+              color: AppColor.text2,
               fontWeight: FontWeight.bold),
         ),
         Padding(
@@ -551,7 +551,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
         Text(
           hourly?.time?.substring(hourly.time.length - 5) ?? "00:00",
           style: TextStyle(
-            color: AppColor.colorText2,
+            color: AppColor.text2,
             fontSize: 12,
           ),
         ),
@@ -612,7 +612,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
             _getSoftName(type: lifestyle?.type ?? ""),
             style: TextStyle(
               fontSize: 10,
-              color: AppColor.colorText2,
+              color: AppColor.text2,
             ),
           ),
         ],
@@ -650,7 +650,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
   /// [num] 数值
   Widget _buildPm25Item(
       {@required String eName, @required name, @required String num}) {
-    final style = TextStyle(fontSize: 10, color: AppColor.colorText2);
+    final style = TextStyle(fontSize: 10, color: AppColor.text2);
     final numValue = double.parse(num);
 
     return Container(
@@ -682,7 +682,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
               num,
               style: TextStyle(
                 fontSize: 16,
-                color: AppColor.colorText2,
+                color: AppColor.text2,
               ),
             ),
           ),

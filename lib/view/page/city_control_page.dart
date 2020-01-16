@@ -67,12 +67,12 @@ class CityControlState extends PageState<CityControlPage> {
       body: StreamBuilder(
         stream: _viewModel.cities.stream,
         builder: (context, snapshot) {
-          final List<String> cities = snapshot.data ?? List();
+          final List<String> cities = snapshot.data ?? [];
 
           return StreamBuilder(
             stream: _viewModel.weathers.stream,
             builder: (context, snapshot) {
-              final List<Weather> weathers = snapshot.data ?? List();
+              final List<Weather> weathers = snapshot.data ?? [];
 
               return DragAndDropList(
                 min(cities.length, weathers.length),
@@ -121,7 +121,7 @@ class CityControlState extends PageState<CityControlPage> {
           children: <Widget>[
             Text(
               city,
-              style: TextStyle(fontSize: 18, color: AppColor.colorText1),
+              style: TextStyle(fontSize: 18, color: AppColor.text1),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 4),
@@ -143,7 +143,7 @@ class CityControlState extends PageState<CityControlPage> {
                       Text(
                         now?.condTxt ?? AppText.of(context).unknown,
                         style:
-                            TextStyle(fontSize: 12, color: AppColor.colorText1),
+                            TextStyle(fontSize: 12, color: AppColor.text1),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 4),
@@ -152,7 +152,7 @@ class CityControlState extends PageState<CityControlPage> {
                               ? "${now.tmp}℃"
                               : AppText.of(context).unknown,
                           style: TextStyle(
-                              fontSize: 12, color: AppColor.colorText1),
+                              fontSize: 12, color: AppColor.text1),
                         ),
                       ),
                     ],

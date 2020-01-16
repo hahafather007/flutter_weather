@@ -43,14 +43,14 @@ class NetImage extends StatelessWidget {
           Container(
             height: height,
             width: width,
-            color: AppColor.colorHolder,
+            color: AppColor.holder,
           ),
       errorWidget: (context, url, error) =>
           placeholder ??
           Container(
             height: height,
             width: width,
-            color: AppColor.colorHolder,
+            color: AppColor.holder,
           ),
     );
 

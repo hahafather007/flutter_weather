@@ -42,64 +42,63 @@ class FavGiftsState extends PageState<FavGiftsPage>
     return StreamBuilder(
       stream: _viewModel.data.stream,
       builder: (context, snapshot) {
-        final List<MziData> datas = snapshot.data ?? [];
+        final List<MziData> list = snapshot.data ?? [];
 
         return Stack(
           children: <Widget>[
             // 有内容时的显示
-            datas.isNotEmpty
-                ? StaggeredGridView.countBuilder(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 4,
-                    crossAxisSpacing: 4,
-                    physics: const AlwaysScrollableScrollPhysics(
-                        parent: const ClampingScrollPhysics()),
-                    padding: const EdgeInsets.fromLTRB(2, 4, 2, 0),
-                    itemCount: datas.length,
-                    staggeredTileBuilder: (index) => StaggeredTile.fit(1),
-                    itemBuilder: (context, index) {
-                      final data = datas[index];
-                      final headers = Map<String, String>();
-                      headers["Referer"] = data.refer;
+            StaggeredGridView.countBuilder(
+              crossAxisCount: 2,
+              mainAxisSpacing: 4,
+              crossAxisSpacing: 4,
+              physics: const AlwaysScrollableScrollPhysics(
+                  parent: const ClampingScrollPhysics()),
+              padding: const EdgeInsets.fromLTRB(2, 4, 2, 0),
+              itemCount: list.length,
+              staggeredTileBuilder: (index) => StaggeredTile.fit(1),
+              itemBuilder: (context, index) {
+                final data = list[index];
+                final headers = Map<String, String>();
+                headers["Referer"] = data.refer;
 
-                      return RepaintBoundary(
-                        child: GestureDetector(
-                          onTap: () =>
-                              push(context, page: GiftMziImagePage(data: data)),
-                          child: Stack(
-                            alignment: Alignment.bottomRight,
-                            children: <Widget>[
-                              AspectRatio(
-                                aspectRatio: data.width / data.height,
-                                child: NetImage(
-                                  headers: headers,
-                                  url: data.url,
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(right: 6, bottom: 6),
-                                child: Icon(
-                                  Icons.photo_library,
-                                  color: Colors.white70,
-                                ),
-                              ),
-                            ],
+                return RepaintBoundary(
+                  child: GestureDetector(
+                    onTap: () =>
+                        push(context, page: GiftMziImagePage(data: data)),
+                    child: Stack(
+                      alignment: Alignment.bottomRight,
+                      children: <Widget>[
+                        AspectRatio(
+                          aspectRatio: data.width / data.height,
+                          child: NetImage(
+                            headers: headers,
+                            url: data.url,
                           ),
                         ),
-                      );
-                    },
-                  )
-                : Container(),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 6, bottom: 6),
+                          child: Icon(
+                            Icons.photo_library,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
 
             // 占位
-            datas.isEmpty
+            list.isEmpty
                 ? Container(
                     alignment: Alignment.center,
                     child: Text(
                       AppText.of(context).listEmpty,
-                      style:
-                          TextStyle(fontSize: 16, color: AppColor.colorText3),
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: AppColor.text3,
+                      ),
                     ),
                   )
                 : Container()

@@ -8,16 +8,15 @@ import 'package:flutter_weather/model/service/gift_mzi_image_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class GiftMziImageViewModel extends ViewModel {
-  final _service = GiftMziImageService();
-  final _favHolder = FavHolder();
-
   final isFav = StreamController<bool>();
   final data = StreamController<List<MziData>>();
   final dataLength = StreamController<int>();
+
+  final _service = GiftMziImageService();
+  final _favHolder = FavHolder();
   final _photoData = StreamController<List<MziData>>();
 
   MziData _mziData;
-
   Stream<List<MziData>> photoStream;
 
   GiftMziImageViewModel({@required MziData data}) {
@@ -38,7 +37,7 @@ class GiftMziImageViewModel extends ViewModel {
       final length = await _service.getLength(link: _mziData.link);
       debugPrint("length======>$length");
       dataLength.safeAdd(length);
-      final List<MziData> list = List();
+      final List<MziData> list = [];
       for (int i = 1; i <= length; i++) {
         list.add(await _service.getData(link: _mziData.link, index: i));
 

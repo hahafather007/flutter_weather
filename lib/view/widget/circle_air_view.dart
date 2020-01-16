@@ -97,7 +97,7 @@ class _CircleAirState extends State<CircleAirView>
               child: Center(
                 child: Text(
                   "${_numAnim.value}",
-                  style: TextStyle(fontSize: 14, color: AppColor.colorText2),
+                  style: TextStyle(fontSize: 14, color: AppColor.text2),
                 ),
               ),
               bottom: 10,

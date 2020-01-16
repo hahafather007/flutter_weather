@@ -68,11 +68,11 @@ class AboutState extends PageState<AboutPage> {
                 Container(height: 12),
                 Text(
                   "${AppText.of(context).updateTime}${version.time}",
-                  style: TextStyle(fontSize: 14, color: AppColor.colorText2),
+                  style: TextStyle(fontSize: 14, color: AppColor.text2),
                 ),
                 Text(
                   "${AppText.of(context).apkSize}${version.size}",
-                  style: TextStyle(fontSize: 14, color: AppColor.colorText2),
+                  style: TextStyle(fontSize: 14, color: AppColor.text2),
                 ),
               ],
             ),
@@ -96,7 +96,7 @@ class AboutState extends PageState<AboutPage> {
                   Container(height: 12),
                   Text(
                     "${AppText.of(context).updateTime}${version.time}",
-                    style: TextStyle(fontSize: 14, color: AppColor.colorText2),
+                    style: TextStyle(fontSize: 14, color: AppColor.text2),
                   ),
                 ],
               ),
@@ -278,7 +278,7 @@ class AboutState extends PageState<AboutPage> {
                           favData: null)),
                   child: Text(
                     AppText.of(context).zhihuName,
-                    style: TextStyle(fontSize: 12, color: AppColor.colorText2),
+                    style: TextStyle(fontSize: 12, color: AppColor.text2),
                   ),
                 ),
               ),
@@ -337,7 +337,7 @@ class AboutState extends PageState<AboutPage> {
                 title: AppText.of(context).appName,
                 url: link.url,
                 favData: null)),
-        style: TextStyle(fontSize: 12, color: AppColor.colorText2, height: 1.2),
+        style: TextStyle(fontSize: 12, color: AppColor.text2, height: 1.2),
         linkStyle: TextStyle(fontSize: 12, color: Colors.black87),
       ),
     );
@@ -351,7 +351,7 @@ class AboutState extends PageState<AboutPage> {
       alignment: Alignment.centerLeft,
       child: Text(
         title,
-        style: TextStyle(fontSize: 16, color: AppColor.colorText2),
+        style: TextStyle(fontSize: 16, color: AppColor.text2),
       ),
     );
   }
@@ -374,13 +374,13 @@ class AboutState extends PageState<AboutPage> {
               Icon(
                 icon,
                 size: 24,
-                color: AppColor.colorText3,
+                color: AppColor.text3,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 16),
                 child: Text(
                   text,
-                  style: TextStyle(fontSize: 14, color: AppColor.colorText2),
+                  style: TextStyle(fontSize: 14, color: AppColor.text2),
                 ),
               ),
             ],
@@ -394,7 +394,7 @@ class AboutState extends PageState<AboutPage> {
     return Container(
       margin: const EdgeInsets.only(left: 16, right: 16),
       height: 1,
-      color: AppColor.colorLine2,
+      color: AppColor.line2,
     );
   }
 }

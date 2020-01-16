@@ -22,6 +22,7 @@ class GiftMziImagePage extends StatefulWidget {
 
 class GiftMziImageState extends PageState<GiftMziImagePage> {
   final _scrollController = ScrollController();
+
   GiftMziImageViewModel _viewModel;
 
   @override
