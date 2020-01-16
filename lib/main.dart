@@ -39,11 +39,12 @@ class MyAppState extends State<MyApp> with StreamSubController {
   void initState() {
     super.initState();
 
-    bindSub(EventSendHolder()
+    EventSendHolder()
         .event
         .where((pair) => pair.a == "themeChange")
         .listen(
-            (pair) => setState(() => theme = ThemeData(accentColor: pair.b))));
+            (pair) => setState(() => theme = ThemeData(accentColor: pair.b)))
+        .bindLife(this);
   }
 
   @override

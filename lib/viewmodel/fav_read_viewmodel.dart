@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter_weather/common/streams.dart';
 import 'package:flutter_weather/model/data/read_data.dart';
 import 'package:flutter_weather/model/holder/fav_holder.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
@@ -9,7 +8,10 @@ class FavReadViewModel extends ViewModel {
   final data = StreamController<List<ReadData>>();
 
   FavReadViewModel() {
-    bindSub(FavHolder().favReadStream.listen((list) => data.safeAdd(list)));
+    FavHolder()
+        .favReadStream
+        .listen((list) => data.safeAdd(list))
+        .bindLife(this);
     data.safeAdd(FavHolder().favReads);
   }
 

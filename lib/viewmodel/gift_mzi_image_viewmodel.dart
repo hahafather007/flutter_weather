@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_weather/common/streams.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/model/holder/fav_holder.dart';
 import 'package:flutter_weather/model/service/gift_mzi_image_service.dart';
@@ -25,8 +24,9 @@ class GiftMziImageViewModel extends ViewModel {
     _mziData = data;
     photoStream = _photoData.stream.asBroadcastStream();
     isFav.safeAdd(_favHolder.isFavorite(data));
-    bindSub(_favHolder.favMziStream
-        .listen((_) => isFav.safeAdd(_favHolder.isFavorite(data))));
+    _favHolder.favMziStream
+        .listen((_) => isFav.safeAdd(_favHolder.isFavorite(data)))
+        .bindLife(this);
   }
 
   Future<Null> loadData() async {

@@ -16,16 +16,17 @@ class SplashState extends PageState<SplashPage> {
   void initState() {
     super.initState();
 
-    bindSub(
-        Observable.zip2(
+    Observable
+            .zip2(
                 Stream.fromFuture(
                     Future.delayed(const Duration(milliseconds: 500))),
                 Stream.fromFuture(SharedDepository().initShared()),
                 (a, b) => b)
-            .map((shared) => shared.themeColor)
-            .map((color) =>
-                EventSendHolder().sendEvent(tag: "themeChange", event: color))
-            .listen((_) => push(context, page: HomePage(), replace: true)));
+        .map((shared) => shared.themeColor)
+        .map((color) =>
+            EventSendHolder().sendEvent(tag: "themeChange", event: color))
+        .listen((_) => push(context, page: HomePage(), replace: true))
+        .bindLife(this);
   }
 
   @override

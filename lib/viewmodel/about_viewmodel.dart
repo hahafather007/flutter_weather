@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_weather/common/streams.dart';
 import 'package:flutter_weather/model/data/version_data.dart';
 import 'package:flutter_weather/model/service/app_version_service.dart';
 import 'package:flutter_weather/utils/channel_util.dart';

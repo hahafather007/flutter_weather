@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter_weather/common/streams.dart';
 import 'package:flutter_weather/utils/byte_util.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';

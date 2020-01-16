@@ -40,7 +40,7 @@ class HomeState extends PageState<HomePage> {
     ToastUtil.initToast(context);
     AppVersionHolder().checkUpdate(context);
 
-    bindSub(EventSendHolder()
+    EventSendHolder()
         .event
         .where((pair) => pair.a == "homeDrawerOpen")
         .listen((pair) {
@@ -49,7 +49,7 @@ class HomeState extends PageState<HomePage> {
       } else {
         pop(context);
       }
-    }));
+    }).bindLife(this);
 
     // 让第一个页面生效
     _pageTypeMap[PageType.WEATHER] = true;
@@ -154,7 +154,8 @@ class HomeState extends PageState<HomePage> {
                               onTap: () {
                                 if (_pageType == PageType.WEATHER) return;
 
-                                _weatherKey.currentState?.changeHideState(false);
+                                _weatherKey.currentState
+                                    ?.changeHideState(false);
                                 setState(() {
                                   _pageType = PageType.WEATHER;
                                   _pageTypeMap[_pageType] = true;

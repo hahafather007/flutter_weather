@@ -13,16 +13,17 @@ abstract class StreamSubController {
   @protected
   void subDispose() {
     _subList.forEach((v) => v.cancel());
+    _subList.clear();
   }
 }
 
-extension StreamSubscriptionExt on StreamSubscription {
+extension SubscriptionExt on StreamSubscription {
   void bindLife(StreamSubController controller) {
     controller.bindSub(this);
   }
 }
 
-extension StreamControllerExt on StreamController<dynamic> {
+extension ControllerExt on StreamController<dynamic> {
   void safeAdd(dynamic data) {
     if (this.isClosed) return;
 

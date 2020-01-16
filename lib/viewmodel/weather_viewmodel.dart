@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:flutter_weather/common/streams.dart';
 import 'package:flutter_weather/model/data/mixing.dart';
 import 'package:flutter_weather/model/data/weather_air_data.dart';
 import 'package:flutter_weather/model/data/weather_data.dart';
@@ -20,18 +19,19 @@ class WeatherViewModel extends ViewModel {
   Pair<Weather, AirNowCity> _catchWeather;
 
   WeatherViewModel() {
-    bindSub(WeatherHolder()
+    WeatherHolder()
         .cityStream
         .map((list) => list.map((v) => v.name).toList())
-        .listen((list) => cities.safeAdd(list)));
-    bindSub(WeatherHolder()
+        .listen((list) => cities.safeAdd(list))
+        .bindLife(this);
+    WeatherHolder()
         .cityStream
         .map((list) => min(_index, list.length - 1))
         .listen((index) {
       _catchWeather = Pair(WeatherHolder().weathers[index],
           WeatherHolder().airs[index]?.airNowCity);
       weather.safeAdd(_catchWeather);
-    }));
+    }).bindLife(this);
   }
 
   void indexChange(int index) {

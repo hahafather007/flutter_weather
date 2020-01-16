@@ -44,14 +44,15 @@ class WeatherCityState extends PageState<WeatherCityPage>
             tag: "CircleAirViewAnimation${widget.index}", event: null);
       }
     });
-    bindSub(_viewModel.perStatus.stream
+    _viewModel.perStatus.stream
         .where((status) => status == PermissionStatus.denied)
         .listen((_) => showSnack(
             text: "定位失败，请给与定位权限",
             duration: const Duration(hours: 1),
             action: SnackBarAction(
                 label: AppText.of(context).setting,
-                onPressed: () => PermissionHandler().openAppSettings()))));
+                onPressed: () => PermissionHandler().openAppSettings())))
+        .bindLife(this);
   }
 
   @override

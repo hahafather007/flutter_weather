@@ -6,7 +6,6 @@ import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/common/streams.dart';
 import 'package:flutter_weather/language.dart';
 import 'package:flutter_weather/utils/channel_util.dart';
 import 'package:flutter_weather/utils/system_util.dart';
@@ -52,7 +51,7 @@ class AboutState extends PageState<AboutPage> {
       _paddingStream.safeAdd(offset / 2);
     });
 
-    bindSub(_viewModel.version.stream.listen((version) async {
+    _viewModel.version.stream.listen((version) async {
       final packageInfo = await PackageInfo.fromPlatform();
       final needUpdate = int.parse(packageInfo.buildNumber) < version.version;
 
@@ -108,14 +107,14 @@ class AboutState extends PageState<AboutPage> {
       } else {
         showSnack(text: AppText.of(context).alreadyNew);
       }
-    }));
-    bindSub(_viewModel.updateResult.stream.where((_) => isAndroid).listen((b) {
+    }).bindLife(this);
+    _viewModel.updateResult.stream.where((_) => isAndroid).listen((b) {
       if (b) {
         showSnack(text: AppText.of(context).apkPleaseInstall);
       } else {
         showSnack(text: AppText.of(context).apkFail);
       }
-    }));
+    }).bindLife(this);
   }
 
   @override
