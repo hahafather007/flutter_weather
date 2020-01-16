@@ -9,8 +9,8 @@ class FavReadViewModel extends ViewModel {
   final data = StreamController<List<ReadData>>();
 
   FavReadViewModel() {
-    bindSub(FavHolder().favReadStream.listen((list) => streamAdd(data, list)));
-    streamAdd(data, FavHolder().favReads);
+    bindSub(FavHolder().favReadStream.listen((list) => data.safeAdd(list)));
+    data.safeAdd(FavHolder().favReads);
   }
 
   /// 删除收藏

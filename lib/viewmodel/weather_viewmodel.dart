@@ -23,14 +23,14 @@ class WeatherViewModel extends ViewModel {
     bindSub(WeatherHolder()
         .cityStream
         .map((list) => list.map((v) => v.name).toList())
-        .listen((list) => streamAdd(cities, list)));
+        .listen((list) => cities.safeAdd(list)));
     bindSub(WeatherHolder()
         .cityStream
         .map((list) => min(_index, list.length - 1))
         .listen((index) {
       _catchWeather = Pair(WeatherHolder().weathers[index],
           WeatherHolder().airs[index]?.airNowCity);
-      streamAdd(weather, _catchWeather);
+      weather.safeAdd(_catchWeather);
     }));
   }
 
@@ -39,17 +39,17 @@ class WeatherViewModel extends ViewModel {
     _catchWeather = Pair(WeatherHolder().weathers[index],
         WeatherHolder().airs[index]?.airNowCity);
 
-    streamAdd(weather, _catchWeather);
+    weather.safeAdd(_catchWeather);
   }
 
   /// 预览其他天气
   void switchType(String type) {
     _catchWeather?.a?.now?.condTxt = type;
-    streamAdd(weather, _catchWeather);
+    weather.safeAdd(_catchWeather);
   }
 
   void changeHideState(bool hide) {
-    streamAdd(hideWeather, hide);
+    hideWeather.safeAdd(hide);
   }
 
   @override

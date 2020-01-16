@@ -30,7 +30,7 @@ abstract class ViewModel extends StreamSubController {
     debugPrint(e.message);
     debugPrint(e.response.toString());
 
-    streamAdd(error, true);
+    error.safeAdd(true);
   }
 }
 

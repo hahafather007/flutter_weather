@@ -22,12 +22,12 @@ class CityControlViewModel extends ViewModel {
   CityControlViewModel() {
     _cacheCities.addAll(WeatherHolder().cities.map((v) => v.name));
     _cacheWeathers.addAll(WeatherHolder().weathers);
-    streamAdd(cities, _cacheCities);
-    streamAdd(weathers, _cacheWeathers);
+    cities.safeAdd(_cacheCities);
+    weathers.safeAdd(_cacheWeathers);
     bindSub(WeatherHolder().weatherStream.listen((v) {
       _cacheWeathers.clear();
       _cacheWeathers.addAll(v);
-      streamAdd(weathers, _cacheWeathers);
+      weathers.safeAdd(_cacheWeathers);
     }));
     bindSub(WeatherHolder()
         .cityStream
@@ -35,7 +35,7 @@ class CityControlViewModel extends ViewModel {
         .listen((v) {
       _cacheCities.clear();
       _cacheCities.addAll(v);
-      streamAdd(cities, _cacheCities);
+      cities.safeAdd(_cacheCities);
     }));
   }
 
@@ -74,8 +74,8 @@ class CityControlViewModel extends ViewModel {
     final beforeWeather = _cacheWeathers[before];
     _cacheWeathers.removeAt(before);
     _cacheWeathers.insert(after, beforeWeather);
-    streamAdd(cities, _cacheCities);
-    streamAdd(weathers, _cacheWeathers);
+    cities.safeAdd(_cacheCities);
+    weathers.safeAdd(_cacheWeathers);
 
     await WeatherHolder().updateAir(before, after);
     await WeatherHolder().updateWeather(before, after);

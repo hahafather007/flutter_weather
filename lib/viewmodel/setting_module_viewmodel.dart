@@ -13,7 +13,7 @@ class SettingModuleViewModel extends ViewModel {
 
   SettingModuleViewModel() {
     _cacheModules.addAll(SharedDepository().pageModules);
-    streamAdd(pageModules, _cacheModules);
+    pageModules.safeAdd(_cacheModules);
   }
 
   /// 拖动后改变列表中元素位置
@@ -23,14 +23,14 @@ class SettingModuleViewModel extends ViewModel {
     _cacheModules.insert(after, beforeModule);
 
     SharedDepository().setPageModules(_cacheModules);
-    streamAdd(pageModules, _cacheModules);
+    pageModules.safeAdd(_cacheModules);
   }
 
   /// 每个module是否开启
   void valueChange(bool open, {@required String module}) {
     _cacheModules.firstWhere((v) => v.module == module).open = open;
     SharedDepository().setPageModules(_cacheModules);
-    streamAdd(pageModules, _cacheModules);
+    pageModules.safeAdd(_cacheModules);
   }
 
   @override

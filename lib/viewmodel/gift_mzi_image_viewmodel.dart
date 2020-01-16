@@ -24,32 +24,32 @@ class GiftMziImageViewModel extends ViewModel {
   GiftMziImageViewModel({@required MziData data}) {
     _mziData = data;
     photoStream = _photoData.stream.asBroadcastStream();
-    streamAdd(isFav, _favHolder.isFavorite(data));
+    isFav.safeAdd(_favHolder.isFavorite(data));
     bindSub(_favHolder.favMziStream
-        .listen((_) => streamAdd(isFav, _favHolder.isFavorite(data))));
+        .listen((_) => isFav.safeAdd(_favHolder.isFavorite(data))));
   }
 
   Future<Null> loadData() async {
     if (selfLoading) return;
 
     selfLoading = true;
-    streamAdd(isLoading, true);
+    isLoading.safeAdd(true);
     try {
       final length = await _service.getLength(link: _mziData.link);
       debugPrint("length======>$length");
-      streamAdd(dataLength, length);
+      dataLength.safeAdd(length);
       final List<MziData> list = List();
       for (int i = 1; i <= length; i++) {
         list.add(await _service.getData(link: _mziData.link, index: i));
 
-        streamAdd(data, list);
-        streamAdd(_photoData, list);
+        data.safeAdd(list);
+        _photoData.safeAdd(list);
       }
     } on DioError catch (e) {
       doError(e);
     } finally {
       selfLoading = false;
-      streamAdd(isLoading, false);
+      isLoading.safeAdd(false);
     }
   }
 

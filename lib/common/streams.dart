@@ -16,8 +16,16 @@ abstract class StreamSubController {
   }
 }
 
-void streamAdd<T>(StreamController<T> controller, T data) {
-  if (controller.isClosed) return;
+extension StreamSubscriptionExt on StreamSubscription {
+  void bindLife(StreamSubController controller) {
+    controller.bindSub(this);
+  }
+}
 
-  controller.add(data);
+extension StreamControllerExt on StreamController<dynamic> {
+  void safeAdd(dynamic data) {
+    if (this.isClosed) return;
+
+    this.add(data);
+  }
 }

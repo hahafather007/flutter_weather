@@ -49,7 +49,7 @@ class AboutState extends PageState<AboutPage> {
         offset = 144;
       }
 
-      streamAdd(_paddingStream, offset / 2);
+      _paddingStream.safeAdd(offset / 2);
     });
 
     bindSub(_viewModel.version.stream.listen((version) async {

@@ -13,14 +13,14 @@ class WebViewModel<T> extends ViewModel {
   WebViewModel({@required T favData}) {
     if (favData == null) return;
 
-    streamAdd(isFav, _favHolder.isFavorite(favData));
-    streamAdd(isLoading, true);
+    isFav.safeAdd(_favHolder.isFavorite(favData));
+    isLoading.safeAdd(true);
     bindSub(_favHolder.favReadStream
-        .listen((_) => streamAdd(isFav, _favHolder.isFavorite(favData))));
+        .listen((_) => isFav.safeAdd(_favHolder.isFavorite(favData))));
   }
 
   void setLoading(bool loading) {
-    streamAdd(isLoading, loading);
+    isLoading.safeAdd(loading);
   }
 
   @override

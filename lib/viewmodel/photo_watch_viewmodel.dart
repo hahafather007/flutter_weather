@@ -11,10 +11,10 @@ class PhotoWatchViewModel<T> extends ViewModel {
   final data = StreamController<List<MziData>>();
 
   PhotoWatchViewModel({@required Stream<List<MziData>> photoStream}) {
-    streamAdd(favList, FavHolder().favMzis);
-    bindSub(FavHolder().favMziStream.listen((v) => streamAdd(favList, v)));
+    favList.safeAdd(FavHolder().favMzis);
+    bindSub(FavHolder().favMziStream.listen((v) => favList.safeAdd(v)));
     if (photoStream != null) {
-      bindSub(photoStream.listen((v) => streamAdd(data, v)));
+      bindSub(photoStream.listen((v) => data.safeAdd(v)));
     }
   }
 

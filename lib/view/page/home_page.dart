@@ -154,7 +154,7 @@ class HomeState extends PageState<HomePage> {
                               onTap: () {
                                 if (_pageType == PageType.WEATHER) return;
 
-                                _weatherKey.currentState.changeHideState(false);
+                                _weatherKey.currentState?.changeHideState(false);
                                 setState(() {
                                   _pageType = PageType.WEATHER;
                                   _pageTypeMap[_pageType] = true;
@@ -172,7 +172,7 @@ class HomeState extends PageState<HomePage> {
                               onTap: () {
                                 if (_pageType == PageType.GIFT) return;
 
-                                _weatherKey.currentState.changeHideState(true);
+                                _weatherKey.currentState?.changeHideState(true);
                                 setState(() {
                                   _pageType = PageType.GIFT;
                                   _pageTypeMap[_pageType] = true;
@@ -190,7 +190,7 @@ class HomeState extends PageState<HomePage> {
                               onTap: () {
                                 if (_pageType == PageType.READ) return;
 
-                                _weatherKey.currentState.changeHideState(true);
+                                _weatherKey.currentState?.changeHideState(true);
                                 setState(() {
                                   _pageType = PageType.READ;
                                   _pageTypeMap[_pageType] = true;
@@ -207,7 +207,7 @@ class HomeState extends PageState<HomePage> {
                               onTap: () {
                                 if (_pageType == PageType.COLLECT) return;
 
-                                _weatherKey.currentState.changeHideState(true);
+                                _weatherKey.currentState?.changeHideState(true);
                                 setState(() {
                                   _pageType = PageType.COLLECT;
                                   _pageTypeMap[_pageType] = true;
@@ -229,10 +229,10 @@ class HomeState extends PageState<HomePage> {
                   title: AppText.of(context).setting,
                   isTarget: false,
                   onTap: () async {
-                    _weatherKey.currentState.changeHideState(true);
+                    _weatherKey.currentState?.changeHideState(true);
                     await push(context, page: SettingPage());
                     if (_pageType == PageType.WEATHER) {
-                      _weatherKey.currentState.changeHideState(false);
+                      _weatherKey.currentState?.changeHideState(false);
                     }
                   }),
 
@@ -242,10 +242,10 @@ class HomeState extends PageState<HomePage> {
                   title: AppText.of(context).about,
                   isTarget: false,
                   onTap: () async {
-                    _weatherKey.currentState.changeHideState(true);
+                    _weatherKey.currentState?.changeHideState(true);
                     await push(context, page: AboutPage());
                     if (_pageType == PageType.WEATHER) {
-                      _weatherKey.currentState.changeHideState(false);
+                      _weatherKey.currentState?.changeHideState(false);
                     }
                   }),
             ],

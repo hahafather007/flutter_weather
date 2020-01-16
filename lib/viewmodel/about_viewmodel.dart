@@ -18,16 +18,16 @@ class AboutViewModel extends ViewModel {
     if (selfLoading) return;
 
     selfLoading = true;
-    streamAdd(isLoading, true);
+    isLoading.safeAdd(true);
 
     try {
       final data = await _service.getVersion();
-      streamAdd(version, data);
+      version.safeAdd(data);
     } on DioError catch (e) {
       doError(e);
     } finally {
       selfLoading = false;
-      streamAdd(isLoading, false);
+      isLoading.safeAdd(false);
     }
   }
 
@@ -37,7 +37,7 @@ class AboutViewModel extends ViewModel {
 
     final result =
         await ChannelUtil.updateApp(url: url, verCode: code, isWifi: false);
-    streamAdd(updateResult, result);
+    updateResult.safeAdd(result);
   }
 
   @override

@@ -27,8 +27,8 @@ class WeatherCityViewModel extends ViewModel {
     // 首先将缓存的数据作为第一数据显示，再判断请求逻辑
     final mWeather = WeatherHolder().weathers[index];
     final mAir = WeatherHolder().airs[index];
-    streamAdd(weather, mWeather);
-    streamAdd(air, mAir);
+    weather.safeAdd(mWeather);
+    air.safeAdd(mAir);
 
     loadData(isRefresh: false);
   }
@@ -38,7 +38,7 @@ class WeatherCityViewModel extends ViewModel {
     selfLoading = true;
 
     if (!isRefresh) {
-      streamAdd(isLoading, true);
+      isLoading.safeAdd(true);
     }
 
     District mCity;
@@ -47,7 +47,7 @@ class WeatherCityViewModel extends ViewModel {
       final status = (await PermissionHandler().requestPermissions([
         PermissionGroup.locationWhenInUse
       ]))[PermissionGroup.locationWhenInUse];
-      streamAdd(perStatus, status);
+      perStatus.safeAdd(status);
 
       if (status != PermissionStatus.denied) {
         final result = await ChannelUtil.getLocation();
@@ -76,12 +76,12 @@ class WeatherCityViewModel extends ViewModel {
       // 储存本次天气结果
       if (weatherData?.weathers?.isNotEmpty ?? false) {
         final mWeather = weatherData.weathers.first;
-        streamAdd(weather, mWeather);
+        weather.safeAdd(mWeather);
 
         final airData = await _service.getAir(city: mWeather.basic?.parentCity);
         if (airData?.weatherAir?.isNotEmpty ?? false) {
           final mAir = airData.weatherAir.first;
-          streamAdd(air, mAir);
+          air.safeAdd(mAir);
 
           WeatherHolder().addCity(mCity, updateIndex: index);
           WeatherHolder().addWeather(mWeather, updateIndex: index);
@@ -94,7 +94,7 @@ class WeatherCityViewModel extends ViewModel {
       selfLoading = false;
 
       if (!isRefresh) {
-        streamAdd(isLoading, false);
+        isLoading.safeAdd(false);
       }
     }
   }
