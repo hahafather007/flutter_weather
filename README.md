@@ -10,6 +10,7 @@
 + 最近将项目适配了Flutter Web，现在可以切换至该项目web分支，再用最新的Flutter的master分支编译成web（因为爬取的数据源server有跨域问题，部分图片可能无法加载）。
 
 #### 版本升级： ####
++ 2020-01-16(v1.3.2)：部分代码使用了Dart2.7的新功能；修复App在所有模块关闭时的报错BUG。
 + 2019-10-25(v1.3.1)：优化项目结构；部分自定义View重写了绘制逻辑，修复了波浪视图显示线条的BUG。
 + 2019-08-16(v1.3.0)：天气界面增加顶部多城市指示；妹子图看图优化；城市列表重写，使用了和风天气提供的城市；其他优化。
 + 2019-08-02(v1.2.2)：修复了妹子图部分分类网络请求失败问题（「妹子图」网站屏蔽了page为1的url...无语）；修复了获取更新时对时间的处理BUG。
@@ -29,11 +30,11 @@ IOS:没有开发者账号，暂时只能自己编译
 ### 编译环境 ###
 目前已将项目迁移至AndroidX，Flutter版本信息如下：
 ```
-[✓] Flutter (Channel beta, v1.7.8+hotfix.4-pre.5, on Mac OS X 10.14.5 18F132, locale zh-Hans-CN)
+[✓] Flutter (Channel stable, v1.12.13+hotfix.5, on Mac OS X 10.14.6 18G2022,locale zh-Hans-CN)
 [✓] Android toolchain - develop for Android devices (Android SDK version 28.0.3)
-[✓] Xcode - develop for iOS and macOS (Xcode 10.2.1)
+[✓] Xcode - develop for iOS and macOS (Xcode 11.3.1)
 [✓] iOS tools - develop for iOS devices
-[✓] Android Studio (version 3.4)
+[✓] Android Studio (version 3.5)
 [!] IntelliJ IDEA Community Edition (version 2018.2.1)
     ✗ Flutter plugin not installed; this adds Flutter specific functionality.
 [✓] Connected device (1 available)
