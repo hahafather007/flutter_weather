@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_weather/common/keep_alive_mixin.dart';
 import 'package:flutter_weather/language.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/utils/system_util.dart';
@@ -18,9 +17,13 @@ class GiftGankPage extends StatefulWidget {
   State createState() => GiftGankState();
 }
 
-class GiftGankState extends PageState<GiftGankPage> with MustKeepAliveMixin {
+class GiftGankState extends PageState<GiftGankPage>
+    with AutomaticKeepAliveClientMixin {
   final _viewModel = GiftGankViewModel();
   final _scrollController = ScrollController();
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {

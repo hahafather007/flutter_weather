@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/common/keep_alive_mixin.dart';
 import 'package:flutter_weather/language.dart';
 import 'package:flutter_weather/model/data/weather_air_data.dart';
 import 'package:flutter_weather/model/data/weather_data.dart';
@@ -25,10 +24,13 @@ class WeatherCityPage extends StatefulWidget {
 }
 
 class WeatherCityState extends PageState<WeatherCityPage>
-    with MustKeepAliveMixin {
+    with AutomaticKeepAliveClientMixin {
   final _scrollController = ScrollController();
 
   WeatherCityViewModel _viewModel;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -42,14 +44,15 @@ class WeatherCityState extends PageState<WeatherCityPage>
             tag: "CircleAirViewAnimation${widget.index}", event: null);
       }
     });
-    bindSub(_viewModel.perStatus.stream
+    _viewModel.perStatus.stream
         .where((status) => status == PermissionStatus.denied)
         .listen((_) => showSnack(
             text: "定位失败，请给与定位权限",
             duration: const Duration(hours: 1),
             action: SnackBarAction(
                 label: AppText.of(context).setting,
-                onPressed: () => PermissionHandler().openAppSettings()))));
+                onPressed: () => PermissionHandler().openAppSettings())))
+        .bindLife(this);
   }
 
   @override

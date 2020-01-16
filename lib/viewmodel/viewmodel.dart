@@ -4,6 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/streams.dart';
 
+export 'package:flutter_weather/common/streams.dart'
+    show SubscriptionExt, ControllerExt;
+
 abstract class ViewModel extends StreamSubController {
   final isLoading = StreamController<bool>();
   final error = StreamController<bool>();
@@ -30,7 +33,7 @@ abstract class ViewModel extends StreamSubController {
     debugPrint(e.message);
     debugPrint(e.response.toString());
 
-    streamAdd(error, true);
+    error.safeAdd(true);
   }
 }
 

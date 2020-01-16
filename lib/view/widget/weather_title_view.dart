@@ -66,7 +66,7 @@ class _WeatherTitleState extends State<WeatherTitleView> {
           final move = _titleWidth[target - 1] +
               (_titleWidth[target] - _titleWidth[target - 1]) / 2;
           _currentPadding -= move * (widget.pageValue - oldWidget.pageValue);
-          streamAdd(_paddingLeft, _currentPadding);
+          _paddingLeft.safeAdd(_currentPadding);
         }
         // 往左滑动
         else if (widget.pageValue < oldWidget.pageValue) {
@@ -74,7 +74,7 @@ class _WeatherTitleState extends State<WeatherTitleView> {
           final move = _titleWidth[target] +
               (_titleWidth[target + 1] - _titleWidth[target]) / 2;
           _currentPadding += move * (oldWidget.pageValue - widget.pageValue);
-          streamAdd(_paddingLeft, _currentPadding);
+          _paddingLeft.safeAdd(_currentPadding);
         }
       }
     }
@@ -192,6 +192,6 @@ class _WeatherTitleState extends State<WeatherTitleView> {
         (1 - (widget.pageValue - i).abs()) /
         2;
     _currentPadding = padding;
-    streamAdd(_paddingLeft, padding);
+    _paddingLeft.safeAdd(padding);
   }
 }

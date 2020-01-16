@@ -10,6 +10,9 @@ bool get isAndroid => Platform.isAndroid;
 
 bool get isIOS => Platform.isIOS;
 
+/// 是否为debug模式
+const isDebug = !bool.fromEnvironment("dart.vm.product");
+
 double _screenWidth = 0;
 
 /// 获取屏幕宽度

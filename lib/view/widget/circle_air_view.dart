@@ -44,7 +44,7 @@ class _CircleAirState extends State<CircleAirView>
         AnimationController(vsync: this, duration: const Duration(seconds: 2));
 
     _initAndStartAnim();
-    bindSub(EventSendHolder()
+    EventSendHolder()
         .event
         .where((pair) => pair.a == widget.animTag)
         .where((_) => _controller.value == 0)
@@ -54,7 +54,7 @@ class _CircleAirState extends State<CircleAirView>
       _controller
         ..reset()
         ..forward();
-    }));
+    }).bindLife(this);
   }
 
   @override

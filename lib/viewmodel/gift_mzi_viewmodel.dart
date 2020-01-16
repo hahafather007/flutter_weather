@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_weather/common/streams.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/model/service/gift_mzi_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
@@ -30,7 +29,7 @@ class GiftMziViewModel extends ViewModel {
       _page = 1;
       _cacheData.clear();
     } else {
-      streamAdd(isLoading, true);
+      isLoading.safeAdd(true);
     }
 
     try {
@@ -43,7 +42,7 @@ class GiftMziViewModel extends ViewModel {
       doError(e);
     } finally {
       selfLoading = false;
-      streamAdd(isLoading, false);
+      isLoading.safeAdd(false);
     }
   }
 

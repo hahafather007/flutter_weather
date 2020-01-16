@@ -17,7 +17,7 @@ class LoadingView extends StatefulWidget {
 
 /// 带有圆形加载进度条的Stack
 class LoadingState extends State<LoadingView>
-    with TickerProviderStateMixin,StreamSubController {
+    with TickerProviderStateMixin, StreamSubController {
   AnimationController _controller;
   Animation<Size> _animation;
 
@@ -31,13 +31,13 @@ class LoadingState extends State<LoadingView>
         .animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
     dismiss();
 
-    bindSub(widget.loadingStream.listen((loading) {
+    widget.loadingStream.listen((loading) {
       if (loading) {
         show();
       } else {
         dismiss();
       }
-    }));
+    }).bindLife(this);
   }
 
   @override

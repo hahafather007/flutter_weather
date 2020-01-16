@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_weather/common/streams.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/model/service/gift_egg_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
@@ -29,7 +28,7 @@ class GiftEggViewModel extends ViewModel {
       _page = 1;
       _cacheData.clear();
     } else {
-      streamAdd(isLoading, true);
+      isLoading.safeAdd(true);
     }
 
     try {
@@ -38,15 +37,15 @@ class GiftEggViewModel extends ViewModel {
         _cacheData.addAll(v.pics.map((url) =>
             MziData(height: 459, width: 337, url: url, isImages: false)));
       });
-      streamAdd(data, _cacheData);
-      streamAdd(_photoData, _cacheData);
+      data.safeAdd(_cacheData);
+      _photoData.safeAdd(_cacheData);
       _page++;
     } on DioError catch (e) {
       selfLoadType = type;
       doError(e);
     } finally {
       selfLoading = false;
-      streamAdd(isLoading, false);
+      isLoading.safeAdd(false);
     }
   }
 

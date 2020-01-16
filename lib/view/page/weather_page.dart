@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_weather/common/streams.dart';
 import 'package:flutter_weather/language.dart';
 import 'package:flutter_weather/model/data/mixing.dart';
 import 'package:flutter_weather/model/data/weather_air_data.dart';
@@ -40,7 +39,7 @@ class WeatherState extends PageState<WeatherPage> {
     super.initState();
 
     _controller.addListener(() {
-      streamAdd(_pageStream, _controller.page);
+      _pageStream.safeAdd(_controller.page);
     });
   }
 
@@ -94,7 +93,7 @@ class WeatherState extends PageState<WeatherPage> {
                   key: scafKey,
                   appBar: PreferredSize(
                     child: AnimatedContainer(
-                      color:_getAppBarColor(type: type),
+                      color: _getAppBarColor(type: type),
                       duration: const Duration(seconds: 2),
                       child: StreamBuilder(
                         stream: _titleAlpha.stream,
@@ -145,8 +144,8 @@ class WeatherState extends PageState<WeatherPage> {
                                       ),
                                       PopupMenuItem(
                                         value: "cities",
-                                        child:
-                                        Text(AppText.of(context).cityControl),
+                                        child: Text(
+                                            AppText.of(context).cityControl),
                                       ),
                                       PopupMenuItem(
                                         value: "weathers",
@@ -157,8 +156,8 @@ class WeatherState extends PageState<WeatherPage> {
                                     onSelected: (value) {
                                       switch (value) {
                                         case "share":
-                                          if (pair?.a == null || pair?.b == null)
-                                            return;
+                                          if (pair?.a == null ||
+                                              pair?.b == null) return;
 
                                           WeatherSharePicker.share(context,
                                               weather: pair.a,
@@ -166,7 +165,8 @@ class WeatherState extends PageState<WeatherPage> {
                                               city: location);
                                           break;
                                         case "cities":
-                                          push(context, page: CityControlPage());
+                                          push(context,
+                                              page: CityControlPage());
                                           break;
                                         case "weathers":
                                           _showWeathersDialog();
@@ -211,9 +211,9 @@ class WeatherState extends PageState<WeatherPage> {
                                   final height = getStatusHeight(context) +
                                       getAppBarHeight();
                                   if (offset <= height) {
-                                    streamAdd(_titleAlpha, offset / height);
+                                    _titleAlpha.safeAdd(offset / height);
                                   } else {
-                                    streamAdd(_titleAlpha, 1.0);
+                                    _titleAlpha.safeAdd(1.0);
                                   }
                                 },
                               ),

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_weather/common/streams.dart';
 import 'package:flutter_weather/model/data/city_data.dart';
 import 'package:flutter_weather/model/data/weather_air_data.dart';
 import 'package:flutter_weather/model/data/weather_data.dart';
@@ -22,21 +21,21 @@ class CityControlViewModel extends ViewModel {
   CityControlViewModel() {
     _cacheCities.addAll(WeatherHolder().cities.map((v) => v.name));
     _cacheWeathers.addAll(WeatherHolder().weathers);
-    streamAdd(cities, _cacheCities);
-    streamAdd(weathers, _cacheWeathers);
-    bindSub(WeatherHolder().weatherStream.listen((v) {
+    cities.safeAdd(_cacheCities);
+    weathers.safeAdd(_cacheWeathers);
+    WeatherHolder().weatherStream.listen((v) {
       _cacheWeathers.clear();
       _cacheWeathers.addAll(v);
-      streamAdd(weathers, _cacheWeathers);
-    }));
-    bindSub(WeatherHolder()
+      weathers.safeAdd(_cacheWeathers);
+    }).bindLife(this);
+    WeatherHolder()
         .cityStream
         .map((list) => list.map((v) => v.name).toList())
         .listen((v) {
       _cacheCities.clear();
       _cacheCities.addAll(v);
-      streamAdd(cities, _cacheCities);
-    }));
+      cities.safeAdd(_cacheCities);
+    }).bindLife(this);
   }
 
   /// 添加城市
@@ -74,8 +73,8 @@ class CityControlViewModel extends ViewModel {
     final beforeWeather = _cacheWeathers[before];
     _cacheWeathers.removeAt(before);
     _cacheWeathers.insert(after, beforeWeather);
-    streamAdd(cities, _cacheCities);
-    streamAdd(weathers, _cacheWeathers);
+    cities.safeAdd(_cacheCities);
+    weathers.safeAdd(_cacheWeathers);
 
     await WeatherHolder().updateAir(before, after);
     await WeatherHolder().updateWeather(before, after);

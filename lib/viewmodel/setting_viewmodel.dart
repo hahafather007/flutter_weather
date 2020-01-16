@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter_weather/common/streams.dart';
 import 'package:flutter_weather/utils/byte_util.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -11,13 +10,13 @@ class SettingViewModel extends ViewModel {
   final cacheSize = StreamController<String>();
 
   SettingViewModel() {
-    streamAdd(isLoading, true);
+    isLoading.safeAdd(true);
 
-    calculateSize().then((_) => streamAdd(isLoading, false));
+    calculateSize().then((_) => isLoading.safeAdd(false));
   }
 
   void clearCache() async {
-    streamAdd(isLoading, true);
+    isLoading.safeAdd(true);
     final cacheDir = Directory(await DefaultCacheManager().getFilePath());
     final documentDir =
         Directory((await getApplicationDocumentsDirectory()).path);
@@ -34,7 +33,7 @@ class SettingViewModel extends ViewModel {
 
     await calculateSize();
 
-    streamAdd(isLoading, false);
+    isLoading.safeAdd(false);
   }
 
   Future<Null> calculateSize() async {
@@ -57,7 +56,7 @@ class SettingViewModel extends ViewModel {
           .forEach((length) => size += length);
     }
 
-    streamAdd(cacheSize, ByteUtil.calculateSize(size));
+    cacheSize.safeAdd(ByteUtil.calculateSize(size));
   }
 
   @override

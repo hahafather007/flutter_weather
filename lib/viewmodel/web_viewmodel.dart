@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_weather/common/streams.dart';
 import 'package:flutter_weather/model/holder/fav_holder.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
@@ -13,14 +12,15 @@ class WebViewModel<T> extends ViewModel {
   WebViewModel({@required T favData}) {
     if (favData == null) return;
 
-    streamAdd(isFav, _favHolder.isFavorite(favData));
-    streamAdd(isLoading, true);
-    bindSub(_favHolder.favReadStream
-        .listen((_) => streamAdd(isFav, _favHolder.isFavorite(favData))));
+    isFav.safeAdd(_favHolder.isFavorite(favData));
+    isLoading.safeAdd(true);
+    _favHolder.favReadStream
+        .listen((_) => isFav.safeAdd(_favHolder.isFavorite(favData)))
+        .bindLife(this);
   }
 
   void setLoading(bool loading) {
-    streamAdd(isLoading, loading);
+    isLoading.safeAdd(loading);
   }
 
   @override

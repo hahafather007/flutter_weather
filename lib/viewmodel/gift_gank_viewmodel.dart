@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_weather/common/streams.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/model/service/gift_gank_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
@@ -29,21 +28,21 @@ class GiftGankViewModel extends ViewModel {
       _page = 1;
       _cacheData.clear();
     } else {
-      streamAdd(isLoading, true);
+      isLoading.safeAdd(true);
     }
 
     try {
       final list = await _service.getData(page: _page);
       _cacheData.addAll(list);
-      streamAdd(data, _cacheData);
-      streamAdd(_photoData, _cacheData);
+      data.safeAdd(_cacheData);
+      _photoData.safeAdd(_cacheData);
       _page++;
     } on DioError catch (e) {
       selfLoadType = type;
       doError(e);
     } finally {
       selfLoading = false;
-      streamAdd(isLoading, false);
+      isLoading.safeAdd(false);
     }
   }
 

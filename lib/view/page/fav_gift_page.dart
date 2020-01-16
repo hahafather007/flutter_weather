@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/common/keep_alive_mixin.dart';
 import 'package:flutter_weather/language.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/utils/system_util.dart';
@@ -17,9 +16,12 @@ class FavGiftPage extends StatefulWidget {
   State createState() => FavGiftState();
 }
 
-/// 继承[MustKeepAliveMixin]实现页面切换不被清理
-class FavGiftState extends PageState<FavGiftPage> with MustKeepAliveMixin {
+class FavGiftState extends PageState<FavGiftPage>
+    with AutomaticKeepAliveClientMixin {
   final _viewModel = FavGiftViewModel();
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
