@@ -1,10 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_weather/model/data/mixing.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 
 import 'weather_base.dart';
 
+/// 阴天
 class WeatherOvercast extends StatefulWidget {
   WeatherOvercast({Key key}) : super(key: key);
 
@@ -110,11 +112,9 @@ class WeatherOvercastState extends WeatherBase<WeatherOvercast> {
                       child: Stack(
                         alignment: Alignment.bottomCenter,
                         children: <Widget>[
-                          Positioned(
-                            child: Image.asset(
-                              "images/cloud_car1.png",
-                              height: 40,
-                            ),
+                          CustomPaint(
+                            painter: _PillarPainter(Colors.white),
+                            size: Size(4, 40),
                           ),
                           Positioned(
                             child: AnimatedBuilder(
@@ -123,15 +123,11 @@ class WeatherOvercastState extends WeatherBase<WeatherOvercast> {
                                 return Transform.rotate(
                                   alignment: Alignment.center,
                                   angle: _carRotateAnim.value,
-                                  child: Image.asset(
-                                    "images/cloud_car2.png",
-                                    height: 44,
-                                    width: 44,
-                                  ),
+                                  child: _AirscrewView(size: 40),
                                 );
                               },
                             ),
-                            bottom: 18,
+                            bottom: 20,
                           ),
                         ],
                       ),
@@ -157,11 +153,9 @@ class WeatherOvercastState extends WeatherBase<WeatherOvercast> {
                       child: Stack(
                         alignment: Alignment.bottomCenter,
                         children: <Widget>[
-                          Positioned(
-                            child: Image.asset(
-                              "images/cloud_car1.png",
-                              height: 80,
-                            ),
+                          CustomPaint(
+                            painter: _PillarPainter(Colors.white),
+                            size: Size(8, 80),
                           ),
                           Positioned(
                             child: AnimatedBuilder(
@@ -170,15 +164,11 @@ class WeatherOvercastState extends WeatherBase<WeatherOvercast> {
                                 return Transform.rotate(
                                   alignment: Alignment.center,
                                   angle: _carRotateAnim.value,
-                                  child: Image.asset(
-                                    "images/cloud_car2.png",
-                                    height: 88,
-                                    width: 88,
-                                  ),
+                                  child: _AirscrewView(size: 80),
                                 );
                               },
                             ),
-                            bottom: 36,
+                            bottom: 40,
                           ),
                         ],
                       ),
@@ -261,8 +251,10 @@ class _MountainPainter extends CustomPainter {
     for (double i = 0; i <= size.width; i++) {
       path.lineTo(i, size.height - height * _getSinY(i + offset, size.width));
     }
-    path.lineTo(size.width, size.height);
-    path.lineTo(0, size.height);
+    path
+      ..lineTo(size.width, size.height)
+      ..lineTo(0, size.height)
+      ..close();
 
     canvas.drawPath(path, paint);
   }
@@ -275,5 +267,96 @@ class _MountainPainter extends CustomPainter {
     }
 
     return heightChanged;
+  }
+}
+
+/// 风车的螺旋桨
+class _AirscrewView extends StatelessWidget {
+  final double size;
+
+  _AirscrewView({@required this.size});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          Pair(0.0, Colors.white),
+          Pair(2 / 3 * pi, Colors.white),
+          Pair(4 / 3 * pi, Colors.white),
+        ].map((pair) {
+          return Transform.rotate(
+            angle: pair.a,
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: EdgeInsets.only(bottom: size / 30),
+              child: CustomPaint(
+                painter: _AirPainter(pair.b),
+                size: Size(size / 12, size / 2 - size / 30),
+              ),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+}
+
+class _AirPainter extends CustomPainter {
+  final Color color;
+
+  _AirPainter(this.color);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..isAntiAlias = true
+      ..style = PaintingStyle.fill
+      ..color = color;
+    final path = Path()
+      ..moveTo(size.width / 2, 0)
+      ..quadraticBezierTo(
+          -size.width / 2, size.height, size.width / 2, size.height)
+      ..quadraticBezierTo(size.width / 2 * 3, size.height, size.width / 2, 0)
+      ..close();
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(_AirPainter oldDelegate) {
+    return color != oldDelegate.color;
+  }
+}
+
+/// 风车的柱子
+class _PillarPainter extends CustomPainter {
+  final Color color;
+
+  _PillarPainter(this.color);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.fill
+      ..isAntiAlias = true;
+    final path = Path()
+      ..moveTo(size.width / 3, size.height / 40)
+      ..lineTo(0, size.height)
+      ..lineTo(size.width, size.height)
+      ..lineTo(size.width * 2 / 3, size.height / 40)
+      ..quadraticBezierTo(size.width / 2, 0, size.width / 3, size.height / 40)
+      ..close();
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(_PillarPainter oldDelegate) {
+    return color != oldDelegate.color;
   }
 }
