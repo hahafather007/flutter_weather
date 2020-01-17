@@ -3,7 +3,6 @@ import 'package:flutter_weather/common/colors.dart';
 import 'package:flutter_weather/language.dart';
 import 'package:flutter_weather/model/data/weather_air_data.dart';
 import 'package:flutter_weather/model/data/weather_data.dart';
-import 'package:flutter_weather/model/holder/event_send_holder.dart';
 import 'package:flutter_weather/utils/aqi_util.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
@@ -26,6 +25,7 @@ class WeatherCityPage extends StatefulWidget {
 class WeatherCityState extends PageState<WeatherCityPage>
     with AutomaticKeepAliveClientMixin {
   final _scrollController = ScrollController();
+  final _airKey = GlobalKey<CircleAirState>();
 
   WeatherCityViewModel _viewModel;
 
@@ -40,8 +40,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
     _scrollController.addListener(() {
       widget.onScroll(_scrollController.offset);
       if (_scrollController.offset >= 320) {
-        EventSendHolder().sendEvent(
-            tag: "CircleAirViewAnimation${widget.index}", event: null);
+        _airKey.currentState.startAnim();
       }
     });
     _viewModel.perStatus.stream
@@ -109,7 +108,9 @@ class WeatherCityState extends PageState<WeatherCityPage>
                             110,
                         padding: const EdgeInsets.only(top: 60),
                         child: _buildContent(
-                            now: data?.now, daily: data?.dailyForecast?.first),
+                          now: data?.now,
+                          daily: data?.dailyForecast?.first,
+                        ),
                       ),
 
                       Container(
@@ -151,11 +152,10 @@ class WeatherCityState extends PageState<WeatherCityPage>
                                       padding: const EdgeInsets.only(
                                           left: 16, right: 16),
                                       child: CircleAirView(
+                                        key: _airKey,
                                         aqi: double.parse(
                                             air?.airNowCity?.aqi ?? "0"),
                                         qlty: air?.airNowCity?.qlty ?? "",
-                                        animTag:
-                                            "CircleAirViewAnimation${widget.index}",
                                       ),
                                     ),
                                   ),
@@ -536,9 +536,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
         Text(
           "${hourly?.tmp ?? 0}°",
           style: TextStyle(
-              fontSize: 14,
-              color: AppColor.text2,
-              fontWeight: FontWeight.bold),
+              fontSize: 14, color: AppColor.text2, fontWeight: FontWeight.bold),
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),

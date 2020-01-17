@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
 import 'package:flutter_weather/common/streams.dart';
-import 'package:flutter_weather/model/holder/event_send_holder.dart';
 import 'package:flutter_weather/utils/aqi_util.dart';
 
 /// 空气质量指数环形图
@@ -14,27 +13,20 @@ class CircleAirView extends StatefulWidget {
   /// 等级
   final String qlty;
 
-  /// 动画开始的标志
-  final String animTag;
-
-  CircleAirView(
-      {Key key,
-      @required this.aqi,
-      @required this.qlty,
-      @required this.animTag})
+  CircleAirView({Key key, @required this.aqi, @required this.qlty})
       : super(key: key);
 
   @override
-  State createState() => _CircleAirState();
+  State createState() => CircleAirState();
 }
 
-class _CircleAirState extends State<CircleAirView>
+class CircleAirState extends State<CircleAirView>
     with TickerProviderStateMixin, StreamSubController {
   AnimationController _controller;
   Animation<int> _numAnim;
   Animation<Color> _colorAnim;
 
-  bool _canAnim = false;
+  bool _canAnim = true;
 
   @override
   void initState() {
@@ -44,17 +36,6 @@ class _CircleAirState extends State<CircleAirView>
         AnimationController(vsync: this, duration: const Duration(seconds: 2));
 
     _initAndStartAnim();
-    EventSendHolder()
-        .event
-        .where((pair) => pair.a == widget.animTag)
-        .where((_) => _controller.value == 0)
-        .where((_) => !_canAnim)
-        .listen((_) {
-      _canAnim = true;
-      _controller
-        ..reset()
-        ..forward();
-    }).bindLife(this);
   }
 
   @override
@@ -129,10 +110,14 @@ class _CircleAirState extends State<CircleAirView>
             begin: AqiUtil.getAqiColor(0), end: AqiUtil.getAqiColor(widget.aqi))
         .animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
     _controller.reset();
+    _canAnim = true;
+  }
 
-    if (_canAnim) {
-      _controller.forward();
-    }
+  void startAnim() {
+    if (!_canAnim) return;
+    _canAnim = false;
+
+    _controller.forward();
   }
 }
 

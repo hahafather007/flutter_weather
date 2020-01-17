@@ -100,7 +100,7 @@ class WeatherViewState extends State<WeatherView>
         weather = WeatherSandstorm(key: Key("霾"), isSmog: true);
       } else if (type.contains("雾")) {
         weather = WeatherRain(key: Key("雾"), fog: true);
-      } else if (type.contains("沙")) {
+      } else if (type.contains("沙") || type.contains("尘")) {
         weather = WeatherSandstorm(key: Key("沙"), isSmog: false);
       } else if (type.contains("阴")) {
         weather = WeatherOvercast(key: Key("阴"));
