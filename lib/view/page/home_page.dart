@@ -29,7 +29,7 @@ class HomeState extends PageState<HomePage> {
   final _weatherKey = GlobalKey<WeatherState>();
 
   /// 当前显示页面
-  var _pageType = PageType.WEATHER;
+  PageType _pageType = PageType.WEATHER;
 
   @override
   void initState() {
@@ -37,7 +37,7 @@ class HomeState extends PageState<HomePage> {
 
     ToastUtil.initToast(context);
 
-    bindSub(EventSendHolder()
+    EventSendHolder()
         .event
         .where((pair) => pair.a == "homeDrawerOpen")
         .listen((pair) {
@@ -46,11 +46,12 @@ class HomeState extends PageState<HomePage> {
       } else {
         pop(context);
       }
-    }));
-    bindSub(EventSendHolder()
+    }).bindLife(this);
+    EventSendHolder()
         .event
         .where((pair) => pair.a == "themeChange")
-        .listen((pair) => widget.onThemeChange(pair.b)));
+        .listen((pair) => widget.onThemeChange(pair.b))
+        .bindLife(this);
 
     // 让第一个页面生效
     _pageTypeMap[PageType.WEATHER] = true;
@@ -154,7 +155,8 @@ class HomeState extends PageState<HomePage> {
                               onTap: () {
                                 if (_pageType == PageType.WEATHER) return;
 
-                                _weatherKey.currentState.changeHideState(false);
+                                _weatherKey.currentState
+                                    ?.changeHideState(false);
                                 setState(() {
                                   _pageType = PageType.WEATHER;
                                   _pageTypeMap[_pageType] = true;
@@ -172,7 +174,7 @@ class HomeState extends PageState<HomePage> {
                               onTap: () {
                                 if (_pageType == PageType.GIFT) return;
 
-                                _weatherKey.currentState.changeHideState(true);
+                                _weatherKey.currentState?.changeHideState(true);
                                 setState(() {
                                   _pageType = PageType.GIFT;
                                   _pageTypeMap[_pageType] = true;
@@ -190,7 +192,7 @@ class HomeState extends PageState<HomePage> {
                               onTap: () {
                                 if (_pageType == PageType.READ) return;
 
-                                _weatherKey.currentState.changeHideState(true);
+                                _weatherKey.currentState?.changeHideState(true);
                                 setState(() {
                                   _pageType = PageType.READ;
                                   _pageTypeMap[_pageType] = true;
@@ -207,7 +209,7 @@ class HomeState extends PageState<HomePage> {
                               onTap: () {
                                 if (_pageType == PageType.COLLECT) return;
 
-                                _weatherKey.currentState.changeHideState(true);
+                                _weatherKey.currentState?.changeHideState(true);
                                 setState(() {
                                   _pageType = PageType.COLLECT;
                                   _pageTypeMap[_pageType] = true;
@@ -221,7 +223,7 @@ class HomeState extends PageState<HomePage> {
               ),
 
               // 分割线
-              Divider(color: AppColor.colorLine),
+              Divider(color: AppColor.line),
 
               // 设置
               _buildDrawerItem(
@@ -229,10 +231,10 @@ class HomeState extends PageState<HomePage> {
                   title: AppText.of(context).setting,
                   isTarget: false,
                   onTap: () async {
-                    _weatherKey.currentState.changeHideState(true);
+                    _weatherKey.currentState?.changeHideState(true);
                     await push(context, page: SettingPage());
                     if (_pageType == PageType.WEATHER) {
-                      _weatherKey.currentState.changeHideState(false);
+                      _weatherKey.currentState?.changeHideState(false);
                     }
                   }),
 
@@ -242,10 +244,10 @@ class HomeState extends PageState<HomePage> {
                   title: AppText.of(context).about,
                   isTarget: false,
                   onTap: () async {
-                    _weatherKey.currentState.changeHideState(true);
+                    _weatherKey.currentState?.changeHideState(true);
                     await push(context, page: AboutPage());
                     if (_pageType == PageType.WEATHER) {
-                      _weatherKey.currentState.changeHideState(false);
+                      _weatherKey.currentState?.changeHideState(false);
                     }
                   }),
             ],
@@ -327,16 +329,15 @@ class HomeState extends PageState<HomePage> {
           onTap();
         },
         child: Container(
-          color: isTarget ? AppColor.colorShadow : Colors.transparent,
+          color: isTarget ? AppColor.shadow : Colors.transparent,
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Icon(
                 icon,
-                color: isTarget
-                    ? Theme.of(context).accentColor
-                    : AppColor.colorText2,
+                color:
+                    isTarget ? Theme.of(context).accentColor : AppColor.text2,
               ),
               Container(
                 margin: const EdgeInsets.only(left: 30),

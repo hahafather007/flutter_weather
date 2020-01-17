@@ -22,6 +22,12 @@ class WeatherHolder {
   List<Weather> _cacheWeathers;
   List<WeatherAir> _cacheAirs;
 
+  List<District> get cities => _cacheCities;
+
+  List<Weather> get weathers => _cacheWeathers;
+
+  List<WeatherAir> get airs => _cacheAirs;
+
   WeatherHolder._internal() {
     cityStream = _citiesBroadcast.stream.asBroadcastStream();
     weatherStream = _weathersBroadcast.stream.asBroadcastStream();
@@ -31,12 +37,10 @@ class WeatherHolder {
     _cacheWeathers = SharedDepository().weathers;
     _cacheAirs = SharedDepository().airs;
 
-    streamAdd(_citiesBroadcast, _cacheCities);
-    streamAdd(_weathersBroadcast, _cacheWeathers);
-    streamAdd(_airsBroadcast, _cacheAirs);
+    _citiesBroadcast.safeAdd(_cacheCities);
+    _weathersBroadcast.safeAdd(_cacheWeathers);
+    _airsBroadcast.safeAdd(_cacheAirs);
   }
-
-  List<District> get cities => _cacheCities;
 
   Future<Null> addCity(District city, {int updateIndex}) async {
     if (updateIndex == null) {
@@ -46,7 +50,7 @@ class WeatherHolder {
       _cacheCities.insert(updateIndex, city);
     }
     await SharedDepository().setDistricts(_cacheCities);
-    streamAdd(_citiesBroadcast, _cacheCities);
+    _citiesBroadcast.safeAdd(_cacheCities);
   }
 
   Future<Null> updateCity(int before, int after) async {
@@ -54,16 +58,14 @@ class WeatherHolder {
     _cacheCities.removeAt(before);
     _cacheCities.insert(after, mCity);
     await SharedDepository().setDistricts(_cacheCities);
-    streamAdd(_citiesBroadcast, _cacheCities);
+    _citiesBroadcast.safeAdd(_cacheCities);
   }
 
   Future<Null> removeCity(int index) async {
     _cacheCities.removeAt(index);
     await SharedDepository().setDistricts(_cacheCities);
-    streamAdd(_citiesBroadcast, _cacheCities);
+    _citiesBroadcast.safeAdd(_cacheCities);
   }
-
-  List<Weather> get weathers => _cacheWeathers;
 
   Future<Null> addWeather(Weather weather, {int updateIndex}) async {
     if (updateIndex == null) {
@@ -73,7 +75,7 @@ class WeatherHolder {
       _cacheWeathers.insert(updateIndex, weather);
     }
     await SharedDepository().setWeathers(_cacheWeathers);
-    streamAdd(_weathersBroadcast, _cacheWeathers);
+    _weathersBroadcast.safeAdd(_cacheWeathers);
   }
 
   Future<Null> updateWeather(int before, int after) async {
@@ -81,16 +83,14 @@ class WeatherHolder {
     _cacheWeathers.removeAt(before);
     _cacheWeathers.insert(after, mWeather);
     await SharedDepository().setWeathers(_cacheWeathers);
-    streamAdd(_weathersBroadcast, _cacheWeathers);
+    _weathersBroadcast.safeAdd(_cacheWeathers);
   }
 
   Future<Null> removeWeather(int index) async {
     _cacheWeathers.removeAt(index);
     await SharedDepository().setWeathers(_cacheWeathers);
-    streamAdd(_weathersBroadcast, _cacheWeathers);
+    _weathersBroadcast.safeAdd(_cacheWeathers);
   }
-
-  List<WeatherAir> get airs => _cacheAirs;
 
   Future<Null> addAir(WeatherAir air, {int updateIndex}) async {
     if (updateIndex == null) {
@@ -100,7 +100,7 @@ class WeatherHolder {
       _cacheAirs.insert(updateIndex, air);
     }
     await SharedDepository().setAirs(_cacheAirs);
-    streamAdd(_airsBroadcast, _cacheAirs);
+    _airsBroadcast.safeAdd(_cacheAirs);
   }
 
   Future<Null> updateAir(int before, int after) async {
@@ -108,13 +108,13 @@ class WeatherHolder {
     _cacheAirs.removeAt(before);
     _cacheAirs.insert(after, mAir);
     await SharedDepository().setAirs(_cacheAirs);
-    streamAdd(_airsBroadcast, _cacheAirs);
+    _airsBroadcast.safeAdd(_cacheAirs);
   }
 
   Future<Null> removeAir(int index) async {
     _cacheAirs.removeAt(index);
     await SharedDepository().setAirs(_cacheAirs);
-    streamAdd(_airsBroadcast, _cacheAirs);
+    _airsBroadcast.safeAdd(_cacheAirs);
   }
 
   void dispose() {

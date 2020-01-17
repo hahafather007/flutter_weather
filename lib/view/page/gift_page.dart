@@ -48,7 +48,7 @@ class GiftPage extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              color: AppColor.colorRead,
+              color: AppColor.read,
               child: TabBarView(
                 children: [
                   GiftGankPage(

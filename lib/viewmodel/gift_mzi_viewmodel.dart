@@ -2,17 +2,16 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_weather/common/streams.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/model/service/gift_mzi_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class GiftMziViewModel extends ViewModel {
-  final _service = GiftMziService();
-
   final data = StreamController<List<MziData>>();
 
-  List<MziData> _cacheData = List();
+  final _service = GiftMziService();
+  final List<MziData> _cacheData = [];
+
   int _page = 1;
   String _typeUrl;
   LoadType _reloadType = LoadType.NEW_LOAD;
@@ -30,7 +29,7 @@ class GiftMziViewModel extends ViewModel {
       _page = 1;
       _cacheData.clear();
     } else {
-      streamAdd(isLoading, true);
+      isLoading.safeAdd(true);
     }
 
     try {
@@ -43,7 +42,7 @@ class GiftMziViewModel extends ViewModel {
       doError(e);
     } finally {
       selfLoading = false;
-      streamAdd(isLoading, false);
+      isLoading.safeAdd(false);
     }
   }
 

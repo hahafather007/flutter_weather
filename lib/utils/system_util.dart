@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+/// 是否为debug模式
+const isDebug = !bool.fromEnvironment("dart.vm.product");
+
 /// 获取屏幕宽度
 double getScreenWidth(BuildContext context) {
   return MediaQuery.of(context).size.width;

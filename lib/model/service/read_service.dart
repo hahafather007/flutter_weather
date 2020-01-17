@@ -8,7 +8,7 @@ class ReadService extends Service {
     dio.options.baseUrl = "http://gank.io";
   }
 
-  Future<List<ReadData>> getReadDatas(
+  Future<List<ReadData>> getReadList(
       {@required String lastUrl, @required int page}) async {
     final response =
         await dio.get("/xiandu/$lastUrl/page/$page", cancelToken: cancelToken);
@@ -18,7 +18,7 @@ class ReadService extends Service {
     final total = document.getElementsByClassName("xiandu_items").first;
     final items = total.getElementsByClassName("xiandu_item");
 
-    final datas = items.map((item) {
+    final list = items.map((item) {
       final left = item.getElementsByClassName("xiandu_left").first;
       final right = item.getElementsByClassName("xiandu_right").first;
 
@@ -36,8 +36,8 @@ class ReadService extends Service {
       return data;
     }).toList();
 
-    debugPrint("========>${datas.length}");
+    debugPrint("========>${list.length}");
 
-    return datas;
+    return list;
   }
 }

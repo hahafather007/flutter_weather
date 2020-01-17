@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/utils/system_util.dart';
+import 'package:flutter_weather/view/widget/moon_view.dart';
+import 'package:flutter_weather/view/widget/sun_view.dart';
 import 'package:flutter_weather/view/widget/wave_view.dart';
 
 import 'weather_base.dart';
@@ -80,49 +82,7 @@ class WeatherSunnyState extends WeatherBase<WeatherSunny> {
             animation: _sunAnim,
             builder: (context, child) {
               return Positioned(
-                child: Container(
-                  width: 42,
-                  height: 42,
-                  child: Stack(
-                    alignment: Alignment.bottomLeft,
-                    children: <Widget>[
-                      // 圆形的太阳
-                      Container(
-                        height: 38,
-                        width: 38,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            gradient: RadialGradient(colors: [
-                              Colors.white,
-                              Colors.white,
-                              widget.color,
-                            ]),
-                            shape: BoxShape.circle),
-                        child: Container(
-                          height: 32,
-                          width: 32,
-                          alignment: Alignment.topRight,
-                          decoration: BoxDecoration(
-                              color: Colors.white, shape: BoxShape.circle),
-                        ),
-                      ),
-
-                      // 遮罩太阳一部分让其看起来像月亮
-                      isDay
-                          ? Container()
-                          : Container(
-                              alignment: Alignment.topRight,
-                              child: Container(
-                                height: 32,
-                                width: 32,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: widget.color),
-                              ),
-                            ),
-                    ],
-                  ),
-                ),
+                child: isDay ? SunView(outColor: widget.color) : MoonView(),
                 left: _sunAnim.value - 19,
                 bottom: sin(pi * _sunAnim.value / width) * 265,
               );

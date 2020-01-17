@@ -28,7 +28,6 @@ class GiftGankWatchPage extends StatefulWidget {
 class GiftGankWatchState extends PageState<GiftGankWatchPage> {
   PageController _pageController;
   PhotoWatchViewModel _viewModel;
-
   int _currentPage = 0;
   bool _showAppBar = false;
   bool _canScroll = true;

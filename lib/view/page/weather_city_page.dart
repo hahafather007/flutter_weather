@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/common/keep_alive_mixin.dart';
 import 'package:flutter_weather/language.dart';
 import 'package:flutter_weather/model/data/weather_air_data.dart';
 import 'package:flutter_weather/model/data/weather_data.dart';
-import 'package:flutter_weather/model/holder/event_send_holder.dart';
 import 'package:flutter_weather/utils/aqi_util.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
@@ -24,10 +22,14 @@ class WeatherCityPage extends StatefulWidget {
 }
 
 class WeatherCityState extends PageState<WeatherCityPage>
-    with MustKeepAliveMixin {
+    with AutomaticKeepAliveClientMixin {
   final _scrollController = ScrollController();
+  final _airKey = GlobalKey<CircleAirState>();
 
   WeatherCityViewModel _viewModel;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -37,8 +39,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
     _scrollController.addListener(() {
       widget.onScroll(_scrollController.offset);
       if (_scrollController.offset >= 320) {
-        EventSendHolder().sendEvent(
-            tag: "CircleAirViewAnimation${widget.index}", event: null);
+        _airKey.currentState.startAnim();
       }
     });
   }
@@ -97,7 +98,9 @@ class WeatherCityState extends PageState<WeatherCityPage>
                             110,
                         padding: const EdgeInsets.only(top: 60),
                         child: _buildContent(
-                            now: data?.now, daily: data?.dailyForecast?.first),
+                          now: data?.now,
+                          daily: data?.dailyForecast?.first,
+                        ),
                       ),
 
                       Container(
@@ -118,7 +121,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
                               ),
                             ),
 
-                            Divider(color: AppColor.colorLine),
+                            Divider(color: AppColor.line),
 
                             // 一周天气预测
                             Container(
@@ -127,7 +130,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
                               child: _buildWeekWeather(data: data),
                             ),
 
-                            Divider(color: AppColor.colorLine),
+                            Divider(color: AppColor.line),
 
                             // 中间显示pm2.5等情况的区域
                             Container(
@@ -139,11 +142,10 @@ class WeatherCityState extends PageState<WeatherCityPage>
                                       padding: const EdgeInsets.only(
                                           left: 16, right: 16),
                                       child: CircleAirView(
+                                        key: _airKey,
                                         aqi: double.parse(
                                             air?.airNowCity?.aqi ?? "0"),
                                         qlty: air?.airNowCity?.qlty ?? "",
-                                        animTag:
-                                            "CircleAirViewAnimation${widget.index}",
                                       ),
                                     ),
                                   ),
@@ -209,7 +211,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
                               ),
                             ),
 
-                            Divider(color: AppColor.colorLine),
+                            Divider(color: AppColor.line),
 
                             // 最下面两排空气舒适度
                             // 第一排
@@ -282,14 +284,14 @@ class WeatherCityState extends PageState<WeatherCityPage>
 
                             // 最下面"数据来源说明"
                             Container(
-                              color: AppColor.colorShadow,
+                              color: AppColor.shadow,
                               alignment: Alignment.center,
                               padding: const EdgeInsets.only(top: 6, bottom: 6),
                               child: Text(
                                 AppText.of(context).dataSource,
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: AppColor.colorText2,
+                                  color: AppColor.text2,
                                 ),
                               ),
                             ),
@@ -524,9 +526,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
         Text(
           "${hourly?.tmp ?? 0}°",
           style: TextStyle(
-              fontSize: 14,
-              color: AppColor.colorText2,
-              fontWeight: FontWeight.bold),
+              fontSize: 14, color: AppColor.text2, fontWeight: FontWeight.bold),
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
@@ -539,7 +539,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
         Text(
           hourly?.time?.substring(hourly.time.length - 5) ?? "00:00",
           style: TextStyle(
-            color: AppColor.colorText2,
+            color: AppColor.text2,
             fontSize: 12,
           ),
         ),
@@ -600,7 +600,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
             _getSoftName(type: lifestyle?.type ?? ""),
             style: TextStyle(
               fontSize: 10,
-              color: AppColor.colorText2,
+              color: AppColor.text2,
             ),
           ),
         ],
@@ -638,7 +638,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
   /// [num] 数值
   Widget _buildPm25Item(
       {@required String eName, @required name, @required String num}) {
-    final style = TextStyle(fontSize: 10, color: AppColor.colorText2);
+    final style = TextStyle(fontSize: 10, color: AppColor.text2);
     final numValue = double.parse(num);
 
     return Container(
@@ -670,7 +670,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
               num,
               style: TextStyle(
                 fontSize: 16,
-                color: AppColor.colorText2,
+                color: AppColor.text2,
               ),
             ),
           ),

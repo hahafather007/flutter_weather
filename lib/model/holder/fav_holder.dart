@@ -11,12 +11,17 @@ class FavHolder<T> {
 
   factory FavHolder() => _holder;
 
-  final List<ReadData> _cacheReads = List();
-  final List<MziData> _cacheMzis = List();
   final _favReadBroadcast = StreamController<List<ReadData>>();
   final _favMziBroadcast = StreamController<List<MziData>>();
+  final List<ReadData> _cacheReads = [];
+  final List<MziData> _cacheMzis = [];
+
   Stream<List<ReadData>> favReadStream;
   Stream<List<MziData>> favMziStream;
+
+  List<MziData> get favMzis => _cacheMzis;
+
+  List<ReadData> get favReads => _cacheReads;
 
   FavHolder._internal() {
     favReadStream = _favReadBroadcast.stream.asBroadcastStream();
@@ -25,14 +30,14 @@ class FavHolder<T> {
     _init();
   }
 
-  void _init() async {
+  void _init() {
     final readValue = SharedDepository().favReadData;
     if (readValue != null) {
       final list =
           (jsonDecode(readValue) as List).map((v) => ReadData.fromJson(v));
       _cacheReads.addAll(list);
     }
-    streamAdd(_favReadBroadcast, _cacheReads);
+    _favReadBroadcast.safeAdd(_cacheReads);
 
     final mziValue = SharedDepository().favMziData;
     if (mziValue != null) {
@@ -40,7 +45,7 @@ class FavHolder<T> {
           (json.decode(mziValue) as List).map((v) => MziData.fromJson(v));
       _cacheMzis.addAll(list);
     }
-    streamAdd(_favMziBroadcast, _cacheMzis);
+    _favMziBroadcast.safeAdd(_cacheMzis);
   }
 
   /// 添加或取消收藏
@@ -54,7 +59,7 @@ class FavHolder<T> {
         _cacheReads.add(t);
       }
 
-      streamAdd(_favReadBroadcast, _cacheReads);
+      _favReadBroadcast.safeAdd(_cacheReads);
       await SharedDepository().setFavReadData(json.encode(_cacheReads));
     } else if (t is MziData) {
       if (isFavorite(t)) {
@@ -64,14 +69,10 @@ class FavHolder<T> {
         _cacheMzis.add(t);
       }
 
-      streamAdd(_favMziBroadcast, _cacheMzis);
+      _favMziBroadcast.safeAdd(_cacheMzis);
       await SharedDepository().setFavMziData(json.encode(_cacheMzis));
     }
   }
-
-  List<MziData> get favMzis => _cacheMzis;
-
-  List<ReadData> get favReads => _cacheReads;
 
   /// 判断[t]是否被收藏
   bool isFavorite(T t) {

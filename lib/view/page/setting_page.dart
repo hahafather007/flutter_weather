@@ -121,13 +121,13 @@ class SettingState extends PageState<SettingPage> {
                     );
                   },
                 ),
-                Container(height: 1, color: AppColor.colorLine2),
+                Container(height: 1, color: AppColor.line2),
                 _buildItem(
                   title: AppText.of(context).moduleControl,
                   content: AppText.of(context).openOrCloseModule,
                   onTap: () => push(context, page: SettingModulePage()),
                 ),
-                Container(height: 1, color: AppColor.colorLine2),
+                Container(height: 1, color: AppColor.line2),
                 _buildItem(
                   title: AppText.of(context).clearCache,
                   content: cacheSize,
@@ -171,11 +171,17 @@ class SettingState extends PageState<SettingPage> {
             children: <Widget>[
               Text(
                 title,
-                style: TextStyle(fontSize: 16, color: AppColor.colorText1),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: AppColor.text1,
+                ),
               ),
               Text(
                 content,
-                style: TextStyle(fontSize: 14, color: AppColor.colorText2),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: AppColor.text2,
+                ),
               ),
             ],
           ),
@@ -234,15 +240,20 @@ class SettingState extends PageState<SettingPage> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Icon(Icons.radio_button_checked,
-                            size: 22, color: AppColor.colorText2),
+                        Icon(
+                          Icons.radio_button_checked,
+                          size: 22,
+                          color: AppColor.text2,
+                        ),
                         Padding(
                           padding:
                               const EdgeInsets.only(left: 4, top: 6, bottom: 6),
                           child: Text(
                             AppText.of(context).textOnly,
                             style: TextStyle(
-                                fontSize: 16, color: AppColor.colorText1),
+                              fontSize: 16,
+                              color: AppColor.text1,
+                            ),
                           ),
                         ),
                       ],
@@ -272,7 +283,9 @@ class SettingState extends PageState<SettingPage> {
                           child: Text(
                             AppText.of(context).likeHammer,
                             style: TextStyle(
-                                fontSize: 16, color: AppColor.colorText1),
+                              fontSize: 16,
+                              color: AppColor.text1,
+                            ),
                           ),
                         ),
                       ],

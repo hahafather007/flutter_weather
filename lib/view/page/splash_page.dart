@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_weather/model/holder/event_send_holder.dart';
 import 'package:flutter_weather/model/holder/shared_depository.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/view/page/home_page.dart';
@@ -20,12 +19,12 @@ class SplashState extends PageState<SplashPage> {
   void initState() {
     super.initState();
 
-    bindSub(Observable.timer(true, const Duration(milliseconds: 500))
+    Observable.timer(true, const Duration(milliseconds: 500))
         .map((_) => SharedDepository().themeColor)
         .map((color) => widget.onThemeChange(color))
         .listen((_) => push(context,
-            page: HomePage(onThemeChange: widget.onThemeChange),
-            replace: true)));
+            page: HomePage(onThemeChange: widget.onThemeChange), replace: true))
+        .bindLife(this);
   }
 
   @override

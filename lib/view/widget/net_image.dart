@@ -37,7 +37,7 @@ class NetImage extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Positioned.fill(
-            child: placeholder ?? Container(color: AppColor.colorHolder),
+            child: placeholder ?? Container(color: AppColor.holder),
           ),
           Positioned.fill(
             child: FadeInImage.memoryNetwork(

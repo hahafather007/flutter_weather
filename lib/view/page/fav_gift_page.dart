@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/common/keep_alive_mixin.dart';
 import 'package:flutter_weather/language.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/utils/system_util.dart';
@@ -17,9 +16,12 @@ class FavGiftPage extends StatefulWidget {
   State createState() => FavGiftState();
 }
 
-/// 继承[MustKeepAliveMixin]实现页面切换不被清理
-class FavGiftState extends PageState<FavGiftPage> with MustKeepAliveMixin {
+class FavGiftState extends PageState<FavGiftPage>
+    with AutomaticKeepAliveClientMixin {
   final _viewModel = FavGiftViewModel();
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -40,50 +42,49 @@ class FavGiftState extends PageState<FavGiftPage> with MustKeepAliveMixin {
     return StreamBuilder(
       stream: _viewModel.data.stream,
       builder: (context, snapshot) {
-        final List<MziData> datas = snapshot.data ?? [];
+        final List<MziData> list = snapshot.data ?? [];
 
         return Stack(
           children: <Widget>[
             // 有内容时的显示
-            datas.isNotEmpty
-                ? StaggeredGridView.countBuilder(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 4,
-                    crossAxisSpacing: 4,
-                    physics: const AlwaysScrollableScrollPhysics(
-                        parent: const ClampingScrollPhysics()),
-                    padding: const EdgeInsets.fromLTRB(2, 4, 2, 0),
-                    itemCount: datas.length,
-                    staggeredTileBuilder: (index) => StaggeredTile.fit(1),
-                    itemBuilder: (context, index) {
-                      final data = datas[index];
+            StaggeredGridView.countBuilder(
+              crossAxisCount: 2,
+              mainAxisSpacing: 4,
+              crossAxisSpacing: 4,
+              physics: const AlwaysScrollableScrollPhysics(
+                  parent: const ClampingScrollPhysics()),
+              padding: const EdgeInsets.fromLTRB(2, 4, 2, 0),
+              itemCount: list.length,
+              staggeredTileBuilder: (index) => StaggeredTile.fit(1),
+              itemBuilder: (context, index) {
+                final data = list[index];
 
-                      return RepaintBoundary(
-                        child: GestureDetector(
-                          onTap: () => push(context,
-                              page: GiftGankWatchPage(
-                                  index: index, photos: datas)),
-                          child: AspectRatio(
-                            aspectRatio: data.width / data.height,
-                            child: Hero(
-                              tag: "${data.url}${index}false",
-                              child: NetImage(url: data.url),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  )
-                : Container(),
+                return RepaintBoundary(
+                  child: GestureDetector(
+                    onTap: () => push(context,
+                        page: GiftGankWatchPage(index: index, photos: list)),
+                    child: AspectRatio(
+                      aspectRatio: data.width / data.height,
+                      child: Hero(
+                        tag: "${data.url}${index}false",
+                        child: NetImage(url: data.url),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
 
             // 占位
-            datas.isEmpty
+            list.isEmpty
                 ? Container(
                     alignment: Alignment.center,
                     child: Text(
                       AppText.of(context).listEmpty,
-                      style:
-                          TextStyle(fontSize: 16, color: AppColor.colorText3),
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: AppColor.text3,
+                      ),
                     ),
                   )
                 : Container()

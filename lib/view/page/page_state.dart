@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/streams.dart';
 import 'package:flutter_weather/language.dart';
 
+export 'package:flutter_weather/common/streams.dart'
+    show SubscriptionExt, ControllerExt;
+
 abstract class PageState<T extends StatefulWidget> extends State<T>
     with StreamSubController, WidgetsBindingObserver {
   @protected
@@ -32,9 +35,10 @@ abstract class PageState<T extends StatefulWidget> extends State<T>
     if (_bindError) return;
     _bindError = true;
 
-    bindSub(error
+    error
         .where((b) => b)
-        .listen((_) => _networkError(errorText: errorText, retry: retry)));
+        .listen((_) => _networkError(errorText: errorText, retry: retry))
+        .bindLife(this);
   }
 
   /// 网络错误

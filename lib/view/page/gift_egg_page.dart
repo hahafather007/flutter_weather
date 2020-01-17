@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_weather/common/keep_alive_mixin.dart';
 import 'package:flutter_weather/language.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/utils/system_util.dart';
@@ -18,9 +17,13 @@ class GiftEggPage extends StatefulWidget {
   State createState() => GiftEggState();
 }
 
-class GiftEggState extends PageState<GiftEggPage> with MustKeepAliveMixin {
+class GiftEggState extends PageState<GiftEggPage>
+    with AutomaticKeepAliveClientMixin {
   final _viewModel = GiftEggViewModel();
   final _scrollController = ScrollController();
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -64,7 +67,7 @@ class GiftEggState extends PageState<GiftEggPage> with MustKeepAliveMixin {
         child: StreamBuilder(
           stream: _viewModel.data.stream,
           builder: (context, snapshot) {
-            final List<MziData> list = snapshot.data ?? List();
+            final List<MziData> list = snapshot.data ?? [];
 
             return RefreshIndicator(
               onRefresh: () => _viewModel.loadData(type: LoadType.REFRESH),

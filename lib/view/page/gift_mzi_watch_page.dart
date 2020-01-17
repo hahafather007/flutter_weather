@@ -28,7 +28,6 @@ class GiftMziWatchPage extends StatefulWidget {
 class GiftMziWatchState extends PageState<GiftMziWatchPage> {
   PageController _pageController;
   PhotoWatchViewModel _viewModel;
-
   int _currentPage = 0;
   bool _showAppBar = false;
   bool _canScroll = true;

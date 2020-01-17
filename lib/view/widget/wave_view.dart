@@ -226,8 +226,10 @@ class _WavePainter extends CustomPainter {
 
       path.lineTo(i, sinY + _centerY);
     }
-    path.lineTo(size.width, size.height);
-    path.lineTo(0, size.height);
+    path
+      ..lineTo(size.width, size.height)
+      ..lineTo(0, size.height)
+      ..close();
 
     canvas.drawPath(path, paint);
   }

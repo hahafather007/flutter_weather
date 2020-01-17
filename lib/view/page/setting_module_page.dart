@@ -26,7 +26,7 @@ class SettingModuleState extends PageState<SettingModulePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.colorRead,
+      backgroundColor: AppColor.read,
       appBar: CustomAppBar(
         title: Text(
           AppText.of(context).moduleControl,
@@ -47,7 +47,7 @@ class SettingModuleState extends PageState<SettingModulePage> {
       body: StreamBuilder(
         stream: _viewModel.pageModules.stream,
         builder: (context, snapshot) {
-          final List<PageModule> modules = snapshot.data ?? List();
+          final List<PageModule> modules = snapshot.data ?? [];
 
           return DragAndDropList(
             modules.length,
@@ -122,7 +122,7 @@ class SettingModuleState extends PageState<SettingModulePage> {
               padding: const EdgeInsets.only(left: 16),
               child: Text(
                 title,
-                style: TextStyle(fontSize: 16, color: AppColor.colorText2),
+                style: TextStyle(fontSize: 16, color: AppColor.text2),
               ),
             ),
             Expanded(

@@ -8,7 +8,7 @@ class SettingViewModel extends ViewModel {
   final cacheSize = StreamController<String>();
 
   SettingViewModel() {
-    streamAdd(cacheSize, ByteUtil.calculateSize(0));
+    cacheSize.safeAdd(ByteUtil.calculateSize(0));
   }
 
   @override
