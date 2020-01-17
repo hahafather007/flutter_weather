@@ -16,7 +16,7 @@
 ### 编译环境 ###
 项目该分支适配web打包，务必使用最新Flutter master/dev分支：
 ```
-[✓] Flutter (Channel dev, v1.12.5, on Mac OS X 10.14.6 18G1012, locale zh-Hans-CN)
+[✓] Flutter (Channel dev, v1.14.1, on Mac OS X 10.14.6 18G1012, locale zh-Hans-CN)
 [✓] Android toolchain - develop for Android devices (Android SDK version 28.0.3)
 [✓] Xcode - develop for iOS and macOS (Xcode 11.2.1)
 [✓] Chrome - develop for the web
