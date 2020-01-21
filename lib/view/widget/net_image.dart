@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 /// 加载网络图片
 class NetImage extends StatelessWidget {
@@ -40,10 +39,10 @@ class NetImage extends StatelessWidget {
             child: placeholder ?? Container(color: AppColor.holder),
           ),
           Positioned.fill(
-            child: FadeInImage.memoryNetwork(
-              placeholder: kTransparentImage,
-              image: url,
+            child: Image.network(
+              url,
               fit: fit,
+              headers: headers,
             ),
           ),
         ],
