@@ -30,8 +30,7 @@ class _MoonPainter extends CustomPainter {
       ..cubicTo(-size.width / 4, size.height / 4, size.width / 4,
           size.height / 4 * 5, size.width, size.height / 4 * 3)
       ..cubicTo(size.width / 2, size.height, size.width / 8, size.height / 4,
-          size.width / 2, 0)
-      ..close();
+          size.width / 2, 0);
 
     canvas.drawPath(path, paint2);
     canvas.drawPath(path, paint);
