@@ -76,7 +76,7 @@ class CityChooseState extends PageState<CityChoosePage> {
               },
             ),
           ),
-          Container(width: 1, color: AppColor.colorLine2),
+          Container(width: 1, color: AppColor.line2),
 
           // 市
           Expanded(
@@ -104,14 +104,14 @@ class CityChooseState extends PageState<CityChoosePage> {
               },
             ),
           ),
-          Container(width: 1, color: AppColor.colorLine2),
+          Container(width: 1, color: AppColor.line2),
 
           // 县
           Expanded(
             child: FutureBuilder(
               future: _getDistricts(),
               builder: (context, snapshot) {
-                final List<District> districts = snapshot.data ?? List();
+                final List<District> districts = snapshot.data ?? [];
 
                 return ListView.builder(
                   itemCount: districts.length,
@@ -149,7 +149,7 @@ class CityChooseState extends PageState<CityChoosePage> {
           color: isSelect ? Theme.of(context).accentColor : Colors.transparent,
           child: Column(
             children: <Widget>[
-              Container(height: 1, color: AppColor.colorLine3),
+              Container(height: 1, color: AppColor.line3),
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.only(left: 6, right: 6),
@@ -157,7 +157,7 @@ class CityChooseState extends PageState<CityChoosePage> {
                   child: Text(
                     name,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 16, color: AppColor.colorText1),
+                    style: TextStyle(fontSize: 16, color: AppColor.text1),
                   ),
                 ),
               ),

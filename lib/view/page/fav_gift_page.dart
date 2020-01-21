@@ -42,50 +42,49 @@ class FavGiftState extends PageState<FavGiftPage>
     return StreamBuilder(
       stream: _viewModel.data.stream,
       builder: (context, snapshot) {
-        final List<MziData> datas = snapshot.data ?? [];
+        final List<MziData> list = snapshot.data ?? [];
 
         return Stack(
           children: <Widget>[
             // 有内容时的显示
-            datas.isNotEmpty
-                ? StaggeredGridView.countBuilder(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 4,
-                    crossAxisSpacing: 4,
-                    physics: const AlwaysScrollableScrollPhysics(
-                        parent: const ClampingScrollPhysics()),
-                    padding: const EdgeInsets.fromLTRB(2, 4, 2, 0),
-                    itemCount: datas.length,
-                    staggeredTileBuilder: (index) => StaggeredTile.fit(1),
-                    itemBuilder: (context, index) {
-                      final data = datas[index];
+            StaggeredGridView.countBuilder(
+              crossAxisCount: 2,
+              mainAxisSpacing: 4,
+              crossAxisSpacing: 4,
+              physics: const AlwaysScrollableScrollPhysics(
+                  parent: const ClampingScrollPhysics()),
+              padding: const EdgeInsets.fromLTRB(2, 4, 2, 0),
+              itemCount: list.length,
+              staggeredTileBuilder: (index) => StaggeredTile.fit(1),
+              itemBuilder: (context, index) {
+                final data = list[index];
 
-                      return RepaintBoundary(
-                        child: GestureDetector(
-                          onTap: () => push(context,
-                              page: GiftGankWatchPage(
-                                  index: index, photos: datas)),
-                          child: AspectRatio(
-                            aspectRatio: data.width / data.height,
-                            child: Hero(
-                              tag: "${data.url}${index}false",
-                              child: NetImage(url: data.url),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  )
-                : Container(),
+                return RepaintBoundary(
+                  child: GestureDetector(
+                    onTap: () => push(context,
+                        page: GiftGankWatchPage(index: index, photos: list)),
+                    child: AspectRatio(
+                      aspectRatio: data.width / data.height,
+                      child: Hero(
+                        tag: "${data.url}${index}false",
+                        child: NetImage(url: data.url),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
 
             // 占位
-            datas.isEmpty
+            list.isEmpty
                 ? Container(
                     alignment: Alignment.center,
                     child: Text(
                       AppText.of(context).listEmpty,
-                      style:
-                          TextStyle(fontSize: 16, color: AppColor.colorText3),
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: AppColor.text3,
+                      ),
                     ),
                   )
                 : Container()

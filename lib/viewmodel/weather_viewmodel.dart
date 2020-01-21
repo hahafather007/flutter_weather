@@ -9,11 +9,11 @@ import 'package:flutter_weather/model/service/weather_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class WeatherViewModel extends ViewModel {
-  final _service = WeatherService();
-
   final cities = StreamController<List<String>>();
   final weather = StreamController<Pair<Weather, AirNowCity>>();
   final hideWeather = StreamController<bool>();
+
+  final _service = WeatherService();
 
   int _index = 0;
   Pair<Weather, AirNowCity> _catchWeather;

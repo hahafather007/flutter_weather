@@ -1,6 +1,6 @@
 name: flutter_weather
 description: Flutter版假装看天气
-version: 1.3.2+15
+version: 1.3.3+16
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
@@ -22,7 +22,7 @@ dependencies:
   package_info: 0.4.0+4
   rxdart:  0.22.0
   html: 0.14.0+2
-  webview_flutter: 0.3.15+1
+  webview_flutter: 0.3.19+5
   flutter_colorpicker: 0.2.6
   dragable_flutter_list: 1.0.2
   flutter_linkify: 2.1.0
@@ -110,8 +110,6 @@ flutter:
     - images/ic_rain_ground.png
     - images/ic_sanstorm_ground.png
     - images/ic_snow_ground.png
-    - images/cloud_car1.png
-    - images/cloud_car2.png
     - images/nothing_here.gif
     - images/hammer_share1.jpg
     - images/hammer_share2.jpg

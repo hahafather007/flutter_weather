@@ -28,8 +28,7 @@ class HomeState extends PageState<HomePage> {
   final _weatherKey = GlobalKey<WeatherState>();
 
   /// 当前显示页面
-  var _pageType = PageType.WEATHER;
-
+  PageType _pageType = PageType.WEATHER;
   bool _readyExit = false;
   Timer _exitTimer;
 
@@ -222,7 +221,7 @@ class HomeState extends PageState<HomePage> {
               ),
 
               // 分割线
-              Divider(color: AppColor.colorLine),
+              Divider(color: AppColor.line),
 
               // 设置
               _buildDrawerItem(
@@ -337,7 +336,7 @@ class HomeState extends PageState<HomePage> {
           onTap();
         },
         child: Container(
-          color: isTarget ? AppColor.colorShadow : Colors.transparent,
+          color: isTarget ? AppColor.shadow : Colors.transparent,
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -346,7 +345,7 @@ class HomeState extends PageState<HomePage> {
                 icon,
                 color: isTarget
                     ? Theme.of(context).accentColor
-                    : AppColor.colorText2,
+                    : AppColor.text2,
               ),
               Container(
                 margin: const EdgeInsets.only(left: 30),

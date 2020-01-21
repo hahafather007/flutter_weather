@@ -5,9 +5,9 @@ import 'package:flutter_weather/model/holder/fav_holder.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class WebViewModel<T> extends ViewModel {
-  final _favHolder = FavHolder();
-
   final isFav = StreamController<bool>();
+
+  final _favHolder = FavHolder();
 
   WebViewModel({@required T favData}) {
     if (favData == null) return;

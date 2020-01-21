@@ -8,10 +8,10 @@ import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class AboutViewModel extends ViewModel {
-  final _service = AppVersionService();
-
   final updateResult = StreamController<bool>();
   final version = StreamController<VersionData>();
+
+  final _service = AppVersionService();
 
   void checkUpdate() async {
     if (selfLoading) return;

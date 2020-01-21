@@ -31,6 +31,8 @@ class WeatherState extends PageState<WeatherPage> {
   final _pageStream = StreamController<double>();
   final _titleAlpha = StreamController<double>();
 
+  double _titleAlphaValue = 0;
+
   @override
   bool get bindLife => true;
 
@@ -211,9 +213,13 @@ class WeatherState extends PageState<WeatherPage> {
                                   final height = getStatusHeight(context) +
                                       getAppBarHeight();
                                   if (offset <= height) {
-                                    _titleAlpha.safeAdd(offset / height);
+                                    _titleAlphaValue = offset / height;
+                                    _titleAlpha.safeAdd(_titleAlphaValue);
                                   } else {
-                                    _titleAlpha.safeAdd(1.0);
+                                    if (_titleAlphaValue == 1) return;
+
+                                    _titleAlphaValue = 1;
+                                    _titleAlpha.safeAdd(_titleAlphaValue);
                                   }
                                 },
                               ),
@@ -250,7 +256,7 @@ class WeatherState extends PageState<WeatherPage> {
       return const Color(0xFF0CB399);
     } else if (type.contains("霾")) {
       return const Color(0xFF7F8195);
-    } else if (type.contains("沙")) {
+    } else if (type.contains("沙") || type.contains("尘")) {
       return const Color(0xFFE99E3C);
     } else if (type.contains("雾")) {
       return const Color(0xFF8CADD3);

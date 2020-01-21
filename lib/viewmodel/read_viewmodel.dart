@@ -7,11 +7,11 @@ import 'package:flutter_weather/model/service/read_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class ReadViewModel extends ViewModel {
-  final _service = ReadService();
-
   final data = StreamController<List<ReadData>>();
 
-  List<ReadData> _cacheData = List();
+  final _service = ReadService();
+  final List<ReadData> _cacheData = [];
+
   bool selfLoading = false;
   int _page = 1;
   String _typeUrl;
@@ -33,7 +33,7 @@ class ReadViewModel extends ViewModel {
     }
 
     try {
-      final list = await _service.getReadDatas(lastUrl: _typeUrl, page: _page);
+      final list = await _service.getReadList(lastUrl: _typeUrl, page: _page);
 
       _cacheData.addAll(list);
       data.safeAdd(_cacheData);

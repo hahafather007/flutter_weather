@@ -15,12 +15,11 @@ import 'package:permission_handler/permission_handler.dart';
 
 class WeatherCityViewModel extends ViewModel {
   final int index;
-
-  final _service = WeatherService();
-
   final weather = StreamController<Weather>();
   final air = StreamController<WeatherAir>();
   final perStatus = StreamController<PermissionStatus>();
+
+  final _service = WeatherService();
 
   WeatherCityViewModel({@required this.index}) {
     // 首先将缓存的数据作为第一数据显示，再判断请求逻辑

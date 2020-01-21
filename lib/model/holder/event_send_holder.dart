@@ -11,6 +11,7 @@ class EventSendHolder {
   factory EventSendHolder() => _controller;
 
   final _eventBroadcast = StreamController<Pair<String, dynamic>>();
+
   Stream<Pair<String, dynamic>> event;
 
   EventSendHolder._internal() {

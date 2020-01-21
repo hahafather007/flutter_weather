@@ -17,7 +17,8 @@ class GiftEggPage extends StatefulWidget {
   State createState() => GiftEggState();
 }
 
-class GiftEggState extends PageState<GiftEggPage> with AutomaticKeepAliveClientMixin {
+class GiftEggState extends PageState<GiftEggPage>
+    with AutomaticKeepAliveClientMixin {
   final _viewModel = GiftEggViewModel();
   final _scrollController = ScrollController();
 
@@ -66,7 +67,7 @@ class GiftEggState extends PageState<GiftEggPage> with AutomaticKeepAliveClientM
         child: StreamBuilder(
           stream: _viewModel.data.stream,
           builder: (context, snapshot) {
-            final List<MziData> list = snapshot.data ?? List();
+            final List<MziData> list = snapshot.data ?? [];
 
             return RefreshIndicator(
               onRefresh: () => _viewModel.loadData(type: LoadType.REFRESH),

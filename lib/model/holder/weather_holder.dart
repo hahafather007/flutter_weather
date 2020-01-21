@@ -22,6 +22,12 @@ class WeatherHolder {
   List<Weather> _cacheWeathers;
   List<WeatherAir> _cacheAirs;
 
+  List<District> get cities => _cacheCities;
+
+  List<Weather> get weathers => _cacheWeathers;
+
+  List<WeatherAir> get airs => _cacheAirs;
+
   WeatherHolder._internal() {
     cityStream = _citiesBroadcast.stream.asBroadcastStream();
     weatherStream = _weathersBroadcast.stream.asBroadcastStream();
@@ -35,8 +41,6 @@ class WeatherHolder {
     _weathersBroadcast.safeAdd(_cacheWeathers);
     _airsBroadcast.safeAdd(_cacheAirs);
   }
-
-  List<District> get cities => _cacheCities;
 
   Future<Null> addCity(District city, {int updateIndex}) async {
     if (updateIndex == null) {
@@ -63,8 +67,6 @@ class WeatherHolder {
     _citiesBroadcast.safeAdd(_cacheCities);
   }
 
-  List<Weather> get weathers => _cacheWeathers;
-
   Future<Null> addWeather(Weather weather, {int updateIndex}) async {
     if (updateIndex == null) {
       _cacheWeathers.add(weather);
@@ -89,8 +91,6 @@ class WeatherHolder {
     await SharedDepository().setWeathers(_cacheWeathers);
     _weathersBroadcast.safeAdd(_cacheWeathers);
   }
-
-  List<WeatherAir> get airs => _cacheAirs;
 
   Future<Null> addAir(WeatherAir air, {int updateIndex}) async {
     if (updateIndex == null) {
