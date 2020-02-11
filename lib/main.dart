@@ -58,6 +58,7 @@ class MyAppState extends State<MyApp> with StreamSubController {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: SplashPage(),
+      title: "假装看天气-Flutter版",
       theme: theme,
 
       // 设置地区信息

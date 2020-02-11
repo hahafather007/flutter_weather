@@ -1,6 +1,6 @@
 name: flutter_weather
 description: Flutter版假装看天气
-version: 1.3.3+16
+version: 1.3.4+17
 
 environment:
   sdk: ">=2.6.0 <3.0.0"

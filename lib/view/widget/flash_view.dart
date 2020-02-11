@@ -149,28 +149,27 @@ class _FlashPainter extends CustomPainter {
       ..isAntiAlias = true
       ..color = Colors.white
       ..style = PaintingStyle.stroke;
+    final path = Path();
 
     final maxA = index > paths.a.length - 1 ? paths.a.length - 1 : index;
-    final pathA = Path()..moveTo(paths.a[0].dx, paths.a[0].dy);
+    path.moveTo(paths.a[0].dx, paths.a[0].dy);
     for (int i = 1; i < maxA; i++) {
-      pathA.lineTo(paths.a[i].dx, paths.a[i].dy);
+      path.lineTo(paths.a[i].dx, paths.a[i].dy);
     }
 
     final maxB = index > paths.b.length - 1 ? paths.b.length - 1 : index;
-    final pathB = Path()..moveTo(paths.b[0].dx, paths.b[0].dy);
+    path.moveTo(paths.b[0].dx, paths.b[0].dy);
     for (int i = 1; i < maxB; i++) {
-      pathB.lineTo(paths.b[i].dx, paths.b[i].dy);
+      path.lineTo(paths.b[i].dx, paths.b[i].dy);
     }
 
     final maxC = index > paths.c.length - 1 ? paths.c.length - 1 : index;
-    final pathC = Path()..moveTo(paths.c[0].dx, paths.c[0].dy);
+    path.moveTo(paths.c[0].dx, paths.c[0].dy);
     for (int i = 1; i < maxC; i++) {
-      pathC.lineTo(paths.c[i].dx, paths.c[i].dy);
+      path.lineTo(paths.c[i].dx, paths.c[i].dy);
     }
 
-    canvas.drawPath(pathA, paint);
-    canvas.drawPath(pathB, paint);
-    canvas.drawPath(pathC, paint);
+    canvas.drawPath(path, paint);
   }
 
   @override

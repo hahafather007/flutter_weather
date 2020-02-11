@@ -134,6 +134,12 @@ class SharedDepository {
   Future<bool> setSavedImages(List<String> images) async =>
       await _prefs.setString("savedImages", jsonEncode(images));
 
+  /// 自动清除图片缓存
+  bool get shouldClean => _getBool("shouldClean2020-02-11", defaultValue: true);
+
+  Future<bool> setsShouldClean(bool value) async =>
+      await _prefs.setBool("shouldClean2020-02-11", value);
+
   /// ==============================================
   ///                     分界线
   /// ==============================================

@@ -100,18 +100,19 @@ class _WaveState extends State<WaveView> with TickerProviderStateMixin {
               widget.waveNum > 1
                   ? Stack(
                       alignment: Alignment.bottomCenter,
-                      children: List.generate(
-                          widget.waveNum - 1,
-                          (index) => CustomPaint(
-                                size: Size(width, height),
-                                painter: _WavePainter(
-                                    widget.amplitude,
-                                    widget.amplitudePercent,
-                                    offsetX,
-                                    widget.color,
-                                    widget.waveNum,
-                                    index + 1),
-                              )),
+                      children: List.generate(widget.waveNum - 1, (index) {
+                        return CustomPaint(
+                          size: Size(width, height),
+                          painter: _WavePainter(
+                            widget.amplitude,
+                            widget.amplitudePercent,
+                            offsetX,
+                            widget.color,
+                            widget.waveNum,
+                            index + 1,
+                          ),
+                        );
+                      }),
                     )
                   : Container(),
 
@@ -148,8 +149,14 @@ class _WaveState extends State<WaveView> with TickerProviderStateMixin {
               // 第一层波浪
               CustomPaint(
                 size: Size(width, height),
-                painter: _WavePainter(widget.amplitude, widget.amplitudePercent,
-                    offsetX, widget.color, widget.waveNum, 0),
+                painter: _WavePainter(
+                  widget.amplitude,
+                  widget.amplitudePercent,
+                  offsetX,
+                  widget.color,
+                  widget.waveNum,
+                  0,
+                ),
               ),
             ],
           ),

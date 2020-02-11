@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
@@ -16,6 +17,7 @@ import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:flutter_weather/view/page/read_page.dart';
 import 'package:flutter_weather/view/page/setting_page.dart';
 import 'package:flutter_weather/view/page/weather_page.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -49,6 +51,15 @@ class HomeState extends PageState<HomePage> {
         pop(context);
       }
     }).bindLife(this);
+
+    // 首次进入清除缓存
+    if (SharedDepository().shouldClean) {
+      DefaultCacheManager().getFilePath().then((path) {
+        Directory(path).listSync().forEach((v) => v.deleteSync());
+      });
+
+      SharedDepository().setsShouldClean(false);
+    }
 
     // 让第一个页面生效
     _pageTypeMap[PageType.WEATHER] = true;
@@ -343,9 +354,8 @@ class HomeState extends PageState<HomePage> {
             children: <Widget>[
               Icon(
                 icon,
-                color: isTarget
-                    ? Theme.of(context).accentColor
-                    : AppColor.text2,
+                color:
+                    isTarget ? Theme.of(context).accentColor : AppColor.text2,
               ),
               Container(
                 margin: const EdgeInsets.only(left: 30),
