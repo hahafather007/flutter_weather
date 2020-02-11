@@ -33,7 +33,7 @@ class GiftMziService extends Service {
           ? int.parse(img.attributes["width"])
           : 236;
       final link = item.querySelector("a[href]").attributes["href"];
-      final refer = "${dio.options.baseUrl}$url/";
+      final refer = "${dio.options.baseUrl}/$url/";
 
       data.add(MziData(
           url: imgUrl,

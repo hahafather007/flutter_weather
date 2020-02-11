@@ -36,8 +36,8 @@ class GiftPage extends StatelessWidget {
               indicatorColor: Colors.white,
               isScrollable: true,
               tabs: [
-                Tab(text: AppText.of(context).gank),
                 Tab(text: AppText.of(context).egg),
+                Tab(text: AppText.of(context).gank),
                 Tab(text: AppText.of(context).beachGirl),
                 Tab(text: AppText.of(context).mostHot),
                 Tab(text: AppText.of(context).taiwanGirl),
@@ -51,11 +51,11 @@ class GiftPage extends StatelessWidget {
               color: AppColor.read,
               child: TabBarView(
                 children: [
-                  GiftGankPage(
-                    key: Key("GiftGankPage"),
-                  ),
                   GiftEggPage(
                     key: Key("GiftEggPage"),
+                  ),
+                  GiftGankPage(
+                    key: Key("GiftGankPage"),
                   ),
                   GiftMziPage(
                     key: Key("GiftMziPagemm"),
