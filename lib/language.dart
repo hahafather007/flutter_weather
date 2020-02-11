@@ -160,7 +160,7 @@ class AppText {
       "colorKale": "甘蓝",
       "colorPinkYarrow": "粉蓍草",
       "colorNiagara": "尼亚加拉",
-      "colorNone": "丢雷老母",
+      "colorNone": "呀是啦累",
 
       // 关于
       "hasNewVersion": "检测到新版本",
