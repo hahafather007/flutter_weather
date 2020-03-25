@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/view/page/gift_gank_watch_page.dart';
@@ -44,7 +44,7 @@ class GiftEggState extends PageState<GiftEggPage>
     super.didChangeDependencies();
 
     bindErrorStream(_viewModel.error.stream,
-        errorText: AppText.of(context).eggFail,
+        errorText: S.of(context).eggFail,
         retry: () => _viewModel.loadData(type: LoadType.NEW_LOAD));
   }
 

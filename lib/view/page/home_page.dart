@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/holder/app_version_holder.dart';
 import 'package:flutter_weather/model/holder/event_send_holder.dart';
 import 'package:flutter_weather/model/holder/fav_holder.dart';
@@ -159,7 +159,7 @@ class HomeState extends PageState<HomePage> {
                       return module.open
                           ? _buildDrawerItem(
                               icon: Icons.wb_sunny,
-                              title: AppText.of(context).weather,
+                              title: S.of(context).weather,
                               isTarget: _pageType == PageType.WEATHER,
                               onTap: () {
                                 if (_pageType == PageType.WEATHER) return;
@@ -178,7 +178,7 @@ class HomeState extends PageState<HomePage> {
                       return module.open
                           ? _buildDrawerItem(
                               icon: Icons.card_giftcard,
-                              title: AppText.of(context).gift,
+                              title: S.of(context).gift,
                               isTarget: _pageType == PageType.GIFT,
                               onTap: () {
                                 if (_pageType == PageType.GIFT) return;
@@ -196,7 +196,7 @@ class HomeState extends PageState<HomePage> {
                       return module.open
                           ? _buildDrawerItem(
                               icon: Icons.local_cafe,
-                              title: AppText.of(context).read,
+                              title: S.of(context).read,
                               isTarget: _pageType == PageType.READ,
                               onTap: () {
                                 if (_pageType == PageType.READ) return;
@@ -213,7 +213,7 @@ class HomeState extends PageState<HomePage> {
                       return module.open
                           ? _buildDrawerItem(
                               icon: Icons.favorite_border,
-                              title: AppText.of(context).collect,
+                              title: S.of(context).collect,
                               isTarget: _pageType == PageType.COLLECT,
                               onTap: () {
                                 if (_pageType == PageType.COLLECT) return;
@@ -237,7 +237,7 @@ class HomeState extends PageState<HomePage> {
               // 设置
               _buildDrawerItem(
                   icon: Icons.settings,
-                  title: AppText.of(context).setting,
+                  title: S.of(context).setting,
                   isTarget: false,
                   onTap: () async {
                     _weatherKey.currentState?.changeHideState(true);
@@ -250,7 +250,7 @@ class HomeState extends PageState<HomePage> {
               // 关于
               _buildDrawerItem(
                   icon: Icons.error_outline,
-                  title: AppText.of(context).about,
+                  title: S.of(context).about,
                   isTarget: false,
                   onTap: () async {
                     _weatherKey.currentState?.changeHideState(true);
@@ -271,7 +271,7 @@ class HomeState extends PageState<HomePage> {
           _readyExit = true;
           _exitTimer =
               Timer(const Duration(seconds: 2), () => _readyExit = false);
-          showSnack(text: AppText.of(context).retryToExit);
+          showSnack(text: S.of(context).retryToExit);
         }
 
         return false;

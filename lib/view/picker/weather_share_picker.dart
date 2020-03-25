@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/data/weather_air_data.dart';
 import 'package:flutter_weather/model/data/weather_data.dart';
 import 'package:flutter_weather/model/holder/shared_depository.dart';
@@ -46,7 +46,7 @@ class _WeatherPickState extends PageState<WeatherSharePicker> {
         takeScreenshot().then((file) {
           if (file != null) {
             Share.file(
-                AppText.of(context).share,
+                S.of(context).share,
                 "${widget.city}_${DateTime.now()}.png",
                 file.readAsBytesSync(),
                 "*/*");
@@ -54,7 +54,7 @@ class _WeatherPickState extends PageState<WeatherSharePicker> {
           }
         });
       } else {
-        Share.text(AppText.of(context).share, _getShareText(), "text/plain");
+        Share.text(S.of(context).share, _getShareText(), "text/plain");
         pop(context);
       }
     });

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/data/read_data.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:flutter_weather/view/widget/read_item_view.dart';
@@ -66,7 +66,7 @@ class FavReadState extends PageState<FavReadPage>
                 ? Container(
                     alignment: Alignment.center,
                     child: Text(
-                      AppText.of(context).listEmpty,
+                      S.of(context).listEmpty,
                       style: TextStyle(
                         fontSize: 16,
                         color: AppColor.text3,

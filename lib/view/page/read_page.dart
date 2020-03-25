@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/holder/event_send_holder.dart';
 import 'package:flutter_weather/view/page/read_content_page.dart';
 import 'package:flutter_weather/view/widget/custom_app_bar.dart';
@@ -14,7 +14,7 @@ class ReadPage extends StatelessWidget {
         children: <Widget>[
           CustomAppBar(
             title: Text(
-              AppText.of(context).read,
+              S.of(context).read,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 20,
@@ -34,15 +34,15 @@ class ReadPage extends StatelessWidget {
               indicatorColor: Colors.white,
               isScrollable: true,
               tabs: [
-                Tab(text: AppText.of(context).xiandu),
-                Tab(text: AppText.of(context).xianduApps),
-                Tab(text: AppText.of(context).xianduImrich),
-                Tab(text: AppText.of(context).xianduFunny),
-                Tab(text: AppText.of(context).xianduAndroid),
-                Tab(text: AppText.of(context).xianduDie),
-                Tab(text: AppText.of(context).xianduThink),
-                Tab(text: AppText.of(context).xianduIos),
-                Tab(text: AppText.of(context).xianduBlog),
+                Tab(text: S.of(context).xiandu),
+                Tab(text: S.of(context).xianduApps),
+                Tab(text: S.of(context).xianduImrich),
+                Tab(text: S.of(context).xianduFunny),
+                Tab(text: S.of(context).xianduAndroid),
+                Tab(text: S.of(context).xianduDie),
+                Tab(text: S.of(context).xianduThink),
+                Tab(text: S.of(context).xianduIos),
+                Tab(text: S.of(context).xianduBlog),
               ],
             ),
           ),

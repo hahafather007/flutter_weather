@@ -23,8 +23,8 @@ extension SubscriptionExt on StreamSubscription {
   }
 }
 
-extension ControllerExt on StreamController<dynamic> {
-  void safeAdd(dynamic data) {
+extension ControllerExt<T> on StreamController<T> {
+  void safeAdd(T data) {
     if (this.isClosed) return;
 
     this.add(data);

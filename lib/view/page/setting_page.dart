@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/block_picker.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/holder/event_send_holder.dart';
 import 'package:flutter_weather/model/holder/shared_depository.dart';
 import 'package:flutter_weather/utils/system_util.dart';
@@ -37,7 +37,7 @@ class SettingState extends PageState<SettingPage> {
     return Scaffold(
       appBar: CustomAppBar(
         title: Text(
-          AppText.of(context).setting,
+          S.of(context).setting,
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -57,26 +57,26 @@ class SettingState extends PageState<SettingPage> {
         child: StreamBuilder(
           stream: _viewModel.cacheSize.stream,
           builder: (context, snapshot) {
-            final cacheSize = snapshot.data ?? AppText.of(context).caculating;
+            final cacheSize = snapshot.data ?? S.of(context).caculating;
 
             return ListView(
               physics: const AlwaysScrollableScrollPhysics(
                   parent: const ClampingScrollPhysics()),
               children: <Widget>[
                 // 天气
-                _buildTitle(title: AppText.of(context).weather),
+                _buildTitle(title: S.of(context).weather),
                 _buildItem(
-                  title: AppText.of(context).shareType,
+                  title: S.of(context).shareType,
                   content: SharedDepository().hammerShare
-                      ? AppText.of(context).likeHammer
-                      : AppText.of(context).textOnly,
+                      ? S.of(context).likeHammer
+                      : S.of(context).textOnly,
                   onTap: _typeDialogFunc,
                 ),
 
                 // 通用
-                _buildTitle(title: AppText.of(context).commonUse),
+                _buildTitle(title: S.of(context).commonUse),
                 _buildItem(
-                  title: AppText.of(context).themeColor,
+                  title: S.of(context).themeColor,
                   content: getThemeName(),
                   onTap: () {
                     Color selectColor = Theme.of(context).accentColor;
@@ -84,7 +84,7 @@ class SettingState extends PageState<SettingPage> {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: Text(AppText.of(context).chooseTheme),
+                          title: Text(S.of(context).chooseTheme),
                           content: Container(
                             height: 180,
                             child: BlockPicker(
@@ -106,7 +106,7 @@ class SettingState extends PageState<SettingPage> {
                           actions: <Widget>[
                             FlatButton(
                               onPressed: () => pop(context),
-                              child: Text(AppText.of(context).cancel),
+                              child: Text(S.of(context).cancel),
                             ),
                             FlatButton(
                               onPressed: () {
@@ -117,7 +117,7 @@ class SettingState extends PageState<SettingPage> {
                                         tag: "themeChange",
                                         event: selectColor));
                               },
-                              child: Text(AppText.of(context).certain),
+                              child: Text(S.of(context).certain),
                             ),
                           ],
                         );
@@ -127,13 +127,13 @@ class SettingState extends PageState<SettingPage> {
                 ),
                 Container(height: 1, color: AppColor.line2),
                 _buildItem(
-                  title: AppText.of(context).moduleControl,
-                  content: AppText.of(context).openOrCloseModule,
+                  title: S.of(context).moduleControl,
+                  content: S.of(context).openOrCloseModule,
                   onTap: () => push(context, page: SettingModulePage()),
                 ),
                 Container(height: 1, color: AppColor.line2),
                 _buildItem(
-                  title: AppText.of(context).clearCache,
+                  title: S.of(context).clearCache,
                   content: cacheSize,
                   onTap: () => _viewModel.clearCache(),
                 ),
@@ -193,25 +193,25 @@ class SettingState extends PageState<SettingPage> {
     final color = Theme.of(context).accentColor;
 
     if (color == AppColor.lapisBlue) {
-      return AppText.of(context).colorLapisBlue;
+      return S.of(context).colorLapisBlue;
     } else if (color == AppColor.paleDogWood) {
-      return AppText.of(context).colorPaleDogWood;
+      return S.of(context).colorPaleDogWood;
     } else if (color == AppColor.greenery) {
-      return AppText.of(context).colorGreenery;
+      return S.of(context).colorGreenery;
     } else if (color == AppColor.primroseYellow) {
-      return AppText.of(context).colorPrimroseYellow;
+      return S.of(context).colorPrimroseYellow;
     } else if (color == AppColor.flame) {
-      return AppText.of(context).colorFlame;
+      return S.of(context).colorFlame;
     } else if (color == AppColor.islandParadise) {
-      return AppText.of(context).colorIslandParadise;
+      return S.of(context).colorIslandParadise;
     } else if (color == AppColor.kale) {
-      return AppText.of(context).colorKale;
+      return S.of(context).colorKale;
     } else if (color == AppColor.pinkYarrow) {
-      return AppText.of(context).colorPinkYarrow;
+      return S.of(context).colorPinkYarrow;
     } else if (color == AppColor.niagara) {
-      return AppText.of(context).colorNiagara;
+      return S.of(context).colorNiagara;
     } else {
-      return AppText.of(context).colorNone;
+      return S.of(context).colorNone;
     }
   }
 
@@ -221,8 +221,8 @@ class SettingState extends PageState<SettingPage> {
           context,
           contentPadding: const EdgeInsets.only(),
           title: Text(
-              "${AppText.of(context).weather}${AppText.of(context).shareType}"),
-          yesText: AppText.of(context).close,
+              "${S.of(context).weather}${S.of(context).shareType}"),
+          yesText: S.of(context).close,
           pressed: () => pop(context),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -252,7 +252,7 @@ class SettingState extends PageState<SettingPage> {
                           padding:
                               const EdgeInsets.only(left: 4, top: 6, bottom: 6),
                           child: Text(
-                            AppText.of(context).textOnly,
+                            S.of(context).textOnly,
                             style: TextStyle(
                                 fontSize: 16, color: AppColor.text1),
                           ),
@@ -287,7 +287,7 @@ class SettingState extends PageState<SettingPage> {
                           padding:
                               const EdgeInsets.only(left: 4, top: 6, bottom: 6),
                           child: Text(
-                            AppText.of(context).likeHammer,
+                            S.of(context).likeHammer,
                             style: TextStyle(
                                 fontSize: 16, color: AppColor.text1),
                           ),

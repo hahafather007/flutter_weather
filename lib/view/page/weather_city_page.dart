@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/data/weather_air_data.dart';
 import 'package:flutter_weather/model/data/weather_data.dart';
 import 'package:flutter_weather/utils/aqi_util.dart';
@@ -46,10 +46,10 @@ class WeatherCityState extends PageState<WeatherCityPage>
     _viewModel.perStatus.stream
         .where((status) => status == PermissionStatus.denied)
         .listen((_) => showSnack(
-            text: AppText.of(context).locationError,
+            text: S.of(context).locationError,
             duration: const Duration(hours: 1),
             action: SnackBarAction(
-                label: AppText.of(context).setting,
+                label: S.of(context).setting,
                 onPressed: () => PermissionHandler().openAppSettings())))
         .bindLife(this);
   }
@@ -59,7 +59,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
     super.didChangeDependencies();
 
     bindErrorStream(_viewModel.error.stream,
-        errorText: AppText.of(context).weatherFail,
+        errorText: S.of(context).weatherFail,
         retry: () => _viewModel.loadData(isRefresh: false));
   }
 
@@ -166,7 +166,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
                                       children: <Widget>[
                                         _buildPm25Item(
                                           eName: "PM2.5",
-                                          name: AppText.of(context).pm25,
+                                          name: S.of(context).pm25,
                                           num: air?.airNowCity?.pm25 ?? "0",
                                         ),
                                         Padding(
@@ -174,7 +174,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
                                                 const EdgeInsets.only(top: 18)),
                                         _buildPm25Item(
                                           eName: "SO2",
-                                          name: AppText.of(context).so2,
+                                          name: S.of(context).so2,
                                           num: air?.airNowCity?.so2 ?? "0",
                                         ),
                                         Padding(
@@ -182,7 +182,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
                                                 const EdgeInsets.only(top: 18)),
                                         _buildPm25Item(
                                           eName: "CO",
-                                          name: AppText.of(context).co,
+                                          name: S.of(context).co,
                                           num: air?.airNowCity?.co ?? "0",
                                         ),
                                       ],
@@ -195,7 +195,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
                                       children: <Widget>[
                                         _buildPm25Item(
                                           eName: "PM10",
-                                          name: AppText.of(context).pm10,
+                                          name: S.of(context).pm10,
                                           num: air?.airNowCity?.pm10 ?? "0",
                                         ),
                                         Padding(
@@ -203,7 +203,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
                                                 const EdgeInsets.only(top: 18)),
                                         _buildPm25Item(
                                           eName: "NO2",
-                                          name: AppText.of(context).no2,
+                                          name: S.of(context).no2,
                                           num: air?.airNowCity?.no2 ?? "0",
                                         ),
                                         Padding(
@@ -211,7 +211,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
                                                 const EdgeInsets.only(top: 18)),
                                         _buildPm25Item(
                                           eName: "O3",
-                                          name: AppText.of(context).o3,
+                                          name: S.of(context).o3,
                                           num: air?.airNowCity?.o3 ?? "0",
                                         ),
                                       ],
@@ -298,7 +298,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
                               alignment: Alignment.center,
                               padding: const EdgeInsets.only(top: 6, bottom: 6),
                               child: Text(
-                                AppText.of(context).dataSource,
+                                S.of(context).dataSource,
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: AppColor.text2,
@@ -373,7 +373,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
                 Text(
-                  AppText.of(context).hum,
+                  S.of(context).hum,
                   style: TextStyle(fontSize: 10, color: Colors.white),
                 ),
               ],
@@ -392,7 +392,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
                 Text(
-                  AppText.of(context).pres,
+                  S.of(context).pres,
                   style: TextStyle(fontSize: 10, color: Colors.white),
                 ),
               ],
@@ -407,7 +407,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "${now?.windSc ?? 0}${AppText.of(context).windSc}",
+                  "${now?.windSc ?? 0}${S.of(context).windSc}",
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
                 Text(
@@ -562,24 +562,24 @@ class WeatherCityState extends PageState<WeatherCityPage>
     final weekDate = DateTime.parse(date);
 
     if (weekDate.day == DateTime.now().day) {
-      return AppText.of(context).today;
+      return S.of(context).today;
     }
 
     switch (weekDate.weekday) {
       case DateTime.monday:
-        return AppText.of(context).monday;
+        return S.of(context).monday;
       case DateTime.tuesday:
-        return AppText.of(context).tuesday;
+        return S.of(context).tuesday;
       case DateTime.wednesday:
-        return AppText.of(context).wednesday;
+        return S.of(context).wednesday;
       case DateTime.thursday:
-        return AppText.of(context).thursday;
+        return S.of(context).thursday;
       case DateTime.friday:
-        return AppText.of(context).friday;
+        return S.of(context).friday;
       case DateTime.saturday:
-        return AppText.of(context).saturday;
+        return S.of(context).saturday;
       case DateTime.sunday:
-        return AppText.of(context).sunday;
+        return S.of(context).sunday;
     }
 
     return "";
@@ -622,21 +622,21 @@ class WeatherCityState extends PageState<WeatherCityPage>
   String _getSoftName({@required String type}) {
     switch (type) {
       case "air":
-        return AppText.of(context).air;
+        return S.of(context).air;
       case "cw":
-        return AppText.of(context).cw;
+        return S.of(context).cw;
       case "uv":
-        return AppText.of(context).uv;
+        return S.of(context).uv;
       case "trav":
-        return AppText.of(context).trav;
+        return S.of(context).trav;
       case "sport":
-        return AppText.of(context).sport;
+        return S.of(context).sport;
       case "drsg":
-        return AppText.of(context).drsg;
+        return S.of(context).drsg;
       case "comf":
-        return AppText.of(context).comf;
+        return S.of(context).comf;
       case "flu":
-        return AppText.of(context).flu;
+        return S.of(context).flu;
     }
 
     return "";

@@ -5,7 +5,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_weather/common/streams.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:path_provider/path_provider.dart';
 
 export 'package:flutter_weather/common/streams.dart'
@@ -68,7 +68,7 @@ abstract class PageState<T extends StatefulWidget> extends State<T>
       content: Text(errorText),
       duration: const Duration(days: 1),
       action: SnackBarAction(
-        label: AppText.of(context).retry,
+        label: S.of(context).retry,
         onPressed: retry,
       ),
     ));

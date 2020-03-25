@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/holder/shared_depository.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_weather/utils/channel_util.dart';
@@ -21,11 +21,11 @@ class WatcherPopupBtn extends StatelessWidget {
       itemBuilder: (context) => [
         PopupMenuItem(
           value: "save",
-          child: Text(AppText.of(context).imgSave),
+          child: Text(S.of(context).imgSave),
         ),
         PopupMenuItem(
           value: "wallpaper",
-          child: Text(AppText.of(context).setAsWallpaper),
+          child: Text(S.of(context).setAsWallpaper),
         ),
       ],
       onSelected: (value) async {
@@ -40,9 +40,9 @@ class WatcherPopupBtn extends StatelessWidget {
             if (file != null) {
               await SharedDepository().setSavedImages(savedImgs..add(url));
               await ImageGallerySaver.saveImage(file.readAsBytesSync());
-              onSnackShow(AppText.of(context).imgSaveSuccess);
+              onSnackShow(S.of(context).imgSaveSuccess);
             } else {
-              onSnackShow(AppText.of(context).imgSaveFail);
+              onSnackShow(S.of(context).imgSaveFail);
             }
 
             break;
@@ -58,7 +58,7 @@ class WatcherPopupBtn extends StatelessWidget {
               await ImageGallerySaver.saveImage(file.readAsBytesSync());
               ChannelUtil.setWallpaper(path: file.absolute.path);
             } else {
-              onSnackShow(AppText.of(context).canNotSetWallpaper);
+              onSnackShow(S.of(context).canNotSetWallpaper);
             }
 
             break;

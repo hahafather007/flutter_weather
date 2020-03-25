@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/view/page/gift_mzi_image_page.dart';
@@ -48,19 +48,19 @@ class GiftMziState extends PageState<GiftMziPage>
     String errorText = "";
     switch (widget.typeUrl) {
       case "mm":
-        errorText = AppText.of(context).beachGirlFail;
+        errorText = S.of(context).beachGirlFail;
         break;
       case "hot":
-        errorText = AppText.of(context).mostHotFail;
+        errorText = S.of(context).mostHotFail;
         break;
       case "taiwan":
-        errorText = AppText.of(context).taiwanGirFail;
+        errorText = S.of(context).taiwanGirFail;
         break;
       case "xinggan":
-        errorText = AppText.of(context).sexGirlFail;
+        errorText = S.of(context).sexGirlFail;
         break;
       case "japan":
-        errorText = AppText.of(context).japanGirlFail;
+        errorText = S.of(context).japanGirlFail;
         break;
     }
     bindErrorStream(_viewModel.error.stream,

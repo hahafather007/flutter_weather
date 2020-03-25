@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/data/read_data.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:flutter_weather/view/widget/loading_view.dart';
@@ -37,31 +37,31 @@ class ReadContentState extends PageState<ReadContentPage>
     String errorText = "";
     switch (widget.typeUrl) {
       case "wow":
-        errorText = AppText.of(context).xianduFail;
+        errorText = S.of(context).xianduFail;
         break;
       case "apps":
-        errorText = AppText.of(context).xianduAppsFail;
+        errorText = S.of(context).xianduAppsFail;
         break;
       case "imrich":
-        errorText = AppText.of(context).xianduImrichFail;
+        errorText = S.of(context).xianduImrichFail;
         break;
       case "funny":
-        errorText = AppText.of(context).xianduFunnyFail;
+        errorText = S.of(context).xianduFunnyFail;
         break;
       case "android":
-        errorText = AppText.of(context).xianduAndroidFail;
+        errorText = S.of(context).xianduAndroidFail;
         break;
       case "diediedie":
-        errorText = AppText.of(context).xianduDieFail;
+        errorText = S.of(context).xianduDieFail;
         break;
       case "thinking":
-        errorText = AppText.of(context).xianduThinkFail;
+        errorText = S.of(context).xianduThinkFail;
         break;
       case "iOS":
-        errorText = AppText.of(context).xianduIosFail;
+        errorText = S.of(context).xianduIosFail;
         break;
       case "teamblog":
-        errorText = AppText.of(context).xianduBlogFail;
+        errorText = S.of(context).xianduBlogFail;
         break;
     }
     bindErrorStream(_viewModel.error.stream,

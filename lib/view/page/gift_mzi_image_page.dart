@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/model/holder/fav_holder.dart';
 import 'package:flutter_weather/utils/system_util.dart';
@@ -37,7 +37,7 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
     super.didChangeDependencies();
 
     bindErrorStream(_viewModel.error.stream,
-        errorText: AppText.of(context).imageSetFail,
+        errorText: S.of(context).imageSetFail,
         retry: () => _viewModel.loadData());
   }
 
@@ -55,7 +55,7 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
       key: scafKey,
       appBar: CustomAppBar(
         title: Text(
-          AppText.of(context).imageSet,
+          S.of(context).imageSet,
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,

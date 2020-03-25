@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/holder/event_send_holder.dart';
 import 'package:flutter_weather/view/page/fav_gift_page.dart';
 import 'package:flutter_weather/view/page/fav_gifts_page.dart';
@@ -16,7 +16,7 @@ class FavPage extends StatelessWidget {
         children: <Widget>[
           CustomAppBar(
             title: Text(
-              AppText.of(context).collect,
+              S.of(context).collect,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 20,
@@ -35,9 +35,9 @@ class FavPage extends StatelessWidget {
               labelColor: Colors.white,
               indicatorColor: Colors.white,
               tabs: [
-                Tab(text: AppText.of(context).read),
-                Tab(text: AppText.of(context).gift),
-                Tab(text: AppText.of(context).giftPhotos),
+                Tab(text: S.of(context).read),
+                Tab(text: S.of(context).gift),
+                Tab(text: S.of(context).giftPhotos),
               ],
             ),
           ),

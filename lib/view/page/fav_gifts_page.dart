@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/view/page/gift_mzi_image_page.dart';
@@ -94,7 +94,7 @@ class FavGiftsState extends PageState<FavGiftsPage>
                 ? Container(
                     alignment: Alignment.center,
                     child: Text(
-                      AppText.of(context).listEmpty,
+                      S.of(context).listEmpty,
                       style: TextStyle(
                         fontSize: 16,
                         color: AppColor.text3,
