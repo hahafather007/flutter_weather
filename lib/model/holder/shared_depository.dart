@@ -140,6 +140,19 @@ class SharedDepository {
   Future<bool> setsShouldClean(bool value) async =>
       await _prefs.setBool("shouldClean2020-02-11", value);
 
+  /// 用户手动设置的语言
+  Locale get appLocale {
+    final code = _getString("appLocale");
+    if (code == null) {
+      return null;
+    } else {
+      return Locale(code, "");
+    }
+  }
+
+  Future<bool> setAppLocale(Locale value) =>
+      _prefs.setString("appLocale", value.languageCode);
+
   /// ==============================================
   ///                     分界线
   /// ==============================================

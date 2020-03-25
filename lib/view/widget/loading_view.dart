@@ -50,8 +50,6 @@ class LoadingState extends State<LoadingView>
 
   @override
   Widget build(BuildContext context) {
-    final indicator = RefreshProgressIndicator();
-
     return Stack(
       alignment: Alignment.topCenter,
       children: <Widget>[
@@ -60,7 +58,6 @@ class LoadingState extends State<LoadingView>
           margin: const EdgeInsets.only(top: 40),
           child: AnimatedBuilder(
             animation: _animation,
-            child: indicator,
             builder: (context, child) {
               return Container(
                 alignment: Alignment.center,
@@ -69,7 +66,7 @@ class LoadingState extends State<LoadingView>
                 child: Container(
                   height: _animation.value.height,
                   width: _animation.value.width,
-                  child: indicator,
+                  child: const RefreshProgressIndicator(),
                 ),
               );
             },
