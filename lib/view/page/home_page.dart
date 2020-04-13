@@ -55,7 +55,13 @@ class HomeState extends PageState<HomePage> {
     // 首次进入清除缓存
     if (SharedDepository().shouldClean) {
       DefaultCacheManager().getFilePath().then((path) {
-        Directory(path).listSync().forEach((v) => v.deleteSync());
+        final dir = Directory(path);
+        if (dir.existsSync()) {
+          dir
+              .listSync()
+              .where((v) => v.existsSync())
+              .forEach((v) => v.deleteSync());
+        }
       });
 
       SharedDepository().setsShouldClean(false);

@@ -103,7 +103,7 @@ class S implements WidgetsLocalizations {
   String get landGirlFail => "Street images get failed!";
   String get likeHammer => "仿锤子便签";
   String get listEmpty => "列表为空";
-  String get loadFail => "加载失败！";
+  String get loadFail => "Load failed!";
   String get locationError => "Positioning failed, please give permission";
   String get moduleControl => "模块管理";
   String get monday => "Monday";
@@ -126,7 +126,7 @@ class S implements WidgetsLocalizations {
   String get read => "News";
   String get refresh => "Refresh";
   String get repeatCity => "City selection repeat";
-  String get retry => "重试";
+  String get retry => "Retry";
   String get retryToExit => "Back again to exit app!";
   String get sandstorm => "Sandstorm";
   String get saturday => "Saturday";
@@ -165,20 +165,19 @@ class S implements WidgetsLocalizations {
   String get weatherFail => "Weather load failed!";
   String get weathersView => "Weathers Preview";
   String get wednesday => "Wednesday";
-  String get windSc => "级";
-  String get xiandu => "科技资讯";
+  String get xiandu => "Technology";
   String get xianduAndroid => "Android";
   String get xianduAndroidFail => "Android获取失败！";
-  String get xianduApps => "趣味软件/游戏";
+  String get xianduApps => "Apps";
   String get xianduAppsFail => "趣味软件/游戏获取失败！";
   String get xianduBlog => "团队博客";
   String get xianduBlogFail => "团队博客获取失败！";
   String get xianduDie => "创业新闻";
   String get xianduDieFail => "创业新闻获取失败！";
   String get xianduFail => "科技资讯获取失败！";
-  String get xianduFunny => "草根新闻";
+  String get xianduFunny => "Funny";
   String get xianduFunnyFail => "草根新闻获取失败！";
-  String get xianduImrich => "装备党";
+  String get xianduImrich => "Imrich";
   String get xianduImrichFail => "装备党获取失败！";
   String get xianduIos => "iOS";
   String get xianduIosFail => "iOS获取失败！";
@@ -186,6 +185,7 @@ class S implements WidgetsLocalizations {
   String get xianduThinkFail => "独立思想获取失败！";
   String get zhihuName => "• @活雷轰";
   String get zhihuPage => "活雷轰-知乎";
+  String windScValue(String value) => "Level $value";
 }
 
 class $en extends S {
@@ -365,8 +365,6 @@ class $zh extends S {
   @override
   String get xianduFunny => "草根新闻";
   @override
-  String get windSc => "级";
-  @override
   String get cw => "洗车";
   @override
   String get xianduIosFail => "iOS获取失败！";
@@ -528,6 +526,8 @@ class $zh extends S {
   String get imgSaveFail => "图片保存失败！";
   @override
   String get sport => "运动";
+  @override
+  String windScValue(String value) => "$value\u200b级";
 }
 
 class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {

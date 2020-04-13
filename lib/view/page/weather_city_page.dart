@@ -407,7 +407,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "${now?.windSc ?? 0}${S.of(context).windSc}",
+                  S.of(context).windScValue("${now?.windSc ?? 0}"),
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
                 Text(

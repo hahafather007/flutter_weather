@@ -59,6 +59,10 @@ class WeatherCityViewModel extends ViewModel {
               break;
             }
           }
+
+          if(mCity == null){
+            mCity = WeatherHolder().cities[index];
+          }
         } else {
           mCity = WeatherHolder().cities[index];
         }

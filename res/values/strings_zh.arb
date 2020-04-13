@@ -54,7 +54,7 @@
   "o3": "臭氧",
   "hum": "湿度",
   "pres": "气压",
-  "windSc": "级",
+  "windScValue": "$value\u200b级",
   "weatherFail": "天气信息获取失败！",
   "weathersView": "动态天气预览",
   "sunny": "晴",
