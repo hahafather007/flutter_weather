@@ -67,6 +67,7 @@ class CircleAirState extends State<CircleAirView>
                 animation: _colorAnim,
                 builder: (context, child) {
                   return CustomPaint(
+                    willChange: true,
                     painter: _CircleAirPainter(
                         _numAnim.value.toDouble(), _colorAnim.value),
                   );

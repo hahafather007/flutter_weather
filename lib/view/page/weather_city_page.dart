@@ -93,8 +93,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
                 return RefreshIndicator(
                   onRefresh: () => _viewModel.loadData(),
                   child: ListView(
-                    physics: const AlwaysScrollableScrollPhysics(
-                        parent: const ClampingScrollPhysics()),
+                    physics: const ClampingScrollPhysics(),
                     padding: const EdgeInsets.only(),
                     controller: _scrollController,
                     children: <Widget>[
