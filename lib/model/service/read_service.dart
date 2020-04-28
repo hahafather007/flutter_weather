@@ -5,7 +5,12 @@ import 'package:html/parser.dart';
 
 class ReadService extends Service {
   ReadService() {
-    dio.options.baseUrl = "http://gank.io";
+    dio.options.baseUrl = "https://gank.io/api/v2";
+  }
+
+  Future<List<ReadTitle>> getTitles()async{
+    final response =
+        await dio.get("/categories/Article", cancelToken: cancelToken);
   }
 
   Future<List<ReadData>> getReadList(

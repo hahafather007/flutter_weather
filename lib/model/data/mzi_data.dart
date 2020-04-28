@@ -15,6 +15,8 @@ class MziData {
       this.isImages});
 
   MziData.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+
     url = json['url'];
     link = json['link'];
     refer = json['refer'];
@@ -24,7 +26,7 @@ class MziData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['url'] = this.url;
     data['link'] = this.link;
     data['refer'] = this.refer;
