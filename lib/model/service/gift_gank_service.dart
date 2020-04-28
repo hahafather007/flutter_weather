@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/model/service/service.dart';
+import 'package:flutter_weather/utils/log_util.dart';
 
 class GiftGankService extends Service {
   GiftGankService() {
@@ -12,7 +13,7 @@ class GiftGankService extends Service {
     final response = await dio.get("/api/data/%E7%A6%8F%E5%88%A9/20/$page",
         cancelToken: cancelToken);
 
-    debugPrint(response.toString());
+    debugLog(response.toString());
 
     final map = response.data;
     if (map["error"]) {

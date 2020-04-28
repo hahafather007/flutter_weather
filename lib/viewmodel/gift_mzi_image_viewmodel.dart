@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/model/holder/fav_holder.dart';
 import 'package:flutter_weather/model/service/gift_mzi_image_service.dart';
+import 'package:flutter_weather/utils/log_util.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class GiftMziImageViewModel extends ViewModel {
@@ -35,7 +36,7 @@ class GiftMziImageViewModel extends ViewModel {
     isLoading.safeAdd(true);
     try {
       final length = await _service.getLength(link: _mziData.link);
-      debugPrint("length======>$length");
+      debugLog("length======>$length");
       dataLength.safeAdd(length);
       final List<MziData> list = [];
       for (int i = 1; i <= length; i++) {

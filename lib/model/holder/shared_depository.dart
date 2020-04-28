@@ -5,6 +5,7 @@ import 'package:flutter_weather/model/data/city_data.dart';
 import 'package:flutter_weather/model/data/page_module_data.dart';
 import 'package:flutter_weather/model/data/weather_air_data.dart';
 import 'package:flutter_weather/model/data/weather_data.dart';
+import 'package:flutter_weather/utils/log_util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// SharedPreference的管理仓库
@@ -17,13 +18,13 @@ class SharedDepository {
   factory SharedDepository() => _depository;
 
   SharedDepository._internal() {
-    debugPrint("SharedDepository初始化完成！");
+    debugLog("SharedDepository初始化完成！");
   }
 
   Future<SharedDepository> initShared() async {
     _prefs = await SharedPreferences.getInstance();
 
-    debugPrint("prefs======$_prefs");
+    debugLog("prefs======$_prefs");
 
     return this;
   }

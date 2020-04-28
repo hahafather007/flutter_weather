@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_weather/model/data/city_data.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 
+import 'log_util.dart';
+
 class ChannelUtil {
   /// 平台通道工具
   static final _platform = MethodChannel(_ChannelTag.CHANNEL_NAME);
@@ -104,7 +106,7 @@ class ChannelUtil {
   }
 
   static void _doError<T extends Exception>(T e) =>
-      debugPrint("=====>通道错误：${e.toString()}");
+      debugLog("=====>通道错误：${e.toString()}");
 }
 
 /// 平台通道的名字和方法

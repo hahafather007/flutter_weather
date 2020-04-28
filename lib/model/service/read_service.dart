@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/model/data/read_data.dart';
 import 'package:flutter_weather/model/service/service.dart';
+import 'package:flutter_weather/utils/log_util.dart';
 import 'package:html/parser.dart';
 
 class ReadService extends Service {
@@ -11,6 +12,8 @@ class ReadService extends Service {
   Future<List<ReadTitle>> getTitles()async{
     final response =
         await dio.get("/categories/Article", cancelToken: cancelToken);
+
+
   }
 
   Future<List<ReadData>> getReadList(
@@ -41,7 +44,7 @@ class ReadService extends Service {
       return data;
     }).toList();
 
-    debugPrint("========>${list.length}");
+    debugLog("========>${list.length}");
 
     return list;
   }

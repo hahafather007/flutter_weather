@@ -5,6 +5,7 @@ import 'package:flutter_weather/common/colors.dart';
 import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/service/app_version_service.dart';
 import 'package:flutter_weather/utils/channel_util.dart';
+import 'package:flutter_weather/utils/log_util.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/utils/view_util.dart';
 import 'package:package_info/package_info.dart';
@@ -120,7 +121,7 @@ class AppVersionHolder {
         }
       }
     } on DioError catch (e) {
-      debugPrint(e.toString());
+      debugLog(e.toString());
     }
   }
 

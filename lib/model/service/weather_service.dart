@@ -15,7 +15,7 @@ class WeatherService extends Service {
         "/s6/weather?key=2d2a76fac8324146a1b17b68bda42c76&location=$city&lang=${WeatherApp.locale?.languageCode == "zh" ? "" : "en"}",
         cancelToken: cancelToken);
 
-    response.logStr();
+    debugLog(response);
 
     return WeatherData.fromJson(response.data);
   }
@@ -25,7 +25,7 @@ class WeatherService extends Service {
         "/s6/air/now?key=2d2a76fac8324146a1b17b68bda42c76&location=$city&lang=${WeatherApp.locale?.languageCode == "zh" ? "" : "en"}",
         cancelToken: cancelToken);
 
-    response.logStr();
+    debugLog(response);
 
     return WeatherAirData.fromJson(response.data);
   }
