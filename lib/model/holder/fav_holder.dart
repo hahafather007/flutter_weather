@@ -6,15 +6,15 @@ import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/model/data/read_data.dart';
 import 'package:flutter_weather/model/holder/shared_depository.dart';
 
-class FavHolder<T> {
+class FavHolder {
   static final FavHolder _holder = FavHolder._internal();
 
   factory FavHolder() => _holder;
 
   final _favReadBroadcast = StreamController<List<ReadData>>();
   final _favMziBroadcast = StreamController<List<MziData>>();
-  final List<ReadData> _cacheReads = [];
-  final List<MziData> _cacheMzis = [];
+  final _cacheReads = List<ReadData>();
+  final _cacheMzis = List<MziData>();
 
   Stream<List<ReadData>> favReadStream;
   Stream<List<MziData>> favMziStream;
@@ -49,24 +49,24 @@ class FavHolder<T> {
   }
 
   /// 添加或取消收藏
-  void autoFav(T t) async {
-    if (t == null) return;
+  Future<void> autoFav(dynamic data) async {
+    if (data == null) return;
 
-    if (t is ReadData) {
-      if (isFavorite(t)) {
-        _cacheReads.removeWhere((v) => v.url == t.url);
+    if (data is ReadData) {
+      if (isFavorite(data)) {
+        _cacheReads.removeWhere((v) => v.url == data.url);
       } else {
-        _cacheReads.add(t);
+        _cacheReads.add(data);
       }
 
       _favReadBroadcast.safeAdd(_cacheReads);
       await SharedDepository().setFavReadData(json.encode(_cacheReads));
-    } else if (t is MziData) {
-      if (isFavorite(t)) {
-        _cacheMzis
-            .removeWhere((v) => v.url == t.url && v.isImages == t.isImages);
+    } else if (data is MziData) {
+      if (isFavorite(data)) {
+        _cacheMzis.removeWhere(
+            (v) => v.url == data.url && v.isImages == data.isImages);
       } else {
-        _cacheMzis.add(t);
+        _cacheMzis.add(data);
       }
 
       _favMziBroadcast.safeAdd(_cacheMzis);
@@ -74,12 +74,13 @@ class FavHolder<T> {
     }
   }
 
-  /// 判断[t]是否被收藏
-  bool isFavorite(T t) {
-    if (t is ReadData) {
-      return _cacheReads.any((v) => v.url == t.url);
-    } else if (t is MziData) {
-      return _cacheMzis.any((v) => v.url == t.url && v.isImages == t.isImages);
+  /// 判断[data]是否被收藏
+  bool isFavorite(dynamic data) {
+    if (data is ReadData) {
+      return _cacheReads.any((v) => v.url == data.url);
+    } else if (data is MziData) {
+      return _cacheMzis
+          .any((v) => v.url == data.url && v.isImages == data.isImages);
     }
 
     return false;

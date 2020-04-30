@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 abstract class StreamSubController {
   final _subList = List<StreamSubscription>();
 
-  @protected
-  void bindSub(StreamSubscription sub) {
+  void _bindSub(StreamSubscription sub) {
     _subList.add(sub);
   }
 
@@ -19,7 +18,7 @@ abstract class StreamSubController {
 
 extension SubscriptionExt on StreamSubscription {
   void bindLife(StreamSubController controller) {
-    controller.bindSub(this);
+    controller._bindSub(this);
   }
 }
 

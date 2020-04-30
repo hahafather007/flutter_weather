@@ -13,7 +13,7 @@ class AboutViewModel extends ViewModel {
 
   final _service = AppVersionService();
 
-  void checkUpdate() async {
+  Future<void> checkUpdate()  async {
     if (selfLoading) return;
 
     selfLoading = true;
@@ -31,7 +31,7 @@ class AboutViewModel extends ViewModel {
   }
 
   /// Android专用
-  void updateApp(String url, int code) async {
+  Future<void> updateApp(String url, int code)  async {
     if (isIOS) return;
 
     final result =

@@ -20,7 +20,7 @@ class AppVersionHolder {
 
   AppVersionHolder._internal();
 
-  void checkUpdate(BuildContext context) async {
+  Future<void> checkUpdate(BuildContext context) async {
     await Future.delayed(const Duration(milliseconds: 200));
 
     final packageInfo = await PackageInfo.fromPlatform();

@@ -15,7 +15,7 @@ class SettingViewModel extends ViewModel {
     calculateSize().then((_) => isLoading.safeAdd(false));
   }
 
-  void clearCache() async {
+  Future<void> clearCache()  async {
     isLoading.safeAdd(true);
     final cacheDir = Directory(await DefaultCacheManager().getFilePath());
     final documentDir =
