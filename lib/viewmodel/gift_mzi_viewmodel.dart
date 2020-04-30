@@ -21,7 +21,7 @@ class GiftMziViewModel extends ViewModel {
     loadData(type: LoadType.NEW_LOAD);
   }
 
-  Future<Null> loadData({@required LoadType type}) async {
+  Future<void> loadData({@required LoadType type}) async {
     if (selfLoading) return;
     selfLoading = true;
 

@@ -14,7 +14,6 @@ class GiftMziImageViewModel extends ViewModel {
   final dataLength = StreamController<int>();
 
   final _service = GiftMziImageService();
-  final _favHolder = FavHolder();
   final _photoData = StreamController<List<MziData>>();
 
   MziData _mziData;
@@ -23,13 +22,16 @@ class GiftMziImageViewModel extends ViewModel {
   GiftMziImageViewModel({@required MziData data}) {
     _mziData = data;
     photoStream = _photoData.stream.asBroadcastStream();
-    isFav.safeAdd(_favHolder.isFavorite(data));
-    _favHolder.favMziStream
-        .listen((_) => isFav.safeAdd(_favHolder.isFavorite(data)))
+
+    FavHolder()
+        .favMziStream
+        .listen((_) => isFav.safeAdd(FavHolder().isFavorite(data)))
         .bindLife(this);
+
+    isFav.safeAdd(FavHolder().isFavorite(data));
   }
 
-  Future<Null> loadData() async {
+  Future<void> loadData() async {
     if (selfLoading) return;
 
     selfLoading = true;

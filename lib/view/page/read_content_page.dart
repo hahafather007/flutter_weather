@@ -4,7 +4,7 @@ import 'package:flutter_weather/model/data/read_data.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:flutter_weather/view/widget/loading_view.dart';
 import 'package:flutter_weather/view/widget/read_item_view.dart';
-import 'package:flutter_weather/viewmodel/read_viewmodel.dart';
+import 'package:flutter_weather/viewmodel/read_content_viewmodel.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class ReadContentPage extends StatefulWidget {
@@ -18,7 +18,7 @@ class ReadContentPage extends StatefulWidget {
 
 class ReadContentState extends PageState<ReadContentPage>
     with AutomaticKeepAliveClientMixin {
-  final _viewModel = ReadViewModel();
+  final _viewModel = ReadContentViewModel();
 
   @override
   bool get wantKeepAlive => true;

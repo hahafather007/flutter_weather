@@ -9,7 +9,7 @@ void cleanFocus(BuildContext context) =>
     FocusScope.of(context).requestFocus(FocusNode());
 
 /// 根据Android或IOS显示不同风格dialog
-Future<Null> showDiffDialog(BuildContext context,
+Future<void> showDiffDialog(BuildContext context,
     {Widget title,
     Widget content,
     String yesText,

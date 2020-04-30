@@ -36,7 +36,7 @@ class SettingViewModel extends ViewModel {
     isLoading.safeAdd(false);
   }
 
-  Future<Null> calculateSize() async {
+  Future<void> calculateSize() async {
     final cacheDir = Directory(await DefaultCacheManager().getFilePath());
     final documentDir =
         Directory((await getApplicationDocumentsDirectory()).path);

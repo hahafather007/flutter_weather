@@ -11,7 +11,7 @@ class GiftEggViewModel extends ViewModel {
 
   final _service = GiftEggService();
   final _photoData = StreamController<List<MziData>>();
-  final List<MziData> _cacheData = [];
+  final _cacheData = List<MziData>();
 
   Stream<List<MziData>> photoStream;
   int _page = 1;
@@ -20,7 +20,7 @@ class GiftEggViewModel extends ViewModel {
     photoStream = _photoData.stream.asBroadcastStream();
   }
 
-  Future<Null> loadData({@required LoadType type}) async {
+  Future<void> loadData({@required LoadType type}) async {
     if (selfLoading) return;
     selfLoading = true;
 

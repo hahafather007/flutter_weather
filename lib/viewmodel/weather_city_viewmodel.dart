@@ -31,7 +31,7 @@ class WeatherCityViewModel extends ViewModel {
     loadData(isRefresh: false);
   }
 
-  Future<Null> loadData({bool isRefresh = true}) async {
+  Future<void> loadData({bool isRefresh = true}) async {
     if (selfLoading) return;
     selfLoading = true;
 

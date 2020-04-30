@@ -12,6 +12,7 @@ class FavGiftsViewModel extends ViewModel {
         .favMziStream
         .listen((list) => data.safeAdd(list.where((v) => v.isImages).toList()))
         .bindLife(this);
+
     data.safeAdd(FavHolder().favMzis.where((v) => v.isImages).toList());
   }
 

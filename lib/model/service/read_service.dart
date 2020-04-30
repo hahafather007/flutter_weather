@@ -9,11 +9,18 @@ class ReadService extends Service {
     dio.options.baseUrl = "https://gank.io/api/v2";
   }
 
-  Future<List<ReadTitle>> getTitles()async{
+  Future<List<ReadTitle>> getTitles() async {
     final response =
         await dio.get("/categories/Article", cancelToken: cancelToken);
 
+    debugLog(response);
 
+    final Map map = response.data;
+    if (map != null && map["data"] != null) {
+      return (map["data"] as List).map((v) => ReadTitle.fromJson(v)).toList();
+    } else {
+      return [];
+    }
   }
 
   Future<List<ReadData>> getReadList(

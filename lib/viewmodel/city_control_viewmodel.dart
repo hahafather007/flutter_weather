@@ -14,27 +14,26 @@ class CityControlViewModel extends ViewModel {
   final weathers = StreamController<List<Weather>>();
 
   final _service = WeatherService();
-  final List<String> _cacheCities = [];
-  final List<Weather> _cacheWeathers = [];
+  final _cacheCities = List<String>();
+  final _cacheWeathers = List<Weather>();
 
   CityControlViewModel() {
+    WeatherHolder()
+      ..weatherStream.listen((v) {
+        _cacheWeathers.clear();
+        _cacheWeathers.addAll(v);
+        weathers.safeAdd(_cacheWeathers);
+      }).bindLife(this)
+      ..cityStream.map((list) => list.map((v) => v.name)).listen((list) {
+        _cacheCities.clear();
+        _cacheCities.addAll(list);
+        cities.safeAdd(_cacheCities);
+      }).bindLife(this);
+
     _cacheCities.addAll(WeatherHolder().cities.map((v) => v.name));
     _cacheWeathers.addAll(WeatherHolder().weathers);
     cities.safeAdd(_cacheCities);
     weathers.safeAdd(_cacheWeathers);
-    WeatherHolder().weatherStream.listen((v) {
-      _cacheWeathers.clear();
-      _cacheWeathers.addAll(v);
-      weathers.safeAdd(_cacheWeathers);
-    }).bindLife(this);
-    WeatherHolder()
-        .cityStream
-        .map((list) => list.map((v) => v.name).toList())
-        .listen((v) {
-      _cacheCities.clear();
-      _cacheCities.addAll(v);
-      cities.safeAdd(_cacheCities);
-    }).bindLife(this);
   }
 
   /// 添加城市
@@ -57,13 +56,13 @@ class CityControlViewModel extends ViewModel {
   }
 
   /// 删除城市
-  void removeCity(int index) async {
+  Future<void> removeCity(int index) async {
     await WeatherHolder().removeWeather(index);
     await WeatherHolder().removeAir(index);
     await WeatherHolder().removeCity(index);
   }
 
-  void cityIndexChange(int before, int after) async {
+  Future<void> cityIndexChange(int before, int after) async {
     if (before == 0 || after == 0) return;
 
     final beforeCity = _cacheCities[before];

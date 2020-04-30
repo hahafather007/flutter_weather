@@ -2,22 +2,22 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_weather/model/data/mzi_data.dart';
-import 'package:flutter_weather/model/service/gift_gank_service.dart';
+import 'package:flutter_weather/model/data/read_data.dart';
+import 'package:flutter_weather/model/service/read_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
-class GiftGankViewModel extends ViewModel {
-  final data = StreamController<List<MziData>>();
+class ReadContentViewModel extends ViewModel {
+  final data = StreamController<List<ReadData>>();
 
-  final _service = GiftGankService();
-  final _photoData = StreamController<List<MziData>>();
-  final _cacheData = List<MziData>();
+  final _service = ReadService();
+  final List<ReadData> _cacheData = [];
 
-  Stream<List<MziData>> photoStream;
   int _page = 1;
+  String _typeUrl;
 
-  GiftGankViewModel() {
-    photoStream = _photoData.stream.asBroadcastStream();
+  void init({@required String typeUrl}) {
+    _typeUrl = typeUrl;
+    loadData(type: LoadType.NEW_LOAD);
   }
 
   Future<void> loadData({@required LoadType type}) async {
@@ -32,10 +32,10 @@ class GiftGankViewModel extends ViewModel {
     }
 
     try {
-      final list = await _service.getData(page: _page);
+      final list = await _service.getReadList(lastUrl: _typeUrl, page: _page);
+
       _cacheData.addAll(list);
       data.safeAdd(_cacheData);
-      _photoData.safeAdd(_cacheData);
       _page++;
     } on DioError catch (e) {
       selfLoadType = type;
@@ -60,7 +60,6 @@ class GiftGankViewModel extends ViewModel {
     _cacheData.clear();
 
     data.close();
-    _photoData.close();
 
     super.dispose();
   }

@@ -70,7 +70,7 @@ class ChannelUtil {
   }
 
   /// 更新安装包
-  static Future<Null> installApp({@required int verCode}) async {
+  static Future<void> installApp({@required int verCode}) async {
     try {
       await _platform.invokeMethod(_ChannelTag.INSTALL_APK, {
         "verCode": verCode,
@@ -95,7 +95,7 @@ class ChannelUtil {
   }
 
   /// 设置壁纸
-  static Future<Null> setWallpaper({@required String path}) async {
+  static Future<void> setWallpaper({@required String path}) async {
     try {
       await _platform.invokeMethod(_ChannelTag.SET_WALLPAPER, {
         "path": path,
