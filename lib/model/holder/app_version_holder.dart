@@ -48,13 +48,11 @@ class AppVersionHolder {
                       Container(height: 12),
                       Text(
                         "${S.of(context).updateTime}${version.time}",
-                        style:
-                            TextStyle(fontSize: 14, color: AppColor.text2),
+                        style: TextStyle(fontSize: 14, color: AppColor.text2),
                       ),
                       Text(
                         "${S.of(context).apkSize}${version.size}",
-                        style:
-                            TextStyle(fontSize: 14, color: AppColor.text2),
+                        style: TextStyle(fontSize: 14, color: AppColor.text2),
                       ),
                     ],
                   ),
@@ -88,14 +86,14 @@ class AppVersionHolder {
               pressed: () async {
                 pop(context);
 
-                ToastUtil.showToast(S.of(context).apkStartDownload);
+                ToastUtil.showToast(context, S.of(context).apkStartDownload);
                 final readyUpdate = await ChannelUtil.updateApp(
                     url: version.url, verCode: version.version, isWifi: false);
 
                 if (readyUpdate) {
-                  ToastUtil.showToast(S.of(context).apkPleaseInstall);
+                  ToastUtil.showToast(context, S.of(context).apkPleaseInstall);
                 } else {
-                  ToastUtil.showToast(S.of(context).apkFail);
+                  ToastUtil.showToast(context, S.of(context).apkFail);
                 }
               },
             );

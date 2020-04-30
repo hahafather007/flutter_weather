@@ -38,7 +38,6 @@ class HomeState extends PageState<HomePage> {
   void initState() {
     super.initState();
 
-    ToastUtil.initToast(context);
     AppVersionHolder().checkUpdate(context);
 
     EventSendHolder()
@@ -130,7 +129,6 @@ class HomeState extends PageState<HomePage> {
 
   @override
   void dispose() {
-    ToastUtil.disposeToast();
     FavHolder().dispose();
     _exitTimer?.cancel();
 

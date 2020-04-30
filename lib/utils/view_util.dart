@@ -63,29 +63,20 @@ Future<void> showDiffDialog(BuildContext context,
 class ToastUtil {
   static OverlayEntry _overlayEntry;
   static OverlayState _overlayState;
-  static BuildContext _toastContext;
 
   /// 显示toast
-  static void showToast(String msg) async {
+  static void showToast(BuildContext context, String msg) async {
     if (msg == null) return;
 
     _overlayEntry?.remove();
-    _overlayEntry = null;
+    _overlayState?.dispose();
 
-    _overlayState = Overlay.of(_toastContext);
+    _overlayState = Overlay.of(context);
     _overlayEntry = OverlayEntry(
         builder: (context) => LayoutBuilder(
             builder: (context, constraints) => ToastView(msg: msg)));
 
     _overlayState?.insert(_overlayEntry);
-  }
-
-  static void initToast(BuildContext context) {
-    _toastContext = context;
-  }
-
-  static void disposeToast() {
-    _toastContext = null;
   }
 }
 
@@ -95,17 +86,13 @@ class ToastView extends StatefulWidget {
   ToastView({@required this.msg});
 
   @override
-  State createState() => ToastState(msg: msg);
+  State createState() => _ToastState();
 }
 
-class ToastState extends State<ToastView> with TickerProviderStateMixin {
-  final String msg;
-
+class _ToastState extends State<ToastView> with TickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> _animation;
   Timer _timer;
-
-  ToastState({@required this.msg});
 
   @override
   void initState() {
@@ -158,8 +145,11 @@ class ToastState extends State<ToastView> with TickerProviderStateMixin {
                     child: Container(
                       padding: const EdgeInsets.fromLTRB(18, 12, 18, 12),
                       child: Text(
-                        msg,
-                        style: TextStyle(fontSize: 14, color: Colors.white),
+                        "${widget.msg}",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                     ),

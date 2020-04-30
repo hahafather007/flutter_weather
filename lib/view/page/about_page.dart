@@ -81,7 +81,7 @@ class AboutState extends PageState<AboutPage> {
             pressed: () {
               pop(context);
 
-              ToastUtil.showToast(S.of(context).apkStartDownload);
+              ToastUtil.showToast(context, S.of(context).apkStartDownload);
               _viewModel.updateApp(version.url, version.version);
             },
           );
@@ -246,8 +246,8 @@ class AboutState extends PageState<AboutPage> {
                 icon: Icons.share,
                 text: S.of(context).shareApp,
                 onTap: () {
-                  Share.text(S.of(context).share,
-                      S.of(context).shareAppUrl, "text/plain");
+                  Share.text(S.of(context).share, S.of(context).shareAppUrl,
+                      "text/plain");
                 },
               ),
 
@@ -334,9 +334,7 @@ class AboutState extends PageState<AboutPage> {
         text: S.of(context).thankItems,
         onOpen: (link) => push(context,
             page: CustomWebViewPage(
-                title: S.of(context).appName,
-                url: link.url,
-                favData: null)),
+                title: S.of(context).appName, url: link.url, favData: null)),
         style: TextStyle(fontSize: 12, color: AppColor.text2, height: 1.2),
         linkStyle: TextStyle(fontSize: 12, color: Colors.black87),
       ),
