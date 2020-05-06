@@ -10,7 +10,7 @@ class GiftMziService extends Service {
 
   Future<List<MziData>> getData(
       {@required String url, @required int page}) async {
-    final response = await dio.get("/$url/page/${page == 1 ? 0 : page}",
+    final response = await get("/$url/page/${page == 1 ? 0 : page}",
         cancelToken: cancelToken);
 
     // 下面都在解析xml

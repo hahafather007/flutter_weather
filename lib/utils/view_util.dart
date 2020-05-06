@@ -17,8 +17,8 @@ Future<void> showDiffDialog(BuildContext context,
     String noText,
     EdgeInsetsGeometry contentPadding =
         const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-    Function pressed}) async {
-  await showDialog(
+    VoidCallback onPressed}) async {
+  showDialog(
     context: context,
     builder: (context) => isAndroid
         ? AlertDialog(
@@ -34,7 +34,7 @@ Future<void> showDiffDialog(BuildContext context,
                   : Container(),
               yesText != null
                   ? FlatButton(
-                      onPressed: () => pressed(),
+                      onPressed: onPressed,
                       child: Text(yesText),
                     )
                   : Container(),
@@ -52,7 +52,7 @@ Future<void> showDiffDialog(BuildContext context,
                   : Container(),
               yesText != null
                   ? CupertinoDialogAction(
-                      onPressed: () => pressed(),
+                      onPressed: onPressed,
                       child: Text(yesText),
                     )
                   : Container(),

@@ -6,7 +6,7 @@ import 'package:html/parser.dart';
 class GiftMziImageService extends Service {
   /// 获取每个妹子图集的最大数量
   Future<int> getLength({@required String link}) async {
-    final response = await dio.get(link, cancelToken: cancelToken);
+    final response = await get(link, cancelToken: cancelToken);
 
     int maxLength = 0;
     final document = parse(response.data);
@@ -28,7 +28,7 @@ class GiftMziImageService extends Service {
   }
 
   Future<MziData> getData({@required String link, @required int index}) async {
-    final response = await dio.get("$link/$index", cancelToken: cancelToken);
+    final response = await get("$link/$index", cancelToken: cancelToken);
 
     final document = parse(response.data);
     final total = document.getElementsByClassName("main-image").first;

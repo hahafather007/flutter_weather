@@ -10,7 +10,7 @@ class GiftEggService extends Service {
   }
 
   Future<EggData> getData({@required int page}) async {
-    final response = await dio.get(
+    final response = await get(
         "/?oxwlxojflwblxbsapi=jandan.get_ooxx_comments&page=$page",
         cancelToken: cancelToken);
 

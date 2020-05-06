@@ -14,7 +14,7 @@ class GiftGankWatchPage extends StatefulWidget {
   final int index;
   final List<MziData> photos;
   final Stream<List<MziData>> photoStream;
-  final Function loadDataFun;
+  final VoidCallback loadDataFun;
 
   GiftGankWatchPage(
       {@required this.index,

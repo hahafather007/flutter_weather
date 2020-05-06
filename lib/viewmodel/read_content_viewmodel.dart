@@ -10,7 +10,7 @@ class ReadContentViewModel extends ViewModel {
   final data = StreamController<List<ReadData>>();
 
   final _service = ReadService();
-  final List<ReadData> _cacheData = [];
+  final _cacheData = List<ReadData>();
 
   int _page = 1;
   String _typeUrl;

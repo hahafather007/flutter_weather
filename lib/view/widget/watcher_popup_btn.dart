@@ -7,7 +7,7 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 class WatcherPopupBtn extends StatelessWidget {
   final String url;
-  final Function(String) onSnackShow;
+  final ValueChanged<String> onSnackShow;
 
   WatcherPopupBtn({@required this.url, @required this.onSnackShow});
 

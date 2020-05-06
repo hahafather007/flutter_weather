@@ -1,3 +1,4 @@
+/// 妹子图数据
 class MziData {
   String url;
   String link;

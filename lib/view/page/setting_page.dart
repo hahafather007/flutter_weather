@@ -20,6 +20,8 @@ class SettingPage extends StatefulWidget {
 class SettingState extends PageState<SettingPage> {
   final _viewModel = SettingViewModel();
 
+  bool _hammerShare = SharedDepository().hammerShare;
+
   @override
   void initState() {
     super.initState();
@@ -67,7 +69,7 @@ class SettingState extends PageState<SettingPage> {
                 _buildTitle(title: S.of(context).weather),
                 _buildItem(
                   title: S.of(context).shareType,
-                  content: SharedDepository().hammerShare
+                  content: _hammerShare
                       ? S.of(context).likeHammer
                       : S.of(context).textOnly,
                   onTap: _typeDialogFunc,
@@ -161,7 +163,7 @@ class SettingState extends PageState<SettingPage> {
   Widget _buildItem(
       {@required String title,
       @required String content,
-      @required Function onTap}) {
+      @required VoidCallback onTap}) {
     return Material(
       child: InkWell(
         onTap: onTap,
@@ -216,90 +218,94 @@ class SettingState extends PageState<SettingPage> {
   }
 
   /// 天气分享形式的弹窗
-  Function get _typeDialogFunc => () async {
-        await showDiffDialog(
-          context,
-          contentPadding: const EdgeInsets.only(),
-          title: Text(
-              "${S.of(context).weather}${S.of(context).shareType}"),
-          yesText: S.of(context).close,
-          pressed: () => pop(context),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () async {
-                    await SharedDepository().setHammerShare(false);
-                    pop(context);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 24),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          SharedDepository().hammerShare
-                              ? Icons.radio_button_unchecked
-                              : Icons.radio_button_checked,
-                          size: 22,
-                          color: SharedDepository().hammerShare
-                              ? AppColor.text2
-                              : Theme.of(context).accentColor,
-                        ),
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(left: 4, top: 6, bottom: 6),
-                          child: Text(
-                            S.of(context).textOnly,
-                            style: TextStyle(
-                                fontSize: 16, color: AppColor.text1),
-                          ),
-                        ),
-                      ],
+  void _typeDialogFunc() {
+    showDiffDialog(
+      context,
+      contentPadding: const EdgeInsets.only(),
+      title: Text("${S.of(context).weather}${S.of(context).shareType}"),
+      yesText: S.of(context).close,
+      onPressed: () => pop(context),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                setState(() => _hammerShare = true);
+                SharedDepository().setHammerShare(false);
+                pop(context);
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 24),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      _hammerShare
+                          ? Icons.radio_button_unchecked
+                          : Icons.radio_button_checked,
+                      size: 22,
+                      color: SharedDepository().hammerShare
+                          ? AppColor.text2
+                          : Theme.of(context).accentColor,
                     ),
-                  ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 4, top: 6, bottom: 6),
+                      child: Text(
+                        S.of(context).textOnly,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: AppColor.text1,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () async {
-                    await SharedDepository().setHammerShare(true);
-                    pop(context);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 24),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          SharedDepository().hammerShare
-                              ? Icons.radio_button_checked
-                              : Icons.radio_button_unchecked,
-                          size: 22,
-                          color: SharedDepository().hammerShare
-                              ? Theme.of(context).accentColor
-                              : AppColor.text2,
-                        ),
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(left: 4, top: 6, bottom: 6),
-                          child: Text(
-                            S.of(context).likeHammer,
-                            style: TextStyle(
-                                fontSize: 16, color: AppColor.text1),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        );
-        setState(() {});
-      };
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                setState(() => _hammerShare = true);
+                SharedDepository().setHammerShare(true);
+                pop(context);
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 24),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      _hammerShare
+                          ? Icons.radio_button_checked
+                          : Icons.radio_button_unchecked,
+                      size: 22,
+                      color: SharedDepository().hammerShare
+                          ? Theme.of(context).accentColor
+                          : AppColor.text2,
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 4, top: 6, bottom: 6),
+                      child: Text(
+                        S.of(context).likeHammer,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: AppColor.text1,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

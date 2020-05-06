@@ -11,7 +11,7 @@ class ReadService extends Service {
 
   Future<List<ReadTitle>> getTitles() async {
     final response =
-        await dio.get("/categories/Article", cancelToken: cancelToken);
+        await get("/categories/Article", cancelToken: cancelToken);
 
     debugLog(response);
 
@@ -26,7 +26,7 @@ class ReadService extends Service {
   Future<List<ReadData>> getReadList(
       {@required String lastUrl, @required int page}) async {
     final response =
-        await dio.get("/xiandu/$lastUrl/page/$page", cancelToken: cancelToken);
+        await get("/xiandu/$lastUrl/page/$page", cancelToken: cancelToken);
 
     // 解析xml
     final document = parse(response.data);

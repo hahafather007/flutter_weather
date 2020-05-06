@@ -9,7 +9,6 @@ import 'package:flutter_weather/model/holder/event_send_holder.dart';
 import 'package:flutter_weather/model/holder/fav_holder.dart';
 import 'package:flutter_weather/model/holder/shared_depository.dart';
 import 'package:flutter_weather/utils/system_util.dart';
-import 'package:flutter_weather/utils/view_util.dart';
 import 'package:flutter_weather/view/page/about_page.dart';
 import 'package:flutter_weather/view/page/fav_page.dart';
 import 'package:flutter_weather/view/page/gift_page.dart';
@@ -341,7 +340,7 @@ class HomeState extends PageState<HomePage> {
       {@required IconData icon,
       @required String title,
       @required bool isTarget,
-      @required Function onTap}) {
+      @required VoidCallback onTap}) {
     return Material(
       child: InkWell(
         onTap: () {

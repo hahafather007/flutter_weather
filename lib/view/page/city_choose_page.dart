@@ -13,7 +13,7 @@ class CityChoosePage extends StatefulWidget {
 }
 
 class CityChooseState extends PageState<CityChoosePage> {
-  final List<List<dynamic>> _csvList = [];
+  final _csvList = List<List<dynamic>>();
 
   String _province;
   String _city;
@@ -139,7 +139,7 @@ class CityChooseState extends PageState<CityChoosePage> {
   Widget _buildItem(
       {@required String name,
       @required bool isSelect,
-      @required Function onTap}) {
+      @required VoidCallback onTap}) {
     return Material(
       child: InkWell(
         onTap: onTap,

@@ -58,7 +58,7 @@ class AppVersionHolder {
                   ),
                   yesText: S.of(context).install,
                   noText: S.of(context).wait,
-                  pressed: () =>
+                  onPressed: () =>
                       ChannelUtil.installApp(verCode: version.version));
             }
           } else {
@@ -83,7 +83,7 @@ class AppVersionHolder {
               ),
               yesText: S.of(context).download,
               noText: S.of(context).wait,
-              pressed: () async {
+              onPressed: () async {
                 pop(context);
 
                 ToastUtil.showToast(context, S.of(context).apkStartDownload);
@@ -115,7 +115,7 @@ class AppVersionHolder {
               ),
               yesText: S.of(context).certain,
               noText: S.of(context).wait,
-              pressed: () => pop(context));
+              onPressed: () => pop(context));
         }
       }
     } on DioError catch (e) {

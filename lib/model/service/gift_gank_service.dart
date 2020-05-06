@@ -9,7 +9,7 @@ class GiftGankService extends Service {
   }
 
   Future<List<MziData>> getData({int page}) async {
-    final response = await dio.get("/api/data/%E7%A6%8F%E5%88%A9/20/$page",
+    final response = await get("/api/data/%E7%A6%8F%E5%88%A9/20/$page",
         cancelToken: cancelToken);
 
     debugLog(response.toString());

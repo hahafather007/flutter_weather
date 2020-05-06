@@ -105,7 +105,7 @@ class SettingModuleState extends PageState<SettingModulePage> {
       {@required IconData icon,
       @required String title,
       @required bool open,
-      @required Function(bool) onChanged}) {
+      @required ValueChanged<bool> onChanged}) {
     return Card(
       margin: const EdgeInsets.all(8),
       color: Colors.white,

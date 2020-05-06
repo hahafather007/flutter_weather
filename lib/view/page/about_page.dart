@@ -78,7 +78,7 @@ class AboutState extends PageState<AboutPage> {
             ),
             yesText: S.of(context).download,
             noText: S.of(context).wait,
-            pressed: () {
+            onPressed: () {
               pop(context);
 
               ToastUtil.showToast(context, S.of(context).apkStartDownload);
@@ -102,7 +102,7 @@ class AboutState extends PageState<AboutPage> {
               ),
               yesText: S.of(context).certain,
               noText: S.of(context).wait,
-              pressed: () => pop(context));
+              onPressed: () => pop(context));
         }
       } else {
         showSnack(text: S.of(context).alreadyNew);
@@ -358,7 +358,7 @@ class AboutState extends PageState<AboutPage> {
   Widget _buildOverviewItem(
       {@required IconData icon,
       @required String text,
-      @required Function onTap}) {
+      @required VoidCallback onTap}) {
     return Material(
       child: InkWell(
         onTap: onTap,

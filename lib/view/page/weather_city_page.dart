@@ -13,7 +13,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 class WeatherCityPage extends StatefulWidget {
   final int index;
-  final Function(double) onScroll;
+  final ValueChanged<double> onScroll;
 
   WeatherCityPage({Key key, @required this.index, @required this.onScroll})
       : super(key: key);

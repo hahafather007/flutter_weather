@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_weather/model/data/version_data.dart';
 import 'package:flutter_weather/model/service/service.dart';
 import 'package:flutter_weather/utils/log_util.dart';
@@ -7,7 +6,7 @@ import 'package:html/parser.dart';
 class AppVersionService extends Service {
   Future<VersionData> getVersion() async {
     final response =
-        await dio.get("https://www.pgyer.com/Xcnf", cancelToken: cancelToken);
+        await get("https://www.pgyer.com/Xcnf", cancelToken: cancelToken);
 
     final htmlStr = response.data.toString();
     final subStr = htmlStr.substring(

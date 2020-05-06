@@ -10,7 +10,7 @@ class GiftMziViewModel extends ViewModel {
   final data = StreamController<List<MziData>>();
 
   final _service = GiftMziService();
-  final List<MziData> _cacheData = [];
+  final _cacheData = List<MziData>();
 
   int _page = 1;
   String _typeUrl;

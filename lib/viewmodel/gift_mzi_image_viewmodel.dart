@@ -40,7 +40,7 @@ class GiftMziImageViewModel extends ViewModel {
       final length = await _service.getLength(link: _mziData.link);
       debugLog("length======>$length");
       dataLength.safeAdd(length);
-      final List<MziData> list = [];
+      final list = List<MziData>();
       for (int i = 1; i <= length; i++) {
         list.add(await _service.getData(link: _mziData.link, index: i));
 

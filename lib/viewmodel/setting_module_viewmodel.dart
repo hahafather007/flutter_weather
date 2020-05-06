@@ -8,7 +8,7 @@ import 'package:flutter_weather/viewmodel/viewmodel.dart';
 class SettingModuleViewModel extends ViewModel {
   final pageModules = StreamController<List<PageModule>>();
 
-  final List<PageModule> _cacheModules = [];
+  final _cacheModules = List<PageModule>();
 
   SettingModuleViewModel() {
     _cacheModules.addAll(SharedDepository().pageModules);
