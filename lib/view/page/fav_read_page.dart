@@ -38,9 +38,8 @@ class FavReadState extends PageState<FavReadPage>
 
     return StreamBuilder(
       stream: _viewModel.items.stream,
-      initialData: [],
       builder: (context, snapshot) {
-        final List<ReadItem> list = snapshot.data;
+        final List<ReadItem> list = snapshot.data ?? [];
 
         return Stack(
           children: <Widget>[

@@ -66,15 +66,13 @@ class CityControlState extends PageState<CityControlPage> {
       ),
       body: StreamBuilder(
         stream: _viewModel.cities.stream,
-        initialData: [],
         builder: (context, snapshot) {
-          final List<String> cities = snapshot.data;
+          final List<String> cities = snapshot.data ?? [];
 
           return StreamBuilder(
             stream: _viewModel.weathers.stream,
-            initialData: [],
             builder: (context, snapshot) {
-              final List<Weather> weathers = snapshot.data;
+              final List<Weather> weathers = snapshot.data ?? [];
 
               return DragAndDropList(
                 min(cities.length, weathers.length),

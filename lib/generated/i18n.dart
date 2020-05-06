@@ -32,7 +32,7 @@ class S implements WidgetsLocalizations {
   String get about => "About";
   String get air => "Air";
   String get allGirl => "Update";
-  String get allGirlFail => "Update images get failed!";
+  String get allGirlFail => "Update images load failed!";
   String get alreadyCopyUrl => "Url copied";
   String get alreadyNew => "已是最新版本！";
   String get apkDownloading => "应用正在更新中！";
@@ -42,7 +42,7 @@ class S implements WidgetsLocalizations {
   String get apkStartDownload => "安装包开始下载";
   String get appName => "假装看天气(Flutter)";
   String get beachGirl => "Beach";
-  String get beachGirlFail => "Beach images get failed!";
+  String get beachGirlFail => "Beach images load failed!";
   String get caculating => "正在计算...";
   String get canNotSetWallpaper => "Can't set wallpaper, please check network!";
   String get cancel => "Cancel";
@@ -76,14 +76,14 @@ class S implements WidgetsLocalizations {
   String get download => "Download";
   String get drsg => "Dress";
   String get egg => "Egg";
-  String get eggFail => "Egg images get failed!";
+  String get eggFail => "Egg images load failed!";
   String get feedback => "意见反馈";
   String get flashRain => "Thunderstorm";
   String get flu => "Flu";
   String get fog => "Fog";
   String get friday => "Friday";
   String get gank => "Gank";
-  String get gankFail => "Gank images get failed!";
+  String get gankFail => "Gank images load failed!";
   String get gift => "Gift";
   String get giftPhotos => "福利(图集)";
   String get hail => "Hail";
@@ -92,15 +92,15 @@ class S implements WidgetsLocalizations {
   String get hasNewVersionLongIOS => "IOS请自行拉下代码编译！（继续使用旧版本可能会发生意想不到的错误）";
   String get hum => "Humidity";
   String get imageSet => "Image Set";
-  String get imageSetFail => "Image set get failed!";
+  String get imageSetFail => "Image set load failed!";
   String get imgSave => "Save";
   String get imgSaveFail => "Image save failed!";
   String get imgSaveSuccess => "Image save succeed";
   String get install => "Install";
   String get japanGirl => "Japanese";
-  String get japanGirlFail => "Japanese images get failed!";
+  String get japanGirlFail => "Japanese images load failed!";
   String get landGirl => "Street";
-  String get landGirlFail => "Street images get failed!";
+  String get landGirlFail => "Street images load failed!";
   String get likeHammer => "仿锤子便签";
   String get listEmpty => "列表为空";
   String get loadFail => "Load failed!";
@@ -108,7 +108,7 @@ class S implements WidgetsLocalizations {
   String get moduleControl => "模块管理";
   String get monday => "Monday";
   String get mostHot => "Hot";
-  String get mostHotFail => "Hot images get failed!";
+  String get mostHotFail => "Hot images load failed!";
   String get netError => "Network went to aliens~";
   String get newVersionReady => "新版本准备就绪";
   String get newVersionReadyLong => "新版本的安装包已经在WIFI环境下载完成，是否立即安装？（该过程不消耗流量）";
@@ -124,6 +124,7 @@ class S implements WidgetsLocalizations {
   String get programHome => "项目主页";
   String get rain => "Rain";
   String get read => "News";
+  String get readTitleFail => "Categories load failed!";
   String get refresh => "Refresh";
   String get repeatCity => "City selection repeat";
   String get retry => "Retry";
@@ -131,11 +132,11 @@ class S implements WidgetsLocalizations {
   String get sandstorm => "Sandstorm";
   String get saturday => "Saturday";
   String get selfGirl => "Selfie";
-  String get selfGirlFail => "Selfie images get failed!";
+  String get selfGirlFail => "Selfie images load failed!";
   String get setAsWallpaper => "Wallpaper";
   String get setting => "Setting";
   String get sexGirl => "Sexy";
-  String get sexGirlFail => "Sexy images get failed!！";
+  String get sexGirlFail => "Sexy images load failed!！";
   String get share => "Share";
   String get shareApp => "分享应用";
   String get shareAppUrl => "来不及了，赶急上车！https://github.com/hahafather007/flutter_weather";
@@ -147,7 +148,7 @@ class S implements WidgetsLocalizations {
   String get sport => "Sport";
   String get sunday => "Sunday";
   String get sunny => "Sunny";
-  String get taiwanGirFail => "Taiwan images get failed!";
+  String get taiwanGirFail => "Taiwan images load failed!";
   String get taiwanGirl => "Taiwan";
   String get textOnly => "纯文本";
   String get thankItems => "• 和风天气提供天气数据\n• 高德定位提供定位服务\n• 『Gank』『煎蛋』『妹子图』提供妹纸数据\n• 丰富精彩的开源世界 https://github.com/hahafather007/flutter_weather/blob/master/README.md";
@@ -165,26 +166,9 @@ class S implements WidgetsLocalizations {
   String get weatherFail => "Weather load failed!";
   String get weathersView => "Weathers Preview";
   String get wednesday => "Wednesday";
-  String get xiandu => "Technology";
-  String get xianduAndroid => "Android";
-  String get xianduAndroidFail => "Android获取失败！";
-  String get xianduApps => "Apps";
-  String get xianduAppsFail => "趣味软件/游戏获取失败！";
-  String get xianduBlog => "团队博客";
-  String get xianduBlogFail => "团队博客获取失败！";
-  String get xianduDie => "创业新闻";
-  String get xianduDieFail => "创业新闻获取失败！";
-  String get xianduFail => "科技资讯获取失败！";
-  String get xianduFunny => "Funny";
-  String get xianduFunnyFail => "草根新闻获取失败！";
-  String get xianduImrich => "Imrich";
-  String get xianduImrichFail => "装备党获取失败！";
-  String get xianduIos => "iOS";
-  String get xianduIosFail => "iOS获取失败！";
-  String get xianduThink => "独立思想";
-  String get xianduThinkFail => "独立思想获取失败！";
   String get zhihuName => "• @活雷轰";
   String get zhihuPage => "活雷轰-知乎";
+  String readLoadFail(String value) => "$value load failed!";
   String windScValue(String value) => "Level $value";
 }
 
@@ -211,15 +195,11 @@ class $zh extends S {
   @override
   String get trav => "旅游";
   @override
-  String get xianduAppsFail => "趣味软件/游戏获取失败！";
-  @override
   String get about => "关于";
   @override
   String get canNotSetWallpaper => "无法设置壁纸，请检查网络！";
   @override
   String get colorNiagara => "尼亚加拉";
-  @override
-  String get xianduDie => "创业新闻";
   @override
   String get apkStartDownload => "安装包开始下载";
   @override
@@ -245,15 +225,11 @@ class $zh extends S {
   @override
   String get alreadyNew => "已是最新版本！";
   @override
-  String get xianduFunnyFail => "草根新闻获取失败！";
-  @override
   String get gank => "Gank";
   @override
   String get sexGirlFail => "性感妹子获取失败！";
   @override
   String get locationError => "定位失败，请给与定位权限";
-  @override
-  String get xianduThink => "独立思想";
   @override
   String get comf => "舒适度";
   @override
@@ -269,11 +245,9 @@ class $zh extends S {
   @override
   String get themeColor => "主题色";
   @override
-  String get imageSetFail => "组图加载是失败！";
+  String get imageSetFail => "组图加载失败！";
   @override
   String get flashRain => "雷雨";
-  @override
-  String get xianduAndroidFail => "Android获取失败！";
   @override
   String get apkFail => "APK下载失败！";
   @override
@@ -281,13 +255,13 @@ class $zh extends S {
   @override
   String get saturday => "星期六";
   @override
+  String get readTitleFail => "闲读分类获取失败!";
+  @override
   String get allGirl => "每日更新";
   @override
   String get caculating => "正在计算...";
   @override
   String get air => "空气";
-  @override
-  String get xianduBlogFail => "团队博客获取失败！";
   @override
   String get apkDownloading => "应用正在更新中！";
   @override
@@ -307,8 +281,6 @@ class $zh extends S {
   @override
   String get __4 => "_____________________________________福利_____________________________________";
   @override
-  String get xiandu => "科技资讯";
-  @override
   String get __7 => "_____________________________________设置_____________________________________";
   @override
   String get so2 => "二氧化硫";
@@ -318,8 +290,6 @@ class $zh extends S {
   String get __6 => "_____________________________________收藏_____________________________________";
   @override
   String get wednesday => "星期三";
-  @override
-  String get xianduFail => "科技资讯获取失败！";
   @override
   String get __8 => "_____________________________________关于_____________________________________";
   @override
@@ -363,11 +333,7 @@ class $zh extends S {
   @override
   String get copyUrl => "复制URL";
   @override
-  String get xianduFunny => "草根新闻";
-  @override
   String get cw => "洗车";
-  @override
-  String get xianduIosFail => "iOS获取失败！";
   @override
   String get newVersionReadyLong => "新版本的安装包已经在WIFI环境下载完成，是否立即安装？（该过程不消耗流量）";
   @override
@@ -381,23 +347,17 @@ class $zh extends S {
   @override
   String get selfGirlFail => "妹子自拍获取失败！";
   @override
-  String get xianduAndroid => "Android";
-  @override
   String get hasNewVersionLongIOS => "IOS请自行拉下代码编译！（继续使用旧版本可能会发生意想不到的错误）";
   @override
   String get snowRain => "雨夹雪";
   @override
   String get landGirlFail => "街拍美女获取失败！";
   @override
-  String get xianduIos => "iOS";
-  @override
   String get colorIslandParadise => "天堂岛";
   @override
   String get smog => "雾霾";
   @override
-  String get imgSaveSuccess => "图片保存成功！";
-  @override
-  String get xianduImrich => "装备党";
+  String get imgSaveSuccess => "图片保存成功";
   @override
   String get clearCache => "清除缓存";
   @override
@@ -457,17 +417,11 @@ class $zh extends S {
   @override
   String get fog => "雾";
   @override
-  String get xianduImrichFail => "装备党获取失败！";
-  @override
-  String get xianduBlog => "团队博客";
-  @override
   String get imageSet => "图集";
   @override
   String get hasNewVersionLong => "已有新版本等待下载，是否立即下载更新？（继续使用旧版本可能会发生意想不到的错误）";
   @override
   String get taiwanGirl => "台湾妹子";
-  @override
-  String get xianduThinkFail => "独立思想获取失败！";
   @override
   String get sandstorm => "沙尘暴";
   @override
@@ -501,8 +455,6 @@ class $zh extends S {
   @override
   String get appName => "假装看天气(Flutter)";
   @override
-  String get xianduDieFail => "创业新闻获取失败！";
-  @override
   String get pm10 => "可吸入颗粒物";
   @override
   String get colorFlame => "烈焰红";
@@ -513,19 +465,19 @@ class $zh extends S {
   @override
   String get cloudy => "多云";
   @override
-  String get apkPleaseInstall => "APK下载成功！请安装";
+  String get apkPleaseInstall => "APK下载成功，请安装";
   @override
   String get alreadyCopyUrl => "已复制链接";
   @override
   String get tuesday => "星期二";
-  @override
-  String get xianduApps => "趣味软件/游戏";
   @override
   String get cityChoose => "城市选择";
   @override
   String get imgSaveFail => "图片保存失败！";
   @override
   String get sport => "运动";
+  @override
+  String readLoadFail(String value) => "$value\u200b获取失败!";
   @override
   String windScValue(String value) => "$value\u200b级";
 }

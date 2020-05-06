@@ -80,9 +80,8 @@ class WeatherState extends PageState<WeatherPage> {
 
         return StreamBuilder(
           stream: _viewModel.cities.stream,
-          initialData: [],
           builder: (context, snapshot) {
-            final List<String> cities = snapshot.data;
+            final List<String> cities = snapshot.data ?? [];
 
             return StreamBuilder(
               stream: _pageStream.stream,
@@ -147,13 +146,11 @@ class WeatherState extends PageState<WeatherPage> {
                                       ),
                                       PopupMenuItem(
                                         value: "cities",
-                                        child: Text(
-                                            S.of(context).cityControl),
+                                        child: Text(S.of(context).cityControl),
                                       ),
                                       PopupMenuItem(
                                         value: "weathers",
-                                        child: Text(
-                                            S.of(context).weathersView),
+                                        child: Text(S.of(context).weathersView),
                                       ),
                                     ],
                                     onSelected: (value) {

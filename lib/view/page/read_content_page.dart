@@ -8,9 +8,9 @@ import 'package:flutter_weather/viewmodel/read_content_viewmodel.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class ReadContentPage extends StatefulWidget {
-  final String typeUrl;
+  final ReadTitle title;
 
-  ReadContentPage({Key key, @required this.typeUrl}) : super(key: key);
+  ReadContentPage({Key key, @required this.title}) : super(key: key);
 
   @override
   State createState() => ReadContentState();
@@ -27,45 +27,15 @@ class ReadContentState extends PageState<ReadContentPage>
   void initState() {
     super.initState();
 
-    _viewModel.init(type: widget.typeUrl);
+    _viewModel.init(type: widget.title.type);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    String errorText = "";
-    switch (widget.typeUrl) {
-      case "wow":
-        errorText = S.of(context).xianduFail;
-        break;
-      case "apps":
-        errorText = S.of(context).xianduAppsFail;
-        break;
-      case "imrich":
-        errorText = S.of(context).xianduImrichFail;
-        break;
-      case "funny":
-        errorText = S.of(context).xianduFunnyFail;
-        break;
-      case "android":
-        errorText = S.of(context).xianduAndroidFail;
-        break;
-      case "diediedie":
-        errorText = S.of(context).xianduDieFail;
-        break;
-      case "thinking":
-        errorText = S.of(context).xianduThinkFail;
-        break;
-      case "iOS":
-        errorText = S.of(context).xianduIosFail;
-        break;
-      case "teamblog":
-        errorText = S.of(context).xianduBlogFail;
-        break;
-    }
     bindErrorStream(_viewModel.error.stream,
-        errorText: errorText,
+        errorText: S.of(context).readLoadFail(widget.title.title),
         retry: () => _viewModel.loadData(type: LoadType.NEW_LOAD));
   }
 
@@ -86,9 +56,8 @@ class ReadContentState extends PageState<ReadContentPage>
         loadingStream: _viewModel.isLoading.stream,
         child: StreamBuilder(
           stream: _viewModel.data.stream,
-          initialData: [],
           builder: (context, snapshot) {
-            final List<ReadItem> list = snapshot.data;
+            final List<ReadItem> list = snapshot.data ?? [];
 
             return RefreshIndicator(
               onRefresh: () => _viewModel.loadData(type: LoadType.REFRESH),

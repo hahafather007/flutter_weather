@@ -67,9 +67,8 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
 
           return StreamBuilder(
             stream: _viewModel.favList.stream,
-            initialData: [],
             builder: (context, snapshot) {
-              final List<MziItem> favList = snapshot.data;
+              final List<MziItem> favList = snapshot.data ?? [];
               final isFav = favList.any((v) =>
                   v.url == list[_currentPage]?.url &&
                   v.isImages == list[_currentPage]?.isImages);

@@ -46,9 +46,8 @@ class SettingModuleState extends PageState<SettingModulePage> {
       ),
       body: StreamBuilder(
         stream: _viewModel.pageModules.stream,
-        initialData: [],
         builder: (context, snapshot) {
-          final List<PageModule> modules = snapshot.data;
+          final List<PageModule> modules = snapshot.data ?? [];
 
           return DragAndDropList(
             modules.length,

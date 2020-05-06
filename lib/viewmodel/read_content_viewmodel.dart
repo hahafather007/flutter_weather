@@ -31,7 +31,7 @@ class ReadContentViewModel extends ViewModel {
       final readData = await _service.getReadData(
           type: _type, page: (_cacheData?.page ?? 0) + 1);
 
-      if (type == LoadType.REFRESH) {
+      if (type == LoadType.REFRESH || type == LoadType.NEW_LOAD) {
         _cacheData = readData;
       } else {
         _cacheData?.page = readData.page;

@@ -13,7 +13,7 @@ class ReadItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final img = data.images?.firstWhere((v) => v != null, orElse: null);
+    final img = data.images?.firstWhere((v) => v != null, orElse: () => null);
 
     return Card(
       color: Colors.white,

@@ -91,9 +91,8 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
         loadingStream: _viewModel.isLoading.stream,
         child: StreamBuilder(
           stream: _viewModel.data.stream,
-          initialData: [],
           builder: (context, snapshot) {
-            final List<MziItem> list = snapshot.data;
+            final List<MziItem> list = snapshot.data ?? [];
 
             return StreamBuilder(
               stream: _viewModel.dataLength.stream,
