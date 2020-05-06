@@ -5,7 +5,7 @@ import 'package:flutter_weather/model/holder/fav_holder.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class FavGiftViewModel extends ViewModel {
-  final data = StreamController<List<MziData>>();
+  final data = StreamController<List<MziItem>>();
 
   FavGiftViewModel() {
     FavHolder()

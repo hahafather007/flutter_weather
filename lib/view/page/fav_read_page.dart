@@ -37,9 +37,10 @@ class FavReadState extends PageState<FavReadPage>
     super.build(context);
 
     return StreamBuilder(
-      stream: _viewModel.data.stream,
+      stream: _viewModel.items.stream,
+      initialData: [],
       builder: (context, snapshot) {
-        final List<ReadData> list = snapshot.data ?? [];
+        final List<ReadItem> list = snapshot.data;
 
         return Stack(
           children: <Widget>[
@@ -51,12 +52,9 @@ class FavReadState extends PageState<FavReadPage>
               itemCount: list.length,
               itemBuilder: (context, index) {
                 return Dismissible(
-                  key: Key("Dismissible${list[index].url}"),
+                  key: Key("Dismissible${list[index].sId}"),
                   onDismissed: (_) => _viewModel.removeRead(list[index]),
-                  child: ReadItemView(
-                    data: list[index],
-                    index: index + 1,
-                  ),
+                  child: ReadItemView(data: list[index]),
                 );
               },
             ),

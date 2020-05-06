@@ -41,8 +41,9 @@ class FavGiftsState extends PageState<FavGiftsPage>
 
     return StreamBuilder(
       stream: _viewModel.data.stream,
+      initialData: [],
       builder: (context, snapshot) {
-        final List<MziData> list = snapshot.data ?? [];
+        final List<MziItem> list = snapshot.data;
 
         return Stack(
           children: <Widget>[

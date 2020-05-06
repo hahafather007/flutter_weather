@@ -27,7 +27,7 @@ class ReadContentState extends PageState<ReadContentPage>
   void initState() {
     super.initState();
 
-    _viewModel.init(typeUrl: widget.typeUrl);
+    _viewModel.init(type: widget.typeUrl);
   }
 
   @override
@@ -86,8 +86,9 @@ class ReadContentState extends PageState<ReadContentPage>
         loadingStream: _viewModel.isLoading.stream,
         child: StreamBuilder(
           stream: _viewModel.data.stream,
+          initialData: [],
           builder: (context, snapshot) {
-            final List<ReadData> list = snapshot.data ?? [];
+            final List<ReadItem> list = snapshot.data;
 
             return RefreshIndicator(
               onRefresh: () => _viewModel.loadData(type: LoadType.REFRESH),
@@ -102,10 +103,7 @@ class ReadContentState extends PageState<ReadContentPage>
                     _viewModel.loadMore();
                   }
 
-                  return ReadItemView(
-                    data: list[index],
-                    index: index + 1,
-                  );
+                  return ReadItemView(data: list[index]);
                 },
               ),
             );

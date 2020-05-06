@@ -6,10 +6,10 @@ import 'package:flutter_weather/model/holder/fav_holder.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class PhotoWatchViewModel<T> extends ViewModel {
-  final favList = StreamController<List<MziData>>();
-  final data = StreamController<List<MziData>>();
+  final favList = StreamController<List<MziItem>>();
+  final data = StreamController<List<MziItem>>();
 
-  PhotoWatchViewModel({@required Stream<List<MziData>> photoStream}) {
+  PhotoWatchViewModel({@required Stream<List<MziItem>> photoStream}) {
     favList.safeAdd(FavHolder().favMzis);
     FavHolder().favMziStream.listen((v) => favList.safeAdd(v)).bindLife(this);
     if (photoStream != null) {

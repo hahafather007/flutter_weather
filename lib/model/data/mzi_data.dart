@@ -1,5 +1,5 @@
 /// 妹子图数据
-class MziData {
+class MziItem {
   String url;
   String link;
   String refer;
@@ -7,7 +7,7 @@ class MziData {
   int width;
   bool isImages;
 
-  MziData(
+  MziItem(
       {this.url,
       this.link,
       this.refer,
@@ -15,7 +15,7 @@ class MziData {
       this.width,
       this.isImages});
 
-  MziData.fromJson(Map<String, dynamic> json) {
+  MziItem.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
 
     url = json['url'];

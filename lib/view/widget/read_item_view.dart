@@ -7,13 +7,14 @@ import 'package:flutter_weather/view/widget/net_image.dart';
 
 /// 闲读的每一条Item
 class ReadItemView extends StatelessWidget {
-  final ReadData data;
-  final int index;
+  final ReadItem data;
 
-  ReadItemView({@required this.data, @required this.index});
+  ReadItemView({@required this.data});
 
   @override
   Widget build(BuildContext context) {
+    final img = data.images?.firstWhere((v) => v != null, orElse: null);
+
     return Card(
       color: Colors.white,
       clipBehavior: Clip.hardEdge,
@@ -21,7 +22,7 @@ class ReadItemView extends StatelessWidget {
       child: InkWell(
         onTap: () => push(context,
             page: CustomWebViewPage(
-                title: data.name, url: data.url, favData: data)),
+                title: data.title, url: data.url, favData: data)),
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Row(
@@ -32,20 +33,29 @@ class ReadItemView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "$index. ${data.name}",
+                      "${data.title}",
                       textAlign: TextAlign.start,
-                      style: TextStyle(fontSize: 16, color: AppColor.text1),
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: AppColor.text1,
+                      ),
                     ),
                     RichText(
                       text: TextSpan(
                         children: [
-                          TextSpan(text: data.updateTime),
+                          TextSpan(text: data.publishedAt),
                           TextSpan(
-                              text: " · ",
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          TextSpan(text: data.from),
+                            text: " · ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          TextSpan(text: data.author),
                         ],
-                        style: TextStyle(fontSize: 12, color: AppColor.text2),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppColor.text2,
+                        ),
                       ),
                     ),
                   ],
@@ -56,7 +66,7 @@ class ReadItemView extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 padding: const EdgeInsets.only(right: 6),
                 child: NetImage(
-                  url: data.icon,
+                  url: "$img",
                   height: 40,
                   width: 40,
                   isCircle: true,

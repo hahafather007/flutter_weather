@@ -75,8 +75,9 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
             widget.favData != null
                 ? StreamBuilder(
                     stream: _viewModel.isFav.stream,
+                    initialData: false,
                     builder: (context, snapshot) {
-                      final isFav = snapshot.data ?? false;
+                      final isFav = snapshot.data;
 
                       return IconButton(
                         icon: Icon(

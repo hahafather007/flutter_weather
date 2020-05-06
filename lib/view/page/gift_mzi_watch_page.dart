@@ -13,8 +13,8 @@ import 'package:flutter_weather/viewmodel/photo_watch_viewmodel.dart';
 class GiftMziWatchPage extends StatefulWidget {
   final int index;
   final int length;
-  final List<MziData> photos;
-  final Stream<List<MziData>> photoStream;
+  final List<MziItem> photos;
+  final Stream<List<MziItem>> photoStream;
 
   GiftMziWatchPage(
       {@required this.index,
@@ -58,7 +58,7 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
       body: StreamBuilder(
         stream: _viewModel.data.stream,
         builder: (context, snapshot) {
-          final List<MziData> list = (snapshot.data ?? widget.photos).toList();
+          final List<MziItem> list = (snapshot.data ?? widget.photos).toList();
 
           if (list.length < widget.length) {
             list.addAll(
@@ -67,8 +67,9 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
 
           return StreamBuilder(
             stream: _viewModel.favList.stream,
+            initialData: [],
             builder: (context, snapshot) {
-              final List<MziData> favList = snapshot.data ?? [];
+              final List<MziItem> favList = snapshot.data;
               final isFav = favList.any((v) =>
                   v.url == list[_currentPage]?.url &&
                   v.isImages == list[_currentPage]?.isImages);

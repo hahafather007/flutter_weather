@@ -7,13 +7,13 @@ import 'package:flutter_weather/model/service/gift_gank_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class GiftGankViewModel extends ViewModel {
-  final data = StreamController<List<MziData>>();
+  final data = StreamController<List<MziItem>>();
 
   final _service = GiftGankService();
-  final _photoData = StreamController<List<MziData>>();
-  final _cacheData = List<MziData>();
+  final _photoData = StreamController<List<MziItem>>();
+  final _cacheData = List<MziItem>();
 
-  Stream<List<MziData>> photoStream;
+  Stream<List<MziItem>> photoStream;
   int _page = 1;
 
   GiftGankViewModel() {
@@ -32,7 +32,7 @@ class GiftGankViewModel extends ViewModel {
     }
 
     try {
-      final list = await _service.getData(page: _page);
+      final list = await _service.getImageList(page: _page);
       _cacheData.addAll(list);
       data.safeAdd(_cacheData);
       _photoData.safeAdd(_cacheData);

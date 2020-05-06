@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter_weather/common/streams.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
@@ -11,17 +10,17 @@ class FavHolder {
 
   factory FavHolder() => _holder;
 
-  final _favReadBroadcast = StreamController<List<ReadData>>();
-  final _favMziBroadcast = StreamController<List<MziData>>();
-  final _cacheReads = List<ReadData>();
-  final _cacheMzis = List<MziData>();
+  final _favReadBroadcast = StreamController<List<ReadItem>>();
+  final _favMziBroadcast = StreamController<List<MziItem>>();
+  final _cacheReads = List<ReadItem>();
+  final _cacheMzis = List<MziItem>();
 
-  Stream<List<ReadData>> favReadStream;
-  Stream<List<MziData>> favMziStream;
+  Stream<List<ReadItem>> favReadStream;
+  Stream<List<MziItem>> favMziStream;
 
-  List<MziData> get favMzis => _cacheMzis;
+  List<MziItem> get favMzis => _cacheMzis;
 
-  List<ReadData> get favReads => _cacheReads;
+  List<ReadItem> get favReads => _cacheReads;
 
   FavHolder._internal() {
     favReadStream = _favReadBroadcast.stream.asBroadcastStream();
@@ -31,20 +30,9 @@ class FavHolder {
   }
 
   void _init() {
-    final readValue = SharedDepository().favReadData;
-    if (readValue != null) {
-      final list =
-          (jsonDecode(readValue) as List).map((v) => ReadData.fromJson(v));
-      _cacheReads.addAll(list);
-    }
+    _cacheReads.addAll(SharedDepository().favReadItems);
     _favReadBroadcast.safeAdd(_cacheReads);
-
-    final mziValue = SharedDepository().favMziData;
-    if (mziValue != null) {
-      final list =
-          (json.decode(mziValue) as List).map((v) => MziData.fromJson(v));
-      _cacheMzis.addAll(list);
-    }
+    _cacheMzis.addAll(SharedDepository().favMziItems);
     _favMziBroadcast.safeAdd(_cacheMzis);
   }
 
@@ -52,16 +40,16 @@ class FavHolder {
   Future<void> autoFav(dynamic data) async {
     if (data == null) return;
 
-    if (data is ReadData) {
+    if (data is ReadItem) {
       if (isFavorite(data)) {
-        _cacheReads.removeWhere((v) => v.url == data.url);
+        _cacheReads.removeWhere((v) => v.sId == data.sId);
       } else {
         _cacheReads.add(data);
       }
 
       _favReadBroadcast.safeAdd(_cacheReads);
-      await SharedDepository().setFavReadData(json.encode(_cacheReads));
-    } else if (data is MziData) {
+      SharedDepository().setFavReadItems(_cacheReads);
+    } else if (data is MziItem) {
       if (isFavorite(data)) {
         _cacheMzis.removeWhere(
             (v) => v.url == data.url && v.isImages == data.isImages);
@@ -70,15 +58,15 @@ class FavHolder {
       }
 
       _favMziBroadcast.safeAdd(_cacheMzis);
-      await SharedDepository().setFavMziData(json.encode(_cacheMzis));
+      SharedDepository().setFavMziItems(_cacheMzis);
     }
   }
 
   /// 判断[data]是否被收藏
   bool isFavorite(dynamic data) {
-    if (data is ReadData) {
-      return _cacheReads.any((v) => v.url == data.url);
-    } else if (data is MziData) {
+    if (data is ReadItem) {
+      return _cacheReads.any((v) => v.sId == data.sId);
+    } else if (data is MziItem) {
       return _cacheMzis
           .any((v) => v.url == data.url && v.isImages == data.isImages);
     }

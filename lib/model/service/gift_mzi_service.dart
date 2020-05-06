@@ -8,7 +8,8 @@ class GiftMziService extends Service {
     dio.options.baseUrl = "https://www.mzitu.com";
   }
 
-  Future<List<MziData>> getData(
+  /// 获取列表数据
+  Future<List<MziItem>> getImageList(
       {@required String url, @required int page}) async {
     final response = await get("/$url/page/${page == 1 ? 0 : page}",
         cancelToken: cancelToken);
@@ -18,7 +19,7 @@ class GiftMziService extends Service {
     final total = document.getElementsByClassName("postlist").first;
     final items = total.querySelectorAll("li");
 
-    final data = List<MziData>();
+    final data = List<MziItem>();
     items.forEach((item) {
       final img = item.querySelector("img");
       if (img == null) return;
@@ -35,7 +36,7 @@ class GiftMziService extends Service {
       final link = item.querySelector("a[href]").attributes["href"];
       final refer = "${dio.options.baseUrl}/$url/";
 
-      data.add(MziData(
+      data.add(MziItem(
           url: imgUrl,
           link: link,
           refer: refer,
@@ -45,5 +46,45 @@ class GiftMziService extends Service {
     });
 
     return data;
+  }
+
+  /// 获取每个妹子图集的最大数量
+  Future<int> getLength({@required String link}) async {
+    final response = await get(link, cancelToken: cancelToken);
+
+    int maxLength = 0;
+    final document = parse(response.data);
+    final total = document.getElementsByClassName("pagenavi").first;
+    final spans = total.querySelectorAll("span");
+    spans.map((span) {
+      try {
+        return int.parse(span.text);
+      } on FormatException catch (_) {
+        return -1;
+      }
+    }).forEach((index) {
+      if (index > maxLength) {
+        maxLength = index;
+      }
+    });
+
+    return maxLength;
+  }
+
+  /// 获取图集下的每一张图片
+  Future<MziItem> getEachData(
+      {@required String link, @required int index}) async {
+    final response = await get("$link/$index", cancelToken: cancelToken);
+
+    final document = parse(response.data);
+    final total = document.getElementsByClassName("main-image").first;
+    final img = total.querySelector("img");
+    final url = img.attributes["src"];
+    final width = double.parse(img.attributes["width"]).toInt();
+    final height = double.parse(img.attributes["height"]).toInt();
+    final refer = "$link/";
+
+    return MziItem(
+        url: url, width: width, height: height, refer: refer, isImages: false);
   }
 }

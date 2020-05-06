@@ -86,8 +86,9 @@ class GiftMziState extends PageState<GiftMziPage>
         loadingStream: _viewModel.isLoading.stream,
         child: StreamBuilder(
           stream: _viewModel.data.stream,
+          initialData: [],
           builder: (context, snapshot) {
-            final List<MziData> list = snapshot.data ?? [];
+            final List<MziItem> list = snapshot.data;
 
             return RefreshIndicator(
               onRefresh: () => _viewModel.loadData(type: LoadType.REFRESH),

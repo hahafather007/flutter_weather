@@ -51,8 +51,9 @@ class CityChooseState extends PageState<CityChoosePage> {
           Expanded(
             child: FutureBuilder(
               future: _getProvinces(),
+              initialData: [],
               builder: (context, snapshot) {
-                final List<String> provinces = snapshot.data ?? [];
+                final List<String> provinces = snapshot.data;
 
                 return ListView.builder(
                   itemCount: provinces.length,
@@ -82,8 +83,9 @@ class CityChooseState extends PageState<CityChoosePage> {
           Expanded(
             child: FutureBuilder(
               future: _getCities(),
+              initialData: [],
               builder: (context, snapshot) {
-                final List<String> cities = snapshot.data ?? [];
+                final List<String> cities = snapshot.data;
 
                 return ListView.builder(
                   itemCount: cities.length,
@@ -110,8 +112,9 @@ class CityChooseState extends PageState<CityChoosePage> {
           Expanded(
             child: FutureBuilder(
               future: _getDistricts(),
+              initialData: [],
               builder: (context, snapshot) {
-                final List<District> districts = snapshot.data ?? [];
+                final List<District> districts = snapshot.data;
 
                 return ListView.builder(
                   itemCount: districts.length,

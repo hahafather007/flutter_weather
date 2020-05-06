@@ -31,6 +31,14 @@ class NetImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (url == null || url == "null") {
+      return Container(
+        height: height,
+        width: width,
+        color: AppColor.holder,
+      );
+    }
+
     final img = CachedNetworkImage(
       httpHeaders: headers,
       imageUrl: url,

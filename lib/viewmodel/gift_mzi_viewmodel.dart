@@ -7,10 +7,10 @@ import 'package:flutter_weather/model/service/gift_mzi_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class GiftMziViewModel extends ViewModel {
-  final data = StreamController<List<MziData>>();
+  final data = StreamController<List<MziItem>>();
 
   final _service = GiftMziService();
-  final _cacheData = List<MziData>();
+  final _cacheData = List<MziItem>();
 
   int _page = 1;
   String _typeUrl;
@@ -33,7 +33,7 @@ class GiftMziViewModel extends ViewModel {
     }
 
     try {
-      final list = await _service.getData(url: _typeUrl, page: _page);
+      final list = await _service.getImageList(url: _typeUrl, page: _page);
       _cacheData.addAll(list);
       data.add(_cacheData);
       _page++;

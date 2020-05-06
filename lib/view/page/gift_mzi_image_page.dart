@@ -12,7 +12,7 @@ import 'package:flutter_weather/view/widget/net_image.dart';
 import 'package:flutter_weather/viewmodel/gift_mzi_image_viewmodel.dart';
 
 class GiftMziImagePage extends StatefulWidget {
-  final MziData data;
+  final MziItem data;
 
   GiftMziImagePage({@required this.data});
 
@@ -72,8 +72,9 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
         rightBtns: <Widget>[
           StreamBuilder(
             stream: _viewModel.isFav.stream,
+            initialData: false,
             builder: (context, snapshot) {
-              final isFav = snapshot.data ?? false;
+              final isFav = snapshot.data;
 
               return IconButton(
                 icon: Icon(
@@ -90,8 +91,9 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
         loadingStream: _viewModel.isLoading.stream,
         child: StreamBuilder(
           stream: _viewModel.data.stream,
+          initialData: [],
           builder: (context, snapshot) {
-            final List<MziData> list = snapshot.data ?? [];
+            final List<MziItem> list = snapshot.data;
 
             return StreamBuilder(
               stream: _viewModel.dataLength.stream,

@@ -1,8 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_weather/common/colors.dart';
 import 'package:flutter_weather/model/data/city_data.dart';
+import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/model/data/page_module_data.dart';
+import 'package:flutter_weather/model/data/read_data.dart';
 import 'package:flutter_weather/model/data/weather_air_data.dart';
 import 'package:flutter_weather/model/data/weather_data.dart';
 import 'package:flutter_weather/utils/log_util.dart';
@@ -77,20 +80,36 @@ class SharedDepository {
       .setStringList("airsData", value.map((v) => jsonEncode(v)).toList());
 
   /// 收藏的闲读文章
-  String get favReadData => _getString("favReadData");
+  List<ReadItem> get favReadItems {
+    final str = _getString("favReadItems");
 
-  Future<bool> setFavReadData(String value) async =>
-      await _prefs.setString("favReadData", value);
+    if (str != null) {
+      return (jsonDecode(str) as List).map((v) => ReadItem.fromJson(v));
+    } else {
+      return [];
+    }
+  }
+
+  Future<bool> setFavReadItems(List<ReadItem> value) async =>
+      await _prefs.setString("favReadItems", jsonEncode(value));
 
   /// 收藏的妹子图
-  String get favMziData => _getString("favMziData");
+  List<MziItem> get favMziItems {
+    final str = _getString("favMziItems");
 
-  Future<bool> setFavMziData(String value) async =>
-      await _prefs.setString("favMziData", value);
+    if (str != null) {
+      return (jsonDecode(str) as List).map((v) => MziItem.fromJson(v));
+    } else {
+      return [];
+    }
+  }
+
+  Future<bool> setFavMziItems(List<MziItem> value) async =>
+      await _prefs.setString("favMziItems", jsonEncode(value));
 
   /// 当前主题色
   Color get themeColor =>
-      Color(_getInt("themeColor", defaultValue: 0xff7DA743));
+      Color(_getInt("themeColor", defaultValue: AppColor.greenery.value));
 
   Future<bool> setThemeColor(Color color) async =>
       await _prefs.setInt("themeColor", color.value);

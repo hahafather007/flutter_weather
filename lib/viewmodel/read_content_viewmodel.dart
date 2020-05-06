@@ -7,16 +7,15 @@ import 'package:flutter_weather/model/service/read_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class ReadContentViewModel extends ViewModel {
-  final data = StreamController<List<ReadData>>();
+  final data = StreamController<List<ReadItem>>();
 
   final _service = ReadService();
-  final _cacheData = List<ReadData>();
 
-  int _page = 1;
-  String _typeUrl;
+  ReadData _cacheData;
+  String _type;
 
-  void init({@required String typeUrl}) {
-    _typeUrl = typeUrl;
+  void init({@required String type}) {
+    _type = type;
     loadData(type: LoadType.NEW_LOAD);
   }
 
@@ -24,19 +23,21 @@ class ReadContentViewModel extends ViewModel {
     if (selfLoading) return;
     selfLoading = true;
 
-    if (type == LoadType.REFRESH) {
-      _page = 1;
-      _cacheData.clear();
-    } else {
+    if (type != LoadType.REFRESH) {
       isLoading.safeAdd(true);
     }
 
     try {
-      final list = await _service.getReadList(lastUrl: _typeUrl, page: _page);
+      final readData = await _service.getReadData(
+          type: _type, page: (_cacheData?.page ?? 0) + 1);
 
-      _cacheData.addAll(list);
-      data.safeAdd(_cacheData);
-      _page++;
+      if (type == LoadType.REFRESH) {
+        _cacheData = readData;
+      } else {
+        _cacheData?.page = readData.page;
+        _cacheData?.data?.addAll(readData.data);
+      }
+      data.safeAdd(_cacheData?.data);
     } on DioError catch (e) {
       selfLoadType = type;
       doError(e);
@@ -57,7 +58,6 @@ class ReadContentViewModel extends ViewModel {
   @override
   void dispose() {
     _service.dispose();
-    _cacheData.clear();
 
     data.close();
 

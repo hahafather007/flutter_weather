@@ -8,7 +8,7 @@ class GiftGankService extends Service {
     dio.options.baseUrl = "http://gank.io";
   }
 
-  Future<List<MziData>> getData({int page}) async {
+  Future<List<MziItem>> getImageList({int page}) async {
     final response = await get("/api/data/%E7%A6%8F%E5%88%A9/20/$page",
         cancelToken: cancelToken);
 
@@ -20,7 +20,7 @@ class GiftGankService extends Service {
     } else {
       return (map["results"] as List)
           .map((v) =>
-              MziData(height: 459, width: 337, url: v["url"], isImages: false))
+              MziItem(height: 459, width: 337, url: v["url"], isImages: false))
           .toList();
     }
   }
