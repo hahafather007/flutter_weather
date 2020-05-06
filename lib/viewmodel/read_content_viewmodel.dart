@@ -21,6 +21,8 @@ class ReadContentViewModel extends ViewModel {
 
   Future<void> loadData({@required LoadType type}) async {
     if (selfLoading) return;
+    if (_cacheData != null && _cacheData.page >= _cacheData.pageCount) return;
+
     selfLoading = true;
 
     if (type != LoadType.REFRESH) {
@@ -28,8 +30,10 @@ class ReadContentViewModel extends ViewModel {
     }
 
     try {
-      final readData = await _service.getReadData(
-          type: _type, page: (_cacheData?.page ?? 0) + 1);
+      final page = (type == LoadType.REFRESH || type == LoadType.NEW_LOAD)
+          ? 1
+          : (_cacheData?.page ?? 0) + 1;
+      final readData = await _service.getReadData(type: _type, page: page);
 
       if (type == LoadType.REFRESH || type == LoadType.NEW_LOAD) {
         _cacheData = readData;

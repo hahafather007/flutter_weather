@@ -18,7 +18,7 @@ class ReadItemView extends StatelessWidget {
     return Card(
       color: Colors.white,
       clipBehavior: Clip.hardEdge,
-      margin: const EdgeInsets.fromLTRB(8, 6, 8, 6),
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       child: InkWell(
         onTap: () => push(context,
             page: CustomWebViewPage(
@@ -34,16 +34,29 @@ class ReadItemView extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       "${data.title}",
-                      textAlign: TextAlign.start,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         color: AppColor.text1,
                       ),
                     ),
-                    RichText(
-                      text: TextSpan(
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Text(
+                        "${data.desc}",
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppColor.text2,
+                        ),
+                      ),
+                    ),
+                    Text.rich(
+                      TextSpan(
                         children: [
-                          TextSpan(text: data.publishedAt),
+                          TextSpan(text: data.publishedAt.substring(0, 10)),
                           TextSpan(
                             text: " · ",
                             style: TextStyle(
@@ -53,23 +66,20 @@ class ReadItemView extends StatelessWidget {
                           TextSpan(text: data.author),
                         ],
                         style: TextStyle(
-                          fontSize: 12,
-                          color: AppColor.text2,
+                          fontSize: 10,
+                          color: AppColor.text3,
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-              Container(
-                width: 68,
-                alignment: Alignment.centerRight,
-                padding: const EdgeInsets.only(right: 6),
+              Padding(
+                padding: const EdgeInsets.only(left: 8),
                 child: NetImage(
                   url: "$img",
-                  height: 40,
-                  width: 40,
-                  isCircle: true,
+                  width: 76,
+                  height: 76,
                 ),
               ),
             ],
