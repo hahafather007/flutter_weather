@@ -59,7 +59,7 @@ class SettingState extends PageState<SettingPage> {
         child: StreamBuilder(
           stream: _viewModel.cacheSize.stream,
           builder: (context, snapshot) {
-            final cacheSize = snapshot.data ?? S.of(context).caculating;
+            final cacheSize = snapshot.data ?? S.of(context).calculating;
 
             return ListView(
               physics: const AlwaysScrollableScrollPhysics(

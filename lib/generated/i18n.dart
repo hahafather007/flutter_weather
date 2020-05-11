@@ -43,7 +43,7 @@ class S implements WidgetsLocalizations {
   String get appName => "假装看天气(Flutter)";
   String get beachGirl => "Beach";
   String get beachGirlFail => "Beach images load failed!";
-  String get caculating => "正在计算...";
+  String get calculating => "正在计算...";
   String get canNotSetWallpaper => "Can't set wallpaper, please check network!";
   String get cancel => "Cancel";
   String get certain => "Confirm";
@@ -259,8 +259,6 @@ class $zh extends S {
   @override
   String get allGirl => "每日更新";
   @override
-  String get caculating => "正在计算...";
-  @override
   String get air => "空气";
   @override
   String get apkDownloading => "应用正在更新中！";
@@ -456,6 +454,8 @@ class $zh extends S {
   String get appName => "假装看天气(Flutter)";
   @override
   String get pm10 => "可吸入颗粒物";
+  @override
+  String get calculating => "正在计算...";
   @override
   String get colorFlame => "烈焰红";
   @override
