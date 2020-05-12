@@ -10,7 +10,7 @@ import 'package:flutter_weather/view/page/splash_page.dart';
 import 'package:rxdart/rxdart.dart';
 
 void main() {
-  Observable.just(WidgetsFlutterBinding.ensureInitialized())
+  Stream.value(WidgetsFlutterBinding.ensureInitialized())
       // 显示布局边框
       .doOnData((_) => debugPaintSizeEnabled = false)
       // 设置状态栏字体颜色
