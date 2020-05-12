@@ -124,12 +124,12 @@ class SharedDepository {
   List<PageModule> get pageModules {
     final str = _getString("pageModules2");
     if (str == null) {
-      return List.from([
+      return [
         PageModule(module: "weather", open: true),
         PageModule(module: "gift", open: true),
         PageModule(module: "read", open: true),
         PageModule(module: "collect", open: true),
-      ]);
+      ];
     } else {
       return (jsonDecode(str) as List)
           .map((v) => PageModule.fromJson(v))
@@ -155,10 +155,10 @@ class SharedDepository {
       await _prefs.setString("savedImages", jsonEncode(images));
 
   /// 自动清除图片缓存
-  bool get shouldClean => _getBool("shouldClean2020-02-11", defaultValue: true);
+  bool get shouldClean => _getBool("shouldClean2.2.0+1", defaultValue: true);
 
   Future<bool> setsShouldClean(bool value) async =>
-      await _prefs.setBool("shouldClean2020-02-11", value);
+      await _prefs.setBool("shouldClean2.2.0+1", value);
 
   /// 用户手动设置的语言
   Locale get appLocale {

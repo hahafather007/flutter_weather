@@ -18,24 +18,10 @@ class SettingViewModel extends ViewModel {
     calculateSize().then((_) => isLoading.safeAdd(false));
   }
 
-  Future<void> clearCache()  async {
+  Future<void> clearCache() async {
     isLoading.safeAdd(true);
-    final cacheDir = Directory(await DefaultCacheManager().getFilePath());
-    final documentDir =
-        Directory((await getApplicationDocumentsDirectory()).path);
-
-    if (cacheDir.existsSync()) {
-      cacheDir.listSync().forEach((v) => v.deleteSync());
-    }
-    if (documentDir.existsSync()) {
-      documentDir
-          .listSync()
-          .where((v) => v.path.contains(".png"))
-          .forEach((v) => v.deleteSync());
-    }
-
+    await DefaultCacheManager().emptyCache();
     await calculateSize();
-
     isLoading.safeAdd(false);
   }
 
@@ -62,7 +48,7 @@ class SettingViewModel extends ViewModel {
     cacheSize.safeAdd(ByteUtil.calculateSize(size));
   }
 
-  void setHammerShare(bool value){
+  void setHammerShare(bool value) {
     hammerShare.safeAdd(value);
     SharedDepository().setHammerShare(value);
   }
