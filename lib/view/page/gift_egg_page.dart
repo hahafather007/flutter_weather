@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_weather/generated/i18n.dart';
+import 'package:flutter_weather/model/data/egg_data.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/view/page/gift_gank_watch_page.dart';
@@ -67,7 +68,15 @@ class GiftEggState extends PageState<GiftEggPage>
         child: StreamBuilder(
           stream: _viewModel.data.stream,
           builder: (context, snapshot) {
-            final List<MziItem> list = snapshot.data ?? [];
+            final EggData data = snapshot.data;
+            final List<MziItem> list = data?.comments
+                    ?.map((v) => v?.pics?.isNotEmpty == true
+                        ? v.pics.first
+                        : "https://www.baidu.com/img/bd_logo1.png")
+                    ?.map((v) => MziItem(
+                        height: 459, width: 337, url: v, isImages: false))
+                    ?.toList() ??
+                [];
 
             return RefreshIndicator(
               onRefresh: () => _viewModel.loadData(type: LoadType.REFRESH),
@@ -82,21 +91,22 @@ class GiftEggState extends PageState<GiftEggPage>
                 itemCount: list.length,
                 staggeredTileBuilder: (index) => StaggeredTile.fit(1),
                 itemBuilder: (context, index) {
-                  final data = list[index];
+                  final current = list[index];
 
                   return RepaintBoundary(
                     child: GestureDetector(
                       onTap: () => push(context,
                           page: GiftGankWatchPage(
                               index: index,
+                              max: data.totalComments,
                               photos: list,
                               photoStream: _viewModel.photoStream,
-                              loadDataFun: () => _viewModel.loadMore())),
+                              loadDataFun: _viewModel.loadMore)),
                       child: AspectRatio(
-                        aspectRatio: data.width / data.height,
+                        aspectRatio: current.width / current.height,
                         child: Hero(
-                          tag: "${data.url}${index}true",
-                          child: NetImage(url: data.url),
+                          tag: "${current.url}${index}true",
+                          child: NetImage(url: current.url),
                         ),
                       ),
                     ),

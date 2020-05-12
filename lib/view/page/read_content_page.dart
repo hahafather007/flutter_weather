@@ -19,6 +19,7 @@ class ReadContentPage extends StatefulWidget {
 class ReadContentState extends PageState<ReadContentPage>
     with AutomaticKeepAliveClientMixin {
   final _viewModel = ReadContentViewModel();
+  final _scrollController = ScrollController();
 
   @override
   bool get wantKeepAlive => true;
@@ -36,11 +37,20 @@ class ReadContentState extends PageState<ReadContentPage>
               errorText: S.of(context).readLoadFail(widget.title.title),
               retry: () => _viewModel.loadData(type: LoadType.NEW_LOAD)))
           .bindLife(this);
+
+    _scrollController.addListener(() {
+      // 滑到底部加载更多
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _viewModel.loadMore();
+      }
+    });
   }
 
   @override
   void dispose() {
     _viewModel.dispose();
+    _scrollController.dispose();
 
     super.dispose();
   }
@@ -64,15 +74,10 @@ class ReadContentState extends PageState<ReadContentPage>
                 physics: const AlwaysScrollableScrollPhysics(
                     parent: const ClampingScrollPhysics()),
                 padding: const EdgeInsets.only(),
+                controller: _scrollController,
                 itemCount: list.length,
-                itemBuilder: (context, index) {
-                  // 在倒数第5个item显示时就加载下一页
-                  if (index + 1 >= list.length - 5) {
-                    _viewModel.loadMore();
-                  }
-
-                  return ReadItemView(data: list[index]);
-                },
+                itemBuilder: (context, index) =>
+                    ReadItemView(data: list[index]),
               ),
             );
           },

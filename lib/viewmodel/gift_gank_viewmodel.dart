@@ -24,15 +24,20 @@ class GiftGankViewModel extends ViewModel {
     if (selfLoading) return;
     selfLoading = true;
 
-    if (type == LoadType.REFRESH) {
-      _page = 1;
-      _cacheData.clear();
-    } else {
+    if (type != LoadType.REFRESH) {
       isLoading.safeAdd(true);
     }
 
     try {
-      final list = await _service.getImageList(page: _page);
+      final list = await _service.getImageList(
+          page: (type == LoadType.REFRESH || type == LoadType.NEW_LOAD)
+              ? 1
+              : _page);
+      if (type == LoadType.REFRESH || type == LoadType.NEW_LOAD) {
+        _cacheData.clear();
+        _page = 1;
+      }
+
       _cacheData.addAll(list);
       data.safeAdd(_cacheData);
       _photoData.safeAdd(_cacheData);

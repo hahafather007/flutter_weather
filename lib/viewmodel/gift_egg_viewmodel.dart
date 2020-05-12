@@ -2,19 +2,19 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_weather/model/data/egg_data.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/model/service/gift_egg_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class GiftEggViewModel extends ViewModel {
-  final data = StreamController<List<MziItem>>();
+  final data = StreamController<EggData>();
 
   final _service = GiftEggService();
   final _photoData = StreamController<List<MziItem>>();
-  final _cacheData = List<MziItem>();
 
+  EggData _cacheData;
   Stream<List<MziItem>> photoStream;
-  int _page = 1;
 
   GiftEggViewModel() {
     photoStream = _photoData.stream.asBroadcastStream();
@@ -24,22 +24,30 @@ class GiftEggViewModel extends ViewModel {
     if (selfLoading) return;
     selfLoading = true;
 
-    if (type == LoadType.REFRESH) {
-      _page = 1;
-      _cacheData.clear();
-    } else {
+    if (type != LoadType.REFRESH) {
       isLoading.safeAdd(true);
     }
 
     try {
-      final egg = await _service.getData(page: _page);
-      egg.comments.forEach((v) {
-        _cacheData.addAll(v.pics.map((url) =>
-            MziItem(height: 459, width: 337, url: url, isImages: false)));
-      });
+      final egg = await _service.getData(
+          page: (type == LoadType.REFRESH || type == LoadType.NEW_LOAD)
+              ? 1
+              : (_cacheData?.currentPage ?? 0) + 1);
+      if (type == LoadType.REFRESH || type == LoadType.NEW_LOAD) {
+        _cacheData = egg;
+      } else {
+        _cacheData?.currentPage = egg.currentPage;
+        _cacheData?.pageCount = egg.pageCount;
+        _cacheData?.comments?.addAll(egg.comments);
+      }
       data.safeAdd(_cacheData);
-      _photoData.safeAdd(_cacheData);
-      _page++;
+      _photoData.safeAdd(_cacheData?.comments
+          ?.map((v) => v?.pics?.isNotEmpty == true
+              ? v.pics.first
+              : "https://www.baidu.com/img/bd_logo1.png")
+          ?.map(
+              (v) => MziItem(height: 459, width: 337, url: v, isImages: false))
+          ?.toList());
     } on DioError catch (e) {
       selfLoadType = type;
       doError(e);
@@ -60,7 +68,6 @@ class GiftEggViewModel extends ViewModel {
   @override
   void dispose() {
     _service.dispose();
-    _cacheData.clear();
 
     data.close();
     _photoData.close();

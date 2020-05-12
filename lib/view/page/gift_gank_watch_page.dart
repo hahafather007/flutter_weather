@@ -12,12 +12,14 @@ import 'package:flutter_weather/viewmodel/photo_watch_viewmodel.dart';
 
 class GiftGankWatchPage extends StatefulWidget {
   final int index;
+  final int max;
   final List<MziItem> photos;
   final Stream<List<MziItem>> photoStream;
   final VoidCallback loadDataFun;
 
   GiftGankWatchPage(
       {@required this.index,
+      @required this.max,
       @required this.photos,
       this.photoStream,
       this.loadDataFun});
@@ -64,7 +66,7 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
           final List<MziItem> list = (snapshot.data ?? widget.photos).toList();
 
           if (widget.photoStream != null) {
-            list.addAll(List.generate(9999, (_) => null));
+            list.addAll(List.generate(widget.max - list.length, (_) => null));
           }
           return StreamBuilder(
             stream: _viewModel.favList.stream,

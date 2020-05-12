@@ -7,16 +7,15 @@ import 'package:flutter_weather/viewmodel/viewmodel.dart';
 class WebViewModel<T> extends ViewModel {
   final isFav = StreamController<bool>();
 
-  final _favHolder = FavHolder();
-
   WebViewModel({@required T favData}) {
     if (favData == null) return;
 
-    _favHolder.favReadStream
-        .listen((_) => isFav.safeAdd(_favHolder.isFavorite(favData)))
+    FavHolder()
+        .favReadStream
+        .listen((_) => isFav.safeAdd(FavHolder().isFavorite(favData)))
         .bindLife(this);
 
-    isFav.safeAdd(_favHolder.isFavorite(favData));
+    isFav.safeAdd(FavHolder().isFavorite(favData));
     isLoading.safeAdd(true);
   }
 
