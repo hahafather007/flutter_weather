@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter_weather/model/holder/shared_depository.dart';
 import 'package:flutter_weather/utils/byte_util.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -8,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 
 class SettingViewModel extends ViewModel {
   final cacheSize = StreamController<String>();
+  final isHammerShare = StreamController<bool>();
 
   SettingViewModel() {
     isLoading.safeAdd(true);
@@ -57,6 +59,11 @@ class SettingViewModel extends ViewModel {
     }
 
     cacheSize.safeAdd(ByteUtil.calculateSize(size));
+  }
+
+  void setHammerShare(bool value){
+    isHammerShare.safeAdd(value);
+    SharedDepository().setHammerShare(value);
   }
 
   @override

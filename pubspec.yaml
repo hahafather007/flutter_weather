@@ -11,10 +11,10 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   cupertino_icons: 0.1.2
-  dio: 2.1.13
+  dio: 3.0.9
   shared_preferences: 0.5.3+1
   device_info: 0.4.0+2
-  intl: 0.16.0
+  intl: 0.16.1
   url_launcher: 5.0.5
   cached_network_image: 2.0.0
   connectivity: 0.4.3+4
@@ -22,7 +22,7 @@ dependencies:
   package_info: 0.4.0+4
   rxdart:  0.22.0
   html: 0.14.0+2
-  webview_flutter: 0.3.19+5
+  webview_flutter: 0.3.21
   flutter_colorpicker: 0.2.6
   dragable_flutter_list: 1.0.2
   flutter_linkify: 2.1.0
