@@ -29,16 +29,15 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
   void initState() {
     super.initState();
 
-    _viewModel = GiftMziImageViewModel(data: widget.data)..loadData();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    bindErrorStream(_viewModel.error.stream,
-        errorText: S.of(context).imageSetFail,
-        retry: () => _viewModel.loadData());
+    _viewModel = GiftMziImageViewModel(data: widget.data)
+      ..loadData()
+      ..error
+          .stream
+          .where((b) => b)
+          .listen((_) => networkError(
+              errorText: S.of(context).imageSetFail,
+              retry: _viewModel.loadData))
+          .bindLife(this);
   }
 
   @override

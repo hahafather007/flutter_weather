@@ -21,16 +21,15 @@ class ReadState extends PageState<ReadPage> {
   void initState() {
     super.initState();
 
-    _viewModel.loadTitle();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    bindErrorStream(_viewModel.error.stream,
-        errorText: S.of(context).readTitleFail,
-        retry: () => _viewModel.loadTitle());
+    _viewModel
+      ..loadTitle()
+      ..error
+          .stream
+          .where((b) => b)
+          .listen((_) => networkError(
+              errorText: S.of(context).readTitleFail,
+              retry: _viewModel.loadTitle))
+          .bindLife(this);
   }
 
   @override

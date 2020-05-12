@@ -51,79 +51,78 @@ class AboutState extends PageState<AboutPage> {
       _paddingStream.safeAdd(offset / 2);
     });
 
-    _viewModel.version.stream.listen((version) async {
-      final packageInfo = await PackageInfo.fromPlatform();
-      final needUpdate = int.parse(packageInfo.buildNumber) < version.version;
+    _viewModel
+      ..version.stream.listen((version) async {
+        final packageInfo = await PackageInfo.fromPlatform();
+        final needUpdate = int.parse(packageInfo.buildNumber) < version.version;
 
-      if (needUpdate) {
-        if (isAndroid) {
-          showDiffDialog(
-            context,
-            title: Text(S.of(context).hasNewVersion),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(S.of(context).hasNewVersionLong),
-                Container(height: 12),
-                Text(
-                  "${S.of(context).updateTime}${version.time}",
-                  style: TextStyle(fontSize: 14, color: AppColor.text2),
-                ),
-                Text(
-                  "${S.of(context).apkSize}${version.size}",
-                  style: TextStyle(fontSize: 14, color: AppColor.text2),
-                ),
-              ],
-            ),
-            yesText: S.of(context).download,
-            noText: S.of(context).wait,
-            onPressed: () {
-              pop(context);
-
-              ToastUtil.showToast(context, S.of(context).apkStartDownload);
-              _viewModel.updateApp(version.url, version.version);
-            },
-          );
-        } else {
-          await showDiffDialog(context,
+        if (needUpdate) {
+          if (isAndroid) {
+            showDiffDialog(
+              context,
               title: Text(S.of(context).hasNewVersion),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(S.of(context).hasNewVersionLongIOS),
+                  Text(S.of(context).hasNewVersionLong),
                   Container(height: 12),
                   Text(
                     "${S.of(context).updateTime}${version.time}",
                     style: TextStyle(fontSize: 14, color: AppColor.text2),
                   ),
+                  Text(
+                    "${S.of(context).apkSize}${version.size}",
+                    style: TextStyle(fontSize: 14, color: AppColor.text2),
+                  ),
                 ],
               ),
-              yesText: S.of(context).certain,
+              yesText: S.of(context).download,
               noText: S.of(context).wait,
-              onPressed: () => pop(context));
+              onPressed: () {
+                pop(context);
+
+                ToastUtil.showToast(context, S.of(context).apkStartDownload);
+                _viewModel.updateApp(version.url, version.version);
+              },
+            );
+          } else {
+            await showDiffDialog(context,
+                title: Text(S.of(context).hasNewVersion),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(S.of(context).hasNewVersionLongIOS),
+                    Container(height: 12),
+                    Text(
+                      "${S.of(context).updateTime}${version.time}",
+                      style: TextStyle(fontSize: 14, color: AppColor.text2),
+                    ),
+                  ],
+                ),
+                yesText: S.of(context).certain,
+                noText: S.of(context).wait,
+                onPressed: () => pop(context));
+          }
+        } else {
+          showSnack(text: S.of(context).alreadyNew);
         }
-      } else {
-        showSnack(text: S.of(context).alreadyNew);
-      }
-    }).bindLife(this);
-    _viewModel.updateResult.stream.where((_) => isAndroid).listen((b) {
-      if (b) {
-        showSnack(text: S.of(context).apkPleaseInstall);
-      } else {
-        showSnack(text: S.of(context).apkFail);
-      }
-    }).bindLife(this);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    bindErrorStream(_viewModel.error.stream,
-        errorText: S.of(context).checkUpdateFail,
-        retry: () => _viewModel.checkUpdate());
+      }).bindLife(this)
+      ..updateResult.stream.where((_) => isAndroid).listen((b) {
+        if (b) {
+          showSnack(text: S.of(context).apkPleaseInstall);
+        } else {
+          showSnack(text: S.of(context).apkFail);
+        }
+      }).bindLife(this)
+      ..error
+          .stream
+          .where((b) => b)
+          .listen((_) => networkError(
+              errorText: S.of(context).checkUpdateFail,
+              retry: _viewModel.checkUpdate))
+          .bindLife(this);
   }
 
   @override

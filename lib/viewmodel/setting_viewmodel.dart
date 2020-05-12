@@ -9,10 +9,11 @@ import 'package:path_provider/path_provider.dart';
 
 class SettingViewModel extends ViewModel {
   final cacheSize = StreamController<String>();
-  final isHammerShare = StreamController<bool>();
+  final hammerShare = StreamController<bool>();
 
   SettingViewModel() {
     isLoading.safeAdd(true);
+    hammerShare.safeAdd(SharedDepository().hammerShare);
 
     calculateSize().then((_) => isLoading.safeAdd(false));
   }
@@ -62,13 +63,14 @@ class SettingViewModel extends ViewModel {
   }
 
   void setHammerShare(bool value){
-    isHammerShare.safeAdd(value);
+    hammerShare.safeAdd(value);
     SharedDepository().setHammerShare(value);
   }
 
   @override
   void dispose() {
     cacheSize.close();
+    hammerShare.close();
 
     super.dispose();
   }

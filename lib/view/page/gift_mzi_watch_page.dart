@@ -38,8 +38,10 @@ class GiftMziWatchState extends PageState<GiftMziWatchPage> {
     super.initState();
 
     _currentPage = widget.index;
+
     _pageController =
         PageController(initialPage: _currentPage, keepPage: false);
+
     _viewModel = PhotoWatchViewModel(photoStream: widget.photoStream);
   }
 

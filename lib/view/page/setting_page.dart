@@ -20,8 +20,6 @@ class SettingPage extends StatefulWidget {
 class SettingState extends PageState<SettingPage> {
   final _viewModel = SettingViewModel();
 
-  bool _hammerShare = SharedDepository().hammerShare;
-
   @override
   void initState() {
     super.initState();
@@ -61,85 +59,94 @@ class SettingState extends PageState<SettingPage> {
           builder: (context, snapshot) {
             final cacheSize = snapshot.data ?? S.of(context).calculating;
 
-            return ListView(
-              physics: const AlwaysScrollableScrollPhysics(
-                  parent: const ClampingScrollPhysics()),
-              children: <Widget>[
-                // 天气
-                _buildTitle(title: S.of(context).weather),
-                _buildItem(
-                  title: S.of(context).shareType,
-                  content: _hammerShare
-                      ? S.of(context).likeHammer
-                      : S.of(context).textOnly,
-                  onTap: _typeDialogFunc,
-                ),
+            return StreamBuilder(
+              stream: _viewModel.hammerShare.stream,
+              builder: (context, snapshot) {
+                final hammerShare = snapshot.data ?? true;
 
-                // 通用
-                _buildTitle(title: S.of(context).commonUse),
-                _buildItem(
-                  title: S.of(context).themeColor,
-                  content: getThemeName(),
-                  onTap: () {
-                    Color selectColor = Theme.of(context).accentColor;
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: Text(S.of(context).chooseTheme),
-                          content: Container(
-                            height: 180,
-                            child: BlockPicker(
-                              availableColors: [
-                                AppColor.lapisBlue,
-                                AppColor.paleDogWood,
-                                AppColor.greenery,
-                                AppColor.primroseYellow,
-                                AppColor.flame,
-                                AppColor.islandParadise,
-                                AppColor.kale,
-                                AppColor.pinkYarrow,
-                                AppColor.niagara,
+                return ListView(
+                  physics: const AlwaysScrollableScrollPhysics(
+                      parent: const ClampingScrollPhysics()),
+                  children: <Widget>[
+                    // 天气
+                    _buildTitle(title: S.of(context).weather),
+                    _buildItem(
+                      title: S.of(context).shareType,
+                      content: hammerShare
+                          ? S.of(context).likeHammer
+                          : S.of(context).textOnly,
+                      onTap: () => _typeDialogFunc(hammerShare: hammerShare),
+                    ),
+
+                    // 通用
+                    _buildTitle(title: S.of(context).commonUse),
+                    _buildItem(
+                      title: S.of(context).themeColor,
+                      content: getThemeName(),
+                      onTap: () {
+                        Color selectColor = Theme.of(context).accentColor;
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text(S.of(context).chooseTheme),
+                              content: Container(
+                                height: 180,
+                                child: BlockPicker(
+                                  availableColors: [
+                                    AppColor.lapisBlue,
+                                    AppColor.paleDogWood,
+                                    AppColor.greenery,
+                                    AppColor.primroseYellow,
+                                    AppColor.flame,
+                                    AppColor.islandParadise,
+                                    AppColor.kale,
+                                    AppColor.pinkYarrow,
+                                    AppColor.niagara,
+                                  ],
+                                  pickerColor: Theme.of(context).accentColor,
+                                  onColorChanged: (color) =>
+                                      selectColor = color,
+                                ),
+                              ),
+                              actions: <Widget>[
+                                FlatButton(
+                                  onPressed: () => pop(context),
+                                  child: Text(S.of(context).cancel),
+                                ),
+                                FlatButton(
+                                  onPressed: () {
+                                    pop(context);
+                                    SharedDepository()
+                                        .setThemeColor(selectColor)
+                                        .then((_) => EventSendHolder()
+                                            .sendEvent(
+                                                tag: "themeChange",
+                                                event: selectColor));
+                                  },
+                                  child: Text(S.of(context).certain),
+                                ),
                               ],
-                              pickerColor: Theme.of(context).accentColor,
-                              onColorChanged: (color) => selectColor = color,
-                            ),
-                          ),
-                          actions: <Widget>[
-                            FlatButton(
-                              onPressed: () => pop(context),
-                              child: Text(S.of(context).cancel),
-                            ),
-                            FlatButton(
-                              onPressed: () {
-                                pop(context);
-                                SharedDepository()
-                                    .setThemeColor(selectColor)
-                                    .then((_) => EventSendHolder().sendEvent(
-                                        tag: "themeChange",
-                                        event: selectColor));
-                              },
-                              child: Text(S.of(context).certain),
-                            ),
-                          ],
+                            );
+                          },
                         );
                       },
-                    );
-                  },
-                ),
-                Container(height: 1, color: AppColor.line2),
-                _buildItem(
-                  title: S.of(context).moduleControl,
-                  content: S.of(context).openOrCloseModule,
-                  onTap: () => push(context, page: SettingModulePage()),
-                ),
-                Container(height: 1, color: AppColor.line2),
-                _buildItem(
-                  title: S.of(context).clearCache,
-                  content: cacheSize,
-                  onTap: () => _viewModel.clearCache(),
-                ),
-              ],
+                    ),
+                    Container(height: 1, color: AppColor.line2),
+                    _buildItem(
+                      title: S.of(context).moduleControl,
+                      content: S.of(context).openOrCloseModule,
+                      onTap: () => push(context, page: SettingModulePage()),
+                    ),
+                    Container(height: 1, color: AppColor.line2),
+                    _buildItem(
+                      title: S.of(context).clearCache,
+                      content: cacheSize,
+                      onTap: () => _viewModel.clearCache(),
+                    ),
+                  ],
+                );
+              },
             );
           },
         ),
@@ -218,7 +225,7 @@ class SettingState extends PageState<SettingPage> {
   }
 
   /// 天气分享形式的弹窗
-  void _typeDialogFunc() {
+  void _typeDialogFunc({@required bool hammerShare}) {
     showDiffDialog(
       context,
       contentPadding: const EdgeInsets.only(),
@@ -232,8 +239,7 @@ class SettingState extends PageState<SettingPage> {
             color: Colors.transparent,
             child: InkWell(
               onTap: () {
-                setState(() => _hammerShare = true);
-                SharedDepository().setHammerShare(false);
+                _viewModel.setHammerShare(false);
                 pop(context);
               },
               child: Padding(
@@ -242,7 +248,7 @@ class SettingState extends PageState<SettingPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Icon(
-                      _hammerShare
+                      hammerShare
                           ? Icons.radio_button_unchecked
                           : Icons.radio_button_checked,
                       size: 22,
@@ -270,8 +276,7 @@ class SettingState extends PageState<SettingPage> {
             color: Colors.transparent,
             child: InkWell(
               onTap: () {
-                setState(() => _hammerShare = true);
-                SharedDepository().setHammerShare(true);
+                _viewModel.setHammerShare(true);
                 pop(context);
               },
               child: Padding(
@@ -280,7 +285,7 @@ class SettingState extends PageState<SettingPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Icon(
-                      _hammerShare
+                      hammerShare
                           ? Icons.radio_button_checked
                           : Icons.radio_button_unchecked,
                       size: 22,

@@ -27,16 +27,15 @@ class ReadContentState extends PageState<ReadContentPage>
   void initState() {
     super.initState();
 
-    _viewModel.init(type: widget.title.type);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    bindErrorStream(_viewModel.error.stream,
-        errorText: S.of(context).readLoadFail(widget.title.title),
-        retry: () => _viewModel.loadData(type: LoadType.NEW_LOAD));
+    _viewModel
+      ..init(type: widget.title.type)
+      ..error
+          .stream
+          .where((b) => b)
+          .listen((_) => networkError(
+              errorText: S.of(context).readLoadFail(widget.title.title),
+              retry: () => _viewModel.loadData(type: LoadType.NEW_LOAD)))
+          .bindLife(this);
   }
 
   @override

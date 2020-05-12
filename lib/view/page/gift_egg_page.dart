@@ -29,7 +29,6 @@ class GiftEggState extends PageState<GiftEggPage>
   void initState() {
     super.initState();
 
-    _viewModel.loadData(type: LoadType.NEW_LOAD);
     _scrollController.addListener(() {
       // 滑到底部加载更多
       if (_scrollController.position.pixels ==
@@ -37,15 +36,16 @@ class GiftEggState extends PageState<GiftEggPage>
         _viewModel.loadMore();
       }
     });
-  }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    bindErrorStream(_viewModel.error.stream,
-        errorText: S.of(context).eggFail,
-        retry: () => _viewModel.loadData(type: LoadType.NEW_LOAD));
+    _viewModel
+      ..loadData(type: LoadType.NEW_LOAD)
+      ..error
+          .stream
+          .where((b) => b)
+          .listen((_) => networkError(
+              errorText: S.of(context).eggFail,
+              retry: () => _viewModel.loadData(type: LoadType.NEW_LOAD)))
+          .bindLife(this);
   }
 
   @override

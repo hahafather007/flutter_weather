@@ -31,7 +31,6 @@ class GiftMziState extends PageState<GiftMziPage>
   void initState() {
     super.initState();
 
-    _viewModel.init(typeUrl: widget.typeUrl);
     _scrollController.addListener(() {
       // 滑到底部加载更多
       if (_scrollController.position.pixels ==
@@ -39,33 +38,32 @@ class GiftMziState extends PageState<GiftMziPage>
         _viewModel.loadMore();
       }
     });
-  }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    String errorText = "";
-    switch (widget.typeUrl) {
-      case "mm":
-        errorText = S.of(context).beachGirlFail;
-        break;
-      case "hot":
-        errorText = S.of(context).mostHotFail;
-        break;
-      case "taiwan":
-        errorText = S.of(context).taiwanGirFail;
-        break;
-      case "xinggan":
-        errorText = S.of(context).sexGirlFail;
-        break;
-      case "japan":
-        errorText = S.of(context).japanGirlFail;
-        break;
-    }
-    bindErrorStream(_viewModel.error.stream,
-        errorText: errorText,
-        retry: () => _viewModel.loadData(type: LoadType.NEW_LOAD));
+    _viewModel
+      ..init(typeUrl: widget.typeUrl)
+      ..error
+          .stream
+          .where((b) => b)
+          .map((_) {
+            switch (widget.typeUrl) {
+              case "mm":
+                return S.of(context).beachGirlFail;
+              case "hot":
+                return S.of(context).mostHotFail;
+              case "taiwan":
+                return S.of(context).taiwanGirFail;
+              case "xinggan":
+                return S.of(context).sexGirlFail;
+              case "japan":
+                return S.of(context).japanGirlFail;
+              default:
+                return "";
+            }
+          })
+          .listen((text) => networkError(
+              errorText: text,
+              retry: () => _viewModel.loadData(type: LoadType.NEW_LOAD)))
+          .bindLife(this);
   }
 
   @override

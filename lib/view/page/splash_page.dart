@@ -17,7 +17,7 @@ class SplashState extends PageState<SplashPage> {
     super.initState();
 
     Rx.timer(Null, const Duration(milliseconds: 500))
-        .map((shared) => SharedDepository().themeColor)
+        .map((_) => SharedDepository().themeColor)
         .map((color) =>
             EventSendHolder().sendEvent(tag: "themeChange", event: color))
         .listen((_) => push(context, page: HomePage(), replace: true))

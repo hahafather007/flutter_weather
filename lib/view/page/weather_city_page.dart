@@ -36,31 +36,31 @@ class WeatherCityState extends PageState<WeatherCityPage>
   void initState() {
     super.initState();
 
-    _viewModel = WeatherCityViewModel(index: widget.index);
     _scrollController.addListener(() {
       widget.onScroll(_scrollController.offset);
       if (_scrollController.offset >= 320) {
         _airKey.currentState.startAnim();
       }
     });
-    _viewModel.perStatus.stream
-        .where((status) => status == PermissionStatus.denied)
-        .listen((_) => showSnack(
-            text: S.of(context).locationError,
-            duration: const Duration(hours: 1),
-            action: SnackBarAction(
-                label: S.of(context).setting,
-                onPressed: () => PermissionHandler().openAppSettings())))
-        .bindLife(this);
-  }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    bindErrorStream(_viewModel.error.stream,
-        errorText: S.of(context).weatherFail,
-        retry: () => _viewModel.loadData(isRefresh: false));
+    _viewModel = WeatherCityViewModel(index: widget.index)
+      ..perStatus
+          .stream
+          .where((status) => status == PermissionStatus.denied)
+          .listen((_) => showSnack(
+              text: S.of(context).locationError,
+              duration: const Duration(hours: 1),
+              action: SnackBarAction(
+                  label: S.of(context).setting,
+                  onPressed: PermissionHandler().openAppSettings)))
+          .bindLife(this)
+      ..error
+          .stream
+          .where((b) => b)
+          .listen((_) => networkError(
+              errorText: S.of(context).weatherFail,
+              retry: () => _viewModel.loadData(isRefresh: false)))
+          .bindLife(this);
   }
 
   @override

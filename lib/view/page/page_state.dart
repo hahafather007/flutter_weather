@@ -18,8 +18,6 @@ abstract class PageState<T extends StatefulWidget> extends State<T>
   @protected
   final boundaryKey = GlobalKey();
 
-  bool _bindError = false;
-
   bool get bindLife => false;
 
   @override
@@ -48,21 +46,8 @@ abstract class PageState<T extends StatefulWidget> extends State<T>
     return file;
   }
 
-  /// 绑定viewModel中通用的stream
-  @protected
-  void bindErrorStream(Stream<bool> error,
-      {@required String errorText, @required VoidCallback retry}) {
-    if (_bindError) return;
-    _bindError = true;
-
-    error
-        .where((b) => b)
-        .listen((_) => _networkError(errorText: errorText, retry: retry))
-        .bindLife(this);
-  }
-
-  /// 网络错误
-  void _networkError({@required String errorText, @required VoidCallback retry}) {
+  /// 网络错误弹窗
+  void networkError({@required String errorText, @required VoidCallback retry}) {
     scafKey.currentState.removeCurrentSnackBar();
     scafKey.currentState.showSnackBar(SnackBar(
       content: Text(errorText),
