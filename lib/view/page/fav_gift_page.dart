@@ -4,7 +4,7 @@ import 'package:flutter_weather/common/colors.dart';
 import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/utils/system_util.dart';
-import 'package:flutter_weather/view/page/gift_gank_watch_page.dart';
+import 'package:flutter_weather/view/page/gift_photo_watch_page.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:flutter_weather/view/widget/net_image.dart';
 import 'package:flutter_weather/viewmodel/fav_gift_viewmodel.dart';
@@ -62,7 +62,7 @@ class FavGiftState extends PageState<FavGiftPage>
                 return RepaintBoundary(
                   child: GestureDetector(
                     onTap: () => push(context,
-                        page: GiftGankWatchPage(index: index, photos: list)),
+                        page: GiftPhotoWatchPage(index: index, photos: list)),
                     child: AspectRatio(
                       aspectRatio: data.width / data.height,
                       child: Hero(

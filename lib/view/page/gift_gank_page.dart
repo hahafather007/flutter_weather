@@ -3,7 +3,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/utils/system_util.dart';
-import 'package:flutter_weather/view/page/gift_gank_watch_page.dart';
+import 'package:flutter_weather/view/page/gift_photo_watch_page.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:flutter_weather/view/widget/loading_view.dart';
 import 'package:flutter_weather/view/widget/net_image.dart';
@@ -87,7 +87,7 @@ class GiftGankState extends PageState<GiftGankPage>
                   return RepaintBoundary(
                     child: GestureDetector(
                       onTap: () => push(context,
-                          page: GiftGankWatchPage(
+                          page: GiftPhotoWatchPage(
                               index: index,
                               photos: list,
                               photoStream: _viewModel.photoStream,

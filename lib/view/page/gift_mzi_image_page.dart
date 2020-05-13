@@ -4,7 +4,7 @@ import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/model/holder/fav_holder.dart';
 import 'package:flutter_weather/utils/system_util.dart';
-import 'package:flutter_weather/view/page/gift_mzi_watch_page.dart';
+import 'package:flutter_weather/view/page/gift_photo_watch_page.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:flutter_weather/view/widget/custom_app_bar.dart';
 import 'package:flutter_weather/view/widget/loading_view.dart';
@@ -117,9 +117,9 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
 
                       return GestureDetector(
                         onTap: () => push(context,
-                            page: GiftMziWatchPage(
+                            page: GiftPhotoWatchPage(
                                 index: index,
-                                length: length,
+                                max: length,
                                 photos: list,
                                 photoStream: _viewModel.photoStream)),
                         child: AspectRatio(

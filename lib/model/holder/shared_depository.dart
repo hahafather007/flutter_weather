@@ -84,7 +84,9 @@ class SharedDepository {
     final str = _getString("favReadItems");
 
     if (str != null) {
-      return (jsonDecode(str) as List).map((v) => ReadItem.fromJson(v));
+      return (jsonDecode(str) as List)
+          .map((v) => ReadItem.fromJson(v))
+          .toList();
     } else {
       return [];
     }
@@ -98,7 +100,7 @@ class SharedDepository {
     final str = _getString("favMziItems");
 
     if (str != null) {
-      return (jsonDecode(str) as List).map((v) => MziItem.fromJson(v));
+      return (jsonDecode(str) as List).map((v) => MziItem.fromJson(v)).toList();
     } else {
       return [];
     }
@@ -147,7 +149,8 @@ class SharedDepository {
       await _prefs.setBool("hammerShare", value);
 
   /// 获取已保存的图片
-  List<String> get savedImages => _getStringList("savedImages", defaultValue: []);
+  List<String> get savedImages =>
+      _getStringList("savedImages", defaultValue: []);
 
   Future<bool> setSavedImages(List<String> images) async =>
       await _prefs.setString("savedImages", jsonEncode(images));

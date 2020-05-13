@@ -8,16 +8,16 @@ import 'package:flutter_weather/view/widget/custom_app_bar.dart';
 import 'package:flutter_weather/view/widget/net_image.dart';
 import 'package:flutter_weather/view/widget/watcher_popup_btn.dart';
 import 'package:flutter_weather/view/widget/zoomable_widget.dart';
-import 'package:flutter_weather/viewmodel/photo_watch_viewmodel.dart';
+import 'package:flutter_weather/viewmodel/gift_photo_watch_viewmodel.dart';
 
-class GiftGankWatchPage extends StatefulWidget {
+class GiftPhotoWatchPage extends StatefulWidget {
   final int index;
   final int max;
   final List<MziItem> photos;
   final Stream<List<MziItem>> photoStream;
   final VoidCallback loadDataFun;
 
-  GiftGankWatchPage(
+  GiftPhotoWatchPage(
       {@required this.index,
       @required this.max,
       @required this.photos,
@@ -25,12 +25,12 @@ class GiftGankWatchPage extends StatefulWidget {
       this.loadDataFun});
 
   @override
-  State createState() => GiftGankWatchState();
+  State createState() => GiftPhotoWatchState();
 }
 
-class GiftGankWatchState extends PageState<GiftGankWatchPage> {
+class GiftPhotoWatchState extends PageState<GiftPhotoWatchPage> {
   PageController _pageController;
-  PhotoWatchViewModel _viewModel;
+  GiftPhotoWatchViewModel _viewModel;
   int _currentPage = 0;
   bool _showAppBar = false;
   bool _canScroll = true;
@@ -44,7 +44,7 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
     _pageController =
         PageController(initialPage: _currentPage, keepPage: false);
 
-    _viewModel = PhotoWatchViewModel(photoStream: widget.photoStream);
+    _viewModel = GiftPhotoWatchViewModel(photoStream: widget.photoStream);
   }
 
   @override
@@ -71,10 +71,7 @@ class GiftGankWatchState extends PageState<GiftGankWatchPage> {
           return StreamBuilder(
             stream: _viewModel.favList.stream,
             builder: (context, snapshot) {
-              final List<MziItem> favList = snapshot.data ?? [];
-              final isFav = favList.any((v) =>
-                  v.url == list[_currentPage]?.url &&
-                  v.isImages == list[_currentPage]?.isImages);
+              final isFav = FavHolder().isFavorite(list[_currentPage]);
 
               return GestureDetector(
                 onTap: () => setState(() => _showAppBar = !_showAppBar),

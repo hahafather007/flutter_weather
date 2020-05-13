@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/model/service/service.dart';
+import 'package:flutter_weather/utils/log_util.dart';
 import 'package:html/parser.dart';
 
 class GiftMziService extends Service {
@@ -9,17 +10,19 @@ class GiftMziService extends Service {
   }
 
   /// 获取列表数据
-  Future<List<MziItem>> getImageList(
+  Future<MziData> getImageList(
       {@required String url, @required int page}) async {
-    final response = await get("/$url/page/${page == 1 ? 0 : page}",
-        cancelToken: cancelToken);
+    final response = await get("/$url/page/$page", cancelToken: cancelToken);
 
     // 下面都在解析xml
     final document = parse(response.data);
+    final max = document.getElementsByClassName("page-numbers").last.text;
     final total = document.getElementsByClassName("postlist").first;
     final items = total.querySelectorAll("li");
 
-    final data = List<MziItem>();
+    debugLog("最大页数：$max");
+
+    final list = List<MziItem>();
     items.forEach((item) {
       final img = item.querySelector("img");
       if (img == null) return;
@@ -36,7 +39,7 @@ class GiftMziService extends Service {
       final link = item.querySelector("a[href]").attributes["href"];
       final refer = "${dio.options.baseUrl}/$url/";
 
-      data.add(MziItem(
+      list.add(MziItem(
           url: imgUrl,
           link: link,
           refer: refer,
@@ -45,7 +48,7 @@ class GiftMziService extends Service {
           isImages: true));
     });
 
-    return data;
+    return MziData(page, int.parse(max), list);
   }
 
   /// 获取每个妹子图集的最大数量

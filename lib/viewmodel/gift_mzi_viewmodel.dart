@@ -10,11 +10,9 @@ class GiftMziViewModel extends ViewModel {
   final data = StreamController<List<MziItem>>();
 
   final _service = GiftMziService();
-  final _cacheData = List<MziItem>();
 
-  int _page = 1;
   String _typeUrl;
-  LoadType _reloadType = LoadType.NEW_LOAD;
+  MziData _cacheData;
 
   void init({@required String typeUrl}) {
     _typeUrl = typeUrl;
@@ -23,28 +21,31 @@ class GiftMziViewModel extends ViewModel {
 
   Future<void> loadData({@required LoadType type}) async {
     if (selfLoading) return;
-    selfLoading = true;
+    if (_cacheData != null && _cacheData.page >= _cacheData.maxPage) return;
 
+    selfLoading = true;
     if (type != LoadType.REFRESH) {
       isLoading.safeAdd(true);
     }
 
     try {
-      final list = await _service.getImageList(
+      final mziData = await _service.getImageList(
           url: _typeUrl,
           page: (type == LoadType.REFRESH || type == LoadType.NEW_LOAD)
               ? 1
-              : _page);
+              : (_cacheData?.page ?? 0) + 1);
+
       if (type == LoadType.REFRESH || type == LoadType.NEW_LOAD) {
-        _cacheData.clear();
-        _page = 1;
+        _cacheData = mziData;
+      } else {
+        _cacheData?.page = mziData.page;
+        _cacheData?.maxPage = mziData.maxPage;
+        _cacheData?.items?.addAll(mziData.items);
       }
 
-      _cacheData.addAll(list);
-      data.add(_cacheData);
-      _page++;
+      data.add(_cacheData.items);
     } on DioError catch (e) {
-      _reloadType = type;
+      selfLoadType = type;
       doError(e);
     } finally {
       selfLoading = false;
@@ -53,7 +54,7 @@ class GiftMziViewModel extends ViewModel {
   }
 
   void reload() {
-    loadData(type: _reloadType);
+    loadData(type: selfLoadType);
   }
 
   void loadMore() {
@@ -63,7 +64,6 @@ class GiftMziViewModel extends ViewModel {
   @override
   void dispose() {
     _service.dispose();
-    _cacheData.clear();
 
     data.close();
 

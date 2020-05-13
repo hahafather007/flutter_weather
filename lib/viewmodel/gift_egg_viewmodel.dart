@@ -22,8 +22,10 @@ class GiftEggViewModel extends ViewModel {
 
   Future<void> loadData({@required LoadType type}) async {
     if (selfLoading) return;
-    selfLoading = true;
+    if (_cacheData != null && _cacheData.currentPage >= _cacheData.pageCount)
+      return;
 
+    selfLoading = true;
     if (type != LoadType.REFRESH) {
       isLoading.safeAdd(true);
     }
@@ -33,6 +35,7 @@ class GiftEggViewModel extends ViewModel {
           page: (type == LoadType.REFRESH || type == LoadType.NEW_LOAD)
               ? 1
               : (_cacheData?.currentPage ?? 0) + 1);
+
       if (type == LoadType.REFRESH || type == LoadType.NEW_LOAD) {
         _cacheData = egg;
       } else {
@@ -40,6 +43,7 @@ class GiftEggViewModel extends ViewModel {
         _cacheData?.pageCount = egg.pageCount;
         _cacheData?.comments?.addAll(egg.comments);
       }
+
       data.safeAdd(_cacheData);
       _photoData.safeAdd(_cacheData?.comments
           ?.map((v) => v?.pics?.isNotEmpty == true

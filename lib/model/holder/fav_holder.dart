@@ -64,6 +64,10 @@ class FavHolder {
 
   /// 判断[data]是否被收藏
   bool isFavorite(dynamic data) {
+    if(data == null){
+      return false;
+    }
+
     if (data is ReadItem) {
       return _cacheReads.any((v) => v.sId == data.sId);
     } else if (data is MziItem) {

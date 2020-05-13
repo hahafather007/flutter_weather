@@ -1,4 +1,12 @@
 /// 妹子图数据
+class MziData {
+  int page;
+  int maxPage;
+  List<MziItem> items;
+
+  MziData(this.page, this.maxPage, this.items);
+}
+
 class MziItem {
   String url;
   String link;

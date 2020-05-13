@@ -30,17 +30,20 @@ class ReadContentViewModel extends ViewModel {
     }
 
     try {
-      final page = (type == LoadType.REFRESH || type == LoadType.NEW_LOAD)
-          ? 1
-          : (_cacheData?.page ?? 0) + 1;
-      final readData = await _service.getReadData(type: _type, page: page);
+      final readData = await _service.getReadData(
+          type: _type,
+          page: (type == LoadType.REFRESH || type == LoadType.NEW_LOAD)
+              ? 1
+              : (_cacheData?.page ?? 0) + 1);
 
       if (type == LoadType.REFRESH || type == LoadType.NEW_LOAD) {
         _cacheData = readData;
       } else {
         _cacheData?.page = readData.page;
+        _cacheData?.pageCount = readData.pageCount;
         _cacheData?.data?.addAll(readData.data);
       }
+
       data.safeAdd(_cacheData?.data);
     } on DioError catch (e) {
       selfLoadType = type;
