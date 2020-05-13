@@ -60,7 +60,7 @@ class WeatherCityViewModel extends ViewModel {
             }
           }
 
-          if(mCity == null){
+          if (mCity == null) {
             mCity = WeatherHolder().cities[index];
           }
         } else {
@@ -99,6 +99,13 @@ class WeatherCityViewModel extends ViewModel {
         isLoading.safeAdd(false);
       }
     }
+  }
+
+  @override
+  void reload() {
+    super.reload();
+
+    loadData(isRefresh: false);
   }
 
   @override

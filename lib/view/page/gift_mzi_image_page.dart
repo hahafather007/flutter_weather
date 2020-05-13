@@ -35,8 +35,7 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
           .stream
           .where((b) => b)
           .listen((_) => networkError(
-              errorText: S.of(context).imageSetFail,
-              retry: _viewModel.loadData))
+              errorText: S.of(context).imageSetFail, retry: _viewModel.reload))
           .bindLife(this);
   }
 

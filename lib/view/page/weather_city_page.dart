@@ -49,7 +49,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
           .where((status) => status == PermissionStatus.denied)
           .listen((_) => showSnack(
               text: S.of(context).locationError,
-              duration: const Duration(hours: 1),
+              duration: const Duration(days: 1),
               action: SnackBarAction(
                   label: S.of(context).setting,
                   onPressed: PermissionHandler().openAppSettings)))
@@ -58,8 +58,7 @@ class WeatherCityState extends PageState<WeatherCityPage>
           .stream
           .where((b) => b)
           .listen((_) => networkError(
-              errorText: S.of(context).weatherFail,
-              retry: () => _viewModel.loadData(isRefresh: false)))
+              errorText: S.of(context).weatherFail, retry: _viewModel.reload))
           .bindLife(this);
   }
 

@@ -27,6 +27,13 @@ class ReadViewModel extends ViewModel {
   }
 
   @override
+  void reload() {
+    super.reload();
+
+    loadTitle();
+  }
+
+  @override
   void dispose() {
     _service.dispose();
 

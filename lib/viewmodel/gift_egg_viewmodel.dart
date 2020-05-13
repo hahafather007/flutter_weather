@@ -61,11 +61,17 @@ class GiftEggViewModel extends ViewModel {
     }
   }
 
+  @override
   void reload() {
+    super.reload();
+
     loadData(type: selfLoadType);
   }
 
+  @override
   void loadMore() {
+    super.loadMore();
+
     loadData(type: LoadType.LOAD_MORE);
   }
 

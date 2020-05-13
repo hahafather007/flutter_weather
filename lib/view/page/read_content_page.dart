@@ -28,16 +28,6 @@ class ReadContentState extends PageState<ReadContentPage>
   void initState() {
     super.initState();
 
-    _viewModel
-      ..init(type: widget.title.type)
-      ..error
-          .stream
-          .where((b) => b)
-          .listen((_) => networkError(
-              errorText: S.of(context).readLoadFail(widget.title.title),
-              retry: () => _viewModel.loadData(type: LoadType.NEW_LOAD)))
-          .bindLife(this);
-
     _scrollController.addListener(() {
       // 滑到底部加载更多
       if (_scrollController.position.pixels ==
@@ -45,6 +35,16 @@ class ReadContentState extends PageState<ReadContentPage>
         _viewModel.loadMore();
       }
     });
+
+    _viewModel
+      ..init(type: widget.title.type)
+      ..error
+          .stream
+          .where((b) => b)
+          .listen((_) => networkError(
+              errorText: S.of(context).readLoadFail(widget.title.title),
+              retry: _viewModel.reload))
+          .bindLife(this);
   }
 
   @override

@@ -36,6 +36,10 @@ abstract class ViewModel extends StreamSubController {
 
     error.safeAdd(true);
   }
+
+  void reload() {}
+
+  void loadMore() {}
 }
 
 /// 加载数据的状态

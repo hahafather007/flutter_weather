@@ -72,3 +72,5 @@ build/
 .flutter-plugins-dependencies
 pubspec.yaml___jb_tmp___
 Flutter.podspec
+flutter_export_environment.sh
+project.pbxproj

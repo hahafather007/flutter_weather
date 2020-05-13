@@ -56,6 +56,13 @@ class GiftMziImageViewModel extends ViewModel {
   }
 
   @override
+  void reload() {
+    super.reload();
+
+    loadData();
+  }
+
+  @override
   void dispose() {
     _service.dispose();
 

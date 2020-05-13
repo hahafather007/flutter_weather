@@ -43,8 +43,7 @@ class GiftGankState extends PageState<GiftGankPage>
           .stream
           .where((b) => b)
           .listen((_) => networkError(
-              errorText: S.of(context).gankFail,
-              retry: () => _viewModel.loadData(type: LoadType.NEW_LOAD)))
+              errorText: S.of(context).gankFail, retry: _viewModel.reload))
           .bindLife(this);
   }
 

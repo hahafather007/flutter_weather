@@ -27,8 +27,7 @@ class ReadState extends PageState<ReadPage> {
           .stream
           .where((b) => b)
           .listen((_) => networkError(
-              errorText: S.of(context).readTitleFail,
-              retry: _viewModel.loadTitle))
+              errorText: S.of(context).readTitleFail, retry: _viewModel.reload))
           .bindLife(this);
   }
 

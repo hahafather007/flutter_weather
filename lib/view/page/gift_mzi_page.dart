@@ -60,9 +60,8 @@ class GiftMziState extends PageState<GiftMziPage>
                 return "";
             }
           })
-          .listen((text) => networkError(
-              errorText: text,
-              retry: () => _viewModel.loadData(type: LoadType.NEW_LOAD)))
+          .listen(
+              (text) => networkError(errorText: text, retry: _viewModel.reload))
           .bindLife(this);
   }
 

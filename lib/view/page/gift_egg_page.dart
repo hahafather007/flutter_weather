@@ -44,8 +44,7 @@ class GiftEggState extends PageState<GiftEggPage>
           .stream
           .where((b) => b)
           .listen((_) => networkError(
-              errorText: S.of(context).eggFail,
-              retry: () => _viewModel.loadData(type: LoadType.NEW_LOAD)))
+              errorText: S.of(context).eggFail, retry: _viewModel.reload))
           .bindLife(this);
   }
 
