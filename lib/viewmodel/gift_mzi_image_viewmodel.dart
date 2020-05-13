@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/model/holder/fav_holder.dart';
 import 'package:flutter_weather/model/service/gift_mzi_service.dart';
-import 'package:flutter_weather/utils/log_util.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class GiftMziImageViewModel extends ViewModel {
@@ -15,6 +14,7 @@ class GiftMziImageViewModel extends ViewModel {
 
   final _service = GiftMziService();
   final _photoData = StreamController<List<MziItem>>();
+  final _cacheData = List<MziItem>();
 
   MziItem _mziData;
   Stream<List<MziItem>> photoStream;
@@ -38,14 +38,14 @@ class GiftMziImageViewModel extends ViewModel {
     isLoading.safeAdd(true);
     try {
       final length = await _service.getLength(link: _mziData.link);
-      debugLog("length======>$length");
       dataLength.safeAdd(length);
-      final list = List<MziItem>();
-      for (int i = 1; i <= length; i++) {
-        list.add(await _service.getEachData(link: _mziData.link, index: i));
 
-        data.safeAdd(list);
-        _photoData.safeAdd(list);
+      for (int i = _cacheData.length + 1; i <= length; i++) {
+        _cacheData
+            .add(await _service.getEachData(link: _mziData.link, index: i));
+
+        data.safeAdd(_cacheData);
+        _photoData.safeAdd(_cacheData);
       }
     } on DioError catch (e) {
       doError(e);
@@ -65,6 +65,7 @@ class GiftMziImageViewModel extends ViewModel {
   @override
   void dispose() {
     _service.dispose();
+    _cacheData.clear();
 
     data.close();
     isFav.close();

@@ -100,8 +100,6 @@ class GiftMziState extends PageState<GiftMziPage>
                 staggeredTileBuilder: (index) => StaggeredTile.fit(1),
                 itemBuilder: (context, index) {
                   final data = list[index];
-                  final headers = Map<String, String>();
-                  headers["Referer"] = data.refer;
 
                   return RepaintBoundary(
                     child: GestureDetector(
@@ -113,7 +111,7 @@ class GiftMziState extends PageState<GiftMziPage>
                           AspectRatio(
                             aspectRatio: data.width / data.height,
                             child: NetImage(
-                              headers: headers,
+                              headers: {"Referer": data.refer},
                               url: data.url,
                             ),
                           ),

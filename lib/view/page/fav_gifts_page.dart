@@ -58,8 +58,6 @@ class FavGiftsState extends PageState<FavGiftsPage>
               staggeredTileBuilder: (index) => StaggeredTile.fit(1),
               itemBuilder: (context, index) {
                 final data = list[index];
-                final headers = Map<String, String>();
-                headers["Referer"] = data.refer;
 
                 return RepaintBoundary(
                   child: GestureDetector(
@@ -71,7 +69,7 @@ class FavGiftsState extends PageState<FavGiftsPage>
                         AspectRatio(
                           aspectRatio: data.width / data.height,
                           child: NetImage(
-                            headers: headers,
+                            headers: {"Referer": data.refer},
                             url: data.url,
                           ),
                         ),

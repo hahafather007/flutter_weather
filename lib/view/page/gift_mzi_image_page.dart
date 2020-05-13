@@ -111,8 +111,6 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
                     staggeredTileBuilder: (index) => StaggeredTile.fit(1),
                     itemBuilder: (context, index) {
                       final data = list[index];
-                      final headers = Map<String, String>();
-                      headers["Referer"] = data.refer;
 
                       return GestureDetector(
                         onTap: () => push(context,
@@ -126,7 +124,7 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
                           child: Hero(
                             tag: "${data.url}${index}true",
                             child: NetImage(
-                              headers: headers,
+                              headers: {"Referer": data.refer},
                               url: data.url,
                             ),
                           ),
