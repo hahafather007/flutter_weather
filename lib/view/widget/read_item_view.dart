@@ -25,13 +25,14 @@ class ReadItemView extends StatelessWidget {
                 title: data.title, url: data.url, favData: data)),
         child: Padding(
           padding: const EdgeInsets.all(10),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: Stack(
             children: <Widget>[
-              Expanded(
+              Padding(
+                padding: const EdgeInsets.only(right: 84),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    // 标题
                     Text(
                       "${data.title}",
                       maxLines: 2,
@@ -41,6 +42,8 @@ class ReadItemView extends StatelessWidget {
                         color: AppColor.text1,
                       ),
                     ),
+
+                    // 内容
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Text(
@@ -53,6 +56,8 @@ class ReadItemView extends StatelessWidget {
                         ),
                       ),
                     ),
+
+                    // 时间和作者
                     Text.rich(
                       TextSpan(
                         children: [
@@ -74,12 +79,16 @@ class ReadItemView extends StatelessWidget {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8),
+
+              // 图片
+              Positioned(
+                top: 0,
+                bottom: 0,
+                right: 0,
                 child: NetImage(
                   url: "$img",
                   width: 76,
-                  height: 76,
+                  fit: BoxFit.contain,
                 ),
               ),
             ],
