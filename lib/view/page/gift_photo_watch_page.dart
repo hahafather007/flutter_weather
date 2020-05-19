@@ -89,8 +89,8 @@ class GiftPhotoWatchState extends PageState<GiftPhotoWatchPage> {
                     if (data == null) {
                       return Center(
                         child: SizedBox(
-                          width: 50,
-                          height: 50,
+                          width: 60,
+                          height: 60,
                           child: RefreshProgressIndicator(
                             backgroundColor: Colors.transparent,
                             valueColor: AlwaysStoppedAnimation(Colors.white),
@@ -106,8 +106,8 @@ class GiftPhotoWatchState extends PageState<GiftPhotoWatchPage> {
                           headers: {"Referer": data.refer},
                           placeholder: Center(
                             child: SizedBox(
-                              width: 50,
-                              height: 50,
+                              width: 60,
+                              height: 60,
                               child: RefreshProgressIndicator(
                                 backgroundColor: Colors.transparent,
                                 valueColor:

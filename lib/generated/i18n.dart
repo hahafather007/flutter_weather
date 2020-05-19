@@ -82,6 +82,8 @@ class S implements WidgetsLocalizations {
   String get flu => "Flu";
   String get fog => "Fog";
   String get friday => "Friday";
+  String get ganHuo => "干货";
+  String get ganHuoTitleFail => "Categories load failed!";
   String get gank => "Gank";
   String get gankFail => "Gank images load failed!";
   String get gift => "Gift";
@@ -255,7 +257,7 @@ class $zh extends S {
   @override
   String get saturday => "星期六";
   @override
-  String get readTitleFail => "闲读分类获取失败!";
+  String get readTitleFail => "闲读分类获取失败！";
   @override
   String get allGirl => "每日更新";
   @override
@@ -401,6 +403,8 @@ class $zh extends S {
   @override
   String get snow => "雪";
   @override
+  String get ganHuoTitleFail => "干货分类获取失败！";
+  @override
   String get checkUpdateFail => "检测更新失败，请检查网络！";
   @override
   String get weatherFail => "天气信息获取失败！";
@@ -414,6 +418,8 @@ class $zh extends S {
   String get colorLapisBlue => "青石色";
   @override
   String get fog => "雾";
+  @override
+  String get ganHuo => "干货";
   @override
   String get imageSet => "图集";
   @override
@@ -477,7 +483,7 @@ class $zh extends S {
   @override
   String get sport => "运动";
   @override
-  String readLoadFail(String value) => "$value\u200b获取失败!";
+  String readLoadFail(String value) => "$value\u200b获取失败！";
   @override
   String windScValue(String value) => "$value\u200b级";
 }

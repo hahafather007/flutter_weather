@@ -9,8 +9,10 @@ import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class ReadContentPage extends StatefulWidget {
   final GankTitle title;
+  final bool isGanHuo;
 
-  ReadContentPage({Key key, @required this.title}) : super(key: key);
+  ReadContentPage({Key key, @required this.title, this.isGanHuo = false})
+      : super(key: key);
 
   @override
   State createState() => ReadContentState();
@@ -37,7 +39,9 @@ class ReadContentState extends PageState<ReadContentPage>
     });
 
     _viewModel
-      ..init(category: "Article",type: widget.title.type)
+      ..init(
+          category: widget.isGanHuo ? "GanHuo" : "Article",
+          type: widget.title.type)
       ..error
           .stream
           .where((b) => b)

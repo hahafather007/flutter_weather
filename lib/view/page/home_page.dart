@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_weather/model/holder/shared_depository.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/view/page/about_page.dart';
 import 'package:flutter_weather/view/page/fav_page.dart';
+import 'package:flutter_weather/view/page/ganhuo_page.dart';
 import 'package:flutter_weather/view/page/gift_page.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:flutter_weather/view/page/read_page.dart';
@@ -60,6 +60,7 @@ class HomeState extends PageState<HomePage> {
     _pageTypeMap[PageType.WEATHER] = true;
     _pageTypeMap[PageType.GIFT] = false;
     _pageTypeMap[PageType.READ] = false;
+    _pageTypeMap[PageType.GANHUO] = false;
     _pageTypeMap[PageType.COLLECT] = false;
   }
 
@@ -67,8 +68,8 @@ class HomeState extends PageState<HomePage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    final pageModules = SharedDepository().pageModules;
-    pageModules.forEach((module) {
+    /// 关闭掉不会再出现的页面
+    SharedDepository().pageModules.forEach((module) {
       switch (module.module) {
         case "weather":
           if (!module.open) {
@@ -78,6 +79,11 @@ class HomeState extends PageState<HomePage> {
         case "read":
           if (!module.open) {
             _pageTypeMap[PageType.READ] = false;
+          }
+          break;
+        case "ganhuo":
+          if (!module.open) {
+            _pageTypeMap[PageType.GANHUO] = false;
           }
           break;
         case "gift":
@@ -92,29 +98,6 @@ class HomeState extends PageState<HomePage> {
           break;
       }
     });
-    if (!_pageTypeMap.values.contains(true)) {
-      final index = pageModules.indexWhere((v) => v.open);
-      if (index != -1) {
-        switch (pageModules[index].module) {
-          case "weather":
-            _pageTypeMap[PageType.WEATHER] = true;
-            _pageType = PageType.WEATHER;
-            break;
-          case "read":
-            _pageTypeMap[PageType.READ] = true;
-            _pageType = PageType.READ;
-            break;
-          case "gift":
-            _pageTypeMap[PageType.GIFT] = true;
-            _pageType = PageType.GIFT;
-            break;
-          case "collect":
-            _pageTypeMap[PageType.COLLECT] = true;
-            _pageType = PageType.COLLECT;
-            break;
-        }
-      }
-    }
   }
 
   @override
@@ -146,79 +129,88 @@ class HomeState extends PageState<HomePage> {
 
               // 主要页面选项
               Column(
-                children: pageModules.map((module) {
+                children:
+                    pageModules.where((module) => module.open).map((module) {
                   switch (module.module) {
                     // 天气
                     case "weather":
-                      return module.open
-                          ? _buildDrawerItem(
-                              icon: Icons.wb_sunny,
-                              title: S.of(context).weather,
-                              isTarget: _pageType == PageType.WEATHER,
-                              onTap: () {
-                                if (_pageType == PageType.WEATHER) return;
+                      return _buildDrawerItem(
+                          icon: Icons.wb_sunny,
+                          title: S.of(context).weather,
+                          isTarget: _pageType == PageType.WEATHER,
+                          onTap: () {
+                            if (_pageType == PageType.WEATHER) return;
 
-                                _weatherKey.currentState
-                                    ?.changeHideState(false);
-                                setState(() {
-                                  _pageType = PageType.WEATHER;
-                                  _pageTypeMap[_pageType] = true;
-                                });
-                              })
-                          : Container();
+                            _weatherKey.currentState?.changeHideState(false);
+                            setState(() {
+                              _pageType = PageType.WEATHER;
+                              _pageTypeMap[_pageType] = true;
+                            });
+                          });
 
                     // 福利
                     case "gift":
-                      return module.open
-                          ? _buildDrawerItem(
-                              icon: Icons.card_giftcard,
-                              title: S.of(context).gift,
-                              isTarget: _pageType == PageType.GIFT,
-                              onTap: () {
-                                if (_pageType == PageType.GIFT) return;
+                      return _buildDrawerItem(
+                          icon: Icons.card_giftcard,
+                          title: S.of(context).gift,
+                          isTarget: _pageType == PageType.GIFT,
+                          onTap: () {
+                            if (_pageType == PageType.GIFT) return;
 
-                                _weatherKey.currentState?.changeHideState(true);
-                                setState(() {
-                                  _pageType = PageType.GIFT;
-                                  _pageTypeMap[_pageType] = true;
-                                });
-                              })
-                          : Container();
+                            _weatherKey.currentState?.changeHideState(true);
+                            setState(() {
+                              _pageType = PageType.GIFT;
+                              _pageTypeMap[_pageType] = true;
+                            });
+                          });
 
                     // 闲读
                     case "read":
-                      return module.open
-                          ? _buildDrawerItem(
-                              icon: Icons.local_cafe,
-                              title: S.of(context).read,
-                              isTarget: _pageType == PageType.READ,
-                              onTap: () {
-                                if (_pageType == PageType.READ) return;
+                      return _buildDrawerItem(
+                          icon: Icons.local_cafe,
+                          title: S.of(context).read,
+                          isTarget: _pageType == PageType.READ,
+                          onTap: () {
+                            if (_pageType == PageType.READ) return;
 
-                                _weatherKey.currentState?.changeHideState(true);
-                                setState(() {
-                                  _pageType = PageType.READ;
-                                  _pageTypeMap[_pageType] = true;
-                                });
-                              })
-                          : Container();
+                            _weatherKey.currentState?.changeHideState(true);
+                            setState(() {
+                              _pageType = PageType.READ;
+                              _pageTypeMap[_pageType] = true;
+                            });
+                          });
+
+                    // 闲读
+                    case "ganhuo":
+                      return _buildDrawerItem(
+                          icon: Icons.android,
+                          title: S.of(context).ganHuo,
+                          isTarget: _pageType == PageType.GANHUO,
+                          onTap: () {
+                            if (_pageType == PageType.GANHUO) return;
+
+                            _weatherKey.currentState?.changeHideState(true);
+                            setState(() {
+                              _pageType = PageType.GANHUO;
+                              _pageTypeMap[_pageType] = true;
+                            });
+                          });
+
                     // 闲读
                     case "collect":
-                      return module.open
-                          ? _buildDrawerItem(
-                              icon: Icons.favorite_border,
-                              title: S.of(context).collect,
-                              isTarget: _pageType == PageType.COLLECT,
-                              onTap: () {
-                                if (_pageType == PageType.COLLECT) return;
+                      return _buildDrawerItem(
+                          icon: Icons.favorite_border,
+                          title: S.of(context).collect,
+                          isTarget: _pageType == PageType.COLLECT,
+                          onTap: () {
+                            if (_pageType == PageType.COLLECT) return;
 
-                                _weatherKey.currentState?.changeHideState(true);
-                                setState(() {
-                                  _pageType = PageType.COLLECT;
-                                  _pageTypeMap[_pageType] = true;
-                                });
-                              })
-                          : Container();
+                            _weatherKey.currentState?.changeHideState(true);
+                            setState(() {
+                              _pageType = PageType.COLLECT;
+                              _pageTypeMap[_pageType] = true;
+                            });
+                          });
                   }
 
                   return Container();
@@ -307,6 +299,15 @@ class HomeState extends PageState<HomePage> {
           ),
         ),
 
+        // 干货页面
+        Offstage(
+          offstage: _pageType != PageType.GANHUO,
+          child: TickerMode(
+            enabled: _pageType == PageType.GANHUO,
+            child: _pageTypeMap[PageType.GANHUO] ? GanHuoPage() : Container(),
+          ),
+        ),
+
         // 收藏页面
         Offstage(
           offstage: _pageType != PageType.COLLECT,
@@ -379,6 +380,9 @@ enum PageType {
 
   /// 闲读页面
   READ,
+
+  /// 干货页面
+  GANHUO,
 
   /// 收藏页面
   COLLECT,
