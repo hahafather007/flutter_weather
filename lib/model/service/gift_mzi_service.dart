@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/model/service/service.dart';
-import 'package:flutter_weather/utils/log_util.dart';
 import 'package:html/parser.dart';
 
 class GiftMziService extends Service {
@@ -16,11 +15,18 @@ class GiftMziService extends Service {
 
     // 下面都在解析xml
     final document = parse(response.data);
-    final max = document.getElementsByClassName("page-numbers").last.text;
+    int maxPage = 0;
+    // 获取最大页数
+    document.getElementsByClassName("page-numbers").forEach((element) {
+      try {
+        final page = int.parse(element.text);
+        if (page > maxPage) {
+          maxPage = page;
+        }
+      } on FormatException catch (_) {}
+    });
     final total = document.getElementsByClassName("postlist").first;
     final items = total.querySelectorAll("li");
-
-    debugLog("最大页数：$max");
 
     final list = List<MziItem>();
     items.forEach((item) {
@@ -48,7 +54,7 @@ class GiftMziService extends Service {
           isImages: true));
     });
 
-    return MziData(page, int.parse(max), list);
+    return MziData(page, maxPage, list);
   }
 
   /// 获取每个妹子图集的最大数量
