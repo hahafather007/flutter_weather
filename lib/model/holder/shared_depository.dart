@@ -5,7 +5,7 @@ import 'package:flutter_weather/common/colors.dart';
 import 'package:flutter_weather/model/data/city_data.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/model/data/page_module_data.dart';
-import 'package:flutter_weather/model/data/read_data.dart';
+import 'package:flutter_weather/model/data/gank_data.dart';
 import 'package:flutter_weather/model/data/weather_air_data.dart';
 import 'package:flutter_weather/model/data/weather_data.dart';
 import 'package:flutter_weather/utils/log_util.dart';
@@ -80,19 +80,19 @@ class SharedDepository {
       .setStringList("airsData", value.map((v) => jsonEncode(v)).toList());
 
   /// 收藏的闲读文章
-  List<ReadItem> get favReadItems {
+  List<GankItem> get favReadItems {
     final str = _getString("favReadItems");
 
     if (str != null) {
       return (jsonDecode(str) as List)
-          .map((v) => ReadItem.fromJson(v))
+          .map((v) => GankItem.fromJson(v))
           .toList();
     } else {
       return [];
     }
   }
 
-  Future<bool> setFavReadItems(List<ReadItem> value) async =>
+  Future<bool> setFavReadItems(List<GankItem> value) async =>
       await _prefs.setString("favReadItems", jsonEncode(value));
 
   /// 收藏的妹子图

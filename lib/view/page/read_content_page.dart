@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/generated/i18n.dart';
-import 'package:flutter_weather/model/data/read_data.dart';
+import 'package:flutter_weather/model/data/gank_data.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:flutter_weather/view/widget/loading_view.dart';
 import 'package:flutter_weather/view/widget/read_item_view.dart';
-import 'package:flutter_weather/viewmodel/read_content_viewmodel.dart';
+import 'package:flutter_weather/viewmodel/gank_viewmodel.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class ReadContentPage extends StatefulWidget {
-  final ReadTitle title;
+  final GankTitle title;
 
   ReadContentPage({Key key, @required this.title}) : super(key: key);
 
@@ -18,7 +18,7 @@ class ReadContentPage extends StatefulWidget {
 
 class ReadContentState extends PageState<ReadContentPage>
     with AutomaticKeepAliveClientMixin {
-  final _viewModel = ReadContentViewModel();
+  final _viewModel = GankViewModel();
   final _scrollController = ScrollController();
 
   @override
@@ -37,7 +37,7 @@ class ReadContentState extends PageState<ReadContentPage>
     });
 
     _viewModel
-      ..init(type: widget.title.type)
+      ..init(category: "Article",type: widget.title.type)
       ..error
           .stream
           .where((b) => b)
@@ -66,7 +66,7 @@ class ReadContentState extends PageState<ReadContentPage>
         child: StreamBuilder(
           stream: _viewModel.data.stream,
           builder: (context, snapshot) {
-            final List<ReadItem> list = snapshot.data ?? [];
+            final List<GankItem> list = snapshot.data?.data ?? [];
 
             return RefreshIndicator(
               onRefresh: () => _viewModel.loadData(type: LoadType.REFRESH),

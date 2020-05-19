@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_weather/common/streams.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
-import 'package:flutter_weather/model/data/read_data.dart';
+import 'package:flutter_weather/model/data/gank_data.dart';
 import 'package:flutter_weather/model/holder/shared_depository.dart';
 
 class FavHolder {
@@ -10,17 +10,17 @@ class FavHolder {
 
   factory FavHolder() => _holder;
 
-  final _favReadBroadcast = StreamController<List<ReadItem>>();
+  final _favReadBroadcast = StreamController<List<GankItem>>();
   final _favMziBroadcast = StreamController<List<MziItem>>();
-  final _cacheReads = List<ReadItem>();
+  final _cacheReads = List<GankItem>();
   final _cacheMzis = List<MziItem>();
 
-  Stream<List<ReadItem>> favReadStream;
+  Stream<List<GankItem>> favReadStream;
   Stream<List<MziItem>> favMziStream;
 
   List<MziItem> get favMzis => _cacheMzis;
 
-  List<ReadItem> get favReads => _cacheReads;
+  List<GankItem> get favReads => _cacheReads;
 
   FavHolder._internal() {
     favReadStream = _favReadBroadcast.stream.asBroadcastStream();
@@ -40,7 +40,7 @@ class FavHolder {
   Future<void> autoFav(dynamic data) async {
     if (data == null) return;
 
-    if (data is ReadItem) {
+    if (data is GankItem) {
       if (isFavorite(data)) {
         _cacheReads.removeWhere((v) => v.sId == data.sId);
       } else {
@@ -68,7 +68,7 @@ class FavHolder {
       return false;
     }
 
-    if (data is ReadItem) {
+    if (data is GankItem) {
       return _cacheReads.any((v) => v.sId == data.sId);
     } else if (data is MziItem) {
       return _cacheMzis

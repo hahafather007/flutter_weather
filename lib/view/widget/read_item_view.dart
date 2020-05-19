@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/model/data/read_data.dart';
+import 'package:flutter_weather/model/data/gank_data.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/view/page/webview_page.dart';
 import 'package:flutter_weather/view/widget/net_image.dart';
 
 /// 闲读的每一条Item
 class ReadItemView extends StatelessWidget {
-  final ReadItem data;
+  final GankItem data;
 
   ReadItemView({@required this.data});
 

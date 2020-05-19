@@ -2,26 +2,30 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_weather/model/data/mzi_data.dart';
-import 'package:flutter_weather/model/service/gift_gank_service.dart';
+import 'package:flutter_weather/model/data/gank_data.dart';
+import 'package:flutter_weather/model/service/gank_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
-class GiftGankViewModel extends ViewModel {
-  final data = StreamController<List<MziItem>>();
+/// 所有Gank通用
+class GankViewModel extends ViewModel {
+  final data = StreamController<GankData>();
 
-  final _service = GiftGankService();
-  final _photoData = StreamController<List<MziItem>>();
-  final _cacheData = List<MziItem>();
+  final _service = GankService();
 
-  Stream<List<MziItem>> photoStream;
-  int _page = 1;
+  GankData _cacheData;
+  String _type;
+  String _category;
 
-  GiftGankViewModel() {
-    photoStream = _photoData.stream.asBroadcastStream();
+  void init({@required String category, @required String type}) {
+    _type = type;
+    _category = category;
+    loadData(type: LoadType.NEW_LOAD);
   }
 
   Future<void> loadData({@required LoadType type}) async {
     if (selfLoading) return;
+    if (_cacheData != null && _cacheData.page >= _cacheData.pageCount) return;
+
     selfLoading = true;
 
     if (type != LoadType.REFRESH) {
@@ -29,19 +33,22 @@ class GiftGankViewModel extends ViewModel {
     }
 
     try {
-      final list = await _service.getImageList(
+      final readData = await _service.getGankData(
+          category: _category,
+          type: _type,
           page: (type == LoadType.REFRESH || type == LoadType.NEW_LOAD)
               ? 1
-              : _page);
+              : (_cacheData?.page ?? 0) + 1);
+
       if (type == LoadType.REFRESH || type == LoadType.NEW_LOAD) {
-        _cacheData.clear();
-        _page = 1;
+        _cacheData = readData;
+      } else {
+        _cacheData?.page = readData.page;
+        _cacheData?.pageCount = readData.pageCount;
+        _cacheData?.data?.addAll(readData.data);
       }
 
-      _cacheData.addAll(list);
       data.safeAdd(_cacheData);
-      _photoData.safeAdd(_cacheData);
-      _page++;
     } on DioError catch (e) {
       selfLoadType = type;
       doError(e);
@@ -68,10 +75,8 @@ class GiftGankViewModel extends ViewModel {
   @override
   void dispose() {
     _service.dispose();
-    _cacheData.clear();
 
     data.close();
-    _photoData.close();
 
     super.dispose();
   }

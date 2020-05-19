@@ -118,7 +118,7 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
                                 index: index,
                                 max: length,
                                 photos: list,
-                                photoStream: _viewModel.photoStream)),
+                                photoStream: _viewModel.photoStream.stream)),
                         child: AspectRatio(
                           aspectRatio: data.width / data.height,
                           child: Hero(

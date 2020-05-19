@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_weather/model/data/read_data.dart';
-import 'package:flutter_weather/model/service/read_service.dart';
+import 'package:flutter_weather/model/data/gank_data.dart';
+import 'package:flutter_weather/model/service/gank_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class ReadViewModel extends ViewModel {
-  final titles = StreamController<List<ReadTitle>>();
+  final titles = StreamController<List<GankTitle>>();
 
-  final _service = ReadService();
+  final _service = GankService();
 
   Future<void> loadTitle() async {
     if (selfLoading) return;
@@ -17,7 +17,7 @@ class ReadViewModel extends ViewModel {
     isLoading.safeAdd(true);
 
     try {
-      titles.safeAdd(await _service.getTitles());
+      titles.safeAdd(await _service.getTitles(category: "Article"));
     } on DioError catch (e) {
       doError(e);
     } finally {

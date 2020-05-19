@@ -9,6 +9,11 @@ import 'package:flutter_weather/model/holder/shared_depository.dart';
 import 'package:flutter_weather/view/page/splash_page.dart';
 import 'package:rxdart/rxdart.dart';
 
+//> Could not resolve io.flutter:flutter_embedding_release:1.0.0-540786dd51f112885a89792d678296b95e6622e5.
+//> Could not get resource 'https://storage.googleapis.com/download.flutter.io/io/flutter/flutter_embedding_release/1.0.0-540786dd51f112885a89792d678296b95e6622e5/flutter_embedding_release-1.0.0-540786dd51f112885a89792d678296b95e6622e5.pom'.
+//> Could not GET 'https://storage.googleapis.com/download.flutter.io/io/flutter/flutter_embedding_release/1.0.0-540786dd51f112885a89792d678296b95e6622e5/flutter_embedding_release-1.0.0-540786dd51f112885a89792d678296b95e6622e5.pom'.
+//> Read timed out
+
 void main() {
   Stream.value(WidgetsFlutterBinding.ensureInitialized())
       // 显示布局边框

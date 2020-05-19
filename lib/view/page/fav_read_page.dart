@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
 import 'package:flutter_weather/generated/i18n.dart';
-import 'package:flutter_weather/model/data/read_data.dart';
+import 'package:flutter_weather/model/data/gank_data.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:flutter_weather/view/widget/read_item_view.dart';
 import 'package:flutter_weather/viewmodel/fav_read_viewmodel.dart';
@@ -39,7 +39,7 @@ class FavReadState extends PageState<FavReadPage>
     return StreamBuilder(
       stream: _viewModel.items.stream,
       builder: (context, snapshot) {
-        final List<ReadItem> list = snapshot.data ?? [];
+        final List<GankItem> list = snapshot.data ?? [];
 
         return Stack(
           children: <Widget>[

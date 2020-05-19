@@ -11,17 +11,15 @@ class GiftMziImageViewModel extends ViewModel {
   final isFav = StreamController<bool>();
   final data = StreamController<List<MziItem>>();
   final dataLength = StreamController<int>();
+  final photoStream = StreamController<List<MziItem>>();
 
   final _service = GiftMziService();
-  final _photoData = StreamController<List<MziItem>>();
   final _cacheData = List<MziItem>();
 
   MziItem _mziData;
-  Stream<List<MziItem>> photoStream;
 
   GiftMziImageViewModel({@required MziItem data}) {
     _mziData = data;
-    photoStream = _photoData.stream.asBroadcastStream();
 
     FavHolder()
         .favMziStream
@@ -45,7 +43,7 @@ class GiftMziImageViewModel extends ViewModel {
             .add(await _service.getEachData(link: _mziData.link, index: i));
 
         data.safeAdd(_cacheData);
-        _photoData.safeAdd(_cacheData);
+        photoStream.safeAdd(_cacheData);
       }
     } on DioError catch (e) {
       doError(e);
@@ -70,7 +68,7 @@ class GiftMziImageViewModel extends ViewModel {
     data.close();
     isFav.close();
     dataLength.close();
-    _photoData.close();
+    photoStream.close();
 
     super.dispose();
   }

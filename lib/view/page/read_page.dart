@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
 import 'package:flutter_weather/generated/i18n.dart';
-import 'package:flutter_weather/model/data/read_data.dart';
+import 'package:flutter_weather/model/data/gank_data.dart';
 import 'package:flutter_weather/model/holder/event_send_holder.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:flutter_weather/view/page/read_content_page.dart';
@@ -47,7 +47,7 @@ class ReadState extends PageState<ReadPage> {
         child: StreamBuilder(
           stream: _viewModel.titles.stream,
           builder: (context, snapshot) {
-            final List<ReadTitle> titles = snapshot.data ?? [];
+            final List<GankTitle> titles = snapshot.data ?? [];
 
             return DefaultTabController(
               length: titles.length,
