@@ -82,7 +82,7 @@ class S implements WidgetsLocalizations {
   String get flu => "Flu";
   String get fog => "Fog";
   String get friday => "Friday";
-  String get ganHuo => "干货";
+  String get ganHuo => "GanHuo";
   String get ganHuoTitleFail => "Categories load failed!";
   String get gank => "Gank";
   String get gankFail => "Gank images load failed!";
@@ -125,7 +125,8 @@ class S implements WidgetsLocalizations {
   String get pres => "Pressure";
   String get programHome => "项目主页";
   String get rain => "Rain";
-  String get read => "News";
+  String get read => "Article";
+  String get readOrGanHuo => "Article/GanHuo";
   String get readTitleFail => "Categories load failed!";
   String get refresh => "Refresh";
   String get repeatCity => "City selection repeat";
@@ -372,6 +373,8 @@ class $zh extends S {
   String get taiwanGirFail => "台湾妹子获取失败！";
   @override
   String get sunny => "晴";
+  @override
+  String get readOrGanHuo => "闲读/干货";
   @override
   String get colorPinkYarrow => "粉蓍草";
   @override

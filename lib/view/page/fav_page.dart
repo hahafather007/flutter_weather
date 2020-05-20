@@ -35,7 +35,7 @@ class FavPage extends StatelessWidget {
               labelColor: Colors.white,
               indicatorColor: Colors.white,
               tabs: [
-                Tab(text: S.of(context).read),
+                Tab(text: S.of(context).readOrGanHuo),
                 Tab(text: S.of(context).gift),
                 Tab(text: S.of(context).giftPhotos),
               ],

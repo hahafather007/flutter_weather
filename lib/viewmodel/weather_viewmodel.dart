@@ -19,19 +19,20 @@ class WeatherViewModel extends ViewModel {
   Pair<Weather, AirNowCity> _catchWeather;
 
   WeatherViewModel() {
-    WeatherHolder()
-        .cityStream
-        .map((list) => list.map((v) => v.name).toList())
-        .listen((list) => cities.safeAdd(list))
-        .bindLife(this);
-    WeatherHolder()
-        .cityStream
-        .map((list) => min(_index, list.length - 1))
-        .listen((index) {
+    WeatherHolder().cityStream.listen((list) {
+      cities.safeAdd(list.map((v) => v.name).toList());
+
+      final index = min(_index, list.length - 1);
       _catchWeather = Pair(WeatherHolder().weathers[index],
           WeatherHolder().airs[index]?.airNowCity);
       weather.safeAdd(_catchWeather);
     }).bindLife(this);
+
+    final index = min(_index, WeatherHolder().cities.length - 1);
+    _catchWeather = Pair(WeatherHolder().weathers[index],
+        WeatherHolder().airs[index]?.airNowCity);
+    weather.safeAdd(_catchWeather);
+    cities.safeAdd(WeatherHolder().cities.map((v) => v.name).toList());
   }
 
   void indexChange(int index) {

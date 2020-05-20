@@ -55,7 +55,7 @@ class GanHuoState extends PageState<GanHuoPage> {
                 children: <Widget>[
                   CustomAppBar(
                     title: Text(
-                      S.of(context).read,
+                      S.of(context).ganHuo,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,

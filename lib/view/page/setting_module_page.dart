@@ -55,38 +55,46 @@ class SettingModuleState extends PageState<SettingModulePage> {
             itemBuilder: (context, index) {
               final module = modules[index];
 
-              switch (module.module) {
-                case "weather":
+              switch (module.page) {
+                case PageType.WEATHER:
                   return _buildModuleItem(
                     icon: Icons.wb_sunny,
                     title: S.of(context).weather,
                     open: module.open,
                     onChanged: (b) =>
-                        _viewModel.valueChange(b, module: module.module),
+                        _viewModel.valueChange(b, page: module.page),
                   );
-                case "read":
+                case PageType.READ:
                   return _buildModuleItem(
                     icon: Icons.local_cafe,
                     title: S.of(context).read,
                     open: module.open,
                     onChanged: (b) =>
-                        _viewModel.valueChange(b, module: module.module),
+                        _viewModel.valueChange(b, page: module.page),
                   );
-                case "gift":
+                case PageType.GANHUO:
+                  return _buildModuleItem(
+                    icon: Icons.android,
+                    title: S.of(context).ganHuo,
+                    open: module.open,
+                    onChanged: (b) =>
+                        _viewModel.valueChange(b, page: module.page),
+                  );
+                case PageType.GIFT:
                   return _buildModuleItem(
                     icon: Icons.card_giftcard,
                     title: S.of(context).gift,
                     open: module.open,
                     onChanged: (b) =>
-                        _viewModel.valueChange(b, module: module.module),
+                        _viewModel.valueChange(b, page: module.page),
                   );
-                case "collect":
+                case PageType.COLLECT:
                   return _buildModuleItem(
                     icon: Icons.favorite_border,
                     title: S.of(context).collect,
                     open: module.open,
                     onChanged: (b) =>
-                        _viewModel.valueChange(b, module: module.module),
+                        _viewModel.valueChange(b, page: module.page),
                   );
               }
 

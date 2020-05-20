@@ -124,15 +124,11 @@ class SharedDepository {
 
   /// 页面模块
   List<PageModule> get pageModules {
-    final str = _getString("pageModules3");
+    final str = _getString("pageModules4");
     if (str == null) {
-      return [
-        PageModule(module: "weather", open: true),
-        PageModule(module: "gift", open: true),
-        PageModule(module: "read", open: true),
-        PageModule(module: "ganhuo", open: true),
-        PageModule(module: "collect", open: true),
-      ];
+      return PageType.values
+          .map((type) => PageModule(page: type, open: true))
+          .toList();
     } else {
       return (jsonDecode(str) as List)
           .map((v) => PageModule.fromJson(v))
@@ -141,7 +137,7 @@ class SharedDepository {
   }
 
   Future<bool> setPageModules(List<PageModule> modules) async =>
-      await _prefs.setString("pageModules3", jsonEncode(modules));
+      await _prefs.setString("pageModules4", jsonEncode(modules));
 
   /// 天气分享形式是否为锤子分享
   bool get hammerShare => _getBool("hammerShare", defaultValue: true);

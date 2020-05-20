@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/model/data/page_module_data.dart';
 import 'package:flutter_weather/model/holder/shared_depository.dart';
+import 'package:flutter_weather/utils/log_util.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class SettingModuleViewModel extends ViewModel {
@@ -26,8 +28,9 @@ class SettingModuleViewModel extends ViewModel {
   }
 
   /// 每个module是否开启
-  void valueChange(bool open, {@required String module}) {
-    _cacheModules.firstWhere((v) => v.module == module).open = open;
+  void valueChange(bool open, {@required PageType page}) {
+    _cacheModules.firstWhere((v) => v.page == page).open = open;
+    debugLog(jsonEncode(_cacheModules));
     SharedDepository().setPageModules(_cacheModules);
     pageModules.safeAdd(_cacheModules);
   }
