@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/streams.dart';
+import 'package:flutter_weather/utils/log_util.dart';
 
 export 'package:flutter_weather/common/streams.dart'
     show SubscriptionExt, ControllerExt;
@@ -30,11 +31,15 @@ abstract class ViewModel extends StreamSubController {
   void doError(DioError e) {
     if (CancelToken.isCancel(e)) return;
 
-    debugPrint(e.message);
-    debugPrint(e.response.toString());
+    debugLog(e.message);
+    debugLog(e.response.toString());
 
     error.safeAdd(true);
   }
+
+  void reload() {}
+
+  void loadMore() {}
 }
 
 /// 加载数据的状态

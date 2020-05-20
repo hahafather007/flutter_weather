@@ -1,10 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_weather/common/colors.dart';
 import 'package:flutter_weather/model/data/city_data.dart';
+import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/model/data/page_module_data.dart';
+import 'package:flutter_weather/model/data/gank_data.dart';
 import 'package:flutter_weather/model/data/weather_air_data.dart';
 import 'package:flutter_weather/model/data/weather_data.dart';
+import 'package:flutter_weather/utils/log_util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// SharedPreference的管理仓库
@@ -17,13 +21,13 @@ class SharedDepository {
   factory SharedDepository() => _depository;
 
   SharedDepository._internal() {
-    debugPrint("SharedDepository初始化完成！");
+    debugLog("SharedDepository初始化完成！");
   }
 
   Future<SharedDepository> initShared() async {
     _prefs = await SharedPreferences.getInstance();
 
-    debugPrint("prefs======$_prefs");
+    debugLog("prefs======$_prefs");
 
     return this;
   }
@@ -76,20 +80,38 @@ class SharedDepository {
       .setStringList("airsData", value.map((v) => jsonEncode(v)).toList());
 
   /// 收藏的闲读文章
-  String get favReadData => _getString("favReadData");
+  List<GankItem> get favReadItems {
+    final str = _getString("favReadItems");
 
-  Future<bool> setFavReadData(String value) async =>
-      await _prefs.setString("favReadData", value);
+    if (str != null) {
+      return (jsonDecode(str) as List)
+          .map((v) => GankItem.fromJson(v))
+          .toList();
+    } else {
+      return [];
+    }
+  }
+
+  Future<bool> setFavReadItems(List<GankItem> value) async =>
+      await _prefs.setString("favReadItems", jsonEncode(value));
 
   /// 收藏的妹子图
-  String get favMziData => _getString("favMziData");
+  List<MziItem> get favMziItems {
+    final str = _getString("favMziItems");
 
-  Future<bool> setFavMziData(String value) async =>
-      await _prefs.setString("favMziData", value);
+    if (str != null) {
+      return (jsonDecode(str) as List).map((v) => MziItem.fromJson(v)).toList();
+    } else {
+      return [];
+    }
+  }
+
+  Future<bool> setFavMziItems(List<MziItem> value) async =>
+      await _prefs.setString("favMziItems", jsonEncode(value));
 
   /// 当前主题色
   Color get themeColor =>
-      Color(_getInt("themeColor", defaultValue: 0xff7DA743));
+      Color(_getInt("themeColor", defaultValue: AppColor.greenery.value));
 
   Future<bool> setThemeColor(Color color) async =>
       await _prefs.setInt("themeColor", color.value);
@@ -102,14 +124,11 @@ class SharedDepository {
 
   /// 页面模块
   List<PageModule> get pageModules {
-    final str = _getString("pageModules2");
+    final str = _getString("pageModules4");
     if (str == null) {
-      return List.from([
-        PageModule(module: "weather", open: true),
-        PageModule(module: "gift", open: true),
-        PageModule(module: "read", open: true),
-        PageModule(module: "collect", open: true),
-      ]);
+      return PageType.values
+          .map((type) => PageModule(page: type, open: true))
+          .toList();
     } else {
       return (jsonDecode(str) as List)
           .map((v) => PageModule.fromJson(v))
@@ -118,7 +137,7 @@ class SharedDepository {
   }
 
   Future<bool> setPageModules(List<PageModule> modules) async =>
-      await _prefs.setString("pageModules2", jsonEncode(modules));
+      await _prefs.setString("pageModules4", jsonEncode(modules));
 
   /// 天气分享形式是否为锤子分享
   bool get hammerShare => _getBool("hammerShare", defaultValue: true);
@@ -127,18 +146,30 @@ class SharedDepository {
       await _prefs.setBool("hammerShare", value);
 
   /// 获取已保存的图片
-  List<String> get savedImages {
-    return _getStringList("savedImages", defaultValue: []);
-  }
+  List<String> get savedImages =>
+      _getStringList("savedImages", defaultValue: []);
 
   Future<bool> setSavedImages(List<String> images) async =>
       await _prefs.setString("savedImages", jsonEncode(images));
 
   /// 自动清除图片缓存
-  bool get shouldClean => _getBool("shouldClean2020-02-11", defaultValue: true);
+  bool get shouldClean => _getBool("shouldClean2.2.0+1", defaultValue: true);
 
   Future<bool> setsShouldClean(bool value) async =>
-      await _prefs.setBool("shouldClean2020-02-11", value);
+      await _prefs.setBool("shouldClean2.2.0+1", value);
+
+  /// 用户手动设置的语言
+  Locale get appLocale {
+    final code = _getString("appLocale");
+    if (code == null) {
+      return null;
+    } else {
+      return Locale(code, "");
+    }
+  }
+
+  Future<bool> setAppLocale(Locale value) =>
+      _prefs.setString("appLocale", value.languageCode);
 
   /// ==============================================
   ///                     分界线

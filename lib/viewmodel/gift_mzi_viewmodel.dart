@@ -7,38 +7,45 @@ import 'package:flutter_weather/model/service/gift_mzi_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class GiftMziViewModel extends ViewModel {
-  final data = StreamController<List<MziData>>();
+  final data = StreamController<List<MziItem>>();
 
   final _service = GiftMziService();
-  final List<MziData> _cacheData = [];
 
-  int _page = 1;
   String _typeUrl;
-  LoadType _reloadType = LoadType.NEW_LOAD;
+  MziData _cacheData;
 
   void init({@required String typeUrl}) {
     _typeUrl = typeUrl;
     loadData(type: LoadType.NEW_LOAD);
   }
 
-  Future<Null> loadData({@required LoadType type}) async {
+  Future<void> loadData({@required LoadType type}) async {
     if (selfLoading) return;
-    selfLoading = true;
+    if (_cacheData != null && _cacheData.page >= _cacheData.maxPage) return;
 
-    if (type == LoadType.REFRESH) {
-      _page = 1;
-      _cacheData.clear();
-    } else {
+    selfLoading = true;
+    if (type != LoadType.REFRESH) {
       isLoading.safeAdd(true);
     }
 
     try {
-      final list = await _service.getData(url: _typeUrl, page: _page);
-      _cacheData.addAll(list);
-      data.add(_cacheData);
-      _page++;
+      final mziData = await _service.getImageList(
+          url: _typeUrl,
+          page: (type == LoadType.REFRESH || type == LoadType.NEW_LOAD)
+              ? 1
+              : (_cacheData?.page ?? 0) + 1);
+
+      if (type == LoadType.REFRESH || type == LoadType.NEW_LOAD) {
+        _cacheData = mziData;
+      } else {
+        _cacheData?.page = mziData.page;
+        _cacheData?.maxPage = mziData.maxPage;
+        _cacheData?.items?.addAll(mziData.items);
+      }
+
+      data.add(_cacheData.items);
     } on DioError catch (e) {
-      _reloadType = type;
+      selfLoadType = type;
       doError(e);
     } finally {
       selfLoading = false;
@@ -46,18 +53,23 @@ class GiftMziViewModel extends ViewModel {
     }
   }
 
+  @override
   void reload() {
-    loadData(type: _reloadType);
+    super.reload();
+
+    loadData(type: selfLoadType);
   }
 
+  @override
   void loadMore() {
+    super.loadMore();
+
     loadData(type: LoadType.LOAD_MORE);
   }
 
   @override
   void dispose() {
     _service.dispose();
-    _cacheData.clear();
 
     data.close();
 

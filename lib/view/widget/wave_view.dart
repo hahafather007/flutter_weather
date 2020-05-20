@@ -102,6 +102,8 @@ class _WaveState extends State<WaveView> with TickerProviderStateMixin {
                       alignment: Alignment.bottomCenter,
                       children: List.generate(widget.waveNum - 1, (index) {
                         return CustomPaint(
+                          willChange: true,
+                          isComplex: true,
                           size: Size(width, height),
                           painter: _WavePainter(
                             widget.amplitude,
@@ -148,6 +150,8 @@ class _WaveState extends State<WaveView> with TickerProviderStateMixin {
 
               // 第一层波浪
               CustomPaint(
+                willChange: true,
+                isComplex: true,
                 size: Size(width, height),
                 painter: _WavePainter(
                   widget.amplitude,

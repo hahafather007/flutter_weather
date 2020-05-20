@@ -4,18 +4,20 @@ class WeatherData {
   WeatherData({this.weathers});
 
   WeatherData.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+
     if (json['HeWeather6'] != null) {
-      weathers = new List<Weather>();
+      weathers = List<Weather>();
       json['HeWeather6'].forEach((v) {
-        weathers.add(new Weather.fromJson(v));
+        weathers.add(Weather.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.weathers != null) {
-      data['HeWeather6'] = this.weathers.map((v) => v.toJson()).toList();
+      data['HeWeather6'] = this.weathers.map((v) => v?.toJson()).toList();
     }
     return data;
   }
@@ -40,35 +42,35 @@ class Weather {
       this.lifestyle});
 
   Weather.fromJson(Map<String, dynamic> json) {
-    basic =
-        json['basic'] != null ? new WeatherBasic.fromJson(json['basic']) : null;
-    update = json['update'] != null
-        ? new WeatherUpdate.fromJson(json['update'])
-        : null;
+    if (json == null) return;
+
+    basic = json['basic'] != null ? WeatherBasic.fromJson(json['basic']) : null;
+    update =
+        json['update'] != null ? WeatherUpdate.fromJson(json['update']) : null;
     status = json['status'];
-    now = json['now'] != null ? new WeatherNow.fromJson(json['now']) : null;
+    now = json['now'] != null ? WeatherNow.fromJson(json['now']) : null;
     if (json['daily_forecast'] != null) {
-      dailyForecast = new List<WeatherDailyForecast>();
+      dailyForecast = List<WeatherDailyForecast>();
       json['daily_forecast'].forEach((v) {
-        dailyForecast.add(new WeatherDailyForecast.fromJson(v));
+        dailyForecast.add(WeatherDailyForecast.fromJson(v));
       });
     }
     if (json['hourly'] != null) {
-      hourly = new List<WeatherHourly>();
+      hourly = List<WeatherHourly>();
       json['hourly'].forEach((v) {
-        hourly.add(new WeatherHourly.fromJson(v));
+        hourly.add(WeatherHourly.fromJson(v));
       });
     }
     if (json['lifestyle'] != null) {
-      lifestyle = new List<WeatherLifestyle>();
+      lifestyle = List<WeatherLifestyle>();
       json['lifestyle'].forEach((v) {
-        lifestyle.add(new WeatherLifestyle.fromJson(v));
+        lifestyle.add(WeatherLifestyle.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.basic != null) {
       data['basic'] = this.basic.toJson();
     }
@@ -81,13 +83,13 @@ class Weather {
     }
     if (this.dailyForecast != null) {
       data['daily_forecast'] =
-          this.dailyForecast.map((v) => v.toJson()).toList();
+          this.dailyForecast.map((v) => v?.toJson()).toList();
     }
     if (this.hourly != null) {
-      data['hourly'] = this.hourly.map((v) => v.toJson()).toList();
+      data['hourly'] = this.hourly.map((v) => v?.toJson()).toList();
     }
     if (this.lifestyle != null) {
-      data['lifestyle'] = this.lifestyle.map((v) => v.toJson()).toList();
+      data['lifestyle'] = this.lifestyle.map((v) => v?.toJson()).toList();
     }
     return data;
   }
@@ -114,6 +116,8 @@ class WeatherBasic {
       this.tz});
 
   WeatherBasic.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+
     cid = json['cid'];
     location = json['location'];
     parentCity = json['parent_city'];
@@ -125,7 +129,7 @@ class WeatherBasic {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['cid'] = this.cid;
     data['location'] = this.location;
     data['parent_city'] = this.parentCity;
@@ -145,12 +149,14 @@ class WeatherUpdate {
   WeatherUpdate({this.loc, this.utc});
 
   WeatherUpdate.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+
     loc = json['loc'];
     utc = json['utc'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['loc'] = this.loc;
     data['utc'] = this.utc;
     return data;
@@ -188,6 +194,8 @@ class WeatherNow {
       this.windSpd});
 
   WeatherNow.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+
     cloud = json['cloud'];
     condCode = json['cond_code'];
     condTxt = json['cond_txt'];
@@ -204,7 +212,7 @@ class WeatherNow {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['cloud'] = this.cloud;
     data['cond_code'] = this.condCode;
     data['cond_txt'] = this.condTxt;
@@ -269,6 +277,8 @@ class WeatherDailyForecast {
       this.windSpd});
 
   WeatherDailyForecast.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+
     condCodeD = json['cond_code_d'];
     condCodeN = json['cond_code_n'];
     condTxtD = json['cond_txt_d'];
@@ -293,7 +303,7 @@ class WeatherDailyForecast {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['cond_code_d'] = this.condCodeD;
     data['cond_code_n'] = this.condCodeN;
     data['cond_txt_d'] = this.condTxtD;
@@ -350,6 +360,8 @@ class WeatherHourly {
       this.windSpd});
 
   WeatherHourly.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+
     cloud = json['cloud'];
     condCode = json['cond_code'];
     condTxt = json['cond_txt'];
@@ -366,7 +378,7 @@ class WeatherHourly {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['cloud'] = this.cloud;
     data['cond_code'] = this.condCode;
     data['cond_txt'] = this.condTxt;
@@ -392,13 +404,15 @@ class WeatherLifestyle {
   WeatherLifestyle({this.type, this.brf, this.txt});
 
   WeatherLifestyle.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+
     type = json['type'];
     brf = json['brf'];
     txt = json['txt'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['type'] = this.type;
     data['brf'] = this.brf;
     data['txt'] = this.txt;

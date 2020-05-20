@@ -5,13 +5,15 @@ import 'package:flutter_weather/model/holder/fav_holder.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class FavGiftsViewModel extends ViewModel {
-  final data = StreamController<List<MziData>>();
+  final data = StreamController<List<MziItem>>();
 
   FavGiftsViewModel() {
     FavHolder()
         .favMziStream
-        .listen((list) => data.safeAdd(list.where((v) => v.isImages).toList()))
+        .map((list) => list.where((v) => v.isImages).toList())
+        .listen(data.safeAdd)
         .bindLife(this);
+
     data.safeAdd(FavHolder().favMzis.where((v) => v.isImages).toList());
   }
 

@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:dragable_flutter_list/dragable_flutter_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/data/weather_data.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/view/page/city_choose_page.dart';
@@ -32,7 +32,7 @@ class CityControlState extends PageState<CityControlPage> {
       key: scafKey,
       appBar: CustomAppBar(
         title: Text(
-          AppText.of(context).cityControl,
+          S.of(context).cityControl,
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -58,7 +58,7 @@ class CityControlState extends PageState<CityControlPage> {
 
               final result = await _viewModel.addCity(location);
               if (!result) {
-                showSnack(text: AppText.of(context).repeatCity);
+                showSnack(text: S.of(context).repeatCity);
               }
             },
           ),
@@ -141,7 +141,7 @@ class CityControlState extends PageState<CityControlPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        now?.condTxt ?? AppText.of(context).unknown,
+                        now?.condTxt ?? S.of(context).unknown,
                         style:
                             TextStyle(fontSize: 12, color: AppColor.text1),
                       ),
@@ -150,7 +150,7 @@ class CityControlState extends PageState<CityControlPage> {
                         child: Text(
                           now?.tmp != null
                               ? "${now.tmp}℃"
-                              : AppText.of(context).unknown,
+                              : S.of(context).unknown,
                           style: TextStyle(
                               fontSize: 12, color: AppColor.text1),
                         ),

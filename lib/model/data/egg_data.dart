@@ -16,28 +16,30 @@ class EggData {
       this.comments});
 
   EggData.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+
     status = json['status'];
     currentPage = json['current_page'];
     totalComments = json['total_comments'];
     pageCount = json['page_count'];
     count = json['count'];
     if (json['comments'] != null) {
-      comments = new List<EggComments>();
+      comments = List<EggComments>();
       json['comments'].forEach((v) {
-        comments.add(new EggComments.fromJson(v));
+        comments.add(EggComments.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['status'] = this.status;
     data['current_page'] = this.currentPage;
     data['total_comments'] = this.totalComments;
     data['page_count'] = this.pageCount;
     data['count'] = this.count;
     if (this.comments != null) {
-      data['comments'] = this.comments.map((v) => v.toJson()).toList();
+      data['comments'] = this.comments.map((v) => v?.toJson()).toList();
     }
     return data;
   }
@@ -72,6 +74,8 @@ class EggComments {
       this.pics});
 
   EggComments.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+
     commentID = json['comment_ID'];
     commentPostID = json['comment_post_ID'];
     commentAuthor = json['comment_author'];
@@ -87,7 +91,7 @@ class EggComments {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['comment_ID'] = this.commentID;
     data['comment_post_ID'] = this.commentPostID;
     data['comment_author'] = this.commentAuthor;

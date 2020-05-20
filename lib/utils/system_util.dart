@@ -118,7 +118,7 @@ Future push<T extends StatefulWidget>(BuildContext context,
 void exitApp() => SystemNavigator.pop();
 
 /// 打开浏览器
-void openBrowser(String url) async {
+Future<void> openBrowser(String url)  async {
   if (await canLaunch(url)) {
     await launch(url);
   } else {

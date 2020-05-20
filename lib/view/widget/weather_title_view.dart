@@ -171,7 +171,7 @@ class _WeatherTitleState extends State<WeatherTitleView> {
     _titleKeys.clear();
     _titleKeys.addAll(widget.cities.map((_) => GlobalKey()));
     _timer?.cancel();
-    _timer = Timer(const Duration(milliseconds: 50), () {
+    _timer = Timer(const Duration(milliseconds: 100), () {
       _titleWidth.clear();
       _titleWidth.addAll(_titleKeys.map((v) => v.currentContext.size.width));
       _initPadding();

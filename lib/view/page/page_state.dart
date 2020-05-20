@@ -5,7 +5,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_weather/common/streams.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:path_provider/path_provider.dart';
 
 export 'package:flutter_weather/common/streams.dart'
@@ -17,8 +17,6 @@ abstract class PageState<T extends StatefulWidget> extends State<T>
   final scafKey = GlobalKey<ScaffoldState>();
   @protected
   final boundaryKey = GlobalKey();
-
-  bool _bindError = false;
 
   bool get bindLife => false;
 
@@ -48,27 +46,14 @@ abstract class PageState<T extends StatefulWidget> extends State<T>
     return file;
   }
 
-  /// 绑定viewModel中通用的stream
-  @protected
-  void bindErrorStream(Stream<bool> error,
-      {@required String errorText, @required Function retry}) {
-    if (_bindError) return;
-    _bindError = true;
-
-    error
-        .where((b) => b)
-        .listen((_) => _networkError(errorText: errorText, retry: retry))
-        .bindLife(this);
-  }
-
-  /// 网络错误
-  void _networkError({@required String errorText, @required Function retry}) {
+  /// 网络错误弹窗
+  void networkError({@required String errorText, @required VoidCallback retry}) {
     scafKey.currentState.removeCurrentSnackBar();
     scafKey.currentState.showSnackBar(SnackBar(
       content: Text(errorText),
       duration: const Duration(days: 1),
       action: SnackBarAction(
-        label: AppText.of(context).retry,
+        label: S.of(context).retry,
         onPressed: retry,
       ),
     ));

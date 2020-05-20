@@ -67,6 +67,7 @@ class _FogState extends State<FogView> with TickerProviderStateMixin {
             }
 
             return CustomPaint(
+              willChange: true,
               size: Size(width, width / 2),
               painter: _FogPainter(_anim.value, opacity),
             );
@@ -81,6 +82,7 @@ class _FogState extends State<FogView> with TickerProviderStateMixin {
             }
 
             return CustomPaint(
+              willChange: true,
               size: Size(width, width / 2),
               painter: _FogPainter(_anim2.value, opacity),
             );

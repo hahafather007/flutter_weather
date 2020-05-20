@@ -71,3 +71,6 @@ build/
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 .flutter-plugins-dependencies
 pubspec.yaml___jb_tmp___
+Flutter.podspec
+flutter_export_environment.sh
+project.pbxproj

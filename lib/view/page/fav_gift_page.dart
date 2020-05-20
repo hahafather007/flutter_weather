@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/utils/system_util.dart';
-import 'package:flutter_weather/view/page/gift_gank_watch_page.dart';
+import 'package:flutter_weather/view/page/gift_photo_watch_page.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:flutter_weather/view/widget/net_image.dart';
 import 'package:flutter_weather/viewmodel/fav_gift_viewmodel.dart';
@@ -42,7 +42,7 @@ class FavGiftState extends PageState<FavGiftPage>
     return StreamBuilder(
       stream: _viewModel.data.stream,
       builder: (context, snapshot) {
-        final List<MziData> list = snapshot.data ?? [];
+        final List<MziItem> list = snapshot.data ?? [];
 
         return Stack(
           children: <Widget>[
@@ -62,7 +62,7 @@ class FavGiftState extends PageState<FavGiftPage>
                 return RepaintBoundary(
                   child: GestureDetector(
                     onTap: () => push(context,
-                        page: GiftGankWatchPage(index: index, photos: list)),
+                        page: GiftPhotoWatchPage(index: index, photos: list)),
                     child: AspectRatio(
                       aspectRatio: data.width / data.height,
                       child: Hero(
@@ -80,7 +80,7 @@ class FavGiftState extends PageState<FavGiftPage>
                 ? Container(
                     alignment: Alignment.center,
                     child: Text(
-                      AppText.of(context).listEmpty,
+                      S.of(context).listEmpty,
                       style: TextStyle(
                         fontSize: 16,
                         color: AppColor.text3,

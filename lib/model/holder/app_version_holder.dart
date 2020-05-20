@@ -2,9 +2,10 @@ import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/service/app_version_service.dart';
 import 'package:flutter_weather/utils/channel_util.dart';
+import 'package:flutter_weather/utils/log_util.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/utils/view_util.dart';
 import 'package:package_info/package_info.dart';
@@ -19,7 +20,7 @@ class AppVersionHolder {
 
   AppVersionHolder._internal();
 
-  void checkUpdate(BuildContext context) async {
+  Future<void> checkUpdate(BuildContext context) async {
     await Future.delayed(const Duration(milliseconds: 200));
 
     final packageInfo = await PackageInfo.fromPlatform();
@@ -38,89 +39,87 @@ class AppVersionHolder {
 
             if (readyUpdate) {
               await showDiffDialog(context,
-                  title: Text(AppText.of(context).newVersionReady),
+                  title: Text(S.of(context).newVersionReady),
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(AppText.of(context).newVersionReadyLong),
+                      Text(S.of(context).newVersionReadyLong),
                       Container(height: 12),
                       Text(
-                        "${AppText.of(context).updateTime}${version.time}",
-                        style:
-                            TextStyle(fontSize: 14, color: AppColor.text2),
+                        "${S.of(context).updateTime}${version.time}",
+                        style: TextStyle(fontSize: 14, color: AppColor.text2),
                       ),
                       Text(
-                        "${AppText.of(context).apkSize}${version.size}",
-                        style:
-                            TextStyle(fontSize: 14, color: AppColor.text2),
+                        "${S.of(context).apkSize}${version.size}",
+                        style: TextStyle(fontSize: 14, color: AppColor.text2),
                       ),
                     ],
                   ),
-                  yesText: AppText.of(context).install,
-                  noText: AppText.of(context).wait,
-                  pressed: () =>
+                  yesText: S.of(context).install,
+                  noText: S.of(context).wait,
+                  onPressed: () =>
                       ChannelUtil.installApp(verCode: version.version));
             }
           } else {
             await showDiffDialog(
               context,
-              title: Text(AppText.of(context).hasNewVersion),
+              title: Text(S.of(context).hasNewVersion),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(AppText.of(context).hasNewVersionLong),
+                  Text(S.of(context).hasNewVersionLong),
                   Container(height: 12),
                   Text(
-                    "${AppText.of(context).updateTime}${version.time}",
+                    "${S.of(context).updateTime}${version.time}",
                     style: TextStyle(fontSize: 14, color: AppColor.text2),
                   ),
                   Text(
-                    "${AppText.of(context).apkSize}${version.size}",
+                    "${S.of(context).apkSize}${version.size}",
                     style: TextStyle(fontSize: 14, color: AppColor.text2),
                   ),
                 ],
               ),
-              yesText: AppText.of(context).download,
-              noText: AppText.of(context).wait,
-              pressed: () async {
+              yesText: S.of(context).download,
+              noText: S.of(context).wait,
+              onPressed: () async {
                 pop(context);
 
-                ToastUtil.showToast(AppText.of(context).apkStartDownload);
+                ToastUtil.showToast(context, S.of(context).apkStartDownload);
                 final readyUpdate = await ChannelUtil.updateApp(
                     url: version.url, verCode: version.version, isWifi: false);
 
                 if (readyUpdate) {
-                  ToastUtil.showToast(AppText.of(context).apkPleaseInstall);
+                  ToastUtil.showToast(context, S.of(context).apkPleaseInstall);
                 } else {
-                  ToastUtil.showToast(AppText.of(context).apkFail);
+                  ToastUtil.showToast(context, S.of(context).apkFail);
                 }
               },
             );
           }
         } else {
           await showDiffDialog(context,
-              title: Text(AppText.of(context).hasNewVersion),
+              title: Text(S.of(context).hasNewVersion),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(AppText.of(context).hasNewVersionLongIOS),
+                  Text(S.of(context).hasNewVersionLongIOS),
                   Container(height: 12),
                   Text(
-                    "${AppText.of(context).updateTime}${version.time}",
+                    "${S.of(context).updateTime}${version.time}",
                     style: TextStyle(fontSize: 14, color: AppColor.text2),
                   ),
                 ],
               ),
-              yesText: AppText.of(context).certain,
-              noText: AppText.of(context).wait,
-              pressed: () => pop(context));
+              yesText: S.of(context).certain,
+              noText: S.of(context).wait,
+              onPressed: () => pop(context));
         }
       }
     } on DioError catch (e) {
-      debugPrint(e.toString());
+      debugLog(e.toString());
     }
   }
 

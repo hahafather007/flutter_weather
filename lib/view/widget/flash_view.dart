@@ -84,6 +84,7 @@ class _FlashState extends State<FlashView> with TickerProviderStateMixin {
                 return Opacity(
                   opacity: 1 - _hideController.value,
                   child: CustomPaint(
+                    willChange: true,
                     size: Size(widget.width, widget.height),
                     painter: _FlashPainter(
                         paths, _showAnim.value.round(), _widthAnim.value),

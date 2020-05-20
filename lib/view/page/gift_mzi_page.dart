@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/view/page/gift_mzi_image_page.dart';
@@ -31,7 +31,6 @@ class GiftMziState extends PageState<GiftMziPage>
   void initState() {
     super.initState();
 
-    _viewModel.init(typeUrl: widget.typeUrl);
     _scrollController.addListener(() {
       // 滑到底部加载更多
       if (_scrollController.position.pixels ==
@@ -39,33 +38,31 @@ class GiftMziState extends PageState<GiftMziPage>
         _viewModel.loadMore();
       }
     });
-  }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    String errorText = "";
-    switch (widget.typeUrl) {
-      case "mm":
-        errorText = AppText.of(context).beachGirlFail;
-        break;
-      case "hot":
-        errorText = AppText.of(context).mostHotFail;
-        break;
-      case "taiwan":
-        errorText = AppText.of(context).taiwanGirFail;
-        break;
-      case "xinggan":
-        errorText = AppText.of(context).sexGirlFail;
-        break;
-      case "japan":
-        errorText = AppText.of(context).japanGirlFail;
-        break;
-    }
-    bindErrorStream(_viewModel.error.stream,
-        errorText: errorText,
-        retry: () => _viewModel.loadData(type: LoadType.NEW_LOAD));
+    _viewModel
+      ..init(typeUrl: widget.typeUrl)
+      ..error
+          .stream
+          .where((b) => b)
+          .map((_) {
+            switch (widget.typeUrl) {
+              case "mm":
+                return S.of(context).beachGirlFail;
+              case "hot":
+                return S.of(context).mostHotFail;
+              case "taiwan":
+                return S.of(context).taiwanGirFail;
+              case "xinggan":
+                return S.of(context).sexGirlFail;
+              case "japan":
+                return S.of(context).japanGirlFail;
+              default:
+                return "";
+            }
+          })
+          .listen(
+              (text) => networkError(errorText: text, retry: _viewModel.reload))
+          .bindLife(this);
   }
 
   @override
@@ -87,7 +84,7 @@ class GiftMziState extends PageState<GiftMziPage>
         child: StreamBuilder(
           stream: _viewModel.data.stream,
           builder: (context, snapshot) {
-            final List<MziData> list = snapshot.data ?? [];
+            final List<MziItem> list = snapshot.data ?? [];
 
             return RefreshIndicator(
               onRefresh: () => _viewModel.loadData(type: LoadType.REFRESH),
@@ -103,8 +100,6 @@ class GiftMziState extends PageState<GiftMziPage>
                 staggeredTileBuilder: (index) => StaggeredTile.fit(1),
                 itemBuilder: (context, index) {
                   final data = list[index];
-                  final headers = Map<String, String>();
-                  headers["Referer"] = data.refer;
 
                   return RepaintBoundary(
                     child: GestureDetector(
@@ -116,7 +111,7 @@ class GiftMziState extends PageState<GiftMziPage>
                           AspectRatio(
                             aspectRatio: data.width / data.height,
                             child: NetImage(
-                              headers: headers,
+                              headers: {"Referer": data.refer},
                               url: data.url,
                             ),
                           ),

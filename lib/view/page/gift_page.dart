@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/holder/event_send_holder.dart';
 import 'package:flutter_weather/view/page/gift_egg_page.dart';
 import 'package:flutter_weather/view/page/gift_gank_page.dart';
@@ -16,7 +16,7 @@ class GiftPage extends StatelessWidget {
         children: <Widget>[
           CustomAppBar(
             title: Text(
-              AppText.of(context).gift,
+              S.of(context).gift,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 20,
@@ -36,13 +36,13 @@ class GiftPage extends StatelessWidget {
               indicatorColor: Colors.white,
               isScrollable: true,
               tabs: [
-                Tab(text: AppText.of(context).egg),
-                Tab(text: AppText.of(context).gank),
-                Tab(text: AppText.of(context).beachGirl),
-                Tab(text: AppText.of(context).mostHot),
-                Tab(text: AppText.of(context).taiwanGirl),
-                Tab(text: AppText.of(context).sexGirl),
-                Tab(text: AppText.of(context).japanGirl),
+                Tab(text: S.of(context).egg),
+                Tab(text: S.of(context).gank),
+                Tab(text: S.of(context).beachGirl),
+                Tab(text: S.of(context).mostHot),
+                Tab(text: S.of(context).taiwanGirl),
+                Tab(text: S.of(context).sexGirl),
+                Tab(text: S.of(context).japanGirl),
               ],
             ),
           ),

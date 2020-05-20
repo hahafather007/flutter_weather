@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/model/holder/fav_holder.dart';
 import 'package:flutter_weather/utils/system_util.dart';
-import 'package:flutter_weather/view/page/gift_mzi_watch_page.dart';
+import 'package:flutter_weather/view/page/gift_photo_watch_page.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:flutter_weather/view/widget/custom_app_bar.dart';
 import 'package:flutter_weather/view/widget/loading_view.dart';
@@ -12,7 +12,7 @@ import 'package:flutter_weather/view/widget/net_image.dart';
 import 'package:flutter_weather/viewmodel/gift_mzi_image_viewmodel.dart';
 
 class GiftMziImagePage extends StatefulWidget {
-  final MziData data;
+  final MziItem data;
 
   GiftMziImagePage({@required this.data});
 
@@ -29,16 +29,14 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
   void initState() {
     super.initState();
 
-    _viewModel = GiftMziImageViewModel(data: widget.data)..loadData();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    bindErrorStream(_viewModel.error.stream,
-        errorText: AppText.of(context).imageSetFail,
-        retry: () => _viewModel.loadData());
+    _viewModel = GiftMziImageViewModel(data: widget.data)
+      ..loadData()
+      ..error
+          .stream
+          .where((b) => b)
+          .listen((_) => networkError(
+              errorText: S.of(context).imageSetFail, retry: _viewModel.reload))
+          .bindLife(this);
   }
 
   @override
@@ -55,7 +53,7 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
       key: scafKey,
       appBar: CustomAppBar(
         title: Text(
-          AppText.of(context).imageSet,
+          S.of(context).imageSet,
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -72,8 +70,9 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
         rightBtns: <Widget>[
           StreamBuilder(
             stream: _viewModel.isFav.stream,
+            initialData: false,
             builder: (context, snapshot) {
-              final isFav = snapshot.data ?? false;
+              final isFav = snapshot.data;
 
               return IconButton(
                 icon: Icon(
@@ -91,7 +90,7 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
         child: StreamBuilder(
           stream: _viewModel.data.stream,
           builder: (context, snapshot) {
-            final List<MziData> list = snapshot.data ?? [];
+            final List<MziItem> list = snapshot.data ?? [];
 
             return StreamBuilder(
               stream: _viewModel.dataLength.stream,
@@ -112,22 +111,20 @@ class GiftMziImageState extends PageState<GiftMziImagePage> {
                     staggeredTileBuilder: (index) => StaggeredTile.fit(1),
                     itemBuilder: (context, index) {
                       final data = list[index];
-                      final headers = Map<String, String>();
-                      headers["Referer"] = data.refer;
 
                       return GestureDetector(
                         onTap: () => push(context,
-                            page: GiftMziWatchPage(
+                            page: GiftPhotoWatchPage(
                                 index: index,
-                                length: length,
+                                max: length,
                                 photos: list,
-                                photoStream: _viewModel.photoStream)),
+                                photoStream: _viewModel.photoStream.stream)),
                         child: AspectRatio(
                           aspectRatio: data.width / data.height,
                           child: Hero(
                             tag: "${data.url}${index}true",
                             child: NetImage(
-                              headers: headers,
+                              headers: {"Referer": data.refer},
                               url: data.url,
                             ),
                           ),

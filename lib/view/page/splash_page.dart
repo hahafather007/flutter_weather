@@ -16,11 +16,8 @@ class SplashState extends PageState<SplashPage> {
   void initState() {
     super.initState();
 
-    Observable.zip2(
-            Future.delayed(const Duration(milliseconds: 500)).asStream(),
-            SharedDepository().initShared().asStream(),
-            (a, b) => b)
-        .map((shared) => shared.themeColor)
+    Rx.timer(Null, const Duration(milliseconds: 500))
+        .map((_) => SharedDepository().themeColor)
         .map((color) =>
             EventSendHolder().sendEvent(tag: "themeChange", event: color))
         .listen((_) => push(context, page: HomePage(), replace: true))

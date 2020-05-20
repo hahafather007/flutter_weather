@@ -1,27 +1,26 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter_weather/common/streams.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
-import 'package:flutter_weather/model/data/read_data.dart';
+import 'package:flutter_weather/model/data/gank_data.dart';
 import 'package:flutter_weather/model/holder/shared_depository.dart';
 
-class FavHolder<T> {
+class FavHolder {
   static final FavHolder _holder = FavHolder._internal();
 
   factory FavHolder() => _holder;
 
-  final _favReadBroadcast = StreamController<List<ReadData>>();
-  final _favMziBroadcast = StreamController<List<MziData>>();
-  final List<ReadData> _cacheReads = [];
-  final List<MziData> _cacheMzis = [];
+  final _favReadBroadcast = StreamController<List<GankItem>>();
+  final _favMziBroadcast = StreamController<List<MziItem>>();
+  final _cacheReads = List<GankItem>();
+  final _cacheMzis = List<MziItem>();
 
-  Stream<List<ReadData>> favReadStream;
-  Stream<List<MziData>> favMziStream;
+  Stream<List<GankItem>> favReadStream;
+  Stream<List<MziItem>> favMziStream;
 
-  List<MziData> get favMzis => _cacheMzis;
+  List<MziItem> get favMzis => _cacheMzis;
 
-  List<ReadData> get favReads => _cacheReads;
+  List<GankItem> get favReads => _cacheReads;
 
   FavHolder._internal() {
     favReadStream = _favReadBroadcast.stream.asBroadcastStream();
@@ -31,55 +30,49 @@ class FavHolder<T> {
   }
 
   void _init() {
-    final readValue = SharedDepository().favReadData;
-    if (readValue != null) {
-      final list =
-          (jsonDecode(readValue) as List).map((v) => ReadData.fromJson(v));
-      _cacheReads.addAll(list);
-    }
+    _cacheReads.addAll(SharedDepository().favReadItems);
     _favReadBroadcast.safeAdd(_cacheReads);
-
-    final mziValue = SharedDepository().favMziData;
-    if (mziValue != null) {
-      final list =
-          (json.decode(mziValue) as List).map((v) => MziData.fromJson(v));
-      _cacheMzis.addAll(list);
-    }
+    _cacheMzis.addAll(SharedDepository().favMziItems);
     _favMziBroadcast.safeAdd(_cacheMzis);
   }
 
   /// 添加或取消收藏
-  void autoFav(T t) async {
-    if (t == null) return;
+  Future<void> autoFav(dynamic data) async {
+    if (data == null) return;
 
-    if (t is ReadData) {
-      if (isFavorite(t)) {
-        _cacheReads.removeWhere((v) => v.url == t.url);
+    if (data is GankItem) {
+      if (isFavorite(data)) {
+        _cacheReads.removeWhere((v) => v.sId == data.sId);
       } else {
-        _cacheReads.add(t);
+        _cacheReads.add(data);
       }
 
       _favReadBroadcast.safeAdd(_cacheReads);
-      await SharedDepository().setFavReadData(json.encode(_cacheReads));
-    } else if (t is MziData) {
-      if (isFavorite(t)) {
-        _cacheMzis
-            .removeWhere((v) => v.url == t.url && v.isImages == t.isImages);
+      SharedDepository().setFavReadItems(_cacheReads);
+    } else if (data is MziItem) {
+      if (isFavorite(data)) {
+        _cacheMzis.removeWhere(
+            (v) => v.url == data.url && v.isImages == data.isImages);
       } else {
-        _cacheMzis.add(t);
+        _cacheMzis.add(data);
       }
 
       _favMziBroadcast.safeAdd(_cacheMzis);
-      await SharedDepository().setFavMziData(json.encode(_cacheMzis));
+      SharedDepository().setFavMziItems(_cacheMzis);
     }
   }
 
-  /// 判断[t]是否被收藏
-  bool isFavorite(T t) {
-    if (t is ReadData) {
-      return _cacheReads.any((v) => v.url == t.url);
-    } else if (t is MziData) {
-      return _cacheMzis.any((v) => v.url == t.url && v.isImages == t.isImages);
+  /// 判断[data]是否被收藏
+  bool isFavorite(dynamic data) {
+    if(data == null){
+      return false;
+    }
+
+    if (data is GankItem) {
+      return _cacheReads.any((v) => v.sId == data.sId);
+    } else if (data is MziItem) {
+      return _cacheMzis
+          .any((v) => v.url == data.url && v.isImages == data.isImages);
     }
 
     return false;

@@ -1,7 +1,7 @@
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/holder/fav_holder.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
@@ -75,8 +75,9 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
             widget.favData != null
                 ? StreamBuilder(
                     stream: _viewModel.isFav.stream,
+                    initialData: false,
                     builder: (context, snapshot) {
-                      final isFav = snapshot.data ?? false;
+                      final isFav = snapshot.data;
 
                       return IconButton(
                         icon: Icon(
@@ -96,19 +97,19 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
               itemBuilder: (context) => [
                 PopupMenuItem(
                   value: "refresh",
-                  child: Text(AppText.of(context).refresh),
+                  child: Text(S.of(context).refresh),
                 ),
                 PopupMenuItem(
                   value: "share",
-                  child: Text(AppText.of(context).share),
+                  child: Text(S.of(context).share),
                 ),
                 PopupMenuItem(
                   value: "copy",
-                  child: Text(AppText.of(context).copyUrl),
+                  child: Text(S.of(context).copyUrl),
                 ),
                 PopupMenuItem(
                   value: "openByOther",
-                  child: Text(AppText.of(context).openByOther),
+                  child: Text(S.of(context).openByOtherWay),
                 ),
               ],
               onSelected: (value) {
@@ -117,12 +118,12 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
                     _controller?.reload();
                     break;
                   case "share":
-                    Share.text(AppText.of(context).share,
+                    Share.text(S.of(context).share,
                         "${widget.title}\n${widget.url}", "text/plain");
                     break;
                   case "copy":
                     Clipboard.setData(ClipboardData(text: widget.url));
-                    showSnack(text: AppText.of(context).alreadyCopyUrl);
+                    showSnack(text: S.of(context).alreadyCopyUrl);
                     break;
                   case "openByOther":
                     openBrowser(widget.url);

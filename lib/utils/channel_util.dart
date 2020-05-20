@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_weather/model/data/city_data.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 
+import 'log_util.dart';
+
 class ChannelUtil {
   /// 平台通道工具
   static final _platform = MethodChannel(_ChannelTag.CHANNEL_NAME);
@@ -68,7 +70,7 @@ class ChannelUtil {
   }
 
   /// 更新安装包
-  static Future<Null> installApp({@required int verCode}) async {
+  static Future<void> installApp({@required int verCode}) async {
     try {
       await _platform.invokeMethod(_ChannelTag.INSTALL_APK, {
         "verCode": verCode,
@@ -93,7 +95,7 @@ class ChannelUtil {
   }
 
   /// 设置壁纸
-  static Future<Null> setWallpaper({@required String path}) async {
+  static Future<void> setWallpaper({@required String path}) async {
     try {
       await _platform.invokeMethod(_ChannelTag.SET_WALLPAPER, {
         "path": path,
@@ -104,7 +106,7 @@ class ChannelUtil {
   }
 
   static void _doError<T extends Exception>(T e) =>
-      debugPrint("=====>通道错误：${e.toString()}");
+      debugLog("=====>通道错误：${e.toString()}");
 }
 
 /// 平台通道的名字和方法

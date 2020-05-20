@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/model/data/egg_data.dart';
 import 'package:flutter_weather/model/service/service.dart';
+import 'package:flutter_weather/utils/log_util.dart';
 
 class GiftEggService extends Service {
   GiftEggService() {
@@ -9,15 +10,15 @@ class GiftEggService extends Service {
   }
 
   Future<EggData> getData({@required int page}) async {
-    final response = await dio.get(
+    final response = await get(
         "/?oxwlxojflwblxbsapi=jandan.get_ooxx_comments&page=$page",
         cancelToken: cancelToken);
 
-    debugPrint(response.toString());
+    debugLog(response.toString());
 
     final egg = EggData.fromJson(response.data);
     if (egg.status != "ok") {
-      throw DioError(message: "我也不知为什么，它就是出错了");
+      throw DioError(error: "我也不知为什么，它就是出错了");
     } else {
       return egg;
     }

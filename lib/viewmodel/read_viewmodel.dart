@@ -1,45 +1,24 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_weather/model/data/read_data.dart';
-import 'package:flutter_weather/model/service/read_service.dart';
+import 'package:flutter_weather/model/data/gank_data.dart';
+import 'package:flutter_weather/model/service/gank_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class ReadViewModel extends ViewModel {
-  final data = StreamController<List<ReadData>>();
+  final titles = StreamController<List<GankTitle>>();
 
-  final _service = ReadService();
-  final List<ReadData> _cacheData = [];
+  final _service = GankService();
 
-  bool selfLoading = false;
-  int _page = 1;
-  String _typeUrl;
-
-  void init({@required String typeUrl}) {
-    _typeUrl = typeUrl;
-    loadData(type: LoadType.NEW_LOAD);
-  }
-
-  Future<Null> loadData({@required LoadType type}) async {
+  Future<void> loadTitle() async {
     if (selfLoading) return;
-    selfLoading = true;
 
-    if (type == LoadType.REFRESH) {
-      _page = 1;
-      _cacheData.clear();
-    } else {
-      isLoading.safeAdd(true);
-    }
+    selfLoading = true;
+    isLoading.safeAdd(true);
 
     try {
-      final list = await _service.getReadList(lastUrl: _typeUrl, page: _page);
-
-      _cacheData.addAll(list);
-      data.safeAdd(_cacheData);
-      _page++;
+      titles.safeAdd(await _service.getTitles(category: "Article"));
     } on DioError catch (e) {
-      selfLoadType = type;
       doError(e);
     } finally {
       selfLoading = false;
@@ -47,20 +26,18 @@ class ReadViewModel extends ViewModel {
     }
   }
 
+  @override
   void reload() {
-    loadData(type: selfLoadType);
-  }
+    super.reload();
 
-  void loadMore() {
-    loadData(type: LoadType.LOAD_MORE);
+    loadTitle();
   }
 
   @override
   void dispose() {
     _service.dispose();
-    _cacheData.clear();
 
-    data.close();
+    titles.close();
 
     super.dispose();
   }

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/data/mixing.dart';
 import 'package:flutter_weather/model/data/weather_air_data.dart';
 import 'package:flutter_weather/model/data/weather_data.dart';
@@ -142,17 +142,15 @@ class WeatherState extends PageState<WeatherPage> {
                                     itemBuilder: (context) => [
                                       PopupMenuItem(
                                         value: "share",
-                                        child: Text(AppText.of(context).share),
+                                        child: Text(S.of(context).share),
                                       ),
                                       PopupMenuItem(
                                         value: "cities",
-                                        child: Text(
-                                            AppText.of(context).cityControl),
+                                        child: Text(S.of(context).cityControl),
                                       ),
                                       PopupMenuItem(
                                         value: "weathers",
-                                        child: Text(
-                                            AppText.of(context).weathersView),
+                                        child: Text(S.of(context).weathersView),
                                       ),
                                     ],
                                     onSelected: (value) {
@@ -273,29 +271,30 @@ class WeatherState extends PageState<WeatherPage> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-          AppText.of(context).weathersView,
-          style: TextStyle(fontSize: 20, color: Colors.black),
+          S.of(context).weathersView,
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.black,
+          ),
         ),
         contentPadding: const EdgeInsets.only(),
         titlePadding: const EdgeInsets.fromLTRB(20, 18, 0, 10),
-        content: Container(
-          height: double.maxFinite,
-          width: double.maxFinite,
-          child: ListView(
-            physics: const ClampingScrollPhysics(),
-            padding: const EdgeInsets.only(),
+        content: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
+          padding: const EdgeInsets.only(),
+          child: Column(
             children: <Widget>[
-              _buildDialogItem(title: AppText.of(context).sunny),
-              _buildDialogItem(title: AppText.of(context).cloudy),
-              _buildDialogItem(title: AppText.of(context).overcast),
-              _buildDialogItem(title: AppText.of(context).rain),
-              _buildDialogItem(title: AppText.of(context).flashRain),
-              _buildDialogItem(title: AppText.of(context).snowRain),
-              _buildDialogItem(title: AppText.of(context).snow),
-              _buildDialogItem(title: AppText.of(context).hail),
-              _buildDialogItem(title: AppText.of(context).fog),
-              _buildDialogItem(title: AppText.of(context).smog),
-              _buildDialogItem(title: AppText.of(context).sandstorm),
+              _buildDialogItem(title: S.of(context).sunny),
+              _buildDialogItem(title: S.of(context).cloudy),
+              _buildDialogItem(title: S.of(context).overcast),
+              _buildDialogItem(title: S.of(context).rain),
+              _buildDialogItem(title: S.of(context).flashRain),
+              _buildDialogItem(title: S.of(context).snowRain),
+              _buildDialogItem(title: S.of(context).snow),
+              _buildDialogItem(title: S.of(context).hail),
+              _buildDialogItem(title: S.of(context).fog),
+              _buildDialogItem(title: S.of(context).smog),
+              _buildDialogItem(title: S.of(context).sandstorm),
             ],
           ),
         ),

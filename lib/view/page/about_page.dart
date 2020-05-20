@@ -6,7 +6,7 @@ import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/utils/channel_util.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/utils/view_util.dart';
@@ -51,79 +51,78 @@ class AboutState extends PageState<AboutPage> {
       _paddingStream.safeAdd(offset / 2);
     });
 
-    _viewModel.version.stream.listen((version) async {
-      final packageInfo = await PackageInfo.fromPlatform();
-      final needUpdate = int.parse(packageInfo.buildNumber) < version.version;
+    _viewModel
+      ..version.stream.listen((version) async {
+        final packageInfo = await PackageInfo.fromPlatform();
+        final needUpdate = int.parse(packageInfo.buildNumber) < version.version;
 
-      if (needUpdate) {
-        if (isAndroid) {
-          showDiffDialog(
-            context,
-            title: Text(AppText.of(context).hasNewVersion),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(AppText.of(context).hasNewVersionLong),
-                Container(height: 12),
-                Text(
-                  "${AppText.of(context).updateTime}${version.time}",
-                  style: TextStyle(fontSize: 14, color: AppColor.text2),
-                ),
-                Text(
-                  "${AppText.of(context).apkSize}${version.size}",
-                  style: TextStyle(fontSize: 14, color: AppColor.text2),
-                ),
-              ],
-            ),
-            yesText: AppText.of(context).download,
-            noText: AppText.of(context).wait,
-            pressed: () {
-              pop(context);
-
-              ToastUtil.showToast(AppText.of(context).apkStartDownload);
-              _viewModel.updateApp(version.url, version.version);
-            },
-          );
-        } else {
-          await showDiffDialog(context,
-              title: Text(AppText.of(context).hasNewVersion),
+        if (needUpdate) {
+          if (isAndroid) {
+            showDiffDialog(
+              context,
+              title: Text(S.of(context).hasNewVersion),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(AppText.of(context).hasNewVersionLongIOS),
+                  Text(S.of(context).hasNewVersionLong),
                   Container(height: 12),
                   Text(
-                    "${AppText.of(context).updateTime}${version.time}",
+                    "${S.of(context).updateTime}${version.time}",
+                    style: TextStyle(fontSize: 14, color: AppColor.text2),
+                  ),
+                  Text(
+                    "${S.of(context).apkSize}${version.size}",
                     style: TextStyle(fontSize: 14, color: AppColor.text2),
                   ),
                 ],
               ),
-              yesText: AppText.of(context).certain,
-              noText: AppText.of(context).wait,
-              pressed: () => pop(context));
+              yesText: S.of(context).download,
+              noText: S.of(context).wait,
+              onPressed: () {
+                pop(context);
+
+                ToastUtil.showToast(context, S.of(context).apkStartDownload);
+                _viewModel.updateApp(version.url, version.version);
+              },
+            );
+          } else {
+            await showDiffDialog(context,
+                title: Text(S.of(context).hasNewVersion),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(S.of(context).hasNewVersionLongIOS),
+                    Container(height: 12),
+                    Text(
+                      "${S.of(context).updateTime}${version.time}",
+                      style: TextStyle(fontSize: 14, color: AppColor.text2),
+                    ),
+                  ],
+                ),
+                yesText: S.of(context).certain,
+                noText: S.of(context).wait,
+                onPressed: () => pop(context));
+          }
+        } else {
+          showSnack(text: S.of(context).alreadyNew);
         }
-      } else {
-        showSnack(text: AppText.of(context).alreadyNew);
-      }
-    }).bindLife(this);
-    _viewModel.updateResult.stream.where((_) => isAndroid).listen((b) {
-      if (b) {
-        showSnack(text: AppText.of(context).apkPleaseInstall);
-      } else {
-        showSnack(text: AppText.of(context).apkFail);
-      }
-    }).bindLife(this);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    bindErrorStream(_viewModel.error.stream,
-        errorText: AppText.of(context).checkUpdateFail,
-        retry: () => _viewModel.checkUpdate());
+      }).bindLife(this)
+      ..updateResult.stream.where((_) => isAndroid).listen((b) {
+        if (b) {
+          showSnack(text: S.of(context).apkPleaseInstall);
+        } else {
+          showSnack(text: S.of(context).apkFail);
+        }
+      }).bindLife(this)
+      ..error
+          .stream
+          .where((b) => b)
+          .listen((_) => networkError(
+              errorText: S.of(context).checkUpdateFail,
+              retry: _viewModel.checkUpdate))
+          .bindLife(this);
   }
 
   @override
@@ -166,7 +165,7 @@ class AboutState extends PageState<AboutPage> {
                       titlePadding: EdgeInsets.only(
                           left: snapshot.data ?? 0.0, bottom: 13),
                       title: Text(
-                        AppText.of(context).about,
+                        S.of(context).about,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           color: Colors.white
@@ -208,15 +207,15 @@ class AboutState extends PageState<AboutPage> {
               _buildLine(),
 
               // 概述
-              _buildTitle(title: AppText.of(context).overview),
+              _buildTitle(title: S.of(context).overview),
 
               // 项目主页
               _buildOverviewItem(
                 icon: Icons.home,
-                text: AppText.of(context).programHome,
+                text: S.of(context).programHome,
                 onTap: () => push(context,
                     page: CustomWebViewPage(
-                        title: AppText.of(context).appName,
+                        title: S.of(context).appName,
                         url: "https://github.com/hahafather007/flutter_weather",
                         favData: null)),
               ),
@@ -224,17 +223,18 @@ class AboutState extends PageState<AboutPage> {
               // 意见反馈
               _buildOverviewItem(
                 icon: Icons.feedback,
-                text: AppText.of(context).feedback,
-                onTap: () => ChannelUtil.sendEmail(email: "965083574@qq.com"),
+                text: S.of(context).feedback,
+                onTap: () => openBrowser(
+                    "https://github.com/hahafather007/flutter_weather/issues/new"),
               ),
 
               // 检查更新
               _buildOverviewItem(
                 icon: Icons.autorenew,
-                text: AppText.of(context).checkUpdate,
+                text: S.of(context).checkUpdate,
                 onTap: () async {
                   if (await ChannelUtil.isDownloading()) {
-                    showSnack(text: AppText.of(context).apkDownloading);
+                    showSnack(text: S.of(context).apkDownloading);
                   } else {
                     _viewModel.checkUpdate();
                   }
@@ -244,10 +244,10 @@ class AboutState extends PageState<AboutPage> {
               // 分享
               _buildOverviewItem(
                 icon: Icons.share,
-                text: AppText.of(context).shareApp,
+                text: S.of(context).shareApp,
                 onTap: () {
-                  Share.text(AppText.of(context).share,
-                      AppText.of(context).shareAppUrl, "text/plain");
+                  Share.text(S.of(context).share, S.of(context).shareAppUrl,
+                      "text/plain");
                 },
               ),
 
@@ -257,7 +257,7 @@ class AboutState extends PageState<AboutPage> {
               ),
 
               // 感谢
-              _buildTitle(title: AppText.of(context).thanks),
+              _buildTitle(title: S.of(context).thanks),
 
               // 感谢内容
               _buildThanks(),
@@ -265,19 +265,19 @@ class AboutState extends PageState<AboutPage> {
               _buildLine(),
 
               // 联系我
-              _buildTitle(title: AppText.of(context).connectMe),
+              _buildTitle(title: S.of(context).connectMe),
               Container(
                 padding: const EdgeInsets.only(left: 16, bottom: 16),
                 alignment: Alignment.centerLeft,
                 child: GestureDetector(
                   onTap: () => push(context,
                       page: CustomWebViewPage(
-                          title: AppText.of(context).zhihuPage,
+                          title: S.of(context).zhihuPage,
                           url:
                               "https://www.zhihu.com/people/huo-lei-hong/activities",
                           favData: null)),
                   child: Text(
-                    AppText.of(context).zhihuName,
+                    S.of(context).zhihuName,
                     style: TextStyle(fontSize: 12, color: AppColor.text2),
                   ),
                 ),
@@ -300,7 +300,7 @@ class AboutState extends PageState<AboutPage> {
           Padding(
             padding: const EdgeInsets.only(bottom: 18),
             child: Text(
-              AppText.of(context).appName,
+              S.of(context).appName,
               style: TextStyle(
                   fontSize: 20,
                   color: Colors.black87,
@@ -331,12 +331,10 @@ class AboutState extends PageState<AboutPage> {
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 24),
       child: Linkify(
-        text: AppText.of(context).thankItems,
+        text: S.of(context).thankItems,
         onOpen: (link) => push(context,
             page: CustomWebViewPage(
-                title: AppText.of(context).appName,
-                url: link.url,
-                favData: null)),
+                title: S.of(context).appName, url: link.url, favData: null)),
         style: TextStyle(fontSize: 12, color: AppColor.text2, height: 1.2),
         linkStyle: TextStyle(fontSize: 12, color: Colors.black87),
       ),
@@ -360,7 +358,7 @@ class AboutState extends PageState<AboutPage> {
   Widget _buildOverviewItem(
       {@required IconData icon,
       @required String text,
-      @required Function onTap}) {
+      @required VoidCallback onTap}) {
     return Material(
       child: InkWell(
         onTap: onTap,
