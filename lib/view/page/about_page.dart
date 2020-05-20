@@ -224,7 +224,8 @@ class AboutState extends PageState<AboutPage> {
               _buildOverviewItem(
                 icon: Icons.feedback,
                 text: S.of(context).feedback,
-                onTap: () => ChannelUtil.sendEmail(email: "965083574@qq.com"),
+                onTap: () => openBrowser(
+                    "https://github.com/hahafather007/flutter_weather/issues/new"),
               ),
 
               // 检查更新
