@@ -76,7 +76,9 @@ class _SnowState extends State<SnowView> with TickerProviderStateMixin {
             height: _size,
             width: _size,
             decoration: BoxDecoration(
-                color: Colors.white.withAlpha(_alpha), shape: BoxShape.circle),
+              color: Colors.white.withAlpha(_alpha),
+              shape: BoxShape.circle,
+            ),
           ),
           left: _left + (widget.fullScreen ? 0 : (260 - _anim.value) / 3),
           bottom: _anim.value,

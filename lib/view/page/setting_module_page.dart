@@ -1,7 +1,7 @@
 import 'package:dragable_flutter_list/dragable_flutter_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/data/page_module_data.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
@@ -29,7 +29,7 @@ class SettingModuleState extends PageState<SettingModulePage> {
       backgroundColor: AppColor.read,
       appBar: CustomAppBar(
         title: Text(
-          AppText.of(context).moduleControl,
+          S.of(context).moduleControl,
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -55,38 +55,46 @@ class SettingModuleState extends PageState<SettingModulePage> {
             itemBuilder: (context, index) {
               final module = modules[index];
 
-              switch (module.module) {
-                case "weather":
+              switch (module.page) {
+                case PageType.WEATHER:
                   return _buildModuleItem(
                     icon: Icons.wb_sunny,
-                    title: AppText.of(context).weather,
+                    title: S.of(context).weather,
                     open: module.open,
                     onChanged: (b) =>
-                        _viewModel.valueChange(b, module: module.module),
+                        _viewModel.valueChange(b, page: module.page),
                   );
-                case "read":
+                case PageType.READ:
                   return _buildModuleItem(
                     icon: Icons.local_cafe,
-                    title: AppText.of(context).read,
+                    title: S.of(context).read,
                     open: module.open,
                     onChanged: (b) =>
-                        _viewModel.valueChange(b, module: module.module),
+                        _viewModel.valueChange(b, page: module.page),
                   );
-                case "gift":
+                case PageType.GANHUO:
+                  return _buildModuleItem(
+                    icon: Icons.android,
+                    title: S.of(context).ganHuo,
+                    open: module.open,
+                    onChanged: (b) =>
+                        _viewModel.valueChange(b, page: module.page),
+                  );
+                case PageType.GIFT:
                   return _buildModuleItem(
                     icon: Icons.card_giftcard,
-                    title: AppText.of(context).gift,
+                    title: S.of(context).gift,
                     open: module.open,
                     onChanged: (b) =>
-                        _viewModel.valueChange(b, module: module.module),
+                        _viewModel.valueChange(b, page: module.page),
                   );
-                case "collect":
+                case PageType.COLLECT:
                   return _buildModuleItem(
                     icon: Icons.favorite_border,
-                    title: AppText.of(context).collect,
+                    title: S.of(context).collect,
                     open: module.open,
                     onChanged: (b) =>
-                        _viewModel.valueChange(b, module: module.module),
+                        _viewModel.valueChange(b, page: module.page),
                   );
               }
 
@@ -105,7 +113,7 @@ class SettingModuleState extends PageState<SettingModulePage> {
       {@required IconData icon,
       @required String title,
       @required bool open,
-      @required Function(bool) onChanged}) {
+      @required ValueChanged<bool> onChanged}) {
     return Card(
       margin: const EdgeInsets.all(8),
       color: Colors.white,

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/model/data/mixing.dart';
@@ -253,7 +254,6 @@ class _MountainPainter extends CustomPainter {
     }
     path
       ..lineTo(size.width, size.height)
-      ..lineTo(0, size.height)
       ..close();
 
     canvas.drawPath(path, paint);
@@ -320,8 +320,7 @@ class _AirPainter extends CustomPainter {
       ..moveTo(size.width / 2, 0)
       ..quadraticBezierTo(
           -size.width / 2, size.height, size.width / 2, size.height)
-      ..quadraticBezierTo(size.width / 2 * 3, size.height, size.width / 2, 0)
-      ..close();
+      ..quadraticBezierTo(size.width / 2 * 3, size.height, size.width / 2, 0);
 
     canvas.drawPath(path, paint);
   }
@@ -349,8 +348,7 @@ class _PillarPainter extends CustomPainter {
       ..lineTo(0, size.height)
       ..lineTo(size.width, size.height)
       ..lineTo(size.width * 2 / 3, size.height / 40)
-      ..quadraticBezierTo(size.width / 2, 0, size.width / 3, size.height / 40)
-      ..close();
+      ..quadraticBezierTo(size.width / 2, 0, size.width / 3, size.height / 40);
 
     canvas.drawPath(path, paint);
   }

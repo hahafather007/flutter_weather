@@ -1,65 +1,94 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/model/data/read_data.dart';
+import 'package:flutter_weather/model/data/gank_data.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/view/page/webview_page.dart';
 import 'package:flutter_weather/view/widget/net_image.dart';
 
 /// 闲读的每一条Item
 class ReadItemView extends StatelessWidget {
-  final ReadData data;
-  final int index;
+  final GankItem data;
 
-  ReadItemView({@required this.data, @required this.index});
+  ReadItemView({@required this.data});
 
   @override
   Widget build(BuildContext context) {
+    final img = data.images?.firstWhere((v) => v != null, orElse: () => null);
+
     return Card(
       color: Colors.white,
       clipBehavior: Clip.hardEdge,
-      margin: const EdgeInsets.fromLTRB(8, 6, 8, 6),
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       child: InkWell(
         onTap: () => push(context,
             page: CustomWebViewPage(
-                title: data.name, url: data.url, favData: data)),
+                title: data.title, url: data.url, favData: data)),
         child: Padding(
           padding: const EdgeInsets.all(10),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: Stack(
             children: <Widget>[
-              Expanded(
+              Padding(
+                padding: const EdgeInsets.only(right: 84),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    // 标题
                     Text(
-                      "$index. ${data.name}",
-                      textAlign: TextAlign.start,
-                      style: TextStyle(fontSize: 16, color: AppColor.text1),
+                      "${data.title}",
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: AppColor.text1,
+                      ),
                     ),
-                    RichText(
-                      text: TextSpan(
+
+                    // 内容
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Text(
+                        "${data.desc}",
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppColor.text2,
+                        ),
+                      ),
+                    ),
+
+                    // 时间和作者
+                    Text.rich(
+                      TextSpan(
                         children: [
-                          TextSpan(text: data.updateTime),
+                          TextSpan(text: data.publishedAt.substring(0, 10)),
                           TextSpan(
-                              text: " · ",
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          TextSpan(text: data.from),
+                            text: " · ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          TextSpan(text: data.author),
                         ],
-                        style: TextStyle(fontSize: 12, color: AppColor.text2),
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: AppColor.text3,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-              Container(
-                width: 68,
-                alignment: Alignment.centerRight,
-                padding: const EdgeInsets.only(right: 6),
+
+              // 图片
+              Positioned(
+                top: 0,
+                bottom: 0,
+                right: 0,
                 child: NetImage(
-                  url: data.icon,
-                  height: 40,
-                  width: 40,
-                  isCircle: true,
+                  url: "$img",
+                  width: 76,
+                  fit: BoxFit.contain,
                 ),
               ),
             ],

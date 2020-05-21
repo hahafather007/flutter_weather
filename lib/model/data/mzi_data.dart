@@ -1,4 +1,13 @@
+/// 妹子图数据
 class MziData {
+  int page;
+  int maxPage;
+  List<MziItem> items;
+
+  MziData(this.page, this.maxPage, this.items);
+}
+
+class MziItem {
   String url;
   String link;
   String refer;
@@ -6,7 +15,7 @@ class MziData {
   int width;
   bool isImages;
 
-  MziData(
+  MziItem(
       {this.url,
       this.link,
       this.refer,
@@ -14,7 +23,9 @@ class MziData {
       this.width,
       this.isImages});
 
-  MziData.fromJson(Map<String, dynamic> json) {
+  MziItem.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+
     url = json['url'];
     link = json['link'];
     refer = json['refer'];
@@ -24,7 +35,7 @@ class MziData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['url'] = this.url;
     data['link'] = this.link;
     data['refer'] = this.refer;

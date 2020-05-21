@@ -1,7 +1,7 @@
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
 import 'package:flutter_weather/model/data/city_data.dart';
 import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
@@ -13,7 +13,7 @@ class CityChoosePage extends StatefulWidget {
 }
 
 class CityChooseState extends PageState<CityChoosePage> {
-  final List<List<dynamic>> _csvList = [];
+  final _csvList = List<List<dynamic>>();
 
   String _province;
   String _city;
@@ -30,7 +30,7 @@ class CityChooseState extends PageState<CityChoosePage> {
     return Scaffold(
       appBar: CustomAppBar(
         title: Text(
-          AppText.of(context).cityChoose,
+          S.of(context).cityChoose,
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -139,7 +139,7 @@ class CityChooseState extends PageState<CityChoosePage> {
   Widget _buildItem(
       {@required String name,
       @required bool isSelect,
-      @required Function onTap}) {
+      @required VoidCallback onTap}) {
     return Material(
       child: InkWell(
         onTap: onTap,

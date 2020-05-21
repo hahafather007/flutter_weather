@@ -23,7 +23,7 @@ abstract class AppColor {
   /// placeholder颜色
   static const holder = Color(0xFFCCCCCC);
 
-  /// 所有主体色
+  /// 所有主题色
   static const lapisBlue = Color(0xFF014284);
   static const paleDogWood = Color(0xFFECCAC0);
   static const greenery = Color(0xFF7DA743);

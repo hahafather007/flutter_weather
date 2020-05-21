@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_weather/language.dart';
-import 'package:flutter_weather/model/data/read_data.dart';
+import 'package:flutter_weather/generated/i18n.dart';
+import 'package:flutter_weather/model/data/gank_data.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:flutter_weather/view/widget/loading_view.dart';
 import 'package:flutter_weather/view/widget/read_item_view.dart';
-import 'package:flutter_weather/viewmodel/read_viewmodel.dart';
+import 'package:flutter_weather/viewmodel/gank_viewmodel.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class ReadContentPage extends StatefulWidget {
-  final String typeUrl;
+  final GankTitle title;
+  final bool isGanHuo;
 
-  ReadContentPage({Key key, @required this.typeUrl}) : super(key: key);
+  ReadContentPage({Key key, @required this.title, this.isGanHuo = false})
+      : super(key: key);
 
   @override
   State createState() => ReadContentState();
@@ -18,7 +20,8 @@ class ReadContentPage extends StatefulWidget {
 
 class ReadContentState extends PageState<ReadContentPage>
     with AutomaticKeepAliveClientMixin {
-  final _viewModel = ReadViewModel();
+  final _viewModel = GankViewModel();
+  final _scrollController = ScrollController();
 
   @override
   bool get wantKeepAlive => true;
@@ -27,51 +30,31 @@ class ReadContentState extends PageState<ReadContentPage>
   void initState() {
     super.initState();
 
-    _viewModel.init(typeUrl: widget.typeUrl);
-  }
+    _scrollController.addListener(() {
+      // 滑到底部加载更多
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _viewModel.loadMore();
+      }
+    });
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    String errorText = "";
-    switch (widget.typeUrl) {
-      case "wow":
-        errorText = AppText.of(context).xianduFail;
-        break;
-      case "apps":
-        errorText = AppText.of(context).xianduAppsFail;
-        break;
-      case "imrich":
-        errorText = AppText.of(context).xianduImrichFail;
-        break;
-      case "funny":
-        errorText = AppText.of(context).xianduFunnyFail;
-        break;
-      case "android":
-        errorText = AppText.of(context).xianduAndroidFail;
-        break;
-      case "diediedie":
-        errorText = AppText.of(context).xianduDieFail;
-        break;
-      case "thinking":
-        errorText = AppText.of(context).xianduThinkFail;
-        break;
-      case "iOS":
-        errorText = AppText.of(context).xianduIosFail;
-        break;
-      case "teamblog":
-        errorText = AppText.of(context).xianduBlogFail;
-        break;
-    }
-    bindErrorStream(_viewModel.error.stream,
-        errorText: errorText,
-        retry: () => _viewModel.loadData(type: LoadType.NEW_LOAD));
+    _viewModel
+      ..init(
+          category: widget.isGanHuo ? "GanHuo" : "Article",
+          type: widget.title.type)
+      ..error
+          .stream
+          .where((b) => b)
+          .listen((_) => networkError(
+              errorText: S.of(context).readLoadFail(widget.title.title),
+              retry: _viewModel.reload))
+          .bindLife(this);
   }
 
   @override
   void dispose() {
     _viewModel.dispose();
+    _scrollController.dispose();
 
     super.dispose();
   }
@@ -87,7 +70,7 @@ class ReadContentState extends PageState<ReadContentPage>
         child: StreamBuilder(
           stream: _viewModel.data.stream,
           builder: (context, snapshot) {
-            final List<ReadData> list = snapshot.data ?? [];
+            final List<GankItem> list = snapshot.data?.data ?? [];
 
             return RefreshIndicator(
               onRefresh: () => _viewModel.loadData(type: LoadType.REFRESH),
@@ -95,18 +78,10 @@ class ReadContentState extends PageState<ReadContentPage>
                 physics: const AlwaysScrollableScrollPhysics(
                     parent: const ClampingScrollPhysics()),
                 padding: const EdgeInsets.only(),
+                controller: _scrollController,
                 itemCount: list.length,
-                itemBuilder: (context, index) {
-                  // 在倒数第5个item显示时就加载下一页
-                  if (index + 1 >= list.length - 5) {
-                    _viewModel.loadMore();
-                  }
-
-                  return ReadItemView(
-                    data: list[index],
-                    index: index + 1,
-                  );
-                },
+                itemBuilder: (context, index) =>
+                    ReadItemView(data: list[index]),
               ),
             );
           },

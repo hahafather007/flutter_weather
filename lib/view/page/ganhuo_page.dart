@@ -7,15 +7,15 @@ import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:flutter_weather/view/page/read_content_page.dart';
 import 'package:flutter_weather/view/widget/custom_app_bar.dart';
 import 'package:flutter_weather/view/widget/loading_view.dart';
-import 'package:flutter_weather/viewmodel/read_viewmodel.dart';
+import 'package:flutter_weather/viewmodel/ganhuo_viewmodel.dart';
 
-class ReadPage extends StatefulWidget {
+class GanHuoPage extends StatefulWidget {
   @override
-  State createState() => ReadState();
+  State createState() => GanHuoState();
 }
 
-class ReadState extends PageState<ReadPage> {
-  final _viewModel = ReadViewModel();
+class GanHuoState extends PageState<GanHuoPage> {
+  final _viewModel = GanHuoViewModel();
 
   @override
   void initState() {
@@ -55,7 +55,7 @@ class ReadState extends PageState<ReadPage> {
                 children: <Widget>[
                   CustomAppBar(
                     title: Text(
-                      S.of(context).read,
+                      S.of(context).ganHuo,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -73,7 +73,7 @@ class ReadState extends PageState<ReadPage> {
                     bottom: TabBar(
                       labelColor: Colors.white,
                       indicatorColor: Colors.white,
-                      isScrollable: true,
+                      labelPadding: const EdgeInsets.only(),
                       tabs: titles
                           .map((title) => Tab(text: title.title))
                           .toList(),
@@ -87,6 +87,7 @@ class ReadState extends PageState<ReadPage> {
                             .map((title) => ReadContentPage(
                                   key: Key("ReadContentPage${title.type}"),
                                   title: title,
+                                  isGanHuo: true,
                                 ))
                             .toList(),
                       ),

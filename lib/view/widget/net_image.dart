@@ -30,23 +30,20 @@ class NetImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final img = Container(
+    if (url == null || url == "null") {
+      return Container(
+        height: height,
+        width: width,
+        color: AppColor.holder,
+      );
+    }
+
+    final img = Image.network(
+      url,
+      fit: fit,
       width: width,
       height: height,
-      child: Stack(
-        children: <Widget>[
-          Positioned.fill(
-            child: placeholder ?? Container(color: AppColor.holder),
-          ),
-          Positioned.fill(
-            child: Image.network(
-              url,
-              fit: fit,
-              headers: headers,
-            ),
-          ),
-        ],
-      ),
+      headers: headers,
     );
 
     return isCircle ? ClipOval(child: img) : img;

@@ -2,44 +2,56 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_weather/model/data/egg_data.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/model/service/gift_egg_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class GiftEggViewModel extends ViewModel {
-  final data = StreamController<List<MziData>>();
+  final data = StreamController<EggData>();
 
   final _service = GiftEggService();
-  final _photoData = StreamController<List<MziData>>();
-  final List<MziData> _cacheData = [];
+  final _photoData = StreamController<List<MziItem>>();
 
-  Stream<List<MziData>> photoStream;
-  int _page = 1;
+  EggData _cacheData;
+  Stream<List<MziItem>> photoStream;
 
   GiftEggViewModel() {
     photoStream = _photoData.stream.asBroadcastStream();
   }
 
-  Future<Null> loadData({@required LoadType type}) async {
+  Future<void> loadData({@required LoadType type}) async {
     if (selfLoading) return;
-    selfLoading = true;
+    if (_cacheData != null && _cacheData.currentPage >= _cacheData.pageCount)
+      return;
 
-    if (type == LoadType.REFRESH) {
-      _page = 1;
-      _cacheData.clear();
-    } else {
+    selfLoading = true;
+    if (type != LoadType.REFRESH) {
       isLoading.safeAdd(true);
     }
 
     try {
-      final egg = await _service.getData(page: _page);
-      egg.comments.forEach((v) {
-        _cacheData.addAll(v.pics.map((url) =>
-            MziData(height: 459, width: 337, url: url, isImages: false)));
-      });
+      final egg = await _service.getData(
+          page: (type == LoadType.REFRESH || type == LoadType.NEW_LOAD)
+              ? 1
+              : (_cacheData?.currentPage ?? 0) + 1);
+
+      if (type == LoadType.REFRESH || type == LoadType.NEW_LOAD) {
+        _cacheData = egg;
+      } else {
+        _cacheData?.currentPage = egg.currentPage;
+        _cacheData?.pageCount = egg.pageCount;
+        _cacheData?.comments?.addAll(egg.comments);
+      }
+
       data.safeAdd(_cacheData);
-      _photoData.safeAdd(_cacheData);
-      _page++;
+      _photoData.safeAdd(_cacheData?.comments
+          ?.map((v) => v?.pics?.isNotEmpty == true
+              ? v.pics.first
+              : "https://www.baidu.com/img/bd_logo1.png")
+          ?.map(
+              (v) => MziItem(height: 459, width: 337, url: v, isImages: false))
+          ?.toList());
     } on DioError catch (e) {
       selfLoadType = type;
       doError(e);
@@ -49,18 +61,23 @@ class GiftEggViewModel extends ViewModel {
     }
   }
 
+  @override
   void reload() {
+    super.reload();
+
     loadData(type: selfLoadType);
   }
 
+  @override
   void loadMore() {
+    super.loadMore();
+
     loadData(type: LoadType.LOAD_MORE);
   }
 
   @override
   void dispose() {
     _service.dispose();
-    _cacheData.clear();
 
     data.close();
     _photoData.close();

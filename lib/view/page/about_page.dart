@@ -5,13 +5,12 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_weather/common/colors.dart';
-import 'package:flutter_weather/language.dart';
+import 'package:flutter_weather/generated/i18n.dart';
+
 import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:flutter_weather/view/page/webview_page.dart';
-import 'package:flutter_weather/view/widget/loading_view.dart';
 import 'package:flutter_weather/view/widget/net_image.dart';
-import 'package:flutter_weather/viewmodel/about_viewmodel.dart';
 
 class AboutPage extends StatefulWidget {
   static const photoUrls = [
@@ -28,7 +27,6 @@ class AboutPage extends StatefulWidget {
 
 class AboutState extends PageState<AboutPage> {
   final String _url;
-  final _viewModel = AboutViewModel();
   final _controller = ScrollController();
   final _paddingStream = StreamController<double>();
 
@@ -50,7 +48,6 @@ class AboutState extends PageState<AboutPage> {
 
   @override
   void dispose() {
-    _viewModel.dispose();
     _controller.dispose();
     _paddingStream.close();
 
@@ -61,142 +58,130 @@ class AboutState extends PageState<AboutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scafKey,
-      body: LoadingView(
-        loadingStream: _viewModel.isLoading.stream,
-        child: NestedScrollView(
-          controller: _controller,
-          physics: const ClampingScrollPhysics(),
-          headerSliverBuilder: (context, isScrolled) {
-            return <Widget>[
-              SliverAppBar(
-                expandedHeight: 200,
-                floating: true,
-                pinned: true,
-                leading: IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  ),
-                  onPressed: () => pop(context),
+      body: NestedScrollView(
+        controller: _controller,
+        physics: const ClampingScrollPhysics(),
+        headerSliverBuilder: (context, isScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              expandedHeight: 200,
+              floating: true,
+              pinned: true,
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
                 ),
-                backgroundColor: Theme.of(context).accentColor,
-                flexibleSpace: StreamBuilder(
-                  stream: _paddingStream.stream,
-                  builder: (context, snapshot) {
-                    return FlexibleSpaceBar(
-                      centerTitle: false,
-                      titlePadding: EdgeInsets.only(
-                          left: snapshot.data ?? 0.0, bottom: 13),
-                      title: Text(
-                        AppText.of(context).about,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Colors.white
-                              .withOpacity((snapshot.data ?? 0.0) / 72),
-                          fontSize: 20,
-                        ),
-                      ),
-                      background: Stack(
-                        children: <Widget>[
-                          Positioned.fill(
-                            child: NetImage(
-                              url: _url,
-                              placeholder: Container(),
-                            ),
-                          ),
-                          Positioned.fill(
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                              child: Container(
-                                color: Colors.transparent,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                onPressed: () => pop(context),
               ),
-            ];
-          },
-          body: ListView(
-            padding: const EdgeInsets.only(),
-            physics: const ClampingScrollPhysics(),
-            children: <Widget>[
-              // 版本和名称
-              _buildAppName(),
+              backgroundColor: Theme.of(context).accentColor,
+              flexibleSpace: StreamBuilder(
+                stream: _paddingStream.stream,
+                builder: (context, snapshot) {
+                  return FlexibleSpaceBar(
+                    centerTitle: false,
+                    titlePadding:
+                        EdgeInsets.only(left: snapshot.data ?? 0.0, bottom: 13),
+                    title: Text(
+                      S.of(context).about,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: Colors.white
+                            .withOpacity((snapshot.data ?? 0.0) / 72),
+                        fontSize: 20,
+                      ),
+                    ),
+                    background: Stack(
+                      children: <Widget>[
+                        Positioned.fill(
+                          child: NetImage(
+                            url: _url,
+                            placeholder: Container(),
+                          ),
+                        ),
+                        Positioned.fill(
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                            child: Container(
+                              color: Colors.transparent,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ];
+        },
+        body: ListView(
+          padding: const EdgeInsets.only(),
+          physics: const ClampingScrollPhysics(),
+          children: <Widget>[
+            // 版本和名称
+            _buildAppName(),
 
-              _buildLine(),
+            _buildLine(),
 
-              // 概述
-              _buildTitle(title: AppText.of(context).overview),
+            // 概述
+            _buildTitle(title: S.of(context).overview),
 
-              // 项目主页
-              _buildOverviewItem(
-                icon: Icons.home,
-                text: AppText.of(context).programHome,
+            // 项目主页
+            _buildOverviewItem(
+              icon: Icons.home,
+              text: S.of(context).programHome,
+              onTap: () => push(context,
+                  page: CustomWebViewPage(
+                      title: S.of(context).appName,
+                      url: "https://github.com/hahafather007/flutter_weather",
+                      favData: null)),
+            ),
+
+            // 意见反馈
+            _buildOverviewItem(
+              icon: Icons.feedback,
+              text: S.of(context).feedback,
+              onTap: () => push(context,
+                  page: CustomWebViewPage(
+                      title: S.of(context).appName,
+                      url:
+                          "https://github.com/hahafather007/flutter_weather/issues/new",
+                      favData: null)),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: _buildLine(),
+            ),
+
+            // 感谢
+            _buildTitle(title: S.of(context).thanks),
+
+            // 感谢内容
+            _buildThanks(),
+
+            _buildLine(),
+
+            // 联系我
+            _buildTitle(title: S.of(context).connectMe),
+            Container(
+              padding: const EdgeInsets.only(left: 16, bottom: 16),
+              alignment: Alignment.centerLeft,
+              child: GestureDetector(
                 onTap: () => push(context,
                     page: CustomWebViewPage(
-                        title: AppText.of(context).appName,
-                        url: "https://github.com/hahafather007/flutter_weather",
+                        title: S.of(context).zhihuPage,
+                        url:
+                            "https://www.zhihu.com/people/huo-lei-hong/activities",
                         favData: null)),
-              ),
-
-              // 意见反馈
-              _buildOverviewItem(
-                icon: Icons.feedback,
-                text: AppText.of(context).feedback,
-                onTap: null,
-              ),
-
-              // 检查更新
-              _buildOverviewItem(
-                icon: Icons.autorenew,
-                text: AppText.of(context).checkUpdate,
-                onTap: null,
-              ),
-
-              // 分享
-              _buildOverviewItem(
-                icon: Icons.share,
-                text: AppText.of(context).shareApp,
-                onTap: null,
-              ),
-
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: _buildLine(),
-              ),
-
-              // 感谢
-              _buildTitle(title: AppText.of(context).thanks),
-
-              // 感谢内容
-              _buildThanks(),
-
-              _buildLine(),
-
-              // 联系我
-              _buildTitle(title: AppText.of(context).connectMe),
-              Container(
-                padding: const EdgeInsets.only(left: 16, bottom: 16),
-                alignment: Alignment.centerLeft,
-                child: GestureDetector(
-                  onTap: () => push(context,
-                      page: CustomWebViewPage(
-                          title: AppText.of(context).zhihuPage,
-                          url:
-                              "https://www.zhihu.com/people/huo-lei-hong/activities",
-                          favData: null)),
-                  child: Text(
-                    AppText.of(context).zhihuName,
-                    style: TextStyle(fontSize: 12, color: AppColor.text2),
-                  ),
+                child: Text(
+                  S.of(context).zhihuName,
+                  style: TextStyle(fontSize: 12, color: AppColor.text2),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -213,7 +198,7 @@ class AboutState extends PageState<AboutPage> {
           Padding(
             padding: const EdgeInsets.only(bottom: 18),
             child: Text(
-              AppText.of(context).appName,
+              S.of(context).appName,
               style: TextStyle(
                   fontSize: 20,
                   color: Colors.black87,
@@ -221,7 +206,7 @@ class AboutState extends PageState<AboutPage> {
             ),
           ),
           Text(
-            "v1.3.1",
+            "v1.4.0",
             style: TextStyle(
                 fontSize: 14,
                 color: Colors.black87,
@@ -237,12 +222,10 @@ class AboutState extends PageState<AboutPage> {
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 24),
       child: Linkify(
-        text: AppText.of(context).thankItems,
+        text: S.of(context).thankItems,
         onOpen: (link) => push(context,
             page: CustomWebViewPage(
-                title: AppText.of(context).appName,
-                url: link.url,
-                favData: null)),
+                title: S.of(context).appName, url: link.url, favData: null)),
         style: TextStyle(fontSize: 12, color: AppColor.text2, height: 1.2),
         linkStyle: TextStyle(fontSize: 12, color: Colors.black87),
       ),
@@ -266,7 +249,7 @@ class AboutState extends PageState<AboutPage> {
   Widget _buildOverviewItem(
       {@required IconData icon,
       @required String text,
-      @required Function onTap}) {
+      @required VoidCallback onTap}) {
     return Material(
       child: InkWell(
         onTap: onTap,

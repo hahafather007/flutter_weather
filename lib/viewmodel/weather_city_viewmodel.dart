@@ -31,7 +31,7 @@ class WeatherCityViewModel extends ViewModel {
     loadData(isRefresh: false);
   }
 
-  Future<Null> loadData({bool isRefresh = true}) async {
+  Future<void> loadData({bool isRefresh = true}) async {
     if (selfLoading) return;
     selfLoading = true;
 
@@ -55,6 +55,10 @@ class WeatherCityViewModel extends ViewModel {
               mCity = District(name: city, id: list[0]);
               break;
             }
+          }
+
+          if (mCity == null) {
+            mCity = WeatherHolder().cities[index];
           }
         } else {
           mCity = District(name: "成都", id: "CN101270101");
@@ -88,6 +92,13 @@ class WeatherCityViewModel extends ViewModel {
         isLoading.safeAdd(false);
       }
     }
+  }
+
+  @override
+  void reload() {
+    super.reload();
+
+    loadData(isRefresh: false);
   }
 
   @override

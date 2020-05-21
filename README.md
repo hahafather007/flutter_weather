@@ -7,7 +7,7 @@
 
 ### 更新日志 ###
 #### 重大更新： ####
-+ 最近将项目适配了Flutter Web，现在可以切换至该项目web分支，再用最新的Flutter的master/dev分支编译成web（因为爬取的数据源server有跨域问题，部分图片可能无法加载）。
++ 最近将项目适配了Flutter Web，现在可以切换至该项目web分支，再用最新的Flutter的master/dev/beta分支编译成web（建议使用beta分支，因为爬取的数据源server有跨域问题，部分图片可能无法加载）。
 
 ### 部分截图 ###
 <img src="screenshot/1.jpg" width="24%"/><img width="1%"/><img src="screenshot/2.jpg" width="24%"/><img width="1%"/><img src="screenshot/3.jpg" width="24%"/><img width="1%"/><img src="screenshot/4.jpg" width="24%"/>

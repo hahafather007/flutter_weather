@@ -4,45 +4,46 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/model/holder/fav_holder.dart';
-import 'package:flutter_weather/model/service/gift_mzi_image_service.dart';
+import 'package:flutter_weather/model/service/gift_mzi_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
 class GiftMziImageViewModel extends ViewModel {
   final isFav = StreamController<bool>();
-  final data = StreamController<List<MziData>>();
+  final data = StreamController<List<MziItem>>();
   final dataLength = StreamController<int>();
+  final photoStream = StreamController<List<MziItem>>();
 
-  final _service = GiftMziImageService();
-  final _favHolder = FavHolder();
-  final _photoData = StreamController<List<MziData>>();
+  final _service = GiftMziService();
+  final _cacheData = List<MziItem>();
 
-  MziData _mziData;
-  Stream<List<MziData>> photoStream;
+  MziItem _mziData;
 
-  GiftMziImageViewModel({@required MziData data}) {
+  GiftMziImageViewModel({@required MziItem data}) {
     _mziData = data;
-    photoStream = _photoData.stream.asBroadcastStream();
-    isFav.safeAdd(_favHolder.isFavorite(data));
-    _favHolder.favMziStream
-        .listen((_) => isFav.safeAdd(_favHolder.isFavorite(data)))
+
+    FavHolder()
+        .favMziStream
+        .listen((_) => isFav.safeAdd(FavHolder().isFavorite(data)))
         .bindLife(this);
+
+    isFav.safeAdd(FavHolder().isFavorite(data));
   }
 
-  Future<Null> loadData() async {
+  Future<void> loadData() async {
     if (selfLoading) return;
 
     selfLoading = true;
     isLoading.safeAdd(true);
     try {
       final length = await _service.getLength(link: _mziData.link);
-      debugPrint("length======>$length");
       dataLength.safeAdd(length);
-      final List<MziData> list = [];
-      for (int i = 1; i <= length; i++) {
-        list.add(await _service.getData(link: _mziData.link, index: i));
 
-        data.safeAdd(list);
-        _photoData.safeAdd(list);
+      for (int i = _cacheData.length + 1; i <= length; i++) {
+        _cacheData
+            .add(await _service.getEachData(link: _mziData.link, index: i));
+
+        data.safeAdd(_cacheData);
+        photoStream.safeAdd(_cacheData);
       }
     } on DioError catch (e) {
       doError(e);
@@ -53,13 +54,21 @@ class GiftMziImageViewModel extends ViewModel {
   }
 
   @override
+  void reload() {
+    super.reload();
+
+    loadData();
+  }
+
+  @override
   void dispose() {
     _service.dispose();
+    _cacheData.clear();
 
     data.close();
     isFav.close();
     dataLength.close();
-    _photoData.close();
+    photoStream.close();
 
     super.dispose();
   }

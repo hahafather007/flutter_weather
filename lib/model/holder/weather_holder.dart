@@ -42,7 +42,7 @@ class WeatherHolder {
     _airsBroadcast.safeAdd(_cacheAirs);
   }
 
-  Future<Null> addCity(District city, {int updateIndex}) async {
+  Future<void> addCity(District city, {int updateIndex}) async {
     if (updateIndex == null) {
       _cacheCities.add(city);
     } else {
@@ -53,7 +53,7 @@ class WeatherHolder {
     _citiesBroadcast.safeAdd(_cacheCities);
   }
 
-  Future<Null> updateCity(int before, int after) async {
+  Future<void> updateCity(int before, int after) async {
     final mCity = _cacheCities[before];
     _cacheCities.removeAt(before);
     _cacheCities.insert(after, mCity);
@@ -61,13 +61,13 @@ class WeatherHolder {
     _citiesBroadcast.safeAdd(_cacheCities);
   }
 
-  Future<Null> removeCity(int index) async {
+  Future<void> removeCity(int index) async {
     _cacheCities.removeAt(index);
     await SharedDepository().setDistricts(_cacheCities);
     _citiesBroadcast.safeAdd(_cacheCities);
   }
 
-  Future<Null> addWeather(Weather weather, {int updateIndex}) async {
+  Future<void> addWeather(Weather weather, {int updateIndex}) async {
     if (updateIndex == null) {
       _cacheWeathers.add(weather);
     } else {
@@ -78,7 +78,7 @@ class WeatherHolder {
     _weathersBroadcast.safeAdd(_cacheWeathers);
   }
 
-  Future<Null> updateWeather(int before, int after) async {
+  Future<void> updateWeather(int before, int after) async {
     final mWeather = _cacheWeathers[before];
     _cacheWeathers.removeAt(before);
     _cacheWeathers.insert(after, mWeather);
@@ -86,13 +86,13 @@ class WeatherHolder {
     _weathersBroadcast.safeAdd(_cacheWeathers);
   }
 
-  Future<Null> removeWeather(int index) async {
+  Future<void> removeWeather(int index) async {
     _cacheWeathers.removeAt(index);
     await SharedDepository().setWeathers(_cacheWeathers);
     _weathersBroadcast.safeAdd(_cacheWeathers);
   }
 
-  Future<Null> addAir(WeatherAir air, {int updateIndex}) async {
+  Future<void> addAir(WeatherAir air, {int updateIndex}) async {
     if (updateIndex == null) {
       _cacheAirs.add(air);
     } else {
@@ -103,7 +103,7 @@ class WeatherHolder {
     _airsBroadcast.safeAdd(_cacheAirs);
   }
 
-  Future<Null> updateAir(int before, int after) async {
+  Future<void> updateAir(int before, int after) async {
     final mAir = _cacheAirs[before];
     _cacheAirs.removeAt(before);
     _cacheAirs.insert(after, mAir);
@@ -111,7 +111,7 @@ class WeatherHolder {
     _airsBroadcast.safeAdd(_cacheAirs);
   }
 
-  Future<Null> removeAir(int index) async {
+  Future<void> removeAir(int index) async {
     _cacheAirs.removeAt(index);
     await SharedDepository().setAirs(_cacheAirs);
     _airsBroadcast.safeAdd(_cacheAirs);

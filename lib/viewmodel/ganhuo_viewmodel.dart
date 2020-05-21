@@ -5,7 +5,7 @@ import 'package:flutter_weather/model/data/gank_data.dart';
 import 'package:flutter_weather/model/service/gank_service.dart';
 import 'package:flutter_weather/viewmodel/viewmodel.dart';
 
-class ReadViewModel extends ViewModel {
+class GanHuoViewModel extends ViewModel {
   final titles = StreamController<List<GankTitle>>();
 
   final _service = GankService();
@@ -17,7 +17,7 @@ class ReadViewModel extends ViewModel {
     isLoading.safeAdd(true);
 
     try {
-      titles.safeAdd(await _service.getTitles(category: "Article"));
+      titles.safeAdd(await _service.getTitles(category: "GanHuo"));
     } on DioError catch (e) {
       doError(e);
     } finally {

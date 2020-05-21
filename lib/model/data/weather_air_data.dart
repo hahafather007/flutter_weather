@@ -4,18 +4,20 @@ class WeatherAirData {
   WeatherAirData({this.weatherAir});
 
   WeatherAirData.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+
     if (json['HeWeather6'] != null) {
-      weatherAir = new List<WeatherAir>();
+      weatherAir = List<WeatherAir>();
       json['HeWeather6'].forEach((v) {
-        weatherAir.add(new WeatherAir.fromJson(v));
+        weatherAir.add(WeatherAir.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.weatherAir != null) {
-      data['HeWeather6'] = this.weatherAir.map((v) => v.toJson()).toList();
+      data['HeWeather6'] = this.weatherAir.map((v) => v?.toJson()).toList();
     }
     return data;
   }
@@ -28,14 +30,16 @@ class WeatherAir {
   WeatherAir({this.status, this.airNowCity});
 
   WeatherAir.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+
     status = json['status'];
     airNowCity = json['air_now_city'] != null
-        ? new AirNowCity.fromJson(json['air_now_city'])
+        ? AirNowCity.fromJson(json['air_now_city'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['status'] = this.status;
     if (this.airNowCity != null) {
       data['air_now_city'] = this.airNowCity.toJson();
@@ -69,6 +73,8 @@ class AirNowCity {
       this.pubTime});
 
   AirNowCity.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+
     aqi = json['aqi'];
     qlty = json['qlty'];
     main = json['main'];
@@ -82,7 +88,7 @@ class AirNowCity {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['aqi'] = this.aqi;
     data['qlty'] = this.qlty;
     data['main'] = this.main;
