@@ -6,6 +6,7 @@ import 'package:flutter_weather/utils/system_util.dart';
 import 'package:flutter_weather/view/page/page_state.dart';
 import 'package:flutter_weather/view/widget/custom_app_bar.dart';
 import 'package:flutter_weather/viewmodel/web_viewmodel.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CustomWebViewPage<T> extends StatefulWidget {
   final String title;
@@ -29,6 +30,7 @@ class CustomWebViewState<T> extends PageState<CustomWebViewPage> {
     super.initState();
 
     _viewModel = WebViewModel(favData: widget.favData);
+   launch(widget.url);
   }
 
   @override
