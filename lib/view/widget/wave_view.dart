@@ -121,20 +121,22 @@ class _WaveState extends State<WaveView> with TickerProviderStateMixin {
               // 浮动的图片
               widget.imgUrl != null
                   ? Positioned(
-                      child: Transform.rotate(
-                        angle:
-                            _getSinY(boatX, width, offsetX + 0.25) * cosHeight,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Image.asset(
-                              widget.imgUrl,
-                              width: widget.imgSize.width,
-                              height: widget.imgSize.height,
-                            ),
-                            Container(height: widget.imgSize.height),
-                          ],
+                      child: RepaintBoundary(
+                        child: Transform.rotate(
+                          angle:
+                          _getSinY(boatX, width, offsetX + 0.25) * cosHeight,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Image.asset(
+                                widget.imgUrl,
+                                width: widget.imgSize.width,
+                                height: widget.imgSize.height,
+                              ),
+                              Container(height: widget.imgSize.height),
+                            ],
+                          ),
                         ),
                       ),
                       right: widget.imgRight,

@@ -73,12 +73,14 @@ class WeatherCloudState extends State<WeatherCloud>
               animation: _cloudTopAnim,
               builder: (context, child) {
                 return Positioned(
-                  child: Opacity(
-                    opacity: isDay ? 0.9 : 0.7,
-                    child: Image.asset(
-                      "images/ic_cloud.png",
-                      width: 80,
-                      height: 80,
+                  child: RepaintBoundary(
+                    child: Opacity(
+                      opacity: isDay ? 0.9 : 0.7,
+                      child: Image.asset(
+                        "images/ic_cloud.png",
+                        width: 80,
+                        height: 80,
+                      ),
                     ),
                   ),
                   bottom: _cloudTopAnim.value,
