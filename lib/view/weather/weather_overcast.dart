@@ -278,28 +278,30 @@ class _AirscrewView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: size,
-      height: size,
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          Pair(0.0, Colors.white),
-          Pair(2 / 3 * pi, Colors.white),
-          Pair(4 / 3 * pi, Colors.white),
-        ].map((pair) {
-          return Transform.rotate(
-            angle: pair.a,
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: EdgeInsets.only(bottom: size / 30),
-              child: CustomPaint(
-                painter: _AirPainter(pair.b),
-                size: Size(size / 12, size / 2 - size / 30),
+    return RepaintBoundary(
+      child: Container(
+        width: size,
+        height: size,
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            Pair(0.0, Colors.white),
+            Pair(2 / 3 * pi, Colors.white),
+            Pair(4 / 3 * pi, Colors.white),
+          ].map((pair) {
+            return Transform.rotate(
+              angle: pair.a,
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: EdgeInsets.only(bottom: size / 30),
+                child: CustomPaint(
+                  painter: _AirPainter(pair.b),
+                  size: Size(size / 12, size / 2 - size / 30),
+                ),
               ),
-            ),
-          );
-        }).toList(),
+            );
+          }).toList(),
+        ),
       ),
     );
   }

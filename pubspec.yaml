@@ -73,6 +73,12 @@ flutter:
     - images/311.png
     - images/312.png
     - images/313.png
+    - images/314.png
+    - images/315.png
+    - images/316.png
+    - images/317.png
+    - images/318.png
+    - images/399.png
     - images/400.png
     - images/401.png
     - images/402.png
@@ -81,6 +87,10 @@ flutter:
     - images/405.png
     - images/406.png
     - images/407.png
+    - images/408.png
+    - images/409.png
+    - images/410.png
+    - images/499.png
     - images/500.png
     - images/501.png
     - images/502.png
@@ -88,6 +98,13 @@ flutter:
     - images/504.png
     - images/507.png
     - images/508.png
+    - images/509.png
+    - images/510.png
+    - images/511.png
+    - images/512.png
+    - images/513.png
+    - images/514.png
+    - images/515.png
     - images/900.png
     - images/901.png
     - images/999.png
@@ -101,7 +118,6 @@ flutter:
     - images/air_soft_7.png
     - images/air_soft_8.png
     - images/drawer_bg.png
-    - images/loading.gif
     - images/ic_boat_day.png
     - images/ic_boat_night.png
     - images/ic_cloud.png
@@ -115,5 +131,6 @@ flutter:
     - images/hammer_share1.jpg
     - images/hammer_share2.jpg
     - images/hammer_share3.jpg
+
     # assets
     - assets/china-city-list.csv
