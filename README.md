@@ -24,7 +24,7 @@
 <img src="screenshot/5.jpg" width="24%"/><img width="1%"/><img src="screenshot/6.jpg" width="24%"/><img width="1%"/><img src="screenshot/7.jpg" width="24%"/><img width="1%"/><img src="screenshot/8.jpg" width="24%"/>
 
 ### 下载方式 ###
-Android:<img src="qrcode/android.png"/>
+Android:[**<img src="qrcode/android.png"/>**](https://www.pgyer.com/Xcnf)
 
 IOS:没有开发者账号，暂时只能自己编译
 
