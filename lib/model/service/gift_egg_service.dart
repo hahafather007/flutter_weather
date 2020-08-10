@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/model/data/egg_data.dart';
 import 'package:flutter_weather/model/service/service.dart';
-import 'package:flutter_weather/utils/log_util.dart';
 
 class GiftEggService extends Service {
   GiftEggService() {
@@ -14,13 +14,15 @@ class GiftEggService extends Service {
         "/?oxwlxojflwblxbsapi=jandan.get_ooxx_comments&page=$page",
         cancelToken: cancelToken);
 
-    debugLog(response.toString());
-
-    final egg = EggData.fromJson(response.data);
+    final egg = await compute(_formatEgg, response.data);
     if (egg.status != "ok") {
       throw DioError(error: "我也不知为什么，它就是出错了");
     } else {
       return egg;
     }
+  }
+
+  static EggData _formatEgg(data) {
+    return EggData.fromJson(data);
   }
 }

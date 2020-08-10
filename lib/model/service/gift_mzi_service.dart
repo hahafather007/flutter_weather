@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_weather/model/data/mixing.dart';
 import 'package:flutter_weather/model/data/mzi_data.dart';
 import 'package:flutter_weather/model/service/service.dart';
 import 'package:html/parser.dart';
@@ -13,8 +15,15 @@ class GiftMziService extends Service {
       {@required String url, @required int page}) async {
     final response = await get("/$url/page/$page", cancelToken: cancelToken);
 
+    return await compute(
+        _formatMzi, Three("${dio.options.baseUrl}/$url/", page, response.data));
+  }
+
+  static MziData _formatMzi(data) {
+    final Three<String, int, dynamic> three = data;
+
     // 下面都在解析xml
-    final document = parse(response.data);
+    final document = parse(three.c);
     int maxPage = 0;
     // 获取最大页数
     document.getElementsByClassName("page-numbers").forEach((element) {
@@ -43,26 +52,29 @@ class GiftMziService extends Service {
           ? int.parse(img.attributes["width"])
           : 236;
       final link = item.querySelector("a[href]").attributes["href"];
-      final refer = "${dio.options.baseUrl}/$url/";
 
       list.add(MziItem(
           url: imgUrl,
           link: link,
-          refer: refer,
+          refer: three.a,
           height: imgHeight,
           width: imgWidth,
           isImages: true));
     });
 
-    return MziData(page, maxPage, list);
+    return MziData(three.b, maxPage, list);
   }
 
   /// 获取每个妹子图集的最大数量
   Future<int> getLength({@required String link}) async {
     final response = await get(link, cancelToken: cancelToken);
 
+    return await compute(_formatLen, response.data);
+  }
+
+  static int _formatLen(data) {
     int maxLength = 0;
-    final document = parse(response.data);
+    final document = parse(data);
     final total = document.getElementsByClassName("pagenavi").first;
     final spans = total.querySelectorAll("span");
     spans.map((span) {
@@ -85,13 +97,19 @@ class GiftMziService extends Service {
       {@required String link, @required int index}) async {
     final response = await get("$link/$index", cancelToken: cancelToken);
 
-    final document = parse(response.data);
+    return await compute(_formatItem, Three(link, index, response.data));
+  }
+
+  static MziItem _formatItem(data) {
+    final Three<String, int, dynamic> three = data;
+
+    final document = parse(three.c);
     final total = document.getElementsByClassName("main-image").first;
     final img = total.querySelector("img");
     final url = img.attributes["src"];
     final width = double.parse(img.attributes["width"]).toInt();
     final height = double.parse(img.attributes["height"]).toInt();
-    final refer = "$link/";
+    final refer = "${three.a}/";
 
     return MziItem(
         url: url, width: width, height: height, refer: refer, isImages: false);

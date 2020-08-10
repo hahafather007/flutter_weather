@@ -1,7 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/model/data/gank_data.dart';
 import 'package:flutter_weather/model/service/service.dart';
-import 'package:flutter_weather/utils/log_util.dart';
 
 class GankService extends Service {
   GankService() {
@@ -13,11 +13,12 @@ class GankService extends Service {
     final response =
         await get("/categories/$category", cancelToken: cancelToken);
 
-    debugLog(response);
+    return await compute(_formatTitles, response.data);
+  }
 
-    final Map map = response.data;
-    if (map != null && map["data"] != null) {
-      return (map["data"] as List).map((v) => GankTitle.fromJson(v)).toList();
+  static List<GankTitle> _formatTitles(data) {
+    if (data != null && data["data"] != null) {
+      return (data["data"] as List).map((v) => GankTitle.fromJson(v)).toList();
     } else {
       return [];
     }
@@ -32,8 +33,10 @@ class GankService extends Service {
         "/data/category/$category/type/$type/page/$page/count/15",
         cancelToken: cancelToken);
 
-    debugLog(response);
+    return await compute(_formatGank, response.data);
+  }
 
-    return GankData.fromJson(response.data);
+  static GankData _formatGank(data) {
+    return GankData.fromJson(data);
   }
 }

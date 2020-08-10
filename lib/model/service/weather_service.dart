@@ -1,9 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/main.dart';
 import 'package:flutter_weather/model/data/weather_air_data.dart';
 import 'package:flutter_weather/model/data/weather_data.dart';
 import 'package:flutter_weather/model/service/service.dart';
-import 'package:flutter_weather/utils/log_util.dart';
 
 class WeatherService extends Service {
   WeatherService() {
@@ -15,9 +15,11 @@ class WeatherService extends Service {
         "/s6/weather?key=2d2a76fac8324146a1b17b68bda42c76&location=$city&lang=${WeatherApp.locale?.languageCode == "zh" ? "" : "en"}",
         cancelToken: cancelToken);
 
-    debugLog(response);
+    return await compute(_formatWeather, response.data);
+  }
 
-    return WeatherData.fromJson(response.data);
+  static WeatherData _formatWeather(data) {
+    return WeatherData.fromJson(data);
   }
 
   Future<WeatherAirData> getAir({@required String city}) async {
@@ -25,8 +27,10 @@ class WeatherService extends Service {
         "/s6/air/now?key=2d2a76fac8324146a1b17b68bda42c76&location=$city&lang=${WeatherApp.locale?.languageCode == "zh" ? "" : "en"}",
         cancelToken: cancelToken);
 
-    debugLog(response);
+    return await compute(_formatAir, response.data);
+  }
 
-    return WeatherAirData.fromJson(response.data);
+  static WeatherAirData _formatAir(data) {
+    return WeatherAirData.fromJson(data);
   }
 }
