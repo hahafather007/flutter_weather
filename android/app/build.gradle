@@ -67,9 +67,6 @@ dependencies {
     // 高德地图
     implementation 'com.amap.api:location:3.8.0'
 
-    // 壁纸设置
-    implementation 'com.github.SherlockGougou:SetWallpaper:v1.3.0'
-
     // Rx
     implementation 'io.reactivex.rxjava2:rxjava:2.2.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'

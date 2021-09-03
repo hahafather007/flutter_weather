@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_weather/model/data/city_data.dart';
 import 'package:flutter_weather/utils/system_util.dart';
+import 'package:wallpaper_manager/wallpaper_manager.dart';
 
 import 'log_util.dart';
 
@@ -97,9 +98,14 @@ class ChannelUtil {
   /// 设置壁纸
   static Future<void> setWallpaper({@required String path}) async {
     try {
-      await _platform.invokeMethod(_ChannelTag.SET_WALLPAPER, {
-        "path": path,
-      });
+      if (isAndroid) {
+        await WallpaperManager.setWallpaperFromFile(
+            path, WallpaperManager.BOTH_SCREENS);
+      } else {
+        await _platform.invokeMethod(_ChannelTag.SET_WALLPAPER, {
+          "path": path,
+        });
+      }
     } on PlatformException catch (e) {
       _doError(e);
     }
